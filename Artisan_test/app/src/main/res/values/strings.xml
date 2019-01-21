@@ -1,0 +1,24 @@
+<resources>
+    <string name="app_name">Artisan</string>
+    <string name="Artisan">Artisan</string>
+    <string name="Welcome">Welcome</string>
+    <string name="Enter_the_name">Enter your name</string>
+    <string name="Contact_no">Contact Number</string>
+    <string name="UID">Unique Identification Number</string>
+    <string name="Address">Postal Address</string>
+    <string name="Username">Username</string>
+    <string name="Enter_password">Enter Password</string>
+    <string name="Registration">Register</string>
+    <string name="skillset">Select Skillset</string>
+
+    <string-array name="skills">
+        <item>Saree</item>
+        <item>Shawls</item>
+        <item>Garlands</item>
+        <item>Bracelets</item>
+        <item>Shirts</item>
+        <item>Pottery</item>
+        <item>Glass Painting</item>
+        <item>Toys</item>
+    </string-array>
+</resources>
