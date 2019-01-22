@@ -61,11 +61,9 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int position, boolean isChecked) {
 
-                        if(isChecked) {
+                        if (isChecked) {
                             mitems.add(position);
-                        }
-                        else
-                        {
+                        } else {
                             mitems.remove((Integer.valueOf(position)));
 
                         }
@@ -81,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
                         String item = "";
                         skillset = new String[mitems.size()];
 
-                        for(int i = 0; i < mitems.size(); i++) {
+                        for (int i = 0; i < mitems.size(); i++) {
                             item = item + listItems[mitems.get(i)];
                             skillset[i] = listItems[mitems.get(i)];
 
@@ -104,8 +102,7 @@ public class MainActivity extends AppCompatActivity {
                 mBuilder.setNeutralButton("Clear", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        for(int i = 0; i < checked_items.length; i++)
-                        {
+                        for (int i = 0; i < checked_items.length; i++) {
                             checked_items[i] = false;
                             mitems.clear();
                             final_list.setText("");
@@ -121,12 +118,9 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-
-
-        buttonAdd.setOnClickListener(new View.OnClickListener(){
+        buttonAdd.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view)
-            {
+            public void onClick(View view) {
 
                 String name = name_edit.getText().toString();
                 String address = postal_edit.getText().toString();
@@ -136,7 +130,7 @@ public class MainActivity extends AppCompatActivity {
                 String id = databaseReference.push().getKey();
                 //String id = "asdf";
 
-                Artisan_info artisan = new Artisan_info(id, name, contact_no, address, username, password, skillset);
+                Artisan_info artisan = new Artisan_info(id, name, contact_no, address, username, password);
 
                 databaseReference.child(id).setValue(artisan);
 

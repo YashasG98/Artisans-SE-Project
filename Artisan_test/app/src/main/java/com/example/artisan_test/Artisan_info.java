@@ -1,7 +1,6 @@
 package com.example.artisan_test;
 
-public class Artisan_info
-{
+public class Artisan_info {
     String artisan_id;
     String name;
     String contact_no;
@@ -9,10 +8,10 @@ public class Artisan_info
     String postal_address;
     String username;
     String password;
-    String[] skillset;
+    //String[] skillset;
 
 
-    public Artisan_info(String artisan_id, String name, String contact_no, String postal_address, String username, String password, String[] skillset) {
+    public Artisan_info(String artisan_id, String name, String contact_no, String postal_address, String username, String password/*,String[] skillset)*/) {
         this.artisan_id = artisan_id;
         this.name = name;
         this.contact_no = contact_no;
@@ -20,7 +19,7 @@ public class Artisan_info
         this.postal_address = postal_address;
         this.username = username;
         this.password = password;
-        this.skillset = skillset;
+        //this.skillset = skillset;
     }
 
     public String getArtisan_id() {
@@ -51,7 +50,4 @@ public class Artisan_info
         return password;
     }
 
-    public String[] getSkillset() {
-        return skillset;
-    }
 }
