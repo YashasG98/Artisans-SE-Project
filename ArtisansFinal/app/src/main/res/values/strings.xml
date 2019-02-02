@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">ArtisansFinal</string>
+    <string-array name="intents">
+        <item></item>
+        <item>USER</item>
+        <item>ARTISAN</item>
+    </string-array>
 </resources>
