@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "852019904611",
+    "firebase_url": "https://artisansfinal.firebaseio.com",
+    "project_id": "artisansfinal",
+    "storage_bucket": "artisansfinal.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:852019904611:android:3a43a8b6dda162d0",
+        "android_client_info": {
+          "package_name": "com.example.artisansfinal"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "852019904611-s9a9fvka5am0cptnrgess7kduhbt0k87.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCUZ8U6do0k0pD_qb8KkY8ZgDg0molwAns"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

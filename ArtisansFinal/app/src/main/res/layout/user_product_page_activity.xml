@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/product_page_cl">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/product_page_rl">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:ignore="MissingConstraints"
+            android:text="Welcome to the product page!"
+            android:textAllCaps="true"
+            android:textStyle="bold"
+            android:textAlignment="center"
+            android:textSize="40sp"
+            android:gravity="center"
+            android:padding="50dp"
+            android:id="@+id/product_page_tv_text_message"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:ignore="MissingConstraints"
+            android:id="@+id/product_page_button_go_back"
+            android:text="Go Back"
+            android:layout_below="@id/product_page_tv_text_message"
+            android:gravity="center"
+            android:padding="30dp"
+            android:layout_marginLeft="120dp"
+            android:onClick="Go_back"
+            />
+    </RelativeLayout>
+</android.support.constraint.ConstraintLayout>
