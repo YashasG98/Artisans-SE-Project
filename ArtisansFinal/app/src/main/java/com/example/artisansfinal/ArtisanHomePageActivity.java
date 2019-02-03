@@ -1,6 +1,7 @@
 package com.example.artisansfinal;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -17,11 +18,16 @@ public class ArtisanHomePageActivity extends AppCompatActivity {
 
     private DrawerLayout artisan_home_page_dl;
     private ActionBarDrawerToggle abdt;
+    private String userType;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.artisan_home_page_activity);
+
+        Intent intent = getIntent();
+        userType = intent.getStringExtra("userType");
+
         artisan_home_page_dl = (DrawerLayout) findViewById(R.id.artisan_home_page_dl);
         abdt = new ActionBarDrawerToggle(this, artisan_home_page_dl, R.string.Open, R.string.Close);
         abdt.setDrawerIndicatorEnabled(true);

@@ -16,11 +16,16 @@ import com.example.artisansfinal.R;
 public class UserHomePageActivity extends AppCompatActivity {
     private DrawerLayout user_home_page_dl;
     private ActionBarDrawerToggle abdt;
+    private String userType;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.user_home_page_activity);
+
+        Intent intent = getIntent();
+        userType = intent.getStringExtra("userType");
         user_home_page_dl = (DrawerLayout) findViewById(R.id.user_home_page_dl);
         abdt = new ActionBarDrawerToggle(this, user_home_page_dl, R.string.Open, R.string.Close);
         abdt.setDrawerIndicatorEnabled(true);
