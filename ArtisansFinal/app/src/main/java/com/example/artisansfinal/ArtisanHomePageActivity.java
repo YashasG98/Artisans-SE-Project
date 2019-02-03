@@ -98,5 +98,7 @@ public class ArtisanHomePageActivity extends AppCompatActivity {
 
     public void upload_product(MenuItem item) {
         Toast.makeText(this, "Upload a product", Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(this, ProductRegistrationActivity.class);
+        startActivity(intent);
     }
 }

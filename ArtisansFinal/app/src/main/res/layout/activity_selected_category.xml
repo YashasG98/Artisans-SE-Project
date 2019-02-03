@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".SelectedCategoryActivity"
+    android:weightSum="1"
+    android:id="@+id/selected_category_ll">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.1"
+        android:weightSum="1">
+
+        <Spinner
+            android:id="@+id/selected_category_spinner_search_choice"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:entries="@array/choice" />
+
+        <EditText
+            android:id="@+id/selected_category_et_search_query"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:hint="Search"/>
+
+        <ImageButton
+            android:id="@+id/selected_category_iButton_search"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@android:drawable/ic_search_category_default" />
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_weight="0.01"
+        android:gravity="center_horizontal"
+        android:paddingBottom="5dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/sortBy"
+            android:textSize="18sp"
+            android:textColor="#000"/>
+
+        <Spinner
+            android:id="@+id/selected_category_spinner_sort_choice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:entries="@array/sortChoice"
+            />
+
+
+    </LinearLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="0.85"
+        android:id="@+id/selected_category_rv">
+
+    </android.support.v7.widget.RecyclerView>
+
+
+
+</LinearLayout>

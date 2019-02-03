@@ -33,7 +33,7 @@ public class CommonLoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                Intent intent = new Intent(CommonLoginActivity.this, LoginActivity.class);
+                Intent intent = new Intent(CommonLoginActivity.this, ArtisanLoginActivity.class);
                 intent.putExtra("userType", "a");
                 startActivity(intent);
             }

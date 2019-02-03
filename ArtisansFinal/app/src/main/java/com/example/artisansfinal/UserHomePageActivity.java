@@ -61,7 +61,8 @@ public class UserHomePageActivity extends AppCompatActivity {
 
     public void bracelets(View view) {
         Toast.makeText(this, "Bracelets", Toast.LENGTH_SHORT).show();
-        Intent i = new Intent(this, UserProductPage.class);
+        Intent i = new Intent(this, SelectedCategoryActivity.class);
+        i.putExtra("category", "Bracelet");
         startActivity(i);
     }
 
@@ -97,42 +98,49 @@ public class UserHomePageActivity extends AppCompatActivity {
 
     public void Toys(View view) {
         Toast.makeText(this, "Toys", Toast.LENGTH_SHORT).show();
-        Intent i = new Intent(this, UserProductPage.class);
+        Intent i = new Intent(this, SelectedCategoryActivity.class);
+        i.putExtra("category", "Toys");
         startActivity(i);
     }
 
     public void Saree(View view) {
-        Intent i = new Intent(this, UserProductPage.class);
+        Intent i = new Intent(this, SelectedCategoryActivity.class);
+        i.putExtra("category", "Saree");
         startActivity(i);
         Toast.makeText(this, "Saree", Toast.LENGTH_SHORT).show();
     }
 
-    public void Dhoti(View view) {
-        Intent i = new Intent(this, UserProductPage.class);
+    public void Shawl(View view) {
+        Intent i = new Intent(this, SelectedCategoryActivity.class);
+        i.putExtra("category", "Shawl");
         startActivity(i);
         Toast.makeText(this, "Dhoti", Toast.LENGTH_SHORT).show();
     }
 
     public void Garland(View view) {
-        Intent i = new Intent(this, UserProductPage.class);
+        Intent i = new Intent(this, SelectedCategoryActivity.class);
+        i.putExtra("category", "Garland");
         startActivity(i);
         Toast.makeText(this, "Garlands", Toast.LENGTH_SHORT).show();
     }
 
     public void Pottery(View view) {
-        Intent i = new Intent(this, UserProductPage.class);
+        Intent i = new Intent(this, SelectedCategoryActivity.class);
+        i.putExtra("category", "Pottery");
         startActivity(i);
         Toast.makeText(this, "Pottery", Toast.LENGTH_SHORT).show();
     }
 
     public void Glass_painting(View view) {
-        Intent i = new Intent(this, UserProductPage.class);
+        Intent i = new Intent(this, SelectedCategoryActivity.class);
+        i.putExtra("category", "Glass painting");
         startActivity(i);
         Toast.makeText(this, "Glass paintings", Toast.LENGTH_SHORT).show();
     }
 
     public void Shirt(View view) {
-        Intent i = new Intent(this, UserProductPage.class);
+        Intent i = new Intent(this, SelectedCategoryActivity.class);
+        i.putExtra("category", "Shirt");
         startActivity(i);
         Toast.makeText(this, "Shirts", Toast.LENGTH_SHORT).show();
     }

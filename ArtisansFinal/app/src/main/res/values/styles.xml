@@ -15,8 +15,8 @@
         <!-- Label color in TRUE state and bar color FALSE and TRUE State -->
         <item name="colorAccent">#000000</item>
         <item name="colorControlNormal">#000000</item>
-        <item name="colorControlActivated">#000000</item>
-        <item name="colorControlHighlight">#000000</item>
+        <item name="colorControlActivated">#00ff00</item>
+        <item name="colorControlHighlight">#00ff00</item>
     </style>
 
     <style name="EditTextAppearance" parent="@android:style/TextAppearance">

@@ -20,6 +20,26 @@
         <item>Artisan</item>
     </string-array>
 
+    <string-array name="sortChoice">
+        <item>Price: Low to High</item>
+        <item>Price: High to Low</item>
+    </string-array>
+    <string-array name="choice">
+        <item>Product</item>
+        <item>Artisan</item>
+    </string-array>
+    <string name="sortBy">Sort By:</string>
+    <string-array name="skills">
+        <item>Saree</item>
+        <item>Shawl</item>
+        <item>Garland</item>
+        <item>Bracelet</item>
+        <item>Shirt</item>
+        <item>Pottery</item>
+        <item>Glass Painting</item>
+        <item>Toys</item>
+    </string-array>
+
 
     <string name="Artisan">Artisan</string>
     <string name="Welcome">Welcome</string>
@@ -32,11 +52,11 @@
     <string name="Registration">Register</string>
     <string name="skillset">Select Skillset</string>
     <string name="titleProductRegistration">Product Registration</string>
-    <string name="productName">Enter name of product (max 5 words)</string>
+    <string name="productName">Product Name</string>
     <string name="browseImage">Browse Image</string>
     <string name="uploadImage">Upload Image</string>
-    <string name="productDescription">Enter the description of the product</string>
-    <string name="productPrice">Enter the price of the product</string>
+    <string name="productDescription">Description</string>
+    <string name="productPrice">Product Price</string>
     <string name="VerifyOTP">Verify OTP</string>
     <string name="enter_otp">Enter OTP</string>
 </resources>
