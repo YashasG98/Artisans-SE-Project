@@ -125,5 +125,6 @@ public class RegistrationActivity extends AppCompatActivity {
         DatabaseReference myRef=firebaseDatabase.getReference(firebaseAuth.getUid());
         UserInfo userinfo=new UserInfo(name,pcode,pnumber);
         myRef.setValue(userinfo);
+        myRef.setValue(userinfo);
     }
 }
