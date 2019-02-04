@@ -222,7 +222,7 @@ public class ArtisanRegistrationActivity extends AppCompatActivity {
                 }
             });
         } else {
-            Toast.makeText(getApplicationContext(), "fail", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), "Registration Failed", Toast.LENGTH_LONG).show();
         }
 
     }
