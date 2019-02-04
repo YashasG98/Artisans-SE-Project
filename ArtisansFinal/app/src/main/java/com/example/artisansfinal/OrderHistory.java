@@ -40,7 +40,7 @@ public class OrderHistory extends AppCompatActivity {
         ohAdapter =new OHAdapter(this, orders);
         recyclerView.setAdapter(ohAdapter);
 
-        databaseReference= FirebaseDatabase.getInstance().getReference("Orders/"+userX.getPhoneNumber());
+        databaseReference= FirebaseDatabase.getInstance().getReference("Orders/"+userX.getEmail().substring(0,userX.getEmail().indexOf('@')));
         databaseReference.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {

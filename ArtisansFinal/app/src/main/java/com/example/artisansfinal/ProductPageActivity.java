@@ -50,6 +50,7 @@ public class ProductPageActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_product_page);
+        Log.d("HERE",userX.getPhoneNumber());
         Toast.makeText(this, "REACHED!", Toast.LENGTH_LONG).show();
 
         NestedScrollView layout = findViewById(R.id.product_page_nsv);
@@ -132,7 +133,7 @@ public class ProductPageActivity extends AppCompatActivity {
                 String formattedDate = df.format(c);
                 orderInfo order=new orderInfo(opname,oprice,formattedDate);
                 String orderID = ordHis.push().getKey();
-                ordHis.child(userX.getPhoneNumber()).child(orderID).setValue(order);
+                ordHis.child(userX.getEmail().substring(0,userX.getEmail().indexOf('@'))).child(orderID).setValue(order);
             }
         });
         //ProductInfo productInfo =

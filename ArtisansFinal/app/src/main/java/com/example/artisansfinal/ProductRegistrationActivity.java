@@ -137,9 +137,10 @@ public class ProductRegistrationActivity extends AppCompatActivity {
                         });
                     }
 
-                    Intent intent1 = new Intent(ProductRegistrationActivity.this, UserHomePageActivity.class);
+                    Intent intent1 = new Intent(ProductRegistrationActivity.this, ArtisanHomePageActivity.class);
                     intent1.putExtra("param","");
                     startActivity(intent1);
+//                    finish();
                 }
 
             }

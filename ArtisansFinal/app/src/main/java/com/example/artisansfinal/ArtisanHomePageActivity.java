@@ -12,6 +12,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 //import e.shrinidhiav.artisanhomepageactivity.R;
 
 public class ArtisanHomePageActivity extends AppCompatActivity {
@@ -19,6 +21,7 @@ public class ArtisanHomePageActivity extends AppCompatActivity {
     private DrawerLayout artisan_home_page_dl;
     private ActionBarDrawerToggle abdt;
     private String userType;
+    private FirebaseAuth firebaseAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +31,7 @@ public class ArtisanHomePageActivity extends AppCompatActivity {
         Intent intent = getIntent();
         userType = intent.getStringExtra("userType");
 
+        firebaseAuth = FirebaseAuth.getInstance();
         artisan_home_page_dl = (DrawerLayout) findViewById(R.id.artisan_home_page_dl);
         abdt = new ActionBarDrawerToggle(this, artisan_home_page_dl, R.string.Open, R.string.Close);
         abdt.setDrawerIndicatorEnabled(true);
@@ -85,6 +89,9 @@ public class ArtisanHomePageActivity extends AppCompatActivity {
     }
 
     public void Logout(MenuItem item) {
+        firebaseAuth.signOut();
+        finish();
+        startActivity(new Intent(ArtisanHomePageActivity.this, ArtisanLoginActivity.class));
         Toast.makeText(this, "Logged out", Toast.LENGTH_SHORT).show();
     }
 

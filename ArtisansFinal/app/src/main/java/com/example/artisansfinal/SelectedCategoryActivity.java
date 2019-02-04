@@ -1,5 +1,6 @@
 package com.example.artisansfinal;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -11,6 +12,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -36,6 +38,7 @@ public class SelectedCategoryActivity extends AppCompatActivity {
     private CategoryRecyclerViewAdapter categoryRecyclerViewAdapter;
     private static final String TAG = "SelectedCategoryAct";
     private ArrayList<ProductInfo> searchResults = new ArrayList<>();
+    private ProgressDialog progressDialog;
 
     class sorting implements Comparator<ProductInfo>
     {
@@ -53,6 +56,10 @@ public class SelectedCategoryActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("Loading the products");
+        progressDialog.show();
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_selected_category);
         Log.d(TAG,"entered this activity");
@@ -133,6 +140,8 @@ public class SelectedCategoryActivity extends AppCompatActivity {
         databaseReference.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                if(progressDialog.isShowing())
+                    progressDialog.dismiss();
                 ProductInfo productInfo;
                 Log.d("FOUND",dataSnapshot.toString());
                 Log.d("FOUND",dataSnapshot.getKey());
@@ -164,6 +173,7 @@ public class SelectedCategoryActivity extends AppCompatActivity {
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
+                progressDialog.dismiss();
                 Log.d("oncancelled", databaseError.toString());
             }
         });

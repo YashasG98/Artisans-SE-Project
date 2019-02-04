@@ -5,10 +5,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".LoginActivity"
-    android:layout_margin="15dp"
 
     android:textAlignment="center"
-    android:id="@+id/user_login_cl">
+    android:id="@+id/user_login_cl"
+    android:background="#bbdefb">
 
     <EditText
         android:id="@+id/login_page_et_user_name"
@@ -57,6 +57,7 @@
         android:layout_marginRight="162dp"
         android:layout_marginBottom="274dp"
         android:text="Login"
+        android:background="@drawable/border2"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

@@ -6,7 +6,8 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:id="@+id/product_page_nsv"
-    tools:context=".ProductPageActivity">
+    tools:context=".ProductPageActivity"
+    android:background="#bbdefb">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -31,6 +32,7 @@
             android:id="@+id/product_page_tv_artisan_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textSize="18sp"
             android:layout_marginLeft="10sp"
             android:text="Artisan Name" />
 

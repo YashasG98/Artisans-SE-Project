@@ -13,17 +13,21 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.example.artisansfinal.R;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class UserHomePageActivity extends AppCompatActivity {
     private DrawerLayout user_home_page_dl;
     private ActionBarDrawerToggle abdt;
     private String userType;
+    private FirebaseAuth firebaseAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.user_home_page_activity);
+        firebaseAuth = FirebaseAuth.getInstance();
+
 
         Intent intent = getIntent();
         userType = intent.getStringExtra("userType");
@@ -69,8 +73,6 @@ public class UserHomePageActivity extends AppCompatActivity {
 
     public void my_profile_button(MenuItem item) {
         Intent intent = getIntent();
-        String inputId = intent.getExtras().toString();
-        Log.d("HERE",inputId);
         Intent i=new Intent(this, UserprofilePageActivity.class);
         startActivity(i);
         Toast.makeText(this, "Your profile", Toast.LENGTH_SHORT).show();
@@ -95,8 +97,9 @@ public class UserHomePageActivity extends AppCompatActivity {
     }
 
     public void Logout(MenuItem item) {
-        Intent i = new Intent(this,UserHomePageActivity.class);
-        startActivity(i);
+        firebaseAuth.signOut();
+        finish();
+        startActivity(new Intent(UserHomePageActivity.this, LoginActivity.class));
         Toast.makeText(this, "Logged out", Toast.LENGTH_SHORT).show();
     }
 
