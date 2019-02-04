@@ -48,7 +48,6 @@ public class UserHomePageActivity extends AppCompatActivity {
                 } else if (id == R.id.logout) {
                     Toast.makeText(UserHomePageActivity.this, "Log out", Toast.LENGTH_SHORT).show();
                 }
-
                 return true;
             }
         });
@@ -73,25 +72,25 @@ public class UserHomePageActivity extends AppCompatActivity {
 
     public void my_profile_button(MenuItem item) {
         Intent intent = getIntent();
-        Intent i=new Intent(this, UserprofilePageActivity.class);
+        Intent i = new Intent(this, UserprofilePageActivity.class);
         startActivity(i);
         Toast.makeText(this, "Your profile", Toast.LENGTH_SHORT).show();
     }
 
     public void home_button(MenuItem item) {
-        Intent i=new Intent(this, UserHomePageActivity.class);
+        Intent i = new Intent(this, UserHomePageActivity.class);
         startActivity(i);
         Toast.makeText(this, "Home", Toast.LENGTH_SHORT).show();
     }
 
     public void order_history_button(MenuItem item) {
-        Intent i=new Intent(this, OrderHistory.class);
+        Intent i = new Intent(this, OrderHistory.class);
         startActivity(i);
         Toast.makeText(this, "Your order history", Toast.LENGTH_SHORT).show();
     }
 
     public void tutorial_button(MenuItem item) {
-        Intent i=new Intent(this, UserHomePageActivity.class);
+        Intent i = new Intent(this, UserHomePageActivity.class);
         startActivity(i);
         Toast.makeText(this, "Tutorial", Toast.LENGTH_SHORT).show();
     }
@@ -152,9 +151,4 @@ public class UserHomePageActivity extends AppCompatActivity {
         Toast.makeText(this, "Shirts", Toast.LENGTH_SHORT).show();
     }
 
-    public void Search_button_user_home_page(View view) {
-        Toast.makeText(this, "Searching...", Toast.LENGTH_SHORT).show();
-        Intent i = new Intent(this, UserProductPage.class);
-        startActivity(i);
-    }
 }
