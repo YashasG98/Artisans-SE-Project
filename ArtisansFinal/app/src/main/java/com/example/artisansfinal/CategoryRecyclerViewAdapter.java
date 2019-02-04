@@ -40,16 +40,17 @@ import java.util.ArrayList;
 import static com.bumptech.glide.Glide.with;
 import static com.squareup.picasso.Picasso.*;
 
-public class CategoryRecyclerViewAdapter extends RecyclerView.Adapter<CategoryRecyclerViewAdapter.ViewHolder>{
+public class CategoryRecyclerViewAdapter extends RecyclerView.Adapter<CategoryRecyclerViewAdapter.ViewHolder> {
 
     private ArrayList<ProductInfo> info;
     private Context context;
+    private boolean imageLoaded = false;
 
     private StorageReference storageReference;
 
-    final long ONE_MB = 1024*1024;
+    final long ONE_MB = 1024 * 1024;
 
-    public class ViewHolder extends RecyclerView.ViewHolder{
+    public class ViewHolder extends RecyclerView.ViewHolder {
 
         TextView productName;
         ImageView image;
@@ -57,6 +58,7 @@ public class CategoryRecyclerViewAdapter extends RecyclerView.Adapter<CategoryRe
         TextView artisanName;
         RelativeLayout layout;
         ProgressBar progressBar;
+
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             productName = itemView.findViewById(R.id.category_layout_tv_product_name);
@@ -79,7 +81,7 @@ public class CategoryRecyclerViewAdapter extends RecyclerView.Adapter<CategoryRe
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View view;
         LayoutInflater inflater = LayoutInflater.from(context);
-        view = inflater.inflate(R.layout.category_layout,viewGroup,false);
+        view = inflater.inflate(R.layout.category_layout, viewGroup, false);
         ViewHolder viewHolder = new ViewHolder(view);
         return viewHolder;
     }
@@ -87,65 +89,66 @@ public class CategoryRecyclerViewAdapter extends RecyclerView.Adapter<CategoryRe
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder viewHolder, final int i) {
         final ProductInfo productInfo = info.get(i);
-        storageReference = FirebaseStorage.getInstance().getReference().child("ProductImages/"+productInfo.getProductID());
+        storageReference = FirebaseStorage.getInstance().getReference().child("ProductImages/" + productInfo.getProductID());
         viewHolder.artisanName.setText(productInfo.getArtisanName());
         viewHolder.productPrice.setText(productInfo.getProductPrice());
         viewHolder.productName.setText(productInfo.getProductName());
 
-            storageReference.getBytes(ONE_MB).addOnSuccessListener(new OnSuccessListener<byte[]>() {
-                @Override
-                public void onSuccess(byte[] bytes) {
-                    Glide.with(context)
-                            .load(bytes)
-                            .listener(new RequestListener<Drawable>() {
-                                @Override
-                                public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
-                                    viewHolder.progressBar.setVisibility(View.GONE);
-                                    return false;
-                                }
+        storageReference.getBytes(ONE_MB).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+            @Override
+            public void onSuccess(byte[] bytes) {
+                Glide.with(context)
+                        .load(bytes)
+                        .listener(new RequestListener<Drawable>() {
+                            @Override
+                            public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                                viewHolder.progressBar.setVisibility(View.GONE);
+                                return false;
+                            }
 
-                                @Override
-                                public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
-                                    viewHolder.progressBar.setVisibility(View.GONE);
-                                    return false;
-                                }
-                            })
-                            .into(viewHolder.image);
+                            @Override
+                            public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                                viewHolder.progressBar.setVisibility(View.GONE);
+                                imageLoaded = true;
+                                return false;
+                            }
+                        })
+                        .into(viewHolder.image);
 
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    Toast.makeText(context, "IMAGE Load Failed: " + productInfo.getProductName(), Toast.LENGTH_SHORT).show();
-                    Log.d("FAIL: ", e.toString());
-                }
-            });
-
-
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(context, "IMAGE Load Failed: " + productInfo.getProductName(), Toast.LENGTH_SHORT).show();
+                Log.d("FAIL: ", e.toString());
+            }
+        });
 
 
         viewHolder.layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Toast.makeText(context, productInfo.getProductName(), Toast.LENGTH_LONG).show();
-                Log.d("SELECTION", v.toString());
-                Log.d("SELECTION", productInfo.toString());
-                String prodName = productInfo.getProductName();
-                String prodCategory = productInfo.getProductCategory();
-                Intent newintent = new Intent(context, ProductPageActivity.class);
+                if(imageLoaded) {
+                    Log.d("SELECTION", v.toString());
+                    Log.d("SELECTION", productInfo.toString());
+                    String prodName = productInfo.getProductName();
+                    String prodCategory = productInfo.getProductCategory();
+                    Intent newintent = new Intent(context, ProductPageActivity.class);
 
-                Drawable drawable = viewHolder.image.getDrawable();
-                Bitmap bitmap = ((BitmapDrawable)drawable).getBitmap();
-                ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
-                byte[] b = baos.toByteArray();
-                newintent.putExtra("productImage", b);
+                    Drawable drawable = viewHolder.image.getDrawable();
+                    Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();
+                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                    bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
+                    byte[] b = baos.toByteArray();
+                    newintent.putExtra("productImage", b);
 
-                newintent.putExtra("productName", prodName);
-                newintent.putExtra("productCategory",prodCategory);
-                newintent.putExtra("productInfo", (Parcelable)productInfo);
-                Log.d("pINFO", productInfo.toString());
-                context.startActivity(newintent);
+                    newintent.putExtra("productName", prodName);
+                    newintent.putExtra("productCategory", prodCategory);
+                    newintent.putExtra("productInfo", (Parcelable) productInfo);
+                    Log.d("pINFO", productInfo.toString());
+                    context.startActivity(newintent);
+                }
             }
         });
     }
@@ -155,7 +158,7 @@ public class CategoryRecyclerViewAdapter extends RecyclerView.Adapter<CategoryRe
         return info.size();
     }
 
-    public void added(ProductInfo productInfo){
+    public void added(ProductInfo productInfo) {
         info.add(productInfo);
         notifyItemInserted(info.indexOf(productInfo));
     }
