@@ -43,8 +43,10 @@ public class ArtisanLoginActivity extends AppCompatActivity {
     private String ContactNo;
     private String OTP;
     private String codeSent;
-    private Boolean OTPFlag;
+    private boolean OTPFlag;
     private List<String> contactsList;
+    private boolean OTPsent = false;
+
 
 
     @Override
@@ -105,13 +107,13 @@ public class ArtisanLoginActivity extends AppCompatActivity {
 
                 OTPEdit = (EditText) findViewById(R.id.edit_artisan_login_activity_OTP);
                 OTP = OTPEdit.getText().toString();
-                if(OTP.length() != 0 && OTPFlag)
+//                if(OTP.length() != 0 && OTPFlag)
                     verify();
-                else
-                {
-                    OTPEdit.setError("Enter OTP");
-                    OTPEdit.requestFocus();
-                }
+//                else
+//                {
+//                    OTPEdit.setError("Enter OTP");
+//                    OTPEdit.requestFocus();
+//                }
             }
         });
 
@@ -143,8 +145,17 @@ public class ArtisanLoginActivity extends AppCompatActivity {
 
         OTPEdit = findViewById(R.id.edit_artisan_login_activity_OTP);
         OTP = OTPEdit.getText().toString();
-        PhoneAuthCredential credential = PhoneAuthProvider.getCredential(codeSent, OTP);
-        signInWithPhoneAuthCredential(credential);
+        if(!OTPsent){
+            OTPEdit.setError("Request OTP first");
+        }
+        else if(OTP.length()==0){
+            OTPEdit.setError("Enter OTP");
+            OTPEdit.requestFocus();
+        }
+        else {
+            PhoneAuthCredential credential = PhoneAuthProvider.getCredential(codeSent, OTP);
+            signInWithPhoneAuthCredential(credential);
+        }
 
 
     }
@@ -176,6 +187,8 @@ public class ArtisanLoginActivity extends AppCompatActivity {
 
         contactNoEdit =  findViewById(R.id.edit_artisan_login_activity_Contact_No);
         ContactNo = contactNoEdit.getText().toString();
+
+        OTPsent = true;
 
         PhoneAuthProvider.getInstance().verifyPhoneNumber(
                 ContactNo,        // Phone number to SendCode

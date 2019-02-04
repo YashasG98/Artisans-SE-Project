@@ -41,6 +41,7 @@ public class ArtisanRegistrationActivity extends AppCompatActivity {
     private boolean passwordFlag;
     private boolean contactNoFlag;
     private boolean OTPFlag;
+    private boolean OTPsentFlag = false;
 
     private List<String> contactsList;
     private List<String> emailList;
@@ -129,12 +130,9 @@ public class ArtisanRegistrationActivity extends AppCompatActivity {
 
                 OTP = OTPEdit.getText().toString();
 
-                if (OTP.length() != 0)
-                    verify();
-                else {
-                    OTPEdit.setError("Enter OTP");
-                    OTPEdit.requestFocus();
-                }
+
+                verify();
+
             }
         });
 
@@ -158,11 +156,11 @@ public class ArtisanRegistrationActivity extends AppCompatActivity {
         OTP = OTPEdit.getText().toString();
         id = databaseReference.push().getKey();
 
-        if (password.length() == 0) {
-            passwordEdit.setError("Enter Password");
-            passwordEdit.requestFocus();
-            passwordFlag = false;
-        } else
+//        if (password.length() == 0) {
+//            passwordEdit.setError("Enter Password");
+//            passwordEdit.requestFocus();
+//            passwordFlag = false;
+//        } else
             passwordFlag = true;
 
         if (username.length() == 0) {
@@ -190,7 +188,7 @@ public class ArtisanRegistrationActivity extends AppCompatActivity {
         } else
             contactNoFlag = true;
 
-        if (email.length() == 0 || emailList.contains(email)) {
+        if (emailList.contains(email)) {
             if (email.length() == 0)
                 emailEdit.setError("Enter Email");
             else
@@ -215,7 +213,7 @@ public class ArtisanRegistrationActivity extends AppCompatActivity {
 
                     Toast.makeText(getApplicationContext(), "Registered", Toast.LENGTH_LONG).show();
 
-                    Intent intent  = new Intent(ArtisanRegistrationActivity.this, ArtisanHomePageActivity.class);
+                    Intent intent = new Intent(ArtisanRegistrationActivity.this, ArtisanHomePageActivity.class);
                     intent.putExtra("userType", userType);
                     startActivity(intent);
 
@@ -249,7 +247,7 @@ public class ArtisanRegistrationActivity extends AppCompatActivity {
     private void SendCode() {
 
         ContactNo = contactEdit.getText().toString();
-
+        OTPsentFlag = true;
         PhoneAuthProvider.getInstance().verifyPhoneNumber(
                 ContactNo,        // Phone number to SendCode
                 60,                 // Timeout duration
@@ -261,7 +259,7 @@ public class ArtisanRegistrationActivity extends AppCompatActivity {
     PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallbacks = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
         @Override
         public void onVerificationCompleted(PhoneAuthCredential phoneAuthCredential) {
-            Toast.makeText(getApplicationContext(), "Login Successful", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), " OTP Sent", Toast.LENGTH_LONG).show();
 
         }
 
@@ -270,11 +268,11 @@ public class ArtisanRegistrationActivity extends AppCompatActivity {
 
             if (e instanceof FirebaseAuthInvalidCredentialsException) {
                 // Invalid request
-                Toast.makeText(getApplicationContext(), "Login UnSuccessful", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "OTP sending Failed", Toast.LENGTH_LONG).show();
                 // ...
             } else if (e instanceof FirebaseTooManyRequestsException) {
                 // The SMS quota for the project has been exceeded
-                Toast.makeText(getApplicationContext(), "sms", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "sms limit reached", Toast.LENGTH_LONG).show();
                 // ...
             }
 
@@ -300,8 +298,20 @@ public class ArtisanRegistrationActivity extends AppCompatActivity {
 //            Toast.makeText(getApplicationContext(), "Verification Unsuccessful", Toast.LENGTH_LONG).show();
 //            OTPFlag = false;
 //        }
-        PhoneAuthCredential credential = PhoneAuthProvider.getCredential(codeSent, OTP);
-        signInWithPhoneAuthCredential(credential);
+        if (OTPsentFlag) {
+            if (OTP.length() == 0) {
+                OTPEdit = findViewById(R.id.activity_main_EditText_OTP);
+                OTPEdit.setError("Enter OTP");
+                OTPEdit.requestFocus();
+            }
+
+            PhoneAuthCredential credential = PhoneAuthProvider.getCredential(codeSent, OTP);
+            signInWithPhoneAuthCredential(credential);
+        } else {
+            OTPEdit = findViewById(R.id.activity_main_EditText_OTP);
+            OTPEdit.setError("Ask For OTP");
+            // Toast.makeText(this, "Ask for OTP", Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
