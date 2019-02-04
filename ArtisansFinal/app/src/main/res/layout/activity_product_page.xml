@@ -60,7 +60,9 @@
                 android:id="@+id/product_page_button_product_price"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="20sp"
+                android:layout_margin="10sp"
+                android:padding="10sp"
+                android:background="@drawable/border2"
                 android:text="Product Price"
                 android:textSize="18sp" />
 
