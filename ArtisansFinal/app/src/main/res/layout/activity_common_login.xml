@@ -12,41 +12,56 @@
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="#bbdefb">
 
-        <Button
-            android:id="@+id/common_login_button_user_login"
-            android:layout_width="127dp"
-            android:layout_height="wrap_content"
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="250dp"
+            android:layout_height="250dp"
             android:layout_marginStart="8dp"
-            android:layout_marginLeft="8dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp"
             android:layout_marginBottom="8dp"
-            android:text="User Login"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.427" />
-
-        <Button
-            android:id="@+id/common_login_button_artisan_login"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp"
-            android:layout_marginBottom="8dp"
-            android:text="Artisan Login"
+            android:src="@mipmap/common_login_page_pic"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.557" />
+            app:layout_constraintVertical_bias="0.191" />
+
+        <Button
+            android:id="@+id/common_login_button_user_login"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:padding="15dp"
+            android:textSize="20dp"
+            android:text="User Login"
+            android:background="@drawable/border2"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.514"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imageView"
+            app:layout_constraintVertical_bias="0.175" />
+
+        <Button
+            android:id="@+id/common_login_button_artisan_login"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:padding="15dp"
+            android:textSize="20dp"
+            android:text="Artisan Login"
+            android:background="@drawable/border2"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.501"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/common_login_button_user_login"
+            app:layout_constraintVertical_bias="0.189" />
     </android.support.constraint.ConstraintLayout>
 </android.support.v4.widget.NestedScrollView>

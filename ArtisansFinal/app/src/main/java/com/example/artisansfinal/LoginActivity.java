@@ -61,7 +61,6 @@ public class LoginActivity extends AppCompatActivity implements AdapterView.OnIt
             if(userType.equals("u")) {
                 Log.d("HERE1",user.getEmail());
                 Intent intent1 = new Intent(new Intent(LoginActivity.this, UserHomePageActivity.class));
-                intent1.putExtra("InputId", Name.getText().toString().trim() );
                 Log.d("HERE1",Name.getText().toString().trim());
                 startActivity(intent1);
             }
@@ -107,17 +106,17 @@ public class LoginActivity extends AppCompatActivity implements AdapterView.OnIt
                 if (task.isSuccessful()) {
                     progressDialog.dismiss();
                     Toast.makeText(LoginActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();
-                    if(userType.equals("u")) {
+//                    if(userType.equals("u")) {
 
                         Intent intent1 = new Intent(new Intent(LoginActivity.this, UserHomePageActivity.class));
                         intent1.putExtra("userType", userType);
                         startActivity(intent1);
-                    }
-                    else {
-                        Intent intent1 = new Intent(new Intent(LoginActivity.this, ArtisanHomePageActivity.class));
-                        intent1.putExtra("userType", userType);
-                        startActivity(intent1);
-                    }
+//                    }
+//                    else {
+//                        Intent intent1 = new Intent(new Intent(LoginActivity.this, ArtisanHomePageActivity.class));
+//                        intent1.putExtra("userType", userType);
+//                        startActivity(intent1);
+//                    }
 
                 } else {
                     progressDialog.dismiss();

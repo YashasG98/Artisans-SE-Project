@@ -8,6 +8,7 @@
     android:orientation="vertical"
     tools:context=".SelectedCategoryActivity"
     android:weightSum="1"
+    android:background="#bbdefb"
     android:id="@+id/selected_category_ll">
 
     <LinearLayout
@@ -33,7 +34,9 @@
             android:id="@+id/selected_category_iButton_search"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:src="@android:drawable/ic_search_category_default" />
+            android:layout_weight="0.15"
+            android:backgroundTint="#bbdefb"
+            android:src="@drawable/ic_search_black" />
 
     </LinearLayout>
 

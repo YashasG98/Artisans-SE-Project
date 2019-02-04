@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#ffffff"
+    android:background="#bbdefb"
     android:id="@+id/user_home_page_dl">
 
     <LinearLayout
@@ -41,11 +41,9 @@
                 android:layout_width="180dp"
                 android:layout_height="50dp"
                 android:layout_weight="0.55"
-                android:backgroundTint="#bebebe"
-                android:backgroundTintMode="src_in"
+                android:textColorHint="#424242"
                 android:hint="Search here"
-
-                android:textColorHint="#bebebe" />
+                />
 
             <ImageButton
                 android:id="@+id/user_home_page_ibutton_search"
@@ -53,6 +51,8 @@
                 android:layout_height="50dp"
                 android:layout_weight="0.15"
                 android:onClick="Search_button_user_home_page"
+                android:backgroundTint="#bbdefb"
+
                 android:src="@drawable/ic_search_black" />
         </LinearLayout>
 
@@ -73,6 +73,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:background="@drawable/border"
                 app:cardBackgroundColor="#F5FFFA"
                 app:cardCornerRadius="7sp"
                 android:paddingStart="2dp"
