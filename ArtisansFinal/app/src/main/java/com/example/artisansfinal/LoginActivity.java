@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -24,7 +25,6 @@ public class LoginActivity extends AppCompatActivity implements AdapterView.OnIt
     private EditText Name;
     private EditText Password;
     private Button Login;
-    //private Button userRegistration;
     private FirebaseAuth firebaseAuth;
     private ProgressDialog progressDialog;
     private Spinner spinner;
@@ -59,9 +59,10 @@ public class LoginActivity extends AppCompatActivity implements AdapterView.OnIt
         if (user != null) {
             finish();
             if(userType.equals("u")) {
-
+                Log.d("HERE1",user.getEmail());
                 Intent intent1 = new Intent(new Intent(LoginActivity.this, UserHomePageActivity.class));
-                intent1.putExtra("userType", userType);
+                intent1.putExtra("InputId", Name.getText().toString().trim() );
+                Log.d("HERE1",Name.getText().toString().trim());
                 startActivity(intent1);
             }
             else {

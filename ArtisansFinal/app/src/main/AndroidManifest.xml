@@ -21,6 +21,11 @@
         <activity android:name=".UserHomePageActivity" />
         <activity android:name=".UserProductPage" />
         <activity android:name=".LoginActivity" />
+        <activity android:name=".UserprofilePageActivity"></activity>
+        <activity android:name=".UserProfileUpdateActivity"></activity>
+        <activity android:name=".ArtisanProfileUpdateActivity"></activity>
+        <activity android:name=".ArtisanProfilePageActivity"></activity>
+        <activity android:name=".OrderHistory"></activity>
         <activity android:name=".CommonLoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

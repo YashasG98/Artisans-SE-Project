@@ -74,12 +74,11 @@ public class CategoryRecyclerViewAdapter extends RecyclerView.Adapter<CategoryRe
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder viewHolder, final int i) {
         final ProductInfo productInfo = info.get(i);
-        storageReference = FirebaseStorage.getInstance().getReference().child("ProductImage/"+productInfo.getProductID());
+        storageReference = FirebaseStorage.getInstance().getReference().child("ProductImages/"+productInfo.getProductID());
         viewHolder.artisanName.setText(productInfo.getArtisanName());
         viewHolder.productPrice.setText(productInfo.getProductPrice());
         viewHolder.productName.setText(productInfo.getProductName());
 
-        if(productInfo.getProductName().equalsIgnoreCase("orange")) {
             storageReference.getBytes(ONE_MB).addOnSuccessListener(new OnSuccessListener<byte[]>() {
                 @Override
                 public void onSuccess(byte[] bytes) {
@@ -92,7 +91,7 @@ public class CategoryRecyclerViewAdapter extends RecyclerView.Adapter<CategoryRe
                     Log.d("FAIL: ", e.toString());
                 }
             });
-        }
+
 
 
 

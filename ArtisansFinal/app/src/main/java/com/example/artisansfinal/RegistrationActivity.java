@@ -23,7 +23,7 @@ public class RegistrationActivity extends AppCompatActivity {
     private Button regButton;
     private TextView userLogin;
     private FirebaseAuth firebaseAuth;
-    String name,pcode,pnumber;
+    String name,pcode,pnumber,email;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,9 +82,9 @@ public class RegistrationActivity extends AppCompatActivity {
     {
         Boolean result=false;
          name=userName.getText().toString();
-        String email=userEmail.getText().toString();
-        String password=userPassword.getText().toString();
-        String cpassword=userCpassword.getText().toString();
+         email=userEmail.getText().toString();
+         String password=userPassword.getText().toString();
+         String cpassword=userCpassword.getText().toString();
          pcode=userPcode.getText().toString();
          pnumber=userPnumber.getText().toString();
 
@@ -123,7 +123,7 @@ public class RegistrationActivity extends AppCompatActivity {
     {
         FirebaseDatabase firebaseDatabase=FirebaseDatabase.getInstance();
         DatabaseReference myRef=firebaseDatabase.getReference();
-        UserInfo userinfo=new UserInfo(name,pcode,pnumber);
+        UserInfo userinfo=new UserInfo(name,pcode,pnumber,email);
         myRef.child("User").child(userinfo.userPnumber).setValue(userinfo);
     }
 }

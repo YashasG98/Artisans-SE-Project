@@ -21,6 +21,8 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.module.AppGlideModule;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -29,6 +31,9 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 
 public class ProductPageActivity extends AppCompatActivity {
@@ -36,6 +41,10 @@ public class ProductPageActivity extends AppCompatActivity {
     private DatabaseReference databaseReference;
     private StorageReference storageReference;
     final long ONE_MB = 1024*1024;
+    private DatabaseReference ordHis;
+    FirebaseAuth firebaseAuth= FirebaseAuth.getInstance();
+
+    FirebaseUser userX = firebaseAuth.getCurrentUser();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,7 +97,7 @@ public class ProductPageActivity extends AppCompatActivity {
                 Bitmap bmp = BitmapFactory.decodeByteArray(b, 0, b.length);
                 image.setImageBitmap(bmp);
 
-                //Glide.with(getApplicationContext()).load(storageReference.child(map.get("productID"))).into(image);
+//                Glide.with(getApplicationContext()).load(storageReference.child(map.get("productID"))).into(image);
 //                storageReference.child(map.get("productID")).getBytes(ONE_MB).addOnSuccessListener(new OnSuccessListener<byte[]>() {
 //                    @Override
 //                    public void onSuccess(byte[] bytes) {
@@ -100,7 +109,7 @@ public class ProductPageActivity extends AppCompatActivity {
 //                        Toast.makeText(ProductPageActivity.this, "Image Load Failed", Toast.LENGTH_SHORT).show();
 //                    }
 //                });
-                //Glide.with(getApplicationContext()).
+//                Glide.with(getApplicationContext()).
             }
 
             @Override
@@ -109,10 +118,21 @@ public class ProductPageActivity extends AppCompatActivity {
             }
         });
 
+        ordHis = FirebaseDatabase.getInstance().getReference("Orders");
+
+
         price.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getApplicationContext(), "Amount has been deducted from your bank :p", Toast.LENGTH_LONG).show();
+                String opname=pname.getText().toString();
+                //Log.d("HERE",opname);
+                String oprice=price.getText().toString();
+                Date c = Calendar.getInstance().getTime();
+                SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
+                String formattedDate = df.format(c);
+                orderInfo order=new orderInfo(opname,oprice,formattedDate);
+                String orderID = ordHis.push().getKey();
+                ordHis.child(userX.getPhoneNumber()).child(orderID).setValue(order);
             }
         });
         //ProductInfo productInfo =

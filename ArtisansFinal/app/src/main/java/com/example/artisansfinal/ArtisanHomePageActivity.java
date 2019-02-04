@@ -67,6 +67,8 @@ public class ArtisanHomePageActivity extends AppCompatActivity {
     }
 
     public void my_profile_button(MenuItem item) {
+        Intent i = new Intent(this, ArtisanProfilePageActivity.class);
+        startActivity(i);
         Toast.makeText(this, "Your profile", Toast.LENGTH_SHORT).show();
     }
 
