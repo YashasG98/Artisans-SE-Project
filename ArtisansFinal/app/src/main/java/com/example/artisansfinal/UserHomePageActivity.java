@@ -7,6 +7,7 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
@@ -67,7 +68,10 @@ public class UserHomePageActivity extends AppCompatActivity {
     }
 
     public void my_profile_button(MenuItem item) {
-        Intent i=new Intent(this, UserHomePageActivity.class);
+        Intent intent = getIntent();
+        String inputId = intent.getExtras().toString();
+        Log.d("HERE",inputId);
+        Intent i=new Intent(this, UserprofilePageActivity.class);
         startActivity(i);
         Toast.makeText(this, "Your profile", Toast.LENGTH_SHORT).show();
     }
@@ -79,7 +83,7 @@ public class UserHomePageActivity extends AppCompatActivity {
     }
 
     public void order_history_button(MenuItem item) {
-        Intent i=new Intent(this, UserHomePageActivity.class);
+        Intent i=new Intent(this, OrderHistory.class);
         startActivity(i);
         Toast.makeText(this, "Your order history", Toast.LENGTH_SHORT).show();
     }

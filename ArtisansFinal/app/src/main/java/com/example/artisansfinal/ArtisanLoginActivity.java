@@ -56,6 +56,7 @@ public class ArtisanLoginActivity extends AppCompatActivity {
 
         if (user != null) {
             finish();
+
             startActivity(new Intent(ArtisanLoginActivity.this, ArtisanHomePageActivity.class));
         }
         userRegistration.setOnClickListener(new View.OnClickListener() {
@@ -138,6 +139,7 @@ public class ArtisanLoginActivity extends AppCompatActivity {
                 if (task.isSuccessful()) {
 
                     Toast.makeText(getApplicationContext(), "Verification successful", Toast.LENGTH_LONG).show();
+
                     startActivity(new Intent(ArtisanLoginActivity.this,ArtisanHomePageActivity.class));
 
                     OTPFlag = true;
