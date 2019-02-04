@@ -156,11 +156,17 @@ public class ArtisanRegistrationActivity extends AppCompatActivity {
         OTP = OTPEdit.getText().toString();
         id = databaseReference.push().getKey();
 
-//        if (password.length() == 0) {
-//            passwordEdit.setError("Enter Password");
-//            passwordEdit.requestFocus();
-//            passwordFlag = false;
-//        } else
+        if (password.length() == 0) {
+            if(email.length() != 0) {
+                passwordEdit.setError("Enter Password");
+                passwordEdit.requestFocus();
+                passwordFlag = false;
+            }
+            else {
+                password = " ";
+                passwordFlag = true;
+            }
+        } else
             passwordFlag = true;
 
         if (username.length() == 0) {
@@ -188,13 +194,16 @@ public class ArtisanRegistrationActivity extends AppCompatActivity {
         } else
             contactNoFlag = true;
 
-        if (emailList.contains(email)) {
-            if (email.length() == 0)
-                emailEdit.setError("Enter Email");
-            else
+        if (emailList.contains(email) || email.length() == 0) {
+            if (email.length() == 0) {
+                email = " ";
+                emailFlag = true;
+            }
+            else {
                 emailEdit.setError("Email Already Exists");
-            emailEdit.requestFocus();
-            emailFlag = false;
+                emailEdit.requestFocus();
+                emailFlag = false;
+            }
         } else
             emailFlag = true;
 
