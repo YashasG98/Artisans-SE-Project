@@ -20,13 +20,18 @@
         android:id="@+id/category_layout_rl"
         android:layout_margin="10sp">
 
+        <ProgressBar
+            android:id="@+id/category_layout_pb_progress"
+            android:layout_margin="25dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:visibility="visible" />
+
         <ImageView
             android:id="@+id/category_layout_iv_product_image"
             android:layout_width="100dp"
             android:layout_height="100dp"
-            android:padding="8sp"
-            android:src="@mipmap/default_product_image"
-            tools:srcCompat="@tools:sample/avatars" />
+            android:padding="8sp"/>
 
         <TextView
             android:id="@+id/category_layout_tv_product_name"
