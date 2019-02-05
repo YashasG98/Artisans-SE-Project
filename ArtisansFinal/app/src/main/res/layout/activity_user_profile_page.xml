@@ -38,7 +38,6 @@
             android:layout_marginTop="20dp"
             android:fontFamily="sans-serif"
             android:gravity="center"
-            android:text="Dummy Name"
             android:textSize="26sp"
             android:textColor="@android:color/white"
             app:layout_constraintTop_toBottomOf="@id/userProfilePic" />
@@ -49,7 +48,6 @@
             android:layout_height="wrap_content"
             android:fontFamily="sans-serif"
             android:gravity="center"
-            android:text="+91 1234567890"
             style="@android:style/TextAppearance.Medium"
             android:textColor="@android:color/white"
             app:layout_constraintTop_toBottomOf="@id/userName" />
@@ -61,7 +59,6 @@
             android:textColor="@android:color/white"
             android:fontFamily="sans-serif"
             android:gravity="center"
-            android:text="570525"
             style="@android:style/TextAppearance.Medium"
             app:layout_constraintTop_toBottomOf="@id/userPhno" />
 
