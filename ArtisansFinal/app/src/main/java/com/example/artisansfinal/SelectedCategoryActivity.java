@@ -7,15 +7,19 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Layout;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -31,6 +35,8 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 
+import static android.view.View.GONE;
+
 public class SelectedCategoryActivity extends AppCompatActivity {
 
     private ArrayList<ProductInfo> productInfos = new ArrayList<ProductInfo>();
@@ -39,6 +45,10 @@ public class SelectedCategoryActivity extends AppCompatActivity {
     private static final String TAG = "SelectedCategoryAct";
     private ArrayList<ProductInfo> searchResults = new ArrayList<>();
     private ProgressDialog progressDialog;
+
+    private RelativeLayout contentLayout;
+    private RelativeLayout loadingLayout;
+    private ImageView loading;
 
     class sorting implements Comparator<ProductInfo>
     {
@@ -56,12 +66,27 @@ public class SelectedCategoryActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        progressDialog = new ProgressDialog(this);
-        progressDialog.setMessage("Loading the products");
-        progressDialog.show();
+//        progressDialog = new ProgressDialog(this);
+//        progressDialog.setMessage("Loading the products");
+//        progressDialog.show();
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_selected_category);
+        loading = findViewById(R.id.selected_category_loading_iv);
+        Glide.with(getApplicationContext())
+                .asGif()
+                .load(R.mipmap.loading2)
+                .into(loading);
+        contentLayout = findViewById(R.id.selected_category_content_rl);
+        contentLayout.setVisibility(RelativeLayout.GONE);
+        loadingLayout = findViewById(R.id.selected_category_loading_rl);
+        loadingLayout.setVisibility(RelativeLayout.VISIBLE);
+//        setContentView(R.layout.loading_layout);
+//        ImageView imageView = findViewById(R.id.loading_layout_iv);
+//        Glide.with(getApplicationContext())
+//                .asGif()
+//                .load(R.mipmap.loading2)
+//                .into(imageView);
         Log.d(TAG,"entered this activity");
 
         Intent intent = getIntent();
@@ -140,8 +165,12 @@ public class SelectedCategoryActivity extends AppCompatActivity {
         databaseReference.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                if(progressDialog.isShowing())
-                    progressDialog.dismiss();
+//                if(progressDialog.isShowing())
+//                    progressDialog.dismiss();
+                if(contentLayout.getVisibility()==View.GONE) {
+                    loadingLayout.setVisibility(View.GONE);
+                    contentLayout.setVisibility(View.VISIBLE);
+                }
                 ProductInfo productInfo;
                 Log.d("FOUND",dataSnapshot.toString());
                 Log.d("FOUND",dataSnapshot.getKey());

@@ -57,7 +57,7 @@ public class CategoryRecyclerViewAdapter extends RecyclerView.Adapter<CategoryRe
         TextView productPrice;
         TextView artisanName;
         RelativeLayout layout;
-        ProgressBar progressBar;
+//        ProgressBar progressBar;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -66,7 +66,7 @@ public class CategoryRecyclerViewAdapter extends RecyclerView.Adapter<CategoryRe
             productPrice = itemView.findViewById(R.id.category_layout_tv_product_price);
             artisanName = itemView.findViewById(R.id.category_layout_tv_artisan_name);
             layout = itemView.findViewById(R.id.category_layout_rl);
-            progressBar = itemView.findViewById(R.id.category_layout_pb_progress);
+//            progressBar = itemView.findViewById(R.id.category_layout_pb_progress);
         }
     }
 
@@ -94,6 +94,11 @@ public class CategoryRecyclerViewAdapter extends RecyclerView.Adapter<CategoryRe
         viewHolder.productPrice.setText(productInfo.getProductPrice());
         viewHolder.productName.setText(productInfo.getProductName());
 
+        Glide.with(context)
+                .asGif()
+                .load(R.mipmap.loading1)
+                .into(viewHolder.image);
+
         storageReference.getBytes(ONE_MB).addOnSuccessListener(new OnSuccessListener<byte[]>() {
             @Override
             public void onSuccess(byte[] bytes) {
@@ -102,13 +107,13 @@ public class CategoryRecyclerViewAdapter extends RecyclerView.Adapter<CategoryRe
                         .listener(new RequestListener<Drawable>() {
                             @Override
                             public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
-                                viewHolder.progressBar.setVisibility(View.GONE);
+//                                viewHolder.progressBar.setVisibility(View.GONE);
                                 return false;
                             }
 
                             @Override
                             public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
-                                viewHolder.progressBar.setVisibility(View.GONE);
+//                                viewHolder.progressBar.setVisibility(View.GONE);
                                 imageLoaded = true;
                                 return false;
                             }
