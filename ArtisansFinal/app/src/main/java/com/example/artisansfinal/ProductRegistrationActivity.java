@@ -23,8 +23,6 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.model.GlideUrl;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
@@ -91,7 +89,6 @@ public class ProductRegistrationActivity extends AppCompatActivity {
                 Intent intent = getIntent();
                 String artisanName = intent.getStringExtra("name");
                 String artisanContactNumber = intent.getStringExtra("phoneNumber");
-                Log.d("Here", artisanContactNumber+" "+artisanName);
 
                 boolean productNameflag=true, productPriceflag=true;
 
