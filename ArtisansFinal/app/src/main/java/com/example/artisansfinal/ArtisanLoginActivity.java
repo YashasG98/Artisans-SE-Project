@@ -45,7 +45,6 @@ public class ArtisanLoginActivity extends AppCompatActivity {
     private String codeSent;
     private boolean OTPFlag;
     private List<String> contactsList;
-    private List<String> usernameList;
     private boolean OTPsent = false;
 
 
@@ -63,7 +62,6 @@ public class ArtisanLoginActivity extends AppCompatActivity {
         sendOTP = findViewById(R.id.send_otp_button);
 
         contactsList = new ArrayList<>();
-        usernameList = new ArrayList<>();
 
         mAuth = FirebaseAuth.getInstance();
         databaseReferenceVerify = FirebaseDatabase.getInstance().getReference("Artisans");
@@ -171,11 +169,7 @@ public class ArtisanLoginActivity extends AppCompatActivity {
 
                     Toast.makeText(getApplicationContext(), "Verification successful", Toast.LENGTH_LONG).show();
 
-                    Intent intent = new Intent(ArtisanLoginActivity.this,ArtisanHomePageActivity.class);
-                    intent.putExtra("ContactNo", ContactNo);
-                    String username = usernameList.get(contactsList.indexOf(ContactNo));
-                    intent.putExtra("Name", username);
-                    startActivity(intent);
+                    startActivity(new Intent(ArtisanLoginActivity.this,ArtisanHomePageActivity.class));
 
                     OTPFlag = true;
                 } else {
@@ -253,9 +247,6 @@ public class ArtisanLoginActivity extends AppCompatActivity {
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     ArtisanInfo ArtisanNo = snapshot.getValue(ArtisanInfo.class);
                     contactsList.add(ArtisanNo.getContact_no());
-                    usernameList.add(ArtisanNo.getUsername());
-
-
                 }
 
             }

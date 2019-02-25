@@ -26,7 +26,6 @@ public class CommonLoginActivity extends AppCompatActivity {
                 Intent intent = new Intent(CommonLoginActivity.this, LoginActivity.class);
                 intent.putExtra("userType", "u");
                 startActivity(intent);
-                //finish();
             }
         });
 
@@ -37,7 +36,6 @@ public class CommonLoginActivity extends AppCompatActivity {
                 Intent intent = new Intent(CommonLoginActivity.this, ArtisanLoginActivity.class);
                 intent.putExtra("userType", "a");
                 startActivity(intent);
-                //finish();
             }
         });
     }
