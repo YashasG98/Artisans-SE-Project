@@ -1,5 +1,7 @@
 package com.example.artisansfinal;
 
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -7,7 +9,9 @@ import android.graphics.drawable.Drawable;
 import android.media.Image;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.widget.NestedScrollView;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -157,18 +161,40 @@ public class ProductPageActivity extends AppCompatActivity {
         price.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String opname=pname.getText().toString();
-                //Log.d("HERE",opname);
-                String oprice=price.getText().toString();
-                Date c = Calendar.getInstance().getTime();
-                SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
-                String formattedDate = df.format(c);
-                orderInfo order=new orderInfo(opname,oprice,formattedDate);
-                String orderID = ordHis.push().getKey();
-                ordHis.child(userX.getEmail().substring(0,userX.getEmail().indexOf('@'))).child(orderID).setValue(order);
-            }
-        });
-        //ProductInfo productInfo =
 
+                final AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
+                builder.setTitle("Choose");
+                builder.setMessage("Want to buy this?");
+
+                builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        String opname=pname.getText().toString();
+                        //Log.d("HERE",opname);
+                        String oprice=price.getText().toString();
+                        Date c = Calendar.getInstance().getTime();
+                        SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
+                        String formattedDate = df.format(c);
+                        orderInfo order=new orderInfo(opname,oprice,formattedDate);
+                        String orderID = ordHis.push().getKey();
+                        ordHis.child(userX.getEmail().substring(0,userX.getEmail().indexOf('@'))).child(orderID).setValue(order);
+
+                    }
+                });
+
+                builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                             dialog.dismiss();
+                    }
+                });
+
+                Dialog dialog = builder.create();
+                builder.show();
+
+            }
+
+        });
     }
 }
