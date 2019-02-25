@@ -43,7 +43,6 @@ public class ArtisanLoginActivity extends AppCompatActivity {
     private String ContactNo;
     private String OTP;
     private String codeSent;
-    private String name;
     private boolean OTPFlag;
     private List<String> contactsList;
     private List<String> usernameList;
@@ -73,34 +72,9 @@ public class ArtisanLoginActivity extends AppCompatActivity {
         FirebaseUser user = mAuth.getCurrentUser();
 
         if (user != null) {
-            final String contactNo = mAuth.getCurrentUser().getPhoneNumber();
-//            final String nameTry = mAuth.getCurrentUser().get
-            DatabaseReference nameRef = FirebaseDatabase.getInstance().getReference("Artisans/"+contactNo+"/username");
-            nameRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    name = dataSnapshot.getValue(String.class);
-                    Intent intent = new Intent(ArtisanLoginActivity.this, ArtisanHomePageActivity.class);
-                    intent.putExtra("name", name);
-                    intent.putExtra("phoneNumber", contactNo);
-                    Log.d("no", contactNo);
-                    startActivity(intent);
-                    Log.d("name", name);
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                }
-            });
-
-
             finish();
-//            Intent intent = new Intent(ArtisanLoginActivity.this, ArtisanHomePageActivity.class);
-//            intent.putExtra("name", name);
-//            intent.putExtra("phoneNumber", contactNo);
-//            Log.d("no", contactNo);
-//            startActivity(intent);
+
+            startActivity(new Intent(ArtisanLoginActivity.this, ArtisanHomePageActivity.class));
         }
         userRegistration.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -198,10 +172,9 @@ public class ArtisanLoginActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "Verification successful", Toast.LENGTH_LONG).show();
 
                     Intent intent = new Intent(ArtisanLoginActivity.this,ArtisanHomePageActivity.class);
-                    intent.putExtra("phoneNumber", ContactNo);
+                    intent.putExtra("ContactNo", ContactNo);
                     String username = usernameList.get(contactsList.indexOf(ContactNo));
-                    intent.putExtra("name", username);
-                    Log.d("Here", username+" "+ContactNo);
+                    intent.putExtra("Name", username);
                     startActivity(intent);
 
                     OTPFlag = true;
