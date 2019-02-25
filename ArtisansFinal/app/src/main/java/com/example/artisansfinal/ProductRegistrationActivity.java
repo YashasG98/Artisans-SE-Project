@@ -1,18 +1,13 @@
 package com.example.artisansfinal;
-import android.Manifest;
+
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
-import android.os.Build;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -36,10 +31,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-import com.theartofdev.edmodo.cropper.CropImage;
-import com.theartofdev.edmodo.cropper.CropImageView;
 
-import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -51,10 +43,11 @@ public class ProductRegistrationActivity extends AppCompatActivity {
 
     private FirebaseDatabase firebaseDatabase;
     private DatabaseReference databaseReference;
+    private final int PICK_IMAGE_REQUEST = 71;
+    private Uri filePath;
     private ImageView imageView;
     private FirebaseStorage firebaseStorage;
     private StorageReference storageReference;
-    private Uri mainImageURI;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,26 +66,9 @@ public class ProductRegistrationActivity extends AppCompatActivity {
         browse.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
-
-                    if(ContextCompat.checkSelfPermission(ProductRegistrationActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
-
-                        Toast.makeText(ProductRegistrationActivity.this, "Permission Denied", Toast.LENGTH_LONG).show();
-                        ActivityCompat.requestPermissions(ProductRegistrationActivity.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
-
-                    } else {
-
-                        BringImagePicker();
-
-                    }
-
-                } else {
-
-                    BringImagePicker();
-
-                }
-
+                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+                intent.setType("image/*");
+                startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST);
             }
         });
 
@@ -137,16 +113,17 @@ public class ProductRegistrationActivity extends AppCompatActivity {
                     databaseReference.child("Products").child(productName).setValue(product);
                     Toast.makeText(getApplicationContext(),"Product Registered",Toast.LENGTH_SHORT).show();
 
-                    if (mainImageURI != null) {
+                    if (filePath != null) {
                         final ProgressDialog progressDialog = new ProgressDialog(v.getContext());
                         progressDialog.setMessage("Uploading....");
                         progressDialog.show();
 
-                        StorageReference ref = storageReference.child("ProductImages").child("HighRes/"+productID);
-                        ref.putFile(mainImageURI).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        StorageReference ref = storageReference.child("ProductImages/" + productID);
+                        ref.putFile(filePath).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                             @Override
                             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                                 progressDialog.dismiss();
+                                //Toast.makeText(ProductRegistrationActivity.this, "Uploaded", Toast.LENGTH_SHORT).show();
                             }
                         }).addOnFailureListener(new OnFailureListener() {
                             @Override
@@ -161,74 +138,34 @@ public class ProductRegistrationActivity extends AppCompatActivity {
                                 progressDialog.setMessage("Uploaded " + (int) progress + "%");
                             }
                         });
-
-                        StorageReference ref2 = storageReference.child("ProductImages/").child("LowRes/"+productID);
-                        try{
-
-                            InputStream imageStream = getContentResolver().openInputStream(mainImageURI);
-                            Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
-                            int quality = 10000/selectedImage.getWidth();
-                            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                            selectedImage.compress(Bitmap.CompressFormat.JPEG, quality, baos);
-                            byte[] compress = baos.toByteArray();
-                            ref2.putBytes(compress);
-                            try{
-                                imageStream.close();
-                            }catch (IOException e) {
-                                e.printStackTrace();
-                            }
-
-                        }catch (FileNotFoundException e){
-                            e.printStackTrace();
-                        }
-
                     }
 
                     Intent intent1 = new Intent(ProductRegistrationActivity.this, ArtisanHomePageActivity.class);
                     intent1.putExtra("param","");
                     startActivity(intent1);
+//                    finish();
                 }
 
             }
         });
     }
 
-    private void BringImagePicker() {
-
-        CropImage.activity()
-                .setGuidelines(CropImageView.Guidelines.ON)
-                .setAspectRatio(1, 1)
-                .start(ProductRegistrationActivity.this);
-
-    }
-    public Uri getImageUri(Context inContext, Bitmap inImage) {
-        String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title", null);
-        return Uri.parse(path);
-    }
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
-            CropImage.ActivityResult result = CropImage.getActivityResult(data);
-            if (resultCode == RESULT_OK) {
-
-                mainImageURI = result.getUri();
-                imageView.setImageURI(mainImageURI);
+        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
+            filePath = data.getData();
+            try {
+                InputStream imageStream = getContentResolver().openInputStream(filePath);
+                Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
                 try {
-                    InputStream imageStream = getContentResolver().openInputStream(mainImageURI);
-                    Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
-                    try {
-                        imageStream.close();
-                        imageView.setImageBitmap(selectedImage);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                } catch (FileNotFoundException e) {
+                    imageStream.close();
+                    imageView.setImageBitmap(selectedImage);
+                } catch (IOException e) {
                     e.printStackTrace();
                 }
-            } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
-                Exception error = result.getError();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
             }
         }
     }
