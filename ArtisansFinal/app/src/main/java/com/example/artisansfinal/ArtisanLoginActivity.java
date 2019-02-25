@@ -43,8 +43,10 @@ public class ArtisanLoginActivity extends AppCompatActivity {
     private String ContactNo;
     private String OTP;
     private String codeSent;
+    private String name;
     private boolean OTPFlag;
     private List<String> contactsList;
+    private List<String> usernameList;
     private boolean OTPsent = false;
 
 
@@ -62,6 +64,7 @@ public class ArtisanLoginActivity extends AppCompatActivity {
         sendOTP = findViewById(R.id.send_otp_button);
 
         contactsList = new ArrayList<>();
+        usernameList = new ArrayList<>();
 
         mAuth = FirebaseAuth.getInstance();
         databaseReferenceVerify = FirebaseDatabase.getInstance().getReference("Artisans");
@@ -70,9 +73,34 @@ public class ArtisanLoginActivity extends AppCompatActivity {
         FirebaseUser user = mAuth.getCurrentUser();
 
         if (user != null) {
-            finish();
+            final String contactNo = mAuth.getCurrentUser().getPhoneNumber();
+//            final String nameTry = mAuth.getCurrentUser().get
+            DatabaseReference nameRef = FirebaseDatabase.getInstance().getReference("Artisans/"+contactNo+"/username");
+            nameRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    name = dataSnapshot.getValue(String.class);
+                    Intent intent = new Intent(ArtisanLoginActivity.this, ArtisanHomePageActivity.class);
+                    intent.putExtra("name", name);
+                    intent.putExtra("phoneNumber", contactNo);
+                    Log.d("no", contactNo);
+                    startActivity(intent);
+                    Log.d("name", name);
+                }
 
-            startActivity(new Intent(ArtisanLoginActivity.this, ArtisanHomePageActivity.class));
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+
+
+            finish();
+//            Intent intent = new Intent(ArtisanLoginActivity.this, ArtisanHomePageActivity.class);
+//            intent.putExtra("name", name);
+//            intent.putExtra("phoneNumber", contactNo);
+//            Log.d("no", contactNo);
+//            startActivity(intent);
         }
         userRegistration.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -108,7 +136,7 @@ public class ArtisanLoginActivity extends AppCompatActivity {
                 OTPEdit = (EditText) findViewById(R.id.edit_artisan_login_activity_OTP);
                 OTP = OTPEdit.getText().toString();
 //                if(OTP.length() != 0 && OTPFlag)
-                    verify();
+                verify();
 //                else
 //                {
 //                    OTPEdit.setError("Enter OTP");
@@ -169,7 +197,12 @@ public class ArtisanLoginActivity extends AppCompatActivity {
 
                     Toast.makeText(getApplicationContext(), "Verification successful", Toast.LENGTH_LONG).show();
 
-                    startActivity(new Intent(ArtisanLoginActivity.this,ArtisanHomePageActivity.class));
+                    Intent intent = new Intent(ArtisanLoginActivity.this,ArtisanHomePageActivity.class);
+                    intent.putExtra("phoneNumber", ContactNo);
+                    String username = usernameList.get(contactsList.indexOf(ContactNo));
+                    intent.putExtra("name", username);
+                    Log.d("Here", username+" "+ContactNo);
+                    startActivity(intent);
 
                     OTPFlag = true;
                 } else {
@@ -247,6 +280,9 @@ public class ArtisanLoginActivity extends AppCompatActivity {
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     ArtisanInfo ArtisanNo = snapshot.getValue(ArtisanInfo.class);
                     contactsList.add(ArtisanNo.getContact_no());
+                    usernameList.add(ArtisanNo.getUsername());
+
+
                 }
 
             }
