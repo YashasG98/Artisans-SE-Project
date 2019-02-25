@@ -8,6 +8,7 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
@@ -107,7 +108,14 @@ public class ArtisanHomePageActivity extends AppCompatActivity {
 
     public void upload_product(MenuItem item) {
         Toast.makeText(this, "Upload a product", Toast.LENGTH_SHORT).show();
+        Intent intentArtisanInfo = getIntent();
+        String artisanName = intentArtisanInfo.getStringExtra("name");
+        String artisanContactNumber = intentArtisanInfo.getStringExtra("phoneNumber");
+        Log.d("Here", artisanContactNumber+" "+artisanName);
         Intent intent = new Intent(this, ProductRegistrationActivity.class);
+        intent.putExtra("phoneNumber", artisanContactNumber);
+        intent.putExtra("name", artisanName);
+        //Log.d("nam", artisanName);
         startActivity(intent);
     }
 }
