@@ -224,8 +224,6 @@ public class ArtisanRegistrationActivity extends AppCompatActivity {
 
                     Intent intent = new Intent(ArtisanRegistrationActivity.this, ArtisanHomePageActivity.class);
                     intent.putExtra("userType", userType);
-                    intent.putExtra("ContactNo", ContactNo);
-                    intent.putExtra("Name", username);
                     startActivity(intent);
 
                 }
