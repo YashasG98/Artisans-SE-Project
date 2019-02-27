@@ -21,6 +21,21 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:id="@+id/selected_category_not_found_outer_rl">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="No Products Found"
+            android:gravity="center"
+            android:textColor="#ffffff"
+            android:textSize="50sp"
+            android:background="#66ceff"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:id="@+id/selected_category_content_rl">
 
         <LinearLayout
@@ -90,13 +105,34 @@
 
             </LinearLayout>
 
-            <android.support.v7.widget.RecyclerView
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="0.85"
-                android:id="@+id/selected_category_rv">
+                android:id="@+id/selected_category_rl">
 
-            </android.support.v7.widget.RecyclerView>
+                <android.support.v7.widget.RecyclerView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/selected_category_rv">
+
+                </android.support.v7.widget.RecyclerView>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/selected_category_not_found_inner_rl">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="No Matching Products Found"
+                    android:gravity="center"
+                    android:textSize="50sp"
+                    android:background="#bbdefb"/>
+            </RelativeLayout>
 
         </LinearLayout>
 

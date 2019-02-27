@@ -25,6 +25,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.database.annotations.Nullable;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -48,6 +49,9 @@ public class SelectedCategoryActivity extends AppCompatActivity {
 
     private RelativeLayout contentLayout;
     private RelativeLayout loadingLayout;
+    private RelativeLayout notFoundLayout;
+    private RelativeLayout noMatchLayout;
+    private RelativeLayout recyclerViewLayout;
     private ImageView loading;
 
     class sorting implements Comparator<ProductInfo>
@@ -81,6 +85,10 @@ public class SelectedCategoryActivity extends AppCompatActivity {
         contentLayout.setVisibility(RelativeLayout.GONE);
         loadingLayout = findViewById(R.id.selected_category_loading_rl);
         loadingLayout.setVisibility(RelativeLayout.VISIBLE);
+        notFoundLayout = findViewById(R.id.selected_category_not_found_outer_rl);
+        notFoundLayout.setVisibility(RelativeLayout.GONE);
+        noMatchLayout = findViewById(R.id.selected_category_not_found_inner_rl);
+        recyclerViewLayout = findViewById(R.id.selected_category_rl);
 //        setContentView(R.layout.loading_layout);
 //        ImageView imageView = findViewById(R.id.loading_layout_iv);
 //        Glide.with(getApplicationContext())
@@ -110,6 +118,9 @@ public class SelectedCategoryActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
+                noMatchLayout.setVisibility(View.GONE);
+                recyclerViewLayout.setVisibility(View.VISIBLE);
+
                 String searchItem = searchQuery.getText().toString().toLowerCase();
                 String searchFilter = searchOption.getSelectedItem().toString();
 
@@ -134,6 +145,10 @@ public class SelectedCategoryActivity extends AppCompatActivity {
                     }
                     categoryRecyclerViewAdapter = new CategoryRecyclerViewAdapter(v.getContext(), searchResults);
                     recyclerView.setAdapter(categoryRecyclerViewAdapter);
+                }
+                if(searchResults.isEmpty()){
+                    noMatchLayout.setVisibility(View.VISIBLE);
+                    recyclerViewLayout.setVisibility(View.GONE);
                 }
             }
         });
@@ -162,7 +177,74 @@ public class SelectedCategoryActivity extends AppCompatActivity {
         });
 
         databaseReference = FirebaseDatabase.getInstance().getReference("Categories/"+category);
-        databaseReference.addChildEventListener(new ChildEventListener() {
+        Log.d("EXIST1", databaseReference.getDatabase().toString());
+        Log.d("EXIST2", databaseReference.getKey());
+        Log.d("EXIST3", databaseReference.getParent().toString());
+        Log.d("EXIST4", databaseReference.getRoot().toString());
+        Log.d("EXIST5", databaseReference.toString());
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(dataSnapshot.getValue()!=null){
+                    databaseReference.addChildEventListener(new ChildEventListener() {
+                        @Override
+                        public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+//                if(progressDialog.isShowing())
+//                    progressDialog.dismiss();
+                            if(contentLayout.getVisibility()==View.GONE) {
+                                loadingLayout.setVisibility(View.GONE);
+                                contentLayout.setVisibility(View.VISIBLE);
+                                recyclerViewLayout.setVisibility(View.VISIBLE);
+                                noMatchLayout.setVisibility(View.GONE);
+                            }
+                            ProductInfo productInfo;
+                            Log.d("FOUND",dataSnapshot.toString());
+                            Log.d("FOUND",dataSnapshot.getKey());
+                            Log.d("FOUND", dataSnapshot.getValue().toString());
+                            HashMap<String, String> map = (HashMap<String, String>) dataSnapshot.getValue();
+                            Log.d("HASHMAP", map.toString());
+                            productInfo = new ProductInfo(map.get("productID"), map.get("productName"), map.get("productDescription"), map.get("productCategory"), map.get("productPrice"), map.get("artisanName"), map.get("artisanContactNumber"));
+                            Log.d("MAP", map.get("productDescription"));
+                            categoryRecyclerViewAdapter.added(productInfo);
+                            //categoryRecyclerViewAdapter.addedImage(storageReference.child("ProductImage/"+(map.get("productID"))));
+
+
+                        }
+
+                        @Override
+                        public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                            Log.d("onchildchanged", dataSnapshot.toString());
+                        }
+
+                        @Override
+                        public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+                            Log.d("onchildremoved", dataSnapshot.toString());
+                        }
+
+                        @Override
+                        public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                            Log.d("onchildmoved", dataSnapshot.toString());
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+                            progressDialog.dismiss();
+                            Log.d("oncancelled", databaseError.toString());
+                        }
+                    });
+                }
+                else {
+                    loadingLayout.setVisibility(RelativeLayout.GONE);
+                    notFoundLayout.setVisibility(RelativeLayout.VISIBLE);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+        /*databaseReference.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
 //                if(progressDialog.isShowing())
@@ -205,7 +287,7 @@ public class SelectedCategoryActivity extends AppCompatActivity {
                 progressDialog.dismiss();
                 Log.d("oncancelled", databaseError.toString());
             }
-        });
+        });*/
     }
 
 
