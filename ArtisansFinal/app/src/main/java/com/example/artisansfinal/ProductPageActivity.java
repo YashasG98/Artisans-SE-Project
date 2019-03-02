@@ -49,9 +49,11 @@ import java.util.HashMap;
 public class ProductPageActivity extends AppCompatActivity {
 
     private DatabaseReference databaseReference;
+    private DatabaseReference users;
     private StorageReference storageReference;
     final long ONE_MB = 1024*1024;
     private DatabaseReference ordHis;
+    private String userPhoneNumber;
     FirebaseAuth firebaseAuth= FirebaseAuth.getInstance();
 
     FirebaseUser userX = firebaseAuth.getCurrentUser();
@@ -77,6 +79,7 @@ public class ProductPageActivity extends AppCompatActivity {
 
         databaseReference = FirebaseDatabase.getInstance().getReference("Categories/"+productCategory+"/"+productName);
         storageReference = FirebaseStorage.getInstance().getReference("ProductImages/HighRes/" + productID);
+        users = FirebaseDatabase.getInstance().getReference("User");
 
         final String key = databaseReference.getKey();
         Log.d("KEY", key);
@@ -155,6 +158,30 @@ public class ProductPageActivity extends AppCompatActivity {
             }
         });
 
+        users.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                for(DataSnapshot userSnapshot : dataSnapshot.getChildren())
+                {
+                    UserInfo userInfo = userSnapshot.getValue(UserInfo.class);
+
+                    if(userInfo.userEmail.equals(userX.getEmail()))
+                    {
+                        userPhoneNumber = userInfo.userPnumber;
+                        break;
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+
+
         ordHis = FirebaseDatabase.getInstance().getReference("Orders");
 
 
@@ -178,7 +205,8 @@ public class ProductPageActivity extends AppCompatActivity {
                         String formattedDate = df.format(c);
                         orderInfo order=new orderInfo(opname,oprice,formattedDate);
                         String orderID = ordHis.push().getKey();
-                        ordHis.child(userX.getEmail().substring(0,userX.getEmail().indexOf('@'))).child(orderID).setValue(order);
+                        //ordHis.child(userX.getEmail().substring(0,userX.getEmail().indexOf('@'))).child(orderID).setValue(order);
+                        ordHis.child(userPhoneNumber).child("Orders Accepted").setValue(order);
 
                     }
                 });
