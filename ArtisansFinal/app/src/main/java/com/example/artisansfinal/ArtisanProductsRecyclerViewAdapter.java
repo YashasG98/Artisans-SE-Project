@@ -40,7 +40,7 @@ import java.util.ArrayList;
 import static com.bumptech.glide.Glide.with;
 import static com.squareup.picasso.Picasso.*;
 
-public class CategoryRecyclerViewAdapter extends RecyclerView.Adapter<CategoryRecyclerViewAdapter.ViewHolder> {
+public class ArtisanProductsRecyclerViewAdapter extends RecyclerView.Adapter<ArtisanProductsRecyclerViewAdapter.ViewHolder> {
 
     private ArrayList<ProductInfo> info;
     private Context context;
@@ -55,22 +55,20 @@ public class CategoryRecyclerViewAdapter extends RecyclerView.Adapter<CategoryRe
         TextView productName;
         ImageView image;
         TextView productPrice;
-        TextView artisanName;
         RelativeLayout layout;
 //        ProgressBar progressBar;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            productName = itemView.findViewById(R.id.category_layout_tv_product_name);
-            image = itemView.findViewById(R.id.category_layout_iv_product_image);
-            productPrice = itemView.findViewById(R.id.category_layout_tv_product_price);
-            artisanName = itemView.findViewById(R.id.category_layout_tv_artisan_name);
-            layout = itemView.findViewById(R.id.category_layout_rl);
+            productName = itemView.findViewById(R.id.artisan_product_layout_tv_product_name);
+            image = itemView.findViewById(R.id.artisan_product_layout_iv_product_image);
+            productPrice = itemView.findViewById(R.id.artisan_product_layout_tv_product_price);
+            layout = itemView.findViewById(R.id.artisan_product_layout_rl);
 //            progressBar = itemView.findViewById(R.id.category_layout_pb_progress);
         }
     }
 
-    public CategoryRecyclerViewAdapter(Context context, ArrayList<ProductInfo> info) {
+    public ArtisanProductsRecyclerViewAdapter(Context context, ArrayList<ProductInfo> info) {
         this.info = info;
         this.context = context;
 
@@ -81,7 +79,7 @@ public class CategoryRecyclerViewAdapter extends RecyclerView.Adapter<CategoryRe
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View view;
         LayoutInflater inflater = LayoutInflater.from(context);
-        view = inflater.inflate(R.layout.category_layout, viewGroup, false);
+        view = inflater.inflate(R.layout.artisan_product_layout, viewGroup, false);
         ViewHolder viewHolder = new ViewHolder(view);
         return viewHolder;
     }
@@ -91,7 +89,6 @@ public class CategoryRecyclerViewAdapter extends RecyclerView.Adapter<CategoryRe
         final ProductInfo productInfo = info.get(i);
         storageReference = FirebaseStorage.getInstance().getReference("ProductImages/LowRes/" + productInfo.getProductID());
         Log.d("STORAGE", productInfo.getProductID());
-        viewHolder.artisanName.setText(productInfo.getArtisanName());
         viewHolder.productPrice.setText(productInfo.getProductPrice());
         viewHolder.productName.setText(productInfo.getProductName());
 
@@ -137,11 +134,12 @@ public class CategoryRecyclerViewAdapter extends RecyclerView.Adapter<CategoryRe
             public void onClick(View v) {
                 Toast.makeText(context, productInfo.getProductName(), Toast.LENGTH_LONG).show();
 //                if(imageLoaded) {
-                    Log.d("SELECTION", v.toString());
-                    Log.d("SELECTION", productInfo.toString());
-                    String prodName = productInfo.getProductName();
-                    String prodCategory = productInfo.getProductCategory();
-                    Intent newintent = new Intent(context, ProductPageActivity.class);
+                Log.d("SELECTION", v.toString());
+                Log.d("SELECTION", productInfo.toString());
+                String prodName = productInfo.getProductName();
+//                String prodCategory = productInfo.getProductCategory();
+                String artisanPhoneNumber = productInfo.getArtisanContactNumber();
+                Intent newintent = new Intent(context, ArtisanProductPageActivity.class);
 
 //                    Drawable drawable = viewHolder.image.getDrawable();
 //                    Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();
@@ -150,12 +148,13 @@ public class CategoryRecyclerViewAdapter extends RecyclerView.Adapter<CategoryRe
 //                    byte[] b = baos.toByteArray();
 //                    newintent.putExtra("productImage", b);
 
-                    newintent.putExtra("productName", prodName);
-                    newintent.putExtra("productCategory", prodCategory);
-                    newintent.putExtra("productID", productInfo.getProductID());
-                    newintent.putExtra("productInfo", (Parcelable) productInfo);
-                    Log.d("pINFO", productInfo.toString());
-                    context.startActivity(newintent);
+                newintent.putExtra("productName", prodName);
+//                newintent.putExtra("productCategory", prodCategory);
+                newintent.putExtra("artisanPhoneNumber", artisanPhoneNumber);
+                newintent.putExtra("productID", productInfo.getProductID());
+                newintent.putExtra("productInfo", (Parcelable) productInfo);
+                Log.d("pINFO", productInfo.toString());
+                context.startActivity(newintent);
 //                }
             }
         });

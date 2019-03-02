@@ -132,7 +132,8 @@ public class ProductRegistrationActivity extends AppCompatActivity {
                 if (productPriceflag && productNameflag) {
                     product = new ProductInfo(productID, productName, productDescription, productCategory, productPrice, artisanName, artisanContactNumber);
                     databaseReference.child("Categories").child(productCategory).child(productName).setValue(product);
-                    databaseReference.child("Products").child(productName).setValue(product);
+                    databaseReference.child("ArtisanProducts").child(artisanContactNumber).child(productName).setValue(product);
+//                    databaseReference.child("Products").child(productName).setValue(product);
 
                     Toast.makeText(getApplicationContext(), "Product Registered", Toast.LENGTH_SHORT).show();
                     Intent intent1 = new Intent(ProductRegistrationActivity.this, ArtisanHomePageActivity.class);

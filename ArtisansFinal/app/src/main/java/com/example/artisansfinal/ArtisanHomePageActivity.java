@@ -23,6 +23,7 @@ public class ArtisanHomePageActivity extends AppCompatActivity {
     private ActionBarDrawerToggle abdt;
     private String userType;
     private FirebaseAuth firebaseAuth;
+    private String artisanPhoneNumber;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +32,9 @@ public class ArtisanHomePageActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         userType = intent.getStringExtra("userType");
+
+        artisanPhoneNumber = intent.getStringExtra("phoneNumber");
+        Log.d("artisanPhoneNumber", artisanPhoneNumber);
 
         firebaseAuth = FirebaseAuth.getInstance();
         artisan_home_page_dl = (DrawerLayout) findViewById(R.id.artisan_home_page_dl);
@@ -117,5 +121,11 @@ public class ArtisanHomePageActivity extends AppCompatActivity {
         intent.putExtra("name", artisanName);
         //Log.d("nam", artisanName);
         startActivity(intent);
+    }
+
+    public void my_products(MenuItem item){
+        Intent newIntent = new Intent(this, ArtisanProductsActivity.class);
+        newIntent.putExtra("phoneNumber", artisanPhoneNumber);
+        startActivity(newIntent);
     }
 }

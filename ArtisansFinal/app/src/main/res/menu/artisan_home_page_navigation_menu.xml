@@ -38,4 +38,8 @@
         android:onClick="Logout"
         android:icon="@drawable/ic_close_black_24dp13">
     </item>
+    <item
+        android:id="@+id/my_products"
+        android:title="My Products"
+        android:onClick="my_products"></item>
 </menu>
