@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_margin="5sp"
+    android:orientation="vertical"
+    app:cardCornerRadius="6sp"
+    android:id="@+id/artisan_product_layout_cv">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/artisan_product_layout_rl"
+        android:layout_margin="10sp">
+        <ImageView
+            android:id="@+id/artisan_product_layout_iv_product_image"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:padding="8sp"/>
+        <TextView
+            android:id="@+id/artisan_product_layout_tv_product_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/artisan_product_layout_iv_product_image"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:text="Product Name"
+            android:textSize="24sp" />
+        <TextView
+            android:id="@+id/artisan_product_layout_tv_product_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/artisan_product_layout_iv_product_image"
+            android:layout_below="@id/artisan_product_layout_tv_product_name"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:text="Product Price"
+            android:textSize="18sp" />
+    </RelativeLayout>
+
+</android.support.v7.widget.CardView>
+
+
