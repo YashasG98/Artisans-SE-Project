@@ -95,7 +95,7 @@ public class ArtisanLoginActivity extends AppCompatActivity {
             });
 
 
-            finish();
+            //finish();
 //            Intent intent = new Intent(ArtisanLoginActivity.this, ArtisanHomePageActivity.class);
 //            intent.putExtra("name", name);
 //            intent.putExtra("phoneNumber", contactNo);
@@ -106,6 +106,7 @@ public class ArtisanLoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(ArtisanLoginActivity.this, ArtisanRegistrationActivity.class));
+                //finish();
             }
         });
 
