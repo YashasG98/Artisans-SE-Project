@@ -89,8 +89,8 @@ public class CategoryRecyclerViewAdapter extends RecyclerView.Adapter<CategoryRe
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder viewHolder, final int i) {
         final ProductInfo productInfo = info.get(i);
-        storageReference = FirebaseStorage.getInstance().getReference("ProductImages/LowRes/" + productInfo.productID);
-        Log.d("STORAGE", productInfo.productID);
+        storageReference = FirebaseStorage.getInstance().getReference("ProductImages/LowRes/" + productInfo.getProductID());
+        Log.d("STORAGE", productInfo.getProductID());
         viewHolder.artisanName.setText(productInfo.getArtisanName());
         viewHolder.productPrice.setText(productInfo.getProductPrice());
         viewHolder.productName.setText(productInfo.getProductName());
