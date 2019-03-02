@@ -5,13 +5,13 @@ import android.os.Parcelable;
 
 public class ProductInfo implements Parcelable {
 
-    String productID;
-    String productName;
-    String productDescription;
-    String productCategory;
-    String productPrice;
-    String artisanName;
-    String artisanContactNumber;
+    private String productID;
+    private String productName;
+    private String productDescription;
+    private String productCategory;
+    private String productPrice;
+    private String artisanName;
+    private String artisanContactNumber;
 
     public ProductInfo(String productID, String productName, String productDescription, String productCategory, String productPrice, String artisanName, String artisanContactNumber) {
         this.productID = productID;
@@ -97,7 +97,6 @@ public class ProductInfo implements Parcelable {
         public ProductInfo createFromParcel(Parcel in) {
             return new ProductInfo(in);
         }
-
         public ProductInfo[] newArray(int size) {
             return new ProductInfo[size];
         }
