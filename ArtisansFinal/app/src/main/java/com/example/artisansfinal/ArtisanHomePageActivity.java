@@ -128,4 +128,10 @@ public class ArtisanHomePageActivity extends AppCompatActivity {
         newIntent.putExtra("phoneNumber", artisanPhoneNumber);
         startActivity(newIntent);
     }
+
+    public void My_products(View view) {
+        Intent newIntent = new Intent(this, ArtisanProductsActivity.class);
+        newIntent.putExtra("phoneNumber", artisanPhoneNumber);
+        startActivity(newIntent);
+    }
 }

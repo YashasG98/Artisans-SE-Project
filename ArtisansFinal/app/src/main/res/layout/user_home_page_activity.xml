@@ -149,7 +149,7 @@
                         android:id="@+id/user_home_page_iv_shawl"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:src="@mipmap/ic_launcher_dhoti_round"/>
+                        android:src="@mipmap/ic_launcher_shawl_round"/>
 
                 </RelativeLayout>
 
