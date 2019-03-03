@@ -96,7 +96,7 @@ public class ArtisanHomePageActivity extends AppCompatActivity {
     public void Logout(MenuItem item) {
         firebaseAuth.signOut();
         finish();
-        startActivity(new Intent(ArtisanHomePageActivity.this, ArtisanLoginActivity.class));
+        startActivity(new Intent(ArtisanHomePageActivity.this, CommonLoginActivityTabbed.class));
         Toast.makeText(this, "Logged out", Toast.LENGTH_SHORT).show();
     }
 
