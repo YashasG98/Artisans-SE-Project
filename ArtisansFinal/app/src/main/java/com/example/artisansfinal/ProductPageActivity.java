@@ -206,7 +206,7 @@ public class ProductPageActivity extends AppCompatActivity {
                         orderInfo order=new orderInfo(opname,oprice,formattedDate);
                         String orderID = ordHis.push().getKey();
                         //ordHis.child(userX.getEmail().substring(0,userX.getEmail().indexOf('@'))).child(orderID).setValue(order);
-                        ordHis.child(userPhoneNumber).child("Orders Accepted").setValue(order);
+                        ordHis.child("Users").child(userPhoneNumber).child("Orders Requested").child(orderID).setValue(order);
 
                     }
                 });

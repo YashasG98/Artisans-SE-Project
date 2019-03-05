@@ -14,6 +14,11 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 //import e.shrinidhiav.artisanhomepageactivity.R;
 
@@ -24,6 +29,7 @@ public class ArtisanHomePageActivity extends AppCompatActivity {
     private String userType;
     private FirebaseAuth firebaseAuth;
     private String artisanPhoneNumber;
+    private String name;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,10 +37,29 @@ public class ArtisanHomePageActivity extends AppCompatActivity {
         setContentView(R.layout.artisan_home_page_activity);
 
         Intent intent = getIntent();
-        userType = intent.getStringExtra("userType");
-
-        artisanPhoneNumber = intent.getStringExtra("phoneNumber");
+        //userType = intent.getStringExtra("userType");
+        artisanPhoneNumber = FirebaseAuth.getInstance().getCurrentUser().getPhoneNumber();
         //Log.d("artisanPhoneNumber", artisanPhoneNumber);
+
+        //Added by Dhanasekhar
+
+        DatabaseReference nameRef = FirebaseDatabase.getInstance().getReference("Artisans/" + artisanPhoneNumber + "/username");
+        nameRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                name = dataSnapshot.getValue(String.class);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+
+        //artisanPhoneNumber = intent.getStringExtra("phoneNumber");
+        //Log.d("artisanPhoneNumber", artisanPhoneNumber);
+
 
         firebaseAuth = FirebaseAuth.getInstance();
         artisan_home_page_dl = (DrawerLayout) findViewById(R.id.artisan_home_page_dl);
@@ -96,7 +121,7 @@ public class ArtisanHomePageActivity extends AppCompatActivity {
     public void Logout(MenuItem item) {
         firebaseAuth.signOut();
         finish();
-        startActivity(new Intent(ArtisanHomePageActivity.this, ArtisanLoginActivity.class));
+        startActivity(new Intent(ArtisanHomePageActivity.this, CommonLoginActivityTabbed.class));
         Toast.makeText(this, "Logged out", Toast.LENGTH_SHORT).show();
     }
 
@@ -113,12 +138,12 @@ public class ArtisanHomePageActivity extends AppCompatActivity {
     public void upload_product(MenuItem item) {
         Toast.makeText(this, "Upload a product", Toast.LENGTH_SHORT).show();
         Intent intentArtisanInfo = getIntent();
-        String artisanName = intentArtisanInfo.getStringExtra("name");
+//        String artisanName = intentArtisanInfo.getStringExtra("name");
         String artisanContactNumber = intentArtisanInfo.getStringExtra("phoneNumber");
-        Log.d("Here", artisanContactNumber+" "+artisanName);
+        Log.d("Here", artisanContactNumber+" "+name);
         Intent intent = new Intent(this, ProductRegistrationActivity.class);
         intent.putExtra("phoneNumber", artisanContactNumber);
-        intent.putExtra("name", artisanName);
+        intent.putExtra("name", name);
         //Log.d("nam", artisanName);
         startActivity(intent);
     }
