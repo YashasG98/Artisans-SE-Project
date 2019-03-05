@@ -38,7 +38,7 @@ public class ArtisanHomePageActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         //userType = intent.getStringExtra("userType");
-        artisanPhoneNumber = intent.getStringExtra("phoneNumber");
+        artisanPhoneNumber = FirebaseAuth.getInstance().getCurrentUser().getPhoneNumber();
         //Log.d("artisanPhoneNumber", artisanPhoneNumber);
 
         //Added by Dhanasekhar
