@@ -43,7 +43,7 @@ public class UserLoginFragment extends Fragment {
 
         intent = getActivity().getIntent();
 
-        userType = intent.getStringExtra("userType");
+        //userType = intent.getStringExtra("userType");
         final View view=inflater.inflate(R.layout.activity_login, container, false);
 
 
@@ -60,18 +60,18 @@ public class UserLoginFragment extends Fragment {
         progressDialog = new ProgressDialog(getContext());
         FirebaseUser user = firebaseAuth.getCurrentUser();
         if (user != null) {
-            getActivity().finish();
-            if(userType.equals("u")) {
+            if(user.getPhoneNumber().length() == 0) {
                 Log.d("HERE1",user.getEmail());
                 Intent intent1 = new Intent(new Intent(getContext(), UserHomePageActivity.class));
-                Log.d("HERE1",Name.getText().toString().trim());
+                //Log.d("HERE1",Name.getText().toString().trim());
                 startActivity(intent1);
+                getActivity().finish();
             }
-            else {
-                Intent intent1 = new Intent(new Intent(getContext(), ArtisanHomePageActivity.class));
-                intent1.putExtra("userType", userType);
-                startActivity(intent1);
-            }
+//            else {
+//                Intent intent1 = new Intent(new Intent(getContext(), ArtisanHomePageActivity.class));
+//                intent1.putExtra("userType", "a");
+//                startActivity(intent1);
+//            }
         }
 //        userRegistration.setOnClickListener(new View.OnClickListener() {
 //            @Override
