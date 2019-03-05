@@ -101,7 +101,7 @@
                 android:layout_weight="1"
                 app:cardBackgroundColor="#F5FFFA"
                 app:cardCornerRadius="20sp"
-                android:onClick="Order_history"
+                android:onClick="my_products"
                 android:layout_marginBottom="20dp"
                 >
 
