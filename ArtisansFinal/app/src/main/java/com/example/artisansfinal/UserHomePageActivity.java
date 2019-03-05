@@ -30,7 +30,7 @@ public class UserHomePageActivity extends AppCompatActivity {
 
 
         Intent intent = getIntent();
-        userType = intent.getStringExtra("userType");
+        //userType = intent.getStringExtra("userType");
         user_home_page_dl = (DrawerLayout) findViewById(R.id.user_home_page_dl);
         abdt = new ActionBarDrawerToggle(this, user_home_page_dl, R.string.Open, R.string.Close);
         abdt.setDrawerIndicatorEnabled(true);
@@ -98,7 +98,7 @@ public class UserHomePageActivity extends AppCompatActivity {
     public void Logout(MenuItem item) {
         firebaseAuth.signOut();
         finish();
-        startActivity(new Intent(UserHomePageActivity.this, LoginActivity.class));
+        startActivity(new Intent(UserHomePageActivity.this, CommonLoginActivityTabbed.class));
         Toast.makeText(this, "Logged out", Toast.LENGTH_SHORT).show();
     }
 
