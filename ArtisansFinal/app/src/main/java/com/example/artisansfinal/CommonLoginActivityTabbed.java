@@ -1,5 +1,6 @@
 package com.example.artisansfinal;
 
+import android.content.Intent;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -20,6 +21,9 @@ import android.view.ViewGroup;
 
 import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
 import java.util.ArrayList;
 
 public class CommonLoginActivityTabbed extends AppCompatActivity {
@@ -28,10 +32,17 @@ public class CommonLoginActivityTabbed extends AppCompatActivity {
 
     private ViewPager mViewPager;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
+
+
+
         setContentView(R.layout.activity_common_login_tabbed);
+
 
         mSectionsPagerAdapter  = new SectionsPagerAdapter(getSupportFragmentManager());
         mViewPager = findViewById(R.id.container);
@@ -45,7 +56,7 @@ public class CommonLoginActivityTabbed extends AppCompatActivity {
     public void setUpViewPager(ViewPager viewPager)
     {
         SectionsPagerAdapter sectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
-        sectionsPagerAdapter.addFragment(new ArtisanLoginFragment(), "Aritisan");
+        sectionsPagerAdapter.addFragment(new ArtisanLoginFragment(), "Artisan");
         sectionsPagerAdapter.addFragment(new UserLoginFragment(), "User");
         viewPager.setAdapter(sectionsPagerAdapter);
     }

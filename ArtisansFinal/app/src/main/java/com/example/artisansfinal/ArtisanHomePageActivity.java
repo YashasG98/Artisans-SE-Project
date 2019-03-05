@@ -34,7 +34,7 @@ public class ArtisanHomePageActivity extends AppCompatActivity {
         userType = intent.getStringExtra("userType");
 
         artisanPhoneNumber = intent.getStringExtra("phoneNumber");
-        Log.d("artisanPhoneNumber", artisanPhoneNumber);
+        //Log.d("artisanPhoneNumber", artisanPhoneNumber);
 
         firebaseAuth = FirebaseAuth.getInstance();
         artisan_home_page_dl = (DrawerLayout) findViewById(R.id.artisan_home_page_dl);
