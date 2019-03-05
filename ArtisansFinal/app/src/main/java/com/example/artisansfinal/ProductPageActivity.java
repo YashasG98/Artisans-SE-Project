@@ -128,28 +128,12 @@ public class ProductPageActivity extends AppCompatActivity {
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(getApplicationContext(), "Image Load Failed", Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(getApplicationContext(), "Image Load Failed", Toast.LENGTH_SHORT).show();
+                        Glide.with(getApplicationContext())
+                                .load(R.mipmap.imageNotProvided)
+                                .into(image);
                     }
                 });
-
-//                Bundle extras = getIntent().getExtras();
-//                byte[] b = extras.getByteArray("productImage");
-//                Bitmap bmp = BitmapFactory.decodeByteArray(b, 0, b.length);
-//                image.setImageBitmap(bmp);
-
-//                Glide.with(getApplicationContext()).load(storageReference.child(map.get("productID"))).into(image);
-//                storageReference.child(map.get("productID")).getBytes(ONE_MB).addOnSuccessListener(new OnSuccessListener<byte[]>() {
-//                    @Override
-//                    public void onSuccess(byte[] bytes) {
-//                        Glide.with(getApplicationContext()).load(bytes).into(image);
-//                    }
-//                }).addOnFailureListener(new OnFailureListener() {
-//                    @Override
-//                    public void onFailure(@NonNull Exception e) {
-//                        Toast.makeText(ProductPageActivity.this, "Image Load Failed", Toast.LENGTH_SHORT).show();
-//                    }
-//                });
-//                Glide.with(getApplicationContext()).
             }
 
             @Override
