@@ -57,7 +57,7 @@ public class ArtisanHomePageActivity extends AppCompatActivity {
         });
 
 
-        artisanPhoneNumber = intent.getStringExtra("phoneNumber");
+        //artisanPhoneNumber = intent.getStringExtra("phoneNumber");
         //Log.d("artisanPhoneNumber", artisanPhoneNumber);
 
 
