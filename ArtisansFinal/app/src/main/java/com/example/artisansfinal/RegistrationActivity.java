@@ -21,7 +21,7 @@ import com.google.firebase.database.FirebaseDatabase;
 public class RegistrationActivity extends AppCompatActivity {
     private EditText userName,userPassword,userEmail,userPnumber,userPcode,userCpassword;
     private Button regButton;
-    private TextView userLogin;
+
     private FirebaseAuth firebaseAuth;
     String name,pcode,pnumber,email;
     @Override
@@ -59,12 +59,7 @@ public class RegistrationActivity extends AppCompatActivity {
             }
         });
 
-       userLogin.setOnClickListener(new View.OnClickListener() {
-           @Override
-           public void onClick(View v) {
-               startActivity(new Intent(RegistrationActivity.this, LoginActivity.class));
-           }
-       });
+
     }
     private void setupUIViews()
     {
@@ -72,7 +67,6 @@ public class RegistrationActivity extends AppCompatActivity {
         userPassword=(EditText)findViewById(R.id.registration_page_et_user_password);
         userEmail=(EditText)findViewById(R.id.registration_page_et_user_email);
         regButton=(Button)findViewById(R.id.registration_page_button_user_registration);
-        userLogin=(TextView)findViewById(R.id.registration_page_tv_user_login);
 
         userPcode=(EditText) findViewById(R.id.registration_page_et_user_pcode);
         userPnumber=(EditText) findViewById(R.id.registration_page_et_user_number);
@@ -125,5 +119,6 @@ public class RegistrationActivity extends AppCompatActivity {
         DatabaseReference myRef=firebaseDatabase.getReference();
         UserInfo userinfo=new UserInfo(name,pcode,pnumber,email);
         myRef.child("User").child(userinfo.userPnumber).setValue(userinfo);
+
     }
 }
