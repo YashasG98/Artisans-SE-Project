@@ -29,7 +29,7 @@ import java.util.ArrayList;
 public class CommonLoginActivityTabbed extends AppCompatActivity {
 
     private SectionsPagerAdapter mSectionsPagerAdapter;
-
+    private FirebaseUser firebaseUser;
     private ViewPager mViewPager;
 
 
@@ -37,11 +37,12 @@ public class CommonLoginActivityTabbed extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
+        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
 
 
         setContentView(R.layout.activity_common_login_tabbed);
+
 
 
         mSectionsPagerAdapter  = new SectionsPagerAdapter(getSupportFragmentManager());

@@ -30,7 +30,7 @@ public class UserHomePageActivity extends AppCompatActivity {
 
 
         Intent intent = getIntent();
-        userType = intent.getStringExtra("userType");
+        //userType = intent.getStringExtra("userType");
         user_home_page_dl = (DrawerLayout) findViewById(R.id.user_home_page_dl);
         abdt = new ActionBarDrawerToggle(this, user_home_page_dl, R.string.Open, R.string.Close);
         abdt.setDrawerIndicatorEnabled(true);

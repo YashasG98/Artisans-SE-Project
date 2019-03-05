@@ -60,27 +60,19 @@ public class ArtisanLoginFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         final View view = inflater.inflate(R.layout.activity_artisan_login, container, false);
-
-        if(FirebaseAuth.getInstance().getCurrentUser()!=null)
-        {
-            if(FirebaseAuth.getInstance().getCurrentUser().getEmail()!=null)
-            {
-                startActivity(new Intent(getContext(),UserHomePageActivity.class));
-
-            }
-            else
-                startActivity(new Intent(getContext(),UserHomePageActivity.class));
-
-
-        }
-
-
+        FirebaseUser userx = FirebaseAuth.getInstance().getCurrentUser();
 //        if(FirebaseAuth.getInstance().getCurrentUser()!=null)
 //        {
-//            if(FirebaseAuth.getInstance().getCurrentUser().getPhoneNumber()==null)
-//            startActivity(new Intent(getContext(), ArtisanHomePageActivity.class));
+//            if(FirebaseAuth.getInstance().getCurrentUser().getEmail()!=null)
+//            {
+//                Intent intent = new Intent(getContext(), ArtisanHomePageActivity.class);
+//                intent.putExtra("userType", "a");
+//                intent.putExtra("phoneNumber", "123");
+//                startActivity(intent);
 //
-//
+//            }
+//            else
+//                startActivity(new Intent(getContext(),UserHomePageActivity.class));
 //
 //
 //        }
@@ -101,27 +93,42 @@ public class ArtisanLoginFragment extends Fragment {
         FirebaseUser user = mAuth.getCurrentUser();
 
         if (user != null) {
-            final String contactNo = mAuth.getCurrentUser().getPhoneNumber();
+
+            view.setVisibility(view.INVISIBLE);
+
+            if(user.getPhoneNumber().length() > 0) {
+                final String contactNo = mAuth.getCurrentUser().getPhoneNumber();
+                Intent intent = new Intent(getContext(), ArtisanHomePageActivity.class);
+                intent.putExtra("phoneNumber", contactNo);
+                startActivity(intent);
+                getActivity().finish();
 //            final String nameTry = mAuth.getCurrentUser().get
-            DatabaseReference nameRef = FirebaseDatabase.getInstance().getReference("Artisans/"+contactNo+"/username");
-            nameRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    name = dataSnapshot.getValue(String.class);
-                    Intent intent = new Intent(getContext(), ArtisanHomePageActivity.class);
-                    intent.putExtra("name", name);
-                    intent.putExtra("phoneNumber", contactNo);
-                    intent.putExtra("userType", "a");
-                    Log.d("no", contactNo);
-                    startActivity(intent);
-                    Log.d("name", name);
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                }
-            });
+//                DatabaseReference nameRef = FirebaseDatabase.getInstance().getReference("Artisans/" + contactNo + "/username");
+//                nameRef.addListenerForSingleValueEvent(new ValueEventListener() {
+//                    @Override
+//                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                        name = dataSnapshot.getValue(String.class);
+//                        Intent intent = new Intent(getContext(), ArtisanHomePageActivity.class);
+//                        intent.putExtra("name", name);
+//                        intent.putExtra("phoneNumber", contactNo);
+//                        intent.putExtra("userType", "a");
+//                        Log.d("no", contactNo);
+//                        startActivity(intent);
+//                        Log.d("name", name);
+//                    }
+//
+//                    @Override
+//                    public void onCancelled(@NonNull DatabaseError databaseError) {
+//
+//                    }
+//                });
+            }
+//            else
+//            {
+//                Intent intent1 = new Intent(new Intent(getContext(), UserHomePageActivity.class));
+//                startActivity(intent1);
+//                getActivity().finish();
+//            }
 
 
             //finish();
@@ -143,7 +150,7 @@ public class ArtisanLoginFragment extends Fragment {
             public void onClick(View v) {
 
                 //contactNoEdit = view.findViewById(R.id.edit_artisan_login_activity_Contact_No);
-                ContactNo = contactNoEdit.getText().toString();
+                ContactNo = "+91" + contactNoEdit.getText().toString();
                 if(ContactNo.length() !=0 && contactsList.contains(ContactNo))
                     SendCode(view);
                 else {
@@ -213,8 +220,9 @@ public class ArtisanLoginFragment extends Fragment {
                     intent.putExtra("userType", "a");
                     Log.d("Here", username+" "+ContactNo);
                     startActivity(intent);
-
                     OTPFlag = true;
+
+                    getActivity().finish();
                 } else {
 
                     Log.d("Here", "Fail");
@@ -238,7 +246,7 @@ public class ArtisanLoginFragment extends Fragment {
     private void SendCode(View view) {
 
         contactNoEdit =  view.findViewById(R.id.edit_artisan_login_activity_Contact_No);
-        ContactNo = contactNoEdit.getText().toString();
+        ContactNo = "+91" + contactNoEdit.getText().toString();
 
         OTPsent = true;
 
@@ -263,11 +271,11 @@ public class ArtisanLoginFragment extends Fragment {
         @Override
         public void onVerificationFailed(FirebaseException e) {
 
-            Toast.makeText(getContext(), "Login UnSuccessful", Toast.LENGTH_LONG).show();
+            Toast.makeText(getContext(), "Login Unsuccessful", Toast.LENGTH_LONG).show();
 
             if (e instanceof FirebaseAuthInvalidCredentialsException) {
                 // Invalid request
-                Toast.makeText(getContext(), "Login UnSuccessful", Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(), "Login Unsuccessful", Toast.LENGTH_LONG).show();
                 // ...
             } else if (e instanceof FirebaseTooManyRequestsException) {
                 // The SMS quota for the project has been exceeded
