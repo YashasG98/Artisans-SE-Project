@@ -34,7 +34,7 @@ public class ArtisanHomePageActivity extends AppCompatActivity {
         userType = intent.getStringExtra("userType");
 
         artisanPhoneNumber = intent.getStringExtra("phoneNumber");
-        Log.d("artisanPhoneNumber", artisanPhoneNumber);
+        //Log.d("artisanPhoneNumber", artisanPhoneNumber);
 
         firebaseAuth = FirebaseAuth.getInstance();
         artisan_home_page_dl = (DrawerLayout) findViewById(R.id.artisan_home_page_dl);
@@ -124,6 +124,12 @@ public class ArtisanHomePageActivity extends AppCompatActivity {
     }
 
     public void my_products(MenuItem item){
+        Intent newIntent = new Intent(this, ArtisanProductsActivity.class);
+        newIntent.putExtra("phoneNumber", artisanPhoneNumber);
+        startActivity(newIntent);
+    }
+
+    public void my_products(View view) {
         Intent newIntent = new Intent(this, ArtisanProductsActivity.class);
         newIntent.putExtra("phoneNumber", artisanPhoneNumber);
         startActivity(newIntent);
