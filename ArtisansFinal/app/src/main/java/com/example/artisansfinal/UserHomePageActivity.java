@@ -120,7 +120,7 @@ public class UserHomePageActivity extends AppCompatActivity {
         Intent i = new Intent(this, SelectedCategoryActivity.class);
         i.putExtra("category", "Shawl");
         startActivity(i);
-        Toast.makeText(this, "Dhoti", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Shawl", Toast.LENGTH_SHORT).show();
     }
 
     public void Garland(View view) {

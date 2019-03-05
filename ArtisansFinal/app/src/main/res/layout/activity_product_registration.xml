@@ -8,9 +8,7 @@
     android:background="#bbdefb"
     android:id="@+id/product_registration_nsv">
 
-    <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+    <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".ProductRegistrationActivity"
@@ -20,8 +18,9 @@
             android:id="@+id/product_registration_tv_registration_display"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="16dp"
             android:gravity="center"
             android:text="@string/titleProductRegistration"
             android:textAppearance="@style/TextAppearance.AppCompat"
@@ -29,16 +28,15 @@
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.012" />
+            app:layout_constraintVertical_bias="0.0" />
 
         <Spinner
             android:id="@+id/product_registration_spinner_categories"
             android:layout_width="0dp"
-            android:layout_height="32dp"
-            android:layout_marginStart="8dp"
+            android:layout_height="31dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="8dp"
@@ -47,10 +45,9 @@
             android:paddingRight="5dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/textView4"
             app:layout_constraintTop_toBottomOf="@+id/product_registration_tv_registration_display"
-            app:layout_constraintVertical_bias="0.024" />
+            app:layout_constraintVertical_bias="0.016" />
 
         <android.support.design.widget.TextInputLayout
             android:id="@+id/product_registration_til_text_input_product_name"
@@ -203,10 +200,9 @@
             android:id="@+id/product_registration_button_register"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
+            android:layout_marginStart="32dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
-            android:layout_marginRight="16dp"
             android:layout_marginBottom="8dp"
             android:background="@drawable/border2"
             android:backgroundTint="?attr/colorButtonNormal"
@@ -218,8 +214,25 @@
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/product_registration_til_text_input_product_price"
-            app:layout_constraintVertical_bias="0.23000002"
-            android:layout_marginLeft="8dp" />
+            app:layout_constraintVertical_bias="0.181" />
+
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="120dp"
+            android:layout_height="29dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:gravity="center"
+            android:text="@string/category"
+            android:textColor="@color/colorPrimaryText"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/product_registration_spinner_categories"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/product_registration_tv_registration_display"
+            app:layout_constraintVertical_bias="0.015" />
 
 
     </android.support.constraint.ConstraintLayout>
