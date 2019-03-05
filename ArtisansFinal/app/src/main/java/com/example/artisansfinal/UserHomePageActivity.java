@@ -98,7 +98,7 @@ public class UserHomePageActivity extends AppCompatActivity {
     public void Logout(MenuItem item) {
         firebaseAuth.signOut();
         finish();
-        startActivity(new Intent(UserHomePageActivity.this, LoginActivity.class));
+        startActivity(new Intent(UserHomePageActivity.this, CommonLoginActivityTabbed.class));
         Toast.makeText(this, "Logged out", Toast.LENGTH_SHORT).show();
     }
 
