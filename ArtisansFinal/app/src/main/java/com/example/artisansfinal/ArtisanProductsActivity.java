@@ -71,13 +71,12 @@ public class ArtisanProductsActivity extends AppCompatActivity {
                             if(contentLayout.getVisibility()==View.GONE){
                                 contentLayout.setVisibility(View.VISIBLE);
                                 loadingLayout.setVisibility(View.GONE);
-
-                                ProductInfo productInfo;
-                                HashMap<String, String> map = (HashMap<String, String>) dataSnapshot.getValue();
-                                Log.d("MAP", dataSnapshot.toString());
-                                productInfo = new ProductInfo(map.get("productID"), map.get("productName"), map.get("productDescription"), map.get("productCategory"), map.get("productPrice"), map.get("artisanName"), map.get("artisanContactNumber"));
-                                artisanProductsRecyclerViewAdapter.added(productInfo);
                             }
+                            ProductInfo productInfo;
+                            HashMap<String, String> map = (HashMap<String, String>) dataSnapshot.getValue();
+                            Log.d("MAP", dataSnapshot.toString());
+                            productInfo = new ProductInfo(map.get("productID"), map.get("productName"), map.get("productDescription"), map.get("productCategory"), map.get("productPrice"), map.get("artisanName"), map.get("artisanContactNumber"));
+                            artisanProductsRecyclerViewAdapter.added(productInfo);
                         }
 
                         @Override
