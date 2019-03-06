@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -73,6 +74,7 @@ public class ArtisanProductsActivity extends AppCompatActivity {
 
                                 ProductInfo productInfo;
                                 HashMap<String, String> map = (HashMap<String, String>) dataSnapshot.getValue();
+                                Log.d("MAP", dataSnapshot.toString());
                                 productInfo = new ProductInfo(map.get("productID"), map.get("productName"), map.get("productDescription"), map.get("productCategory"), map.get("productPrice"), map.get("artisanName"), map.get("artisanContactNumber"));
                                 artisanProductsRecyclerViewAdapter.added(productInfo);
                             }

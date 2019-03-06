@@ -142,10 +142,10 @@ public class ArtisanProductPageActivity extends AppCompatActivity {
                     public void onFailure(@NonNull Exception e) {
 //                        Toast.makeText(getApplicationContext(), "Image Load Failed", Toast.LENGTH_SHORT).show();
                         Glide.with(getApplicationContext())
-                                .load(R.mipmap.imageNotProvided)
+                                .load(R.mipmap.image_not_provided)
                                 .into(displayImage);
                         Glide.with(getApplicationContext())
-                                .load(R.mipmap.imageNotProvided)
+                                .load(R.mipmap.image_not_provided)
                                 .into(editImage);
                     }
                 });

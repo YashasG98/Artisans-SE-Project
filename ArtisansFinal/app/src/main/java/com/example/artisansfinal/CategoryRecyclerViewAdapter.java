@@ -128,7 +128,7 @@ public class CategoryRecyclerViewAdapter extends RecyclerView.Adapter<CategoryRe
             public void onFailure(@NonNull Exception e) {
 //                Toast.makeText(context, "IMAGE Load Failed: " + productInfo.getProductName(), Toast.LENGTH_SHORT).show();
                 Glide.with(context)
-                        .load(R.mipmap.notFound)
+                        .load(R.mipmap.not_found)
                         .into(viewHolder.image);
                 Log.d("FAIL: ", e.toString());
             }
