@@ -36,6 +36,8 @@
         <activity android:name=".UserProfileUpdateActivity" />
         <activity android:name=".ArtisanProfileUpdateActivity" />
         <activity android:name=".ArtisanProfilePageActivity" />
+        <activity android:name=".ArtisanOrderRequestPageActivity"/>
+        <activity android:name=".ArtisanPendingOrderActivity"></activity>
         <activity android:name=".OrderHistory" />
         <activity android:name=".CommonLoginActivity"/>
         <activity android:name=".CommonLoginActivityTabbed"
