@@ -2,6 +2,7 @@ package com.example.artisansfinal;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Paint;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -11,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -38,7 +40,7 @@ public class ArtisanLoginFragment extends Fragment {
     private EditText contactNoEdit;
     private EditText OTPEdit;
     private Button Login;
-    private Button userRegistration;
+    private TextView userRegistration;
     private Button sendOTP;
     private FirebaseAuth mAuth;
     private DatabaseReference databaseReferenceVerify;
@@ -80,8 +82,10 @@ public class ArtisanLoginFragment extends Fragment {
         contactNoEdit = (EditText) view.findViewById(R.id.edit_artisan_login_activity_Contact_No);
         OTPEdit = (EditText) view.findViewById(R.id.edit_artisan_login_activity_OTP);
         Login = (Button) view.findViewById(R.id.btnLogin);
-        userRegistration = (Button) view.findViewById(R.id.Register);
+        userRegistration = view.findViewById(R.id.Register);
         sendOTP = view.findViewById(R.id.send_otp_button);
+
+        userRegistration.setPaintFlags(Paint.UNDERLINE_TEXT_FLAG);
 
         contactsList = new ArrayList<>();
         usernameList = new ArrayList<>();
