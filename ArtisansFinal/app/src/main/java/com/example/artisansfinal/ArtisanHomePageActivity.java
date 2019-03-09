@@ -31,16 +31,13 @@ public class ArtisanHomePageActivity extends AppCompatActivity {
     private FirebaseAuth firebaseAuth;
     private String artisanPhoneNumber;
     private String name;
-
+    int counter;
+    //private String name2; // added by shrinidhi
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.artisan_home_page_activity);
         DrawerLayout drawerLayout = findViewById(R.id.artisan_home_page_dl);
-        AnimationDrawable animationDrawable = (AnimationDrawable) drawerLayout.getBackground();
-        animationDrawable.setEnterFadeDuration(4000);
-        animationDrawable.setExitFadeDuration(4000);
-        animationDrawable.start();
 
         Intent intent = getIntent();
         //userType = intent.getStringExtra("userType");
@@ -90,6 +87,31 @@ public class ArtisanHomePageActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        counter++;
+    }
+
+    // added by Shrinidhi
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState)
+    {
+        super.onSaveInstanceState(savedInstanceState);
+        savedInstanceState.putString("Phone number",artisanPhoneNumber);
+        savedInstanceState.putString("Artisan name",name);
+    }
+    // added by Shrinidhi
+    @Override
+    public void onRestoreInstanceState(Bundle savedInstanceState) {
+        if(savedInstanceState != null)
+        {
+            String restoreArtisanPhNo = savedInstanceState.getString("Phone number");
+            String restoreName = savedInstanceState.getString("Artisan name");
+        }
+        super.onRestoreInstanceState(savedInstanceState);
     }
 
     @Override
