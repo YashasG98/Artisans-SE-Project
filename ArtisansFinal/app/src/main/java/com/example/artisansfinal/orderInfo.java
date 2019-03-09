@@ -12,6 +12,12 @@ public class orderInfo {
         this.c = "d";
     }
 
+    public orderInfo(String date, String name, String price) {
+        this.date = date;
+        this.name = name;
+        this.price = price;
+    }
+
     public String getC() {
         return c;
     }
