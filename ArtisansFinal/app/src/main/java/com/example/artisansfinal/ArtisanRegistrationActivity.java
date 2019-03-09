@@ -88,21 +88,21 @@ public class ArtisanRegistrationActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         emailAuth = FirebaseAuth.getInstance();
 
-        emailEdit = (EditText) findViewById(R.id.edit_email_id);
+        //emailEdit = (EditText) findViewById(R.id.edit_email_id);
         contactEdit = (EditText) findViewById(R.id.edit_contact_no_id);
         pincodeEdit = (EditText) findViewById(R.id.edit_address_id);
         usernameEdit = (EditText) findViewById(R.id.edit_username_id);
-        passwordEdit = (EditText) findViewById(R.id.edit_password_id);
+        //passwordEdit = (EditText) findViewById(R.id.edit_password_id);
         OTPEdit = findViewById(R.id.activity_main_EditText_OTP);
 
         activityArtisanRegistrationButton = findViewById(R.id.activity_main_OTP_button);
         activityArtisanRegistrationVerifyButton = findViewById(R.id.products_id);
 
 
-        email = emailEdit.getEditableText().toString().trim();
+       // email = emailEdit.getEditableText().toString().trim();
         pincode = pincodeEdit.getText().toString();
         username = usernameEdit.getText().toString();
-        password = passwordEdit.getText().toString();
+        //password = passwordEdit.getText().toString();
         ContactNo = "+91" + contactEdit.getText().toString();
         OTP = OTPEdit.getText().toString();
         id = databaseReference.push().getKey();
@@ -140,33 +140,33 @@ public class ArtisanRegistrationActivity extends AppCompatActivity {
 
     public void goToProductRegistrationPage(View view) {
 
-        emailEdit = (EditText) findViewById(R.id.edit_email_id);
+        //emailEdit = (EditText) findViewById(R.id.edit_email_id);
         contactEdit = (EditText) findViewById(R.id.edit_contact_no_id);
         pincodeEdit = (EditText) findViewById(R.id.edit_address_id);
         usernameEdit = (EditText) findViewById(R.id.edit_username_id);
-        passwordEdit = (EditText) findViewById(R.id.edit_password_id);
+        //passwordEdit = (EditText) findViewById(R.id.edit_password_id);
         OTPEdit = findViewById(R.id.activity_main_EditText_OTP);
 
 
-        email = emailEdit.getEditableText().toString().trim();
+        //email = emailEdit.getEditableText().toString().trim();
         pincode = pincodeEdit.getText().toString();
         username = usernameEdit.getText().toString();
-        password = passwordEdit.getText().toString();
+        //password = passwordEdit.getText().toString();
         ContactNo = "+91" + (contactEdit.getText().toString());
         OTP = OTPEdit.getText().toString();
         id = databaseReference.push().getKey();
 
-        if (password.length() == 0) {
-            if(email.length() != 0) {
-                passwordEdit.setError("Enter Password");
-                passwordEdit.requestFocus();
-                passwordFlag = false;
-            }
-            else {
-                password = " ";
-                passwordFlag = true;
-            }
-        } else
+//        if (password.length() == 0) {
+//            if(email.length() != 0) {
+//                passwordEdit.setError("Enter Password");
+//                passwordEdit.requestFocus();
+//                passwordFlag = false;
+//            }
+//            else {
+//                password = " ";
+//                passwordFlag = true;
+//            }
+//        } else
             passwordFlag = true;
 
         if (username.length() == 0) {
@@ -194,17 +194,17 @@ public class ArtisanRegistrationActivity extends AppCompatActivity {
         } else
             contactNoFlag = true;
 
-        if (emailList.contains(email) || email.length() == 0) {
-            if (email.length() == 0) {
-                email = " ";
-                emailFlag = true;
-            }
-            else {
-                emailEdit.setError("Email Already Exists");
-                emailEdit.requestFocus();
-                emailFlag = false;
-            }
-        } else
+//        if (emailList.contains(email) || email.length() == 0) {
+//            if (email.length() == 0) {
+//                email = " ";
+//                emailFlag = true;
+//            }
+//            else {
+//                emailEdit.setError("Email Already Exists");
+//                emailEdit.requestFocus();
+//                emailFlag = false;
+//            }
+//        } else
             emailFlag = true;
 
 
@@ -216,9 +216,6 @@ public class ArtisanRegistrationActivity extends AppCompatActivity {
             databaseReference.child(ContactNo).setValue(artisan);
 
 
-            mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                @Override
-                public void onComplete(@NonNull Task<AuthResult> task) {
 
                     Toast.makeText(getApplicationContext(), "Registered", Toast.LENGTH_LONG).show();
 
@@ -230,8 +227,6 @@ public class ArtisanRegistrationActivity extends AppCompatActivity {
 
                     finish();
 
-                }
-            });
         } else {
             Toast.makeText(getApplicationContext(), "Registration Failed", Toast.LENGTH_LONG).show();
         }
