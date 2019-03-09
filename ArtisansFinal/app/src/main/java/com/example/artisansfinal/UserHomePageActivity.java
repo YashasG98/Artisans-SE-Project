@@ -1,6 +1,7 @@
 package com.example.artisansfinal;
 
 import android.content.Intent;
+import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -27,6 +28,11 @@ public class UserHomePageActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.user_home_page_activity);
         firebaseAuth = FirebaseAuth.getInstance();
+        DrawerLayout drawerLayout = findViewById(R.id.user_home_page_dl);
+        AnimationDrawable animationDrawable = (AnimationDrawable) drawerLayout.getBackground();
+        animationDrawable.setEnterFadeDuration(4000);
+        animationDrawable.setExitFadeDuration(4000);
+        animationDrawable.start();
 
 
         Intent intent = getIntent();
