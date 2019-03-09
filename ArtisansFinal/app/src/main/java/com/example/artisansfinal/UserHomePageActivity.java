@@ -35,7 +35,7 @@ public class UserHomePageActivity extends AppCompatActivity {
         DrawerLayout drawerLayout = findViewById(R.id.user_home_page_dl);
 
         Intent intent = getIntent();
-        //userType = intent.getStringExtra("userType");
+
         FirebaseUser user = firebaseAuth.getCurrentUser();
         if(user != null)
         {
