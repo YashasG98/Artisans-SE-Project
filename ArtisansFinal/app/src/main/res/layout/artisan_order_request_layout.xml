@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_marginTop="5sp"
+    android:layout_marginBottom="5sp"
+    android:layout_marginStart="5sp"
+    android:layout_marginEnd="5sp"
+    android:orientation="vertical"
+    app:cardCornerRadius="8sp"
+    android:id="@+id/artisan_order_request_cv">
+
+    <RelativeLayout
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/artisan_order_request_rl"
+        android:layout_margin="10sp">
+
+        <ImageView
+            android:id="@+id/artisan_order_request_iv_product_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="8sp"
+            tools:srcCompat="@tools:sample/avatars" />
+
+        <TextView
+            android:id="@+id/artisan_order_request_tv_product_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/artisan_order_request_iv_product_image"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:text="Product Name"
+            android:textSize="24sp" />
+
+        <TextView
+            android:id="@+id/duedate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/artisan_order_request_tv_product_name"
+            android:layout_toRightOf="@id/artisan_order_request_iv_product_image"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:textSize="20sp"
+            android:text="Due :" />
+
+        <TextView
+            android:id="@+id/artisan_order_request_tv_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/artisan_order_request_tv_product_name"
+            android:layout_toRightOf="@id/duedate"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:textSize="20sp"
+            android:text="Date" />
+
+        <TextView
+            android:id="@+id/RS"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Rs."
+            android:textSize="16sp"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_toRightOf="@id/artisan_order_request_iv_product_image"
+            android:layout_below="@id/artisan_order_request_tv_date"
+            />
+
+        <TextView
+            android:id="@+id/artisan_order_request_tv_product_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/RS"
+            android:layout_below="@id/artisan_order_request_tv_date"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:text="Product Price"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/artisan_order_request_tv_user_uid"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/artisan_order_request_iv_product_image"
+            android:layout_below="@id/artisan_order_request_tv_product_price"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:text="User UID"
+            android:textSize="16sp" />
+
+    </RelativeLayout>
+
+</android.support.v7.widget.CardView>

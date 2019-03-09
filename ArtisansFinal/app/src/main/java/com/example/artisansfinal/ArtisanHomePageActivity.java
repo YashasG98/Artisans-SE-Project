@@ -132,7 +132,8 @@ public class ArtisanHomePageActivity extends AppCompatActivity {
     }
 
     public void Order_requests(View view) {
-        Toast.makeText(this, "Order requests", Toast.LENGTH_SHORT).show();
+        Intent newIntent = new Intent(this, ArtisanOrderRequestPageActivity.class);
+        startActivity(newIntent);
     }
 
     public void upload_product(MenuItem item) {
@@ -151,6 +152,11 @@ public class ArtisanHomePageActivity extends AppCompatActivity {
     public void my_products(MenuItem item){
         Intent newIntent = new Intent(this, ArtisanProductsActivity.class);
         newIntent.putExtra("phoneNumber", artisanPhoneNumber);
+        startActivity(newIntent);
+    }
+
+    public void pending_orders(MenuItem item){
+        Intent newIntent = new Intent(this, ArtisanPendingOrderActivity.class);
         startActivity(newIntent);
     }
 

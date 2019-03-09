@@ -187,8 +187,7 @@ public class ProductPageActivity extends AppCompatActivity {
                         Date c = Calendar.getInstance().getTime();
                         SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
                         String formattedDate = df.format(c);
-                        orderInfo order=new orderInfo(opname,oprice,formattedDate);
-                        String orderID = ordHis.push().getKey();
+                        orderInfo order=new orderInfo(opname,oprice,formattedDate,userX.getUid());                        String orderID = ordHis.push().getKey();
                         //ordHis.child(userX.getEmail().substring(0,userX.getEmail().indexOf('@'))).child(orderID).setValue(order);
                         ordHis.child("Users").child(userPhoneNumber).child("Orders Requested").child(orderID).setValue(order);
 
