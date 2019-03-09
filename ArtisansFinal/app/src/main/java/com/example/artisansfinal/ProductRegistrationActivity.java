@@ -48,6 +48,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.UUID;
 
+import smartdevelop.ir.eram.showcaseviewlib.GuideView;
+import smartdevelop.ir.eram.showcaseviewlib.config.DismissType;
+import smartdevelop.ir.eram.showcaseviewlib.config.Gravity;
+
 import static android.os.Build.VERSION_CODES.P;
 
 public class ProductRegistrationActivity extends AppCompatActivity {
@@ -74,6 +78,7 @@ public class ProductRegistrationActivity extends AppCompatActivity {
         final Button browse = findViewById(R.id.product_registration_button_browse_image);
         imageView = findViewById(R.id.product_registration_iv_product_image);
         Button register = findViewById(R.id.product_registration_button_register);
+
 
         browse.setOnClickListener(new View.OnClickListener() {
             @Override
