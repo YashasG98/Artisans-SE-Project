@@ -19,6 +19,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".ArtisanProductPageActivity" />
+        <activity android:name=".OrderHistoryTabbedActivity"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity android:name=".ArtisanProductsActivity" />
         <activity android:name=".ArtisanLoginActivity" />
         <activity android:name=".ProductRegistrationActivity" />
@@ -36,6 +38,8 @@
         <activity android:name=".UserProfileUpdateActivity" />
         <activity android:name=".ArtisanProfileUpdateActivity" />
         <activity android:name=".ArtisanProfilePageActivity" />
+        <activity android:name=".ArtisanOrderRequestPageActivity"/>
+        <activity android:name=".ArtisanPendingOrderActivity"></activity>
         <activity android:name=".OrderHistory" />
         <activity android:name=".CommonLoginActivity"/>
         <activity android:name=".CommonLoginActivityTabbed"

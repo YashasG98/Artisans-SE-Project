@@ -3,13 +3,15 @@ package com.example.artisansfinal;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -19,36 +21,32 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class OrderHistory extends AppCompatActivity {
-
-
-    FirebaseAuth firebaseAuth= FirebaseAuth.getInstance();
-
-    FirebaseUser userX = firebaseAuth.getCurrentUser();
-
-    private ArrayList<orderInfo> orders =new ArrayList<orderInfo>();
+public class UserCompletedOrderHistoryFragment extends Fragment {
+    private ArrayList<orderInfo> orders = new ArrayList<>();
     private DatabaseReference databaseReference;
-    private OHAdapter ohAdapter;
 
+    @Nullable
     @Override
-    protected void onCreate(Bundle savedInstanceState){
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.order_history);
-
-        final RecyclerView recyclerView = (RecyclerView) findViewById(R.id.orderHistory_rv);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        ohAdapter =new OHAdapter(this, orders);
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
+    {
+        View view = inflater.inflate(R.layout.activity_user_completed_order_history, container, false);
+        final RecyclerView recyclerView = view.findViewById(R.id.user_completed_order_history_rv);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        orders.clear();
+        final OHAdapter ohAdapter = new OHAdapter(getContext(), orders);
         recyclerView.setAdapter(ohAdapter);
 
-        databaseReference= FirebaseDatabase.getInstance().getReference("Orders/"+userX.getEmail().substring(0,userX.getEmail().indexOf('@')));
+        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        databaseReference= FirebaseDatabase.getInstance().getReference("Orders/"+"Users/"+FirebaseAuth.getInstance().getCurrentUser().getUid()+"/Orders Received");
         databaseReference.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 orderInfo order;
-                HashMap<String,String>map=(HashMap<String, String>) dataSnapshot.getValue();
-                Log.d("HERE",map.toString());
-                order = new orderInfo(map.get("name"),map.get("price"),map.get("date"),map.get("userUID"));
-                ohAdapter.added(order);
+                HashMap<String,String> map=(HashMap<String, String>) dataSnapshot.getValue();
+               // Log.d("HERE",map.toString());
+                order = new orderInfo(map.get("name"),map.get("price"),map.get("date"), map.get("uesrUID"));
+                if(!map.isEmpty())
+                    ohAdapter.added(order);
             }
 
             @Override
@@ -71,5 +69,8 @@ public class OrderHistory extends AppCompatActivity {
 
             }
         });
+
+        return view;
+
     }
 }

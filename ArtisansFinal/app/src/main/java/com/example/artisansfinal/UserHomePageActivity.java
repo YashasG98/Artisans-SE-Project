@@ -84,7 +84,7 @@ public class UserHomePageActivity extends AppCompatActivity {
     }
 
     public void order_history_button(MenuItem item) {
-        Intent i = new Intent(this, OrderHistory.class);
+        Intent i = new Intent(this, OrderHistoryTabbedActivity.class);
         startActivity(i);
         Toast.makeText(this, "Your order history", Toast.LENGTH_SHORT).show();
     }
