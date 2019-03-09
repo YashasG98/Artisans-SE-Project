@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -24,6 +25,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -57,6 +59,7 @@ public class ProductRegistrationActivity extends AppCompatActivity {
     private StorageReference storageReference;
     private Uri mainImageURI;
     private ProductInfo product;
+    //private double resizeFactorForHighRes[] = {1,0.8,0.7,0.6,0.5};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -124,23 +127,23 @@ public class ProductRegistrationActivity extends AppCompatActivity {
                     productPriceflag = false;
                 }
 
-                if (mainImageURI != null) {
-                    Log.d("IMAGEURI", mainImageURI.toString());
-                    uploadImage(mainImageURI);
-                }
-
                 if (productPriceflag && productNameflag) {
                     product = new ProductInfo(productID, productName, productDescription, productCategory, productPrice, artisanName, artisanContactNumber);
                     databaseReference.child("Categories").child(productCategory).child(productName).setValue(product);
                     databaseReference.child("ArtisanProducts").child(artisanContactNumber).child(productName).setValue(product);
 //                    databaseReference.child("Products").child(productName).setValue(product);
 
-                    Toast.makeText(getApplicationContext(), "Product Registered", Toast.LENGTH_SHORT).show();
-                    Intent intent1 = new Intent(ProductRegistrationActivity.this, ArtisanHomePageActivity.class);
-                    intent1.putExtra("param", "");
-                    startActivity(intent1);
-                }
+                    if (mainImageURI != null) {
+                        Log.d("IMAGEURI", mainImageURI.toString());
+                        uploadImage(mainImageURI);
+                    }
 
+//                    Toast.makeText(getApplicationContext(), "Product Registered", Toast.LENGTH_SHORT).show();
+//                    Intent intent1 = new Intent(ProductRegistrationActivity.this, ArtisanHomePageActivity.class);
+//                    intent1.putExtra("param", "");
+//                    startActivity(intent1);
+                    finish();
+                }
             }
         });
     }
@@ -187,26 +190,44 @@ public class ProductRegistrationActivity extends AppCompatActivity {
         protected void onPostExecute(byte[] bytes) {
             super.onPostExecute(bytes);
             StorageReference ref1 = storageReference.child("ProductImages/").child("HighRes/" + product.getProductID());
-            ref1.putBytes(bytes);
-            byte[] thumbnailImage = CreateThumbnail(bytes,500);
+            executeUploadTask(ref1,bytes);
+
+            Bitmap thumbnail = ThumbnailUtils.extractThumbnail(bitmap,250,250);
+            byte[] thumbnailImage = getBytesFromBitmap(thumbnail,100);
             Log.d("IMAGE COMPRESSION", "Thumbnail Image size: "+thumbnailImage.length/1024+"kB");
+
             StorageReference ref2 = storageReference.child("ProductImages/").child("LowRes/" + product.getProductID());
-            ref2.putBytes(thumbnailImage);
+            executeUploadTask(ref2,thumbnailImage);
         }
-
     }
 
-    private byte[] CreateThumbnail(byte[] passedImage, int maxWidth) {
-        byte[] returnedThumbnail;
-        Bitmap image = BitmapFactory.decodeByteArray(passedImage,0,passedImage.length);
-        Bitmap newBitmap = Bitmap.createScaledBitmap(image, maxWidth, maxWidth,false);
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        newBitmap.compress(Bitmap.CompressFormat.JPEG,100,stream);
-        returnedThumbnail = stream.toByteArray();
-        newBitmap.recycle();
-        return returnedThumbnail;
+    private void executeUploadTask(StorageReference ref, byte[] image) {
 
+        final ProgressDialog progressBar = new ProgressDialog(this);
+        progressBar.setMessage("Uploading");
+        progressBar.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progressBar.setIndeterminate(true);
+
+        ref.putBytes(image).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                progressBar.dismiss();
+                Toast.makeText(getApplicationContext(),"Image Uploaded",Toast.LENGTH_SHORT).show();
+            }
+        }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+                double currentProgress = (double) (100 * taskSnapshot.getBytesTransferred())/taskSnapshot.getTotalByteCount();
+                progressBar.setProgress((int) currentProgress);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(getApplicationContext(),"Image Upload failed",Toast.LENGTH_SHORT).show();
+            }
+        });
     }
+
 
     public static byte[] getBytesFromBitmap(Bitmap bitmap, int quality){
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
@@ -223,10 +244,6 @@ public class ProductRegistrationActivity extends AppCompatActivity {
 
     }
 
-//    public Uri getImageUri(Context inContext, Bitmap inImage) {
-//        String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title", null);
-//        return Uri.parse(path);
-//    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {

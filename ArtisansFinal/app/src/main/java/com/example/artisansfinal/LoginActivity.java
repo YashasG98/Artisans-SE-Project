@@ -38,6 +38,7 @@ public class LoginActivity extends AppCompatActivity implements AdapterView.OnIt
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+
         intent = getIntent();
 
         userType = intent.getStringExtra("userType");
@@ -46,10 +47,9 @@ public class LoginActivity extends AppCompatActivity implements AdapterView.OnIt
         Password = (EditText) findViewById(R.id.login_page_et_user_password);
         Login = (Button) findViewById(R.id.login_page_button_user_login);
         //userRegistration=(Button)findViewById(R.id.login_page_button_user_registration);
-        spinner = (Spinner) findViewById(R.id.login_page_spinner_user_registration);
+
         ArrayAdapter adapter = ArrayAdapter.createFromResource(this, R.array.intents, R.layout.support_simple_spinner_dropdown_item);
-        spinner.setAdapter(adapter);
-        spinner.setOnItemSelectedListener(this);
+
         forgotpassword = (TextView) findViewById(R.id.login_page_tv_user_forgotpassword);
 
 

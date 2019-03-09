@@ -21,6 +21,10 @@
         android:icon="@drawable/ic_work_black_24dp">
     </item>
     <item
+        android:id="@+id/pending_orders"
+        android:title="Pending Orders"
+        android:onClick="pending_orders"></item>
+    <item
         android:id="@+id/tutorial_button"
         android:title="Tutorial"
         android:onClick="tutorial_button"

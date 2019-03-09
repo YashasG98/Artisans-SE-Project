@@ -47,7 +47,7 @@ public class OrderHistory extends AppCompatActivity {
                 orderInfo order;
                 HashMap<String,String>map=(HashMap<String, String>) dataSnapshot.getValue();
                 Log.d("HERE",map.toString());
-                order = new orderInfo(map.get("name"),map.get("price"),map.get("date"));
+                order = new orderInfo(map.get("name"),map.get("price"),map.get("date"),map.get("userUID"));
                 ohAdapter.added(order);
             }
 

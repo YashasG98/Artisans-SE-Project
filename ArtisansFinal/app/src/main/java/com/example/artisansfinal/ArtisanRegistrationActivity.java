@@ -103,7 +103,7 @@ public class ArtisanRegistrationActivity extends AppCompatActivity {
         pincode = pincodeEdit.getText().toString();
         username = usernameEdit.getText().toString();
         password = passwordEdit.getText().toString();
-        ContactNo = contactEdit.getText().toString();
+        ContactNo = "+91" + contactEdit.getText().toString();
         OTP = OTPEdit.getText().toString();
         id = databaseReference.push().getKey();
 
@@ -113,7 +113,7 @@ public class ArtisanRegistrationActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                ContactNo = contactEdit.getText().toString();
+                ContactNo = "+91" + contactEdit.getText().toString();
                 if (ContactNo.length() != 0)
                     SendCode();
 
@@ -152,7 +152,7 @@ public class ArtisanRegistrationActivity extends AppCompatActivity {
         pincode = pincodeEdit.getText().toString();
         username = usernameEdit.getText().toString();
         password = passwordEdit.getText().toString();
-        ContactNo = (contactEdit.getText().toString());
+        ContactNo = "+91" + (contactEdit.getText().toString());
         OTP = OTPEdit.getText().toString();
         id = databaseReference.push().getKey();
 
@@ -228,6 +228,8 @@ public class ArtisanRegistrationActivity extends AppCompatActivity {
                     intent.putExtra("name", username);
                     startActivity(intent);
 
+                    finish();
+
                 }
             });
         } else {
@@ -257,7 +259,7 @@ public class ArtisanRegistrationActivity extends AppCompatActivity {
 
     private void SendCode() {
 
-        ContactNo = contactEdit.getText().toString();
+        ContactNo = "+91" + contactEdit.getText().toString();
         OTPsentFlag = true;
         PhoneAuthProvider.getInstance().verifyPhoneNumber(
                 ContactNo,        // Phone number to SendCode
@@ -283,7 +285,7 @@ public class ArtisanRegistrationActivity extends AppCompatActivity {
                 // ...
             } else if (e instanceof FirebaseTooManyRequestsException) {
                 // The SMS quota for the project has been exceeded
-                Toast.makeText(getApplicationContext(), "sms limit reached", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "SMS limit reached", Toast.LENGTH_LONG).show();
                 // ...
             }
 

@@ -94,7 +94,7 @@ public class ArtisanProductsRecyclerViewAdapter extends RecyclerView.Adapter<Art
 
         Glide.with(context)
                 .asGif()
-                .load(R.mipmap.loading1)
+                .load(R.mipmap.loading3)
                 .into(viewHolder.image);
 
         storageReference.getBytes(ONE_MB).addOnSuccessListener(new OnSuccessListener<byte[]>() {
@@ -123,7 +123,10 @@ public class ArtisanProductsRecyclerViewAdapter extends RecyclerView.Adapter<Art
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Toast.makeText(context, "IMAGE Load Failed: " + productInfo.getProductName(), Toast.LENGTH_SHORT).show();
+//                Toast.makeText(context, "IMAGE Load Failed: " + productInfo.getProductName(), Toast.LENGTH_SHORT).show();
+                Glide.with(context)
+                        .load(R.mipmap.not_found)
+                        .into(viewHolder.image);
                 Log.d("FAIL: ", e.toString());
             }
         });
@@ -152,6 +155,7 @@ public class ArtisanProductsRecyclerViewAdapter extends RecyclerView.Adapter<Art
 //                newintent.putExtra("productCategory", prodCategory);
                 newintent.putExtra("artisanPhoneNumber", artisanPhoneNumber);
                 newintent.putExtra("productID", productInfo.getProductID());
+                newintent.putExtra("productCategory", productInfo.getProductCategory());
                 newintent.putExtra("productInfo", (Parcelable) productInfo);
                 Log.d("pINFO", productInfo.toString());
                 context.startActivity(newintent);

@@ -128,28 +128,12 @@ public class ProductPageActivity extends AppCompatActivity {
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(getApplicationContext(), "Image Load Failed", Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(getApplicationContext(), "Image Load Failed", Toast.LENGTH_SHORT).show();
+                        Glide.with(getApplicationContext())
+                                .load(R.mipmap.image_not_provided)
+                                .into(image);
                     }
                 });
-
-//                Bundle extras = getIntent().getExtras();
-//                byte[] b = extras.getByteArray("productImage");
-//                Bitmap bmp = BitmapFactory.decodeByteArray(b, 0, b.length);
-//                image.setImageBitmap(bmp);
-
-//                Glide.with(getApplicationContext()).load(storageReference.child(map.get("productID"))).into(image);
-//                storageReference.child(map.get("productID")).getBytes(ONE_MB).addOnSuccessListener(new OnSuccessListener<byte[]>() {
-//                    @Override
-//                    public void onSuccess(byte[] bytes) {
-//                        Glide.with(getApplicationContext()).load(bytes).into(image);
-//                    }
-//                }).addOnFailureListener(new OnFailureListener() {
-//                    @Override
-//                    public void onFailure(@NonNull Exception e) {
-//                        Toast.makeText(ProductPageActivity.this, "Image Load Failed", Toast.LENGTH_SHORT).show();
-//                    }
-//                });
-//                Glide.with(getApplicationContext()).
             }
 
             @Override
@@ -203,10 +187,9 @@ public class ProductPageActivity extends AppCompatActivity {
                         Date c = Calendar.getInstance().getTime();
                         SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
                         String formattedDate = df.format(c);
-                        orderInfo order=new orderInfo(opname,oprice,formattedDate);
-                        String orderID = ordHis.push().getKey();
+                        orderInfo order=new orderInfo(opname,oprice,formattedDate,userX.getUid());                        String orderID = ordHis.push().getKey();
                         //ordHis.child(userX.getEmail().substring(0,userX.getEmail().indexOf('@'))).child(orderID).setValue(order);
-                        ordHis.child(userPhoneNumber).child("Orders Accepted").setValue(order);
+                        ordHis.child("Users").child(userPhoneNumber).child("Orders Requested").child(orderID).setValue(order);
 
                     }
                 });
