@@ -15,13 +15,17 @@ import android.widget.Toast;
 
 import com.example.artisansfinal.R;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
+import java.util.Objects;
 
 public class UserHomePageActivity extends AppCompatActivity {
     private DrawerLayout user_home_page_dl;
     private ActionBarDrawerToggle abdt;
     private String userType;
     private FirebaseAuth firebaseAuth;
-
+    private String emailID;
+    int counter = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -35,6 +39,12 @@ public class UserHomePageActivity extends AppCompatActivity {
         animationDrawable.start();
         Intent intent = getIntent();
         //userType = intent.getStringExtra("userType");
+        FirebaseUser user = firebaseAuth.getCurrentUser();
+        if(user != null)
+        {
+        userType = user.getDisplayName();
+        emailID = user.getEmail();
+        }
         user_home_page_dl = (DrawerLayout) findViewById(R.id.user_home_page_dl);
         abdt = new ActionBarDrawerToggle(this, user_home_page_dl, R.string.Open, R.string.Close);
         abdt.setDrawerIndicatorEnabled(true);
@@ -57,7 +67,42 @@ public class UserHomePageActivity extends AppCompatActivity {
         });
 
     }
+    //added by shrinidhi
+    @Override
+    protected void onResume() {
+        super.onResume();
+        counter++;
+    }
 
+    // added by shrinidhi
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        FirebaseUser user = firebaseAuth.getCurrentUser();
+        if(user != null) {
+            userType = user.getDisplayName();
+            emailID = user.getEmail();
+
+            outState.putString("username", userType);
+            outState.putString("email id", emailID);
+        }
+        Log.d("userType",counter+"onSaveInstanceState");
+        Log.d("emailID",counter+"onSaveInstanceState");
+    }
+    // added by Shrinidhi
+    @Override
+    public void onRestoreInstanceState(Bundle savedInstanceState) {
+        if(savedInstanceState != null)
+        {
+            String restoreUserType = savedInstanceState.getString("username");
+            String restoreEmailID = savedInstanceState.getString("email id");
+            Log.d("restoreEmailID",counter+"onRestoreInstanceState");
+            Log.d("restoreUserType",counter+"onRestoreInstanceState");
+        }
+        super.onRestoreInstanceState(savedInstanceState);
+
+
+    }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
