@@ -17,3 +17,4 @@ git checkout master
 git pull upstream master
 git branch -D branch_name
 ```
+While creating a pull request, request a review from either @rohit-mp or @YashasG98

@@ -54,6 +54,7 @@ public class ProductPageActivity extends AppCompatActivity {
     final long ONE_MB = 1024*1024;
     private DatabaseReference ordHis;
     private String userPhoneNumber;
+    private String artisanContactNumber;
     FirebaseAuth firebaseAuth= FirebaseAuth.getInstance();
 
     FirebaseUser userX = firebaseAuth.getCurrentUser();
@@ -105,6 +106,7 @@ public class ProductPageActivity extends AppCompatActivity {
                 aname.setText(map.get("artisanName"));
                 price.setText(map.get("productPrice"));
                 desc.setText(map.get("productDescription"));
+                artisanContactNumber = map.get("artisanContactNumber");
                 Log.d("STORAGE", storageReference.child(map.get("productID")).toString());
                 storageReference.getBytes(ONE_MB).addOnSuccessListener(new OnSuccessListener<byte[]>() {
                     @Override
@@ -128,28 +130,12 @@ public class ProductPageActivity extends AppCompatActivity {
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(getApplicationContext(), "Image Load Failed", Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(getApplicationContext(), "Image Load Failed", Toast.LENGTH_SHORT).show();
+                        Glide.with(getApplicationContext())
+                                .load(R.mipmap.image_not_provided)
+                                .into(image);
                     }
                 });
-
-//                Bundle extras = getIntent().getExtras();
-//                byte[] b = extras.getByteArray("productImage");
-//                Bitmap bmp = BitmapFactory.decodeByteArray(b, 0, b.length);
-//                image.setImageBitmap(bmp);
-
-//                Glide.with(getApplicationContext()).load(storageReference.child(map.get("productID"))).into(image);
-//                storageReference.child(map.get("productID")).getBytes(ONE_MB).addOnSuccessListener(new OnSuccessListener<byte[]>() {
-//                    @Override
-//                    public void onSuccess(byte[] bytes) {
-//                        Glide.with(getApplicationContext()).load(bytes).into(image);
-//                    }
-//                }).addOnFailureListener(new OnFailureListener() {
-//                    @Override
-//                    public void onFailure(@NonNull Exception e) {
-//                        Toast.makeText(ProductPageActivity.this, "Image Load Failed", Toast.LENGTH_SHORT).show();
-//                    }
-//                });
-//                Glide.with(getApplicationContext()).
             }
 
             @Override
@@ -182,6 +168,8 @@ public class ProductPageActivity extends AppCompatActivity {
 
 
 
+
+
         ordHis = FirebaseDatabase.getInstance().getReference("Orders");
 
 
@@ -203,10 +191,13 @@ public class ProductPageActivity extends AppCompatActivity {
                         Date c = Calendar.getInstance().getTime();
                         SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
                         String formattedDate = df.format(c);
-                        orderInfo order=new orderInfo(opname,oprice,formattedDate);
+                        orderInfo order=new orderInfo(opname,oprice,formattedDate,userX.getUid());
                         String orderID = ordHis.push().getKey();
                         //ordHis.child(userX.getEmail().substring(0,userX.getEmail().indexOf('@'))).child(orderID).setValue(order);
-                        ordHis.child(userPhoneNumber).child("Orders Accepted").setValue(order);
+                        ordHis.child("Users").child(userX.getUid()).child("Orders Requested").child(orderID).setValue(order);
+                        orderID = ordHis.push().getKey();
+                        ordHis.child("Artisans").child(artisanContactNumber).child("Order Requests").child(orderID).setValue(order);
+
 
                     }
                 });

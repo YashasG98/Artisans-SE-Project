@@ -63,59 +63,34 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/login_page_et_user_password" />
 
-    <Spinner
-        android:id="@+id/login_page_spinner_user_registration"
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="19dp"
-        android:layout_marginLeft="19dp"
-        android:layout_marginTop="52dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginBottom="120dp"
-        android:gravity="center"
-        android:spinnerMode="dropdown"
-        android:textAlignment="center"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/textView2"
-        app:layout_constraintTop_toBottomOf="@+id/login_page_tv_user_forgotpassword" />
-
     <TextView
         android:id="@+id/login_page_tv_user_forgotpassword"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="176dp"
-        android:layout_marginLeft="176dp"
         android:layout_marginTop="49dp"
         android:layout_marginEnd="177dp"
-        android:layout_marginRight="177dp"
-        android:layout_marginBottom="52dp"
+        android:layout_marginBottom="197dp"
         android:text="Reset Password?"
         android:visibility="visible"
-        app:layout_constraintBottom_toTopOf="@+id/login_page_spinner_user_registration"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.494"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/login_page_button_user_login" />
 
-    <TextView
-        android:id="@+id/textView2"
+    <Button
+        android:id="@+id/login_page_button_user_registration"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="39dp"
-        android:layout_marginLeft="39dp"
-        android:layout_marginTop="86dp"
-        android:layout_marginEnd="19dp"
-        android:layout_marginRight="19dp"
-        android:layout_marginBottom="103dp"
-        android:text="REGISTER AS"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        android:visibility="visible"
+        android:layout_marginStart="295dp"
+        android:layout_marginTop="285dp"
+        android:layout_marginEnd="28dp"
+        android:layout_marginBottom="69dp"
+        android:text="SIGN UP"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/login_page_spinner_user_registration"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/login_page_tv_user_forgotpassword" />
+        app:layout_constraintTop_toBottomOf="@+id/login_page_et_user_password" />
 
 </android.support.constraint.ConstraintLayout>

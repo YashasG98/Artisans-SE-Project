@@ -15,11 +15,11 @@
     <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
+    <string name="category">Category: </string>
     <string-array name="searchFilter">
         <item>Product</item>
         <item>Artisan</item>
     </string-array>
-
     <string-array name="sortChoice">
         <item>Price: Low to High</item>
         <item>Price: High to Low</item>
@@ -59,4 +59,10 @@
     <string name="productPrice">Product Price</string>
     <string name="VerifyOTP">Verify OTP</string>
     <string name="enter_otp">Enter OTP</string>
+    <string name="title_activity_common_login_tabbed">common_login_tabbed</string>
+    <string name="section_format">Hello World from section: %1$d</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="tab_text_1">Tab 1</string>
+    <string name="tab_text_2">Tab 2</string>
+    <string name="tab_text_3">Tab 3</string>
 </resources>
