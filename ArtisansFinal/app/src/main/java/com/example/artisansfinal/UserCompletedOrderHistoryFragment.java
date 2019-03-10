@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
@@ -33,8 +34,9 @@ public class UserCompletedOrderHistoryFragment extends Fragment {
         final RecyclerView recyclerView = view.findViewById(R.id.user_completed_order_history_rv);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         orders.clear();
-        final OHAdapter ohAdapter = new OHAdapter(getContext(), orders);
+        final OHAdapter ohAdapter = new OHAdapter(getContext(), orders, "UserCompletedOrderHistoryFragment");
         recyclerView.setAdapter(ohAdapter);
+
 
         String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
         databaseReference= FirebaseDatabase.getInstance().getReference("Orders/"+"Users/"+FirebaseAuth.getInstance().getCurrentUser().getUid()+"/Orders Received");
@@ -42,9 +44,10 @@ public class UserCompletedOrderHistoryFragment extends Fragment {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 orderInfo order;
-                HashMap<String,String> map=(HashMap<String, String>) dataSnapshot.getValue();
-               // Log.d("HERE",map.toString());
-                order = new orderInfo(map.get("name"),map.get("price"),map.get("date"), map.get("uesrUID"));
+                HashMap<String,Object> map= (HashMap<String, Object>) dataSnapshot.getValue();
+                //Log.d("HERE",map.toString());
+                order = new orderInfo(String.valueOf(map.get("name")),String.valueOf(map.get("price")),String.valueOf(map.get("date")),
+                                      String.valueOf(map.get("userUID")), String.valueOf(map.get("productCategory")), String.valueOf(map.get("productID")));
                 if(!map.isEmpty())
                     ohAdapter.added(order);
             }

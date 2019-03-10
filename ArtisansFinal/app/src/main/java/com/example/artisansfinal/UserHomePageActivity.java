@@ -1,8 +1,9 @@
 package com.example.artisansfinal;
 
+import android.content.Context;
 import android.content.Intent;
-import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
@@ -15,13 +16,21 @@ import android.widget.Toast;
 
 import com.example.artisansfinal.R;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
+import java.util.Objects;
+
+import smartdevelop.ir.eram.showcaseviewlib.GuideView;
+import smartdevelop.ir.eram.showcaseviewlib.config.DismissType;
+import smartdevelop.ir.eram.showcaseviewlib.config.Gravity;
 
 public class UserHomePageActivity extends AppCompatActivity {
     private DrawerLayout user_home_page_dl;
     private ActionBarDrawerToggle abdt;
     private String userType;
     private FirebaseAuth firebaseAuth;
-
+    private String emailID;
+    int counter = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -29,14 +38,16 @@ public class UserHomePageActivity extends AppCompatActivity {
         setContentView(R.layout.user_home_page_activity);
         firebaseAuth = FirebaseAuth.getInstance();
         DrawerLayout drawerLayout = findViewById(R.id.user_home_page_dl);
-        AnimationDrawable animationDrawable = (AnimationDrawable) drawerLayout.getBackground();
-        animationDrawable.setEnterFadeDuration(4000);
-        animationDrawable.setExitFadeDuration(4000);
-        animationDrawable.start();
 
 
         Intent intent = getIntent();
-        //userType = intent.getStringExtra("userType");
+
+        FirebaseUser user = firebaseAuth.getCurrentUser();
+        if(user != null)
+        {
+        userType = user.getDisplayName();
+        emailID = user.getEmail();
+        }
         user_home_page_dl = (DrawerLayout) findViewById(R.id.user_home_page_dl);
         abdt = new ActionBarDrawerToggle(this, user_home_page_dl, R.string.Open, R.string.Close);
         abdt.setDrawerIndicatorEnabled(true);
@@ -45,6 +56,13 @@ public class UserHomePageActivity extends AppCompatActivity {
 
         final NavigationView nav_view = (NavigationView) findViewById(R.id.user_home_page_navigation_view);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        Tutorial tutorial = new Tutorial(this);
+        tutorial.checkIfFirstRun();
+        tutorial.requestFocusForView(findViewById(R.id.user_home_page_cv_bracelet),
+                "Category", "Click to search products of this category");
+        tutorial.finishedTutorial();
+
         nav_view.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
@@ -59,7 +77,42 @@ public class UserHomePageActivity extends AppCompatActivity {
         });
 
     }
+    //added by shrinidhi
+    @Override
+    protected void onResume() {
+        super.onResume();
+        counter++;
+    }
 
+    // added by shrinidhi
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        FirebaseUser user = firebaseAuth.getCurrentUser();
+        if(user != null) {
+            userType = user.getDisplayName();
+            emailID = user.getEmail();
+
+            outState.putString("username", userType);
+            outState.putString("email id", emailID);
+        }
+        Log.d("userType",counter+"onSaveInstanceState");
+        Log.d("emailID",counter+"onSaveInstanceState");
+    }
+    // added by Shrinidhi
+    @Override
+    public void onRestoreInstanceState(Bundle savedInstanceState) {
+        if(savedInstanceState != null)
+        {
+            String restoreUserType = savedInstanceState.getString("username");
+            String restoreEmailID = savedInstanceState.getString("email id");
+            Log.d("restoreEmailID",counter+"onRestoreInstanceState");
+            Log.d("restoreUserType",counter+"onRestoreInstanceState");
+        }
+        super.onRestoreInstanceState(savedInstanceState);
+
+
+    }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 

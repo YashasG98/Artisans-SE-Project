@@ -34,7 +34,7 @@ public class UserPendingOrderHistoryFragment extends Fragment
         final RecyclerView recyclerView = view.findViewById(R.id.user_pending_order_history_rv);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         orders.clear();
-        final OHAdapter ohAdapter = new OHAdapter(getContext(), orders);
+        final OHAdapter ohAdapter = new OHAdapter(getContext(), orders, "UserPendingOrderHistoryFragment");
         recyclerView.setAdapter(ohAdapter);
 
         String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
@@ -45,9 +45,9 @@ public class UserPendingOrderHistoryFragment extends Fragment
                 orderInfo order;
                 HashMap<String,Object> map=(HashMap<String, Object>) dataSnapshot.getValue();
                 //Log.d("HERE",map.toString());
-                order = new orderInfo(String.valueOf(map.get("name")),String.valueOf(map.get("price")),String.valueOf(map.get("date")), String.valueOf(map.get("userUID")));
-                if(!map.isEmpty())
-                    ohAdapter.added(order);
+                order = new orderInfo(String.valueOf(map.get("name")),String.valueOf(map.get("price")),String.valueOf(map.get("date")), String.valueOf(map.get("userUID")),
+                        String.valueOf(map.get("productCategory")), String.valueOf(map.get("productID")));
+                ohAdapter.added(order);
             }
 
             @Override

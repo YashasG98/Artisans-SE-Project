@@ -17,7 +17,10 @@
         android:label="ArtisansFinal"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme.AppBarOverlay">
+	<activity
+            android:name=".UserProductPageTabbedActivity"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity android:name=".ArtisanProductPageActivity" />
         <activity android:name=".OrderHistoryTabbedActivity"
             android:theme="@style/AppTheme.NoActionBar"></activity>
@@ -40,10 +43,10 @@
         <activity android:name=".ArtisanProfilePageActivity" />
         <activity android:name=".ArtisanOrderRequestPageActivity"/>
         <activity android:name=".ArtisanPendingOrderActivity"></activity>
+        <activity android:name=".ArtisanOrderHistoryPageActivity"></activity>
         <activity android:name=".OrderHistory" />
         <activity android:name=".CommonLoginActivity"/>
         <activity android:name=".CommonLoginActivityTabbed"
-            android:label="Artisanfinal"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

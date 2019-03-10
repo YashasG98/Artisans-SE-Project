@@ -2,6 +2,8 @@ package com.example.artisansfinal;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -53,6 +55,10 @@ public class SelectedCategoryActivity extends AppCompatActivity {
     private RelativeLayout noMatchLayout;
     private RelativeLayout recyclerViewLayout;
     private ImageView loading;
+
+    //Tutorials (done by shashwatha)
+    private boolean isCompleteTutorial = false;
+    private boolean isDismissed = false;
 
     class sorting implements Comparator<ProductInfo>
     {
@@ -113,6 +119,19 @@ public class SelectedCategoryActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         categoryRecyclerViewAdapter = new CategoryRecyclerViewAdapter(this, productInfos);
         recyclerView.setAdapter(categoryRecyclerViewAdapter);
+
+        ArrayList<View> views = new ArrayList<>();
+        views.add(searchOption);
+        views.add(searchQuery);
+        views.add(sortChoice);
+
+        final HashMap<View, String> title = new HashMap<>();
+        title.put(searchOption,"Search for products\n with these options");
+        title.put(searchQuery,"Search for your product here");
+        title.put(sortChoice,"Filtering choices");
+
+        final Tutorial tutorial = new Tutorial(this,views);
+        tutorial.checkIfFirstRun();
 
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -196,6 +215,14 @@ public class SelectedCategoryActivity extends AppCompatActivity {
                                 contentLayout.setVisibility(View.VISIBLE);
                                 recyclerViewLayout.setVisibility(View.VISIBLE);
                                 noMatchLayout.setVisibility(View.GONE);
+
+                                if(contentLayout.getVisibility() == View.VISIBLE){
+
+                                    tutorial.requestFocusForViews(title);
+                                    tutorial.finishedTutorial();
+
+                                }
+
                             }
                             ProductInfo productInfo;
                             Log.d("FOUND",dataSnapshot.toString());

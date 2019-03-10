@@ -9,52 +9,60 @@
 
     <android.support.design.widget.TextInputLayout
         android:id="@+id/TextInput_artisan_login_activity_Contact_No"
+
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="24dp"
         android:layout_marginBottom="8dp"
-        android:textColorHint="#000000"
+        android:textColorHint="#000306"
+        app:boxStrokeColor="#73bbf7"
         app:helperTextEnabled="true"
         app:hintAnimationEnabled="false"
         app:hintEnabled="true"
         app:hintTextAppearance="@style/TextLabel"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.24"
+        app:layout_constraintHorizontal_bias="0.313"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.108">
+        app:layout_constraintVertical_bias="0.141">
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintVertical_bias="0.079">
 
         <EditText
             android:id="@+id/edit_artisan_login_activity_Contact_No"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:ems="10"
-            android:hint="Contact no"
+            android:hint="Contact number "
             android:inputType="phone"
-            android:textColorHint="#000000" />
+            android:textColorHint="#73bbf7" />
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
         android:id="@+id/TextInput_artisan_login_activity_OTP"
-        android:layout_width="wrap_content"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="196dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
-        android:layout_marginTop="56dp"
+        android:layout_marginTop="28dp"
         android:layout_marginEnd="24dp"
-        android:textColorHint="#000000"
+        android:layout_marginBottom="8dp"
+        android:textColorHint="#000306"
+        app:boxStrokeColor="#73bbf7"
         app:helperTextEnabled="true"
         app:hintAnimationEnabled="false"
         app:hintEnabled="true"
         app:hintTextAppearance="@style/TextLabel"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.24"
+        app:layout_constraintHorizontal_bias="0.281"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/TextInput_artisan_login_activity_Contact_No">
+        app:layout_constraintTop_toBottomOf="@+id/TextInput_artisan_login_activity_Contact_No"
+        app:layout_constraintVertical_bias="0.02">
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintVertical_bias="0.079">
 
@@ -65,7 +73,7 @@
             android:ems="10"
             android:hint="OTP"
             android:inputType="numberPassword"
-            android:textColorHint="#000000" />
+            android:textColorHint="#73bbf7" />
     </android.support.design.widget.TextInputLayout>
 
     <Button
@@ -76,7 +84,8 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
-        android:text="Verify and Login"
+        android:text="  Verify and Login  "
+        android:background="@drawable/border_login"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.405"
@@ -105,16 +114,18 @@
         android:id="@+id/send_otp_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
+        android:background="@drawable/border_login"
         android:text="Send OTP"
-        app:layout_constraintBottom_toBottomOf="@+id/TextInput_artisan_login_activity_Contact_No"
+        app:layout_constraintBottom_toTopOf="@+id/btnLogin"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/TextInput_artisan_login_activity_Contact_No"
+        app:layout_constraintHorizontal_bias="0.225"
+        app:layout_constraintStart_toEndOf="@+id/TextInput_artisan_login_activity_OTP"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintVertical_bias="0.804" />
 
     <TextView
         android:id="@+id/textView2"
@@ -148,5 +159,36 @@
         app:layout_constraintStart_toEndOf="@+id/textView2"
         app:layout_constraintTop_toBottomOf="@+id/btnLogin"
         app:layout_constraintVertical_bias="0.256" />
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/TextInput_artisan_login_activity_Contact_No"
+        app:layout_constraintEnd_toStartOf="@+id/TextInput_artisan_login_activity_Contact_No"
+        app:layout_constraintHorizontal_bias="0.094"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0"
+        app:srcCompat="@drawable/phone24" />
+
+    <ImageView
+        android:id="@+id/imageView3"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/TextInput_artisan_login_activity_OTP"
+        app:layout_constraintEnd_toStartOf="@+id/TextInput_artisan_login_activity_OTP"
+        app:layout_constraintHorizontal_bias="0.058"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView2"
+        app:layout_constraintVertical_bias="0.976"
+        app:srcCompat="@drawable/sms24" />
 
 </android.support.constraint.ConstraintLayout>

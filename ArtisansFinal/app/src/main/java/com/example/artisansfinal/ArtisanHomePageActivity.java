@@ -1,6 +1,7 @@
 package com.example.artisansfinal;
 
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
@@ -31,16 +32,14 @@ public class ArtisanHomePageActivity extends AppCompatActivity {
     private FirebaseAuth firebaseAuth;
     private String artisanPhoneNumber;
     private String name;
-
+    int counter;
+    //private String name2; // added by shrinidhi
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.artisan_home_page_activity);
         DrawerLayout drawerLayout = findViewById(R.id.artisan_home_page_dl);
-        AnimationDrawable animationDrawable = (AnimationDrawable) drawerLayout.getBackground();
-        animationDrawable.setEnterFadeDuration(4000);
-        animationDrawable.setExitFadeDuration(4000);
-        animationDrawable.start();
+
 
         Intent intent = getIntent();
         //userType = intent.getStringExtra("userType");
@@ -50,10 +49,14 @@ public class ArtisanHomePageActivity extends AppCompatActivity {
         //Added by Dhanasekhar
 
         DatabaseReference nameRef = FirebaseDatabase.getInstance().getReference("Artisans/" + artisanPhoneNumber + "/username");
-        nameRef.addListenerForSingleValueEvent(new ValueEventListener() {
+        final ProgressDialog progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("wait");
+        progressDialog.show();
+        nameRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 name = dataSnapshot.getValue(String.class);
+                progressDialog.dismiss();
             }
 
             @Override
@@ -61,6 +64,7 @@ public class ArtisanHomePageActivity extends AppCompatActivity {
 
             }
         });
+//        name = "dummy";
 
 
         //artisanPhoneNumber = intent.getStringExtra("phoneNumber");
@@ -93,6 +97,31 @@ public class ArtisanHomePageActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        counter++;
+    }
+
+    // added by Shrinidhi
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState)
+    {
+        super.onSaveInstanceState(savedInstanceState);
+        savedInstanceState.putString("Phone number",artisanPhoneNumber);
+        savedInstanceState.putString("Artisan name",name);
+    }
+    // added by Shrinidhi
+    @Override
+    public void onRestoreInstanceState(Bundle savedInstanceState) {
+        if(savedInstanceState != null)
+        {
+            String restoreArtisanPhNo = savedInstanceState.getString("Phone number");
+            String restoreName = savedInstanceState.getString("Artisan name");
+        }
+        super.onRestoreInstanceState(savedInstanceState);
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
         if (abdt.onOptionsItemSelected(item))
@@ -117,7 +146,8 @@ public class ArtisanHomePageActivity extends AppCompatActivity {
     }
 
     public void order_history_button(MenuItem item) {
-        Toast.makeText(this, "Your order history", Toast.LENGTH_SHORT).show();
+        Intent newIntent = new Intent(this, ArtisanOrderHistoryPageActivity.class);
+        startActivity(newIntent);
     }
 
     public void tutorial_button(MenuItem item) {
@@ -133,8 +163,8 @@ public class ArtisanHomePageActivity extends AppCompatActivity {
 
 
     public void Order_history(View view) {
-        Toast.makeText(this, "Order history", Toast.LENGTH_SHORT).show();
-
+        Intent newIntent = new Intent(this, ArtisanOrderHistoryPageActivity.class);
+        startActivity(newIntent);
     }
 
     public void Order_requests(View view) {

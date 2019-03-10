@@ -34,7 +34,7 @@ public class UserRequestedOrderHistoryFragment extends Fragment
         final RecyclerView recyclerView = view.findViewById(R.id.orderHistory_rv);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         orders.clear();
-        final OHAdapter ohAdapter = new OHAdapter(getContext(), orders);
+        final OHAdapter ohAdapter = new OHAdapter(getContext(), orders, "UserRequestedOrderHistoryFragment");
         recyclerView.setAdapter(ohAdapter);
 
         String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
@@ -45,7 +45,7 @@ public class UserRequestedOrderHistoryFragment extends Fragment
                 orderInfo order;
                 HashMap<String,String> map=(HashMap<String, String>) dataSnapshot.getValue();
                 Log.d("HERE",map.toString());
-                order = new orderInfo(map.get("name"),map.get("price"),map.get("date"), map.get("userUID"));
+                order = new orderInfo(map.get("name"),map.get("price"),map.get("date"), map.get("userUID"), map.get("productCategory"), map.get("productID"));
                 ohAdapter.added(order);
             }
 

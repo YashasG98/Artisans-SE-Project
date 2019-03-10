@@ -98,11 +98,17 @@ public class ArtisanLoginFragment extends Fragment {
 
         if (user != null) {
 
-            view.setVisibility(view.INVISIBLE);
+            progressDialog.setMessage("wait");
+            progressDialog.show();
 
-            if(user.getPhoneNumber().length() > 0) {
+            //view.setVisibility(view.INVISIBLE);
+
+            String check = user.getPhoneNumber();
+
+            if(check !=null && !check.isEmpty()) {
                 final String contactNo = mAuth.getCurrentUser().getPhoneNumber();
                 Intent intent = new Intent(getContext(), ArtisanHomePageActivity.class);
+
                 intent.putExtra("phoneNumber", contactNo);
                 startActivity(intent);
                 getActivity().finish();
@@ -126,6 +132,10 @@ public class ArtisanLoginFragment extends Fragment {
 //
 //                    }
 //                });
+            }
+            else
+            {
+                progressDialog.dismiss();
             }
 //            else
 //            {
@@ -153,8 +163,31 @@ public class ArtisanLoginFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
+
+
                 //contactNoEdit = view.findViewById(R.id.edit_artisan_login_activity_Contact_No);
                 ContactNo = "+91" + contactNoEdit.getText().toString();
+
+//                databaseReferenceVerify.addValueEventListener(new ValueEventListener() {
+//                    @Override
+//                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//
+//                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+//                            ArtisanInfo ArtisanNo = snapshot.getValue(ArtisanInfo.class);
+//                            contactsList.add(ArtisanNo.getContact_no());
+//                            usernameList.add(ArtisanNo.getUsername());
+//
+//
+//                        }
+//
+//                    }
+//
+//                    @Override
+//                    public void onCancelled(@NonNull DatabaseError databaseError) {
+//
+//                    }
+//                });
+
                 if(ContactNo.length() !=0 && contactsList.contains(ContactNo))
                     SendCode(view);
                 else {
@@ -201,6 +234,8 @@ public class ArtisanLoginFragment extends Fragment {
             OTPEdit.requestFocus();
         }
         else {
+            progressDialog.setMessage("Please wait while we log you in");
+            progressDialog.show();
             PhoneAuthCredential credential = PhoneAuthProvider.getCredential(codeSent, OTP);
             signInWithPhoneAuthCredential(credential);
         }
@@ -215,7 +250,8 @@ public class ArtisanLoginFragment extends Fragment {
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
 
-                    Toast.makeText(getContext(), "Verification successful", Toast.LENGTH_LONG).show();
+                    progressDialog.dismiss();
+                    Toast.makeText(getContext(),   "Verification successful", Toast.LENGTH_LONG).show();
 
                     Intent intent = new Intent(getContext(),ArtisanHomePageActivity.class);
                     intent.putExtra("phoneNumber", ContactNo);
@@ -267,7 +303,7 @@ public class ArtisanLoginFragment extends Fragment {
         @Override
         public void onVerificationCompleted(PhoneAuthCredential phoneAuthCredential) {
             OTPFlag = true;
-            Toast.makeText(getContext(), "Login Successful", Toast.LENGTH_LONG).show();
+            Toast.makeText(getContext(), "OTP Sent", Toast.LENGTH_LONG).show();
 
 
         }
