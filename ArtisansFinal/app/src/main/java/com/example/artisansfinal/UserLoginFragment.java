@@ -60,7 +60,8 @@ public class UserLoginFragment extends Fragment {
         progressDialog = new ProgressDialog(getContext());
         FirebaseUser user = firebaseAuth.getCurrentUser();
         if (user != null) {
-            if(user.getPhoneNumber().length() == 0) {
+            String check = user.getEmail();
+            if(check != null && !check.isEmpty()) {
                 Log.d("HERE1",user.getEmail());
                 Intent intent1 = new Intent(new Intent(getContext(), UserHomePageActivity.class));
                 //Log.d("HERE1",Name.getText().toString().trim());
