@@ -124,7 +124,7 @@ public class UserProductDetailsFragment extends Fragment {
 //                    }
 //                });
                 RequestOptions options = new RequestOptions().error(R.mipmap.image_not_provided);
-                GlideApp.with(getContext())
+                GlideApp.with(getActivity().getApplicationContext())
                         .load(storageReference)
                         .apply(options)
                         .diskCacheStrategy(DiskCacheStrategy.DATA)
