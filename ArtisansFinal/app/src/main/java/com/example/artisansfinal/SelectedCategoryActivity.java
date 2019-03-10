@@ -120,26 +120,18 @@ public class SelectedCategoryActivity extends AppCompatActivity {
         categoryRecyclerViewAdapter = new CategoryRecyclerViewAdapter(this, productInfos);
         recyclerView.setAdapter(categoryRecyclerViewAdapter);
 
-
         ArrayList<View> views = new ArrayList<>();
         views.add(searchOption);
         views.add(searchQuery);
         views.add(sortChoice);
 
-        HashMap<View, String> title = new HashMap<>();
+        final HashMap<View, String> title = new HashMap<>();
         title.put(searchOption,"Search for products\n with these options");
         title.put(searchQuery,"Search for your product here");
         title.put(sortChoice,"Filtering choices");
 
-        HashMap<View, String> content = new HashMap<>();
-        content.put(searchOption,"");
-        content.put(searchQuery,"");
-        content.put(sortChoice,"");
-
-        Tutorial tutorial = new Tutorial(this,views);
+        final Tutorial tutorial = new Tutorial(this,views);
         tutorial.checkIfFirstRun();
-        tutorial.requestFocusForViews(title, content);
-        tutorial.finishedTutorial();
 
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -223,6 +215,14 @@ public class SelectedCategoryActivity extends AppCompatActivity {
                                 contentLayout.setVisibility(View.VISIBLE);
                                 recyclerViewLayout.setVisibility(View.VISIBLE);
                                 noMatchLayout.setVisibility(View.GONE);
+
+                                if(contentLayout.getVisibility() == View.VISIBLE){
+
+                                    tutorial.requestFocusForViews(title);
+                                    tutorial.finishedTutorial();
+
+                                }
+
                             }
                             ProductInfo productInfo;
                             Log.d("FOUND",dataSnapshot.toString());
