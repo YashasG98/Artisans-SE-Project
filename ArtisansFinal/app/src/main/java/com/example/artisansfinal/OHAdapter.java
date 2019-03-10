@@ -1,7 +1,10 @@
 package com.example.artisansfinal;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,10 +15,13 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import static android.view.View.VISIBLE;
+
 public class OHAdapter extends RecyclerView.Adapter<OHAdapter.OHViewHolder> {
 
     private ArrayList<orderInfo> order;
     private Context context;
+    private String className;
 
     public static class OHViewHolder extends RecyclerView.ViewHolder{
         TextView productName;
@@ -23,19 +29,27 @@ public class OHAdapter extends RecyclerView.Adapter<OHAdapter.OHViewHolder> {
         TextView productPrice;
         TextView date;
         RelativeLayout layout;
-        public OHViewHolder(@NonNull View itemView){
+        TextView reviewTextView;
+        CardView cardView;
+        public OHViewHolder(@NonNull View itemView, String className){
             super(itemView);
             productName=itemView.findViewById(R.id.orderHistory_tv_product_name);
             image=itemView.findViewById(R.id.orderHistory_iv_product_image);
             productPrice=itemView.findViewById(R.id.orderHistory_tv_product_price);
             date=itemView.findViewById(R.id.orderHistory_tv_date);
             layout=itemView.findViewById(R.id.orderHistoryRL);
+            reviewTextView = itemView.findViewById(R.id.review);
+            cardView = itemView.findViewById(R.id.orderHistoryCv);
+
+
+
         }
     }
 
-    public OHAdapter(Context context,ArrayList<orderInfo> order){
+    public OHAdapter(Context context,ArrayList<orderInfo> order, String className){
         this.order=order;
         this.context=context;
+        this.className = className;
     }
 
     @NonNull
@@ -44,7 +58,7 @@ public class OHAdapter extends RecyclerView.Adapter<OHAdapter.OHViewHolder> {
         View view;
         LayoutInflater inflater=LayoutInflater.from(context);
         view=inflater.inflate(R.layout.order_history_layout,viewGroup,false);
-        OHViewHolder viewHolder=new OHViewHolder(view);
+        OHViewHolder viewHolder=new OHViewHolder(view, this.className);
         return viewHolder;
     }
 
@@ -54,6 +68,32 @@ public class OHAdapter extends RecyclerView.Adapter<OHAdapter.OHViewHolder> {
         viewHolder.productName.setText(orderX.getName());
         viewHolder.date.setText(orderX.getDate());
         viewHolder.productPrice.setText(orderX.getPrice());
+
+        if(className.equals("UserCompletedOrderHistoryFragment"))
+        {
+            viewHolder.reviewTextView.setClickable(true);
+            viewHolder.reviewTextView.setVisibility(VISIBLE);
+            viewHolder.reviewTextView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v)
+                {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                    builder.setTitle("Reviews and Ratings");
+                    builder.setView(R.layout.review_ratings);
+                    builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+                        }
+                    });
+
+
+                    builder.show();
+
+                }
+            });
+        }
+
     }
 
     @Override

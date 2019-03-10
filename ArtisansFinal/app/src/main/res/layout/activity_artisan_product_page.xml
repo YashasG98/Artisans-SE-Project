@@ -58,7 +58,7 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="10sp"
                         android:padding="10sp"
-                        android:background="@drawable/border2"
+                        android:background="@drawable/border_login"
                         android:drawableLeft="@mipmap/rupee_icon2"
                         android:text="Product Price"
                         android:textSize="18sp" />

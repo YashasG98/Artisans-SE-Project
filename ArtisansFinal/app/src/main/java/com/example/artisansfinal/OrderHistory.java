@@ -37,7 +37,7 @@ public class OrderHistory extends AppCompatActivity {
 
         final RecyclerView recyclerView = (RecyclerView) findViewById(R.id.orderHistory_rv);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        ohAdapter =new OHAdapter(this, orders);
+        ohAdapter =new OHAdapter(this, orders, "OrderHistory");
         recyclerView.setAdapter(ohAdapter);
 
         databaseReference= FirebaseDatabase.getInstance().getReference("Orders/"+userX.getEmail().substring(0,userX.getEmail().indexOf('@')));

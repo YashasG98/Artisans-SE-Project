@@ -34,7 +34,7 @@ public class UserRequestedOrderHistoryFragment extends Fragment
         final RecyclerView recyclerView = view.findViewById(R.id.orderHistory_rv);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         orders.clear();
-        final OHAdapter ohAdapter = new OHAdapter(getContext(), orders);
+        final OHAdapter ohAdapter = new OHAdapter(getContext(), orders, "UserRequestedOrderHistoryFragment");
         recyclerView.setAdapter(ohAdapter);
 
         String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
