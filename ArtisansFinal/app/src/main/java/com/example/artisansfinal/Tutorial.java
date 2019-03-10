@@ -72,8 +72,6 @@ public class Tutorial {
 
         if (!isViewedOncePage/* && isFirstRun*/) {
 
-            if(content.get(views.get(i))!=null){
-
                 builder = new GuideView.Builder(context)
                         .setTitle(title.get(views.get(i)))
                         .setContentText(content.get(views.get(i)))
@@ -83,16 +81,46 @@ public class Tutorial {
                         .setContentTextSize(14)
                         .setTitleTextSize(18);
 
-            } else {
+            builder.setGuideListener(new GuideListener() {
+                @Override
+                public void onDismiss(View view) {
+                    int j = views.indexOf(view);
+                    if(j == views.size()-1){
+                        return;
+                    }
+                    builder.setTargetView(views.get(j+1))
+                           .setTitle(title.get(views.get(j+1)))
+                           .setTitleTextSize(18)
+                           .setContentText(content.get(views.get(j+1)))
+                           .setContentTextSize(14);
+                    guideView = builder.build();
+                    guideView.show();
+                }
+            });
 
-                builder = new GuideView.Builder(context)
-                        .setTitle(title.get(views.get(i)))
-                        .setTargetView(views.get(i))
-                        .setGravity(Gravity.auto)
-                        .setDismissType(DismissType.anywhere)
-                        .setTitleTextSize(18);
+            guideView = builder.build();
+            guideView.show();
 
-            }
+//            SharedPreferences.Editor editor = sharedPreferences.edit();
+//            editor.putBoolean("FirstRun", false);
+//            editor.apply();
+//
+        }
+    }
+
+    public void requestFocusForViews(final HashMap<View, String> title){
+
+        final GuideView.Builder builder;
+        final int i = 0;
+
+        if (!isViewedOncePage/* && isFirstRun*/) {
+
+            builder = new GuideView.Builder(context)
+                    .setTitle(title.get(views.get(i)))
+                    .setTargetView(views.get(i))
+                    .setGravity(Gravity.auto)
+                    .setDismissType(DismissType.anywhere)
+                    .setTitleTextSize(18);
 
             builder.setGuideListener(new GuideListener() {
                 @Override
@@ -104,9 +132,6 @@ public class Tutorial {
                     builder.setTargetView(views.get(j+1))
                             .setTitle(title.get(views.get(j+1)))
                             .setTitleTextSize(18);
-                    if(content.get(views.get(j+1))!=null)
-                        builder.setContentText(content.get(views.get(j+1)))
-                                .setContentTextSize(14);
                     guideView = builder.build();
                     guideView.show();
                 }
