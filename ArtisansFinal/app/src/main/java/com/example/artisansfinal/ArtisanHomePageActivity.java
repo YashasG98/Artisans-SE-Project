@@ -1,6 +1,7 @@
 package com.example.artisansfinal;
 
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -43,18 +44,23 @@ public class ArtisanHomePageActivity extends AppCompatActivity {
 
         //Added by Dhanasekhar
 
-        DatabaseReference nameRef = FirebaseDatabase.getInstance().getReference("Artisans/" + artisanPhoneNumber + "/username");
-        nameRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                name = dataSnapshot.getValue(String.class);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
+        //DatabaseReference nameRef = FirebaseDatabase.getInstance().getReference("Artisans/" + artisanPhoneNumber + "/username");
+        final ProgressDialog progressDialog = new ProgressDialog(this);
+//        progressDialog.setMessage("wait");
+//        progressDialog.show();
+//        nameRef.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                name = dataSnapshot.getValue(String.class);
+//                progressDialog.dismiss();
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError databaseError) {
+//
+//            }
+//        });
+        name = "dummy";
 
 
         //artisanPhoneNumber = intent.getStringExtra("phoneNumber");
