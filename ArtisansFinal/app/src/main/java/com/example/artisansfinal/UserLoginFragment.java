@@ -59,8 +59,10 @@ public class UserLoginFragment extends Fragment {
         firebaseAuth = FirebaseAuth.getInstance();
         progressDialog = new ProgressDialog(getContext());
         FirebaseUser user = firebaseAuth.getCurrentUser();
+
         if (user != null) {
-            if(user.getPhoneNumber().length() == 0) {
+            String check = user.getEmail();
+            if(check != null && !check.isEmpty()) {
                 Log.d("HERE1",user.getEmail());
                 Intent intent1 = new Intent(new Intent(getContext(), UserHomePageActivity.class));
                 //Log.d("HERE1",Name.getText().toString().trim());
@@ -120,7 +122,7 @@ public class UserLoginFragment extends Fragment {
     }
 
     private void validate(String userName, String userPassword) {
-        progressDialog.setMessage("Please wait while we Log U in");
+        progressDialog.setMessage("Please wait while we Log you in");
         progressDialog.show();
         firebaseAuth.signInWithEmailAndPassword(userName, userPassword).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
@@ -130,8 +132,7 @@ public class UserLoginFragment extends Fragment {
                     Toast.makeText(getContext(), "Login Successful", Toast.LENGTH_SHORT).show();
 //                    if(userType.equals("u")) {
 
-                    Intent intent1 = new Intent(new Intent(getContext(), UserHomePageActivity.class));
-                    intent1.putExtra("userType", userType);
+                    Intent intent1 = new Intent(getContext(), UserHomePageActivity.class);
                     getActivity().finish();
                     startActivity(intent1);
 

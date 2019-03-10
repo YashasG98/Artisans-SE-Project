@@ -48,6 +48,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.UUID;
 
+import smartdevelop.ir.eram.showcaseviewlib.GuideView;
+import smartdevelop.ir.eram.showcaseviewlib.config.DismissType;
+import smartdevelop.ir.eram.showcaseviewlib.config.Gravity;
+
 import static android.os.Build.VERSION_CODES.P;
 
 public class ProductRegistrationActivity extends AppCompatActivity {
@@ -59,6 +63,7 @@ public class ProductRegistrationActivity extends AppCompatActivity {
     private StorageReference storageReference;
     private Uri mainImageURI;
     private ProductInfo product;
+    private static boolean viewedOnce = false;
     //private double resizeFactorForHighRes[] = {1,0.8,0.7,0.6,0.5};
 
     @Override
@@ -75,6 +80,7 @@ public class ProductRegistrationActivity extends AppCompatActivity {
         imageView = findViewById(R.id.product_registration_iv_product_image);
         Button register = findViewById(R.id.product_registration_button_register);
 
+
         browse.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -90,8 +96,6 @@ public class ProductRegistrationActivity extends AppCompatActivity {
                 }
             }
         });
-
-
 
         register.setOnClickListener(new View.OnClickListener() {
 
@@ -138,10 +142,10 @@ public class ProductRegistrationActivity extends AppCompatActivity {
                         uploadImage(mainImageURI);
                     }
 
-//                    Toast.makeText(getApplicationContext(), "Product Registered", Toast.LENGTH_SHORT).show();
-//                    Intent intent1 = new Intent(ProductRegistrationActivity.this, ArtisanHomePageActivity.class);
+                    Toast.makeText(getApplicationContext(), "Product Registered", Toast.LENGTH_SHORT).show();
+                    Intent intent1 = new Intent(ProductRegistrationActivity.this, ArtisanHomePageActivity.class);
 //                    intent1.putExtra("param", "");
-//                    startActivity(intent1);
+                    startActivity(intent1);
                     finish();
                 }
             }

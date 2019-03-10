@@ -57,7 +57,7 @@
         android:layout_marginRight="162dp"
         android:layout_marginBottom="274dp"
         android:text="Login"
-        android:background="@drawable/border2"
+        android:background="@drawable/border_login"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
