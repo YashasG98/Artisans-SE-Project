@@ -22,8 +22,10 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -96,34 +98,40 @@ public class UserProductReviewsFragment extends Fragment {
                 desc.setText(map.get("productDescription"));
                 artisanContactNumber = map.get("artisanContactNumber");
                 Log.d("STORAGE", storageReference.child(map.get("productID")).toString());
-                storageReference.getBytes(ONE_MB).addOnSuccessListener(new OnSuccessListener<byte[]>() {
-                    @Override
-                    public void onSuccess(byte[] bytes) {
-                        Glide.with(getContext())
-                                .load(bytes)
-                                .listener(new RequestListener<Drawable>() {
-                                    @Override
-                                    public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
-                                        Toast.makeText(getContext(), "Glide load failed", Toast.LENGTH_SHORT).show();
-                                        return false;
-                                    }
-
-                                    @Override
-                                    public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
-                                        return false;
-                                    }
-                                })
-                                .into(image);
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-//                        Toast.makeText(getApplicationContext(), "Image Load Failed", Toast.LENGTH_SHORT).show();
-                        Glide.with(getContext())
-                                .load(R.mipmap.image_not_provided)
-                                .into(image);
-                    }
-                });
+//                storageReference.getBytes(ONE_MB).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+//                    @Override
+//                    public void onSuccess(byte[] bytes) {
+//                        Glide.with(getContext())
+//                                .load(bytes)
+//                                .listener(new RequestListener<Drawable>() {
+//                                    @Override
+//                                    public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+//                                        Toast.makeText(getContext(), "Glide load failed", Toast.LENGTH_SHORT).show();
+//                                        return false;
+//                                    }
+//
+//                                    @Override
+//                                    public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+//                                        return false;
+//                                    }
+//                                })
+//                                .into(image);
+//                    }
+//                }).addOnFailureListener(new OnFailureListener() {
+//                    @Override
+//                    public void onFailure(@NonNull Exception e) {
+////                        Toast.makeText(getApplicationContext(), "Image Load Failed", Toast.LENGTH_SHORT).show();
+//                        Glide.with(getContext())
+//                                .load(R.mipmap.image_not_provided)
+//                                .into(image);
+//                    }
+//                });
+                RequestOptions options = new RequestOptions().error(R.mipmap.image_not_provided);
+                GlideApp.with(getContext())
+                        .load(storageReference)
+                        .apply(options)
+                        .diskCacheStrategy(DiskCacheStrategy.DATA)
+                        .into(image);
             }
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {}
