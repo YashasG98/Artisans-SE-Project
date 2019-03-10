@@ -55,6 +55,7 @@ public class ProductPageActivity extends AppCompatActivity {
     private DatabaseReference ordHis;
     private String userPhoneNumber;
     private String artisanContactNumber;
+    private String productID2;
     FirebaseAuth firebaseAuth= FirebaseAuth.getInstance();
 
     FirebaseUser userX = firebaseAuth.getCurrentUser();
@@ -74,7 +75,7 @@ public class ProductPageActivity extends AppCompatActivity {
         final ImageView image = layout.findViewById((R.id.product_page_iv_product_image));
 
         final Intent intent = getIntent();
-        String productCategory = intent.getStringExtra("productCategory");
+        final String productCategory = intent.getStringExtra("productCategory");
         final String productName = intent.getStringExtra("productName");
         final String productID = intent.getStringExtra("productID");
 
@@ -170,7 +171,7 @@ public class ProductPageActivity extends AppCompatActivity {
 
 
 
-        ordHis = FirebaseDatabase.getInstance().getReference("Orders");
+        ordHis = FirebaseDatabase.getInstance().getReference("Orders/");
 
 
         price.setOnClickListener(new View.OnClickListener() {
@@ -185,18 +186,28 @@ public class ProductPageActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
 
+
                         String opname=pname.getText().toString();
                         //Log.d("HERE",opname);
                         String oprice=price.getText().toString();
                         Date c = Calendar.getInstance().getTime();
                         SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
                         String formattedDate = df.format(c);
+
                         orderInfo order=new orderInfo(opname,oprice,formattedDate,userX.getUid());
-                        String orderID = ordHis.push().getKey();
+                        DatabaseReference UserOrderHistory = FirebaseDatabase.getInstance().getReference("Orders/Users/"+userX.getUid()+"/Orders Requested");
+                        String orderID = UserOrderHistory.push().getKey();
                         //ordHis.child(userX.getEmail().substring(0,userX.getEmail().indexOf('@'))).child(orderID).setValue(order);
-                        ordHis.child("Users").child(userX.getUid()).child("Orders Requested").child(orderID).setValue(order);
-                        orderID = ordHis.push().getKey();
-                        ordHis.child("Artisans").child(artisanContactNumber).child("Order Requests").child(orderID).setValue(order);
+
+
+                        String productCategory2 = "abd";
+                        productID2 = "ab";
+
+                        orderInfo orderUser = new orderInfo(opname, oprice, formattedDate, userX.getUid(), "ss", "saa");
+                        UserOrderHistory.child(orderID).setValue(orderUser);
+                        //ordHis.child("Users").child(userX.getUid()).child("Orders Requested").child(orderID).setValue(orderUser);
+//                        String orderID2 = ordHis.push().getKey();
+//                        ordHis.child("Artisans").child(artisanContactNumber).child("Order Requests").child(orderID2).setValue(order);
 
 
                     }

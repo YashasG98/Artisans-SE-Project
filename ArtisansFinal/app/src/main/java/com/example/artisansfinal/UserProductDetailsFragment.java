@@ -73,7 +73,7 @@ public class UserProductDetailsFragment extends Fragment {
         final ImageView image = view.findViewById((R.id.user_product_details_iv_product_image));
 
         final Intent intent = getActivity().getIntent();
-        String productCategory = intent.getStringExtra("productCategory");
+        final String productCategory = intent.getStringExtra("productCategory");
         final String productName = intent.getStringExtra("productName");
         final String productID = intent.getStringExtra("productID");
 
@@ -164,7 +164,7 @@ public class UserProductDetailsFragment extends Fragment {
                         Date c = Calendar.getInstance().getTime();
                         SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
                         String formattedDate = df.format(c);
-                        orderInfo order=new orderInfo(opname,oprice,formattedDate,userX.getUid());
+                        orderInfo order=new orderInfo(opname,oprice,formattedDate,userX.getUid(), productCategory, productID);
                         String orderID = ordHis.push().getKey();
                         //ordHis.child(userX.getEmail().substring(0,userX.getEmail().indexOf('@'))).child(orderID).setValue(order);
                         ordHis.child("Users").child(userX.getUid()).child("Orders Requested").child(orderID).setValue(order);
