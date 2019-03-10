@@ -23,8 +23,10 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -115,40 +117,51 @@ public class ArtisanProductPageActivity extends AppCompatActivity {
                 editPrice.setText(map.get("productPrice"));
                 editDescription.setText(map.get("productDescription"));
                 Log.d("STORAGE", storageReference.child(map.get("productID")).toString());
-                storageReference.getBytes(ONE_MB).addOnSuccessListener(new OnSuccessListener<byte[]>() {
-                    @Override
-                    public void onSuccess(byte[] bytes) {
-                        Glide.with(getApplicationContext())
-                                .load(bytes)
-                                .listener(new RequestListener<Drawable>() {
-                                    @Override
-                                    public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
-                                        Toast.makeText(getApplicationContext(), "Glide load failed", Toast.LENGTH_SHORT).show();
-                                        return false;
-                                    }
-
-                                    @Override
-                                    public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
-                                        return false;
-                                    }
-                                })
-                                .into(displayImage);
-                        Glide.with(getApplicationContext())
-                                .load(bytes)
-                                .into(editImage);
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-//                        Toast.makeText(getApplicationContext(), "Image Load Failed", Toast.LENGTH_SHORT).show();
-                        Glide.with(getApplicationContext())
-                                .load(R.mipmap.image_not_provided)
-                                .into(displayImage);
-                        Glide.with(getApplicationContext())
-                                .load(R.mipmap.image_not_provided)
-                                .into(editImage);
-                    }
-                });
+//                storageReference.getBytes(ONE_MB).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+//                    @Override
+//                    public void onSuccess(byte[] bytes) {
+//                        Glide.with(getApplicationContext())
+//                                .load(bytes)
+//                                .listener(new RequestListener<Drawable>() {
+//                                    @Override
+//                                    public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+//                                        Toast.makeText(getApplicationContext(), "Glide load failed", Toast.LENGTH_SHORT).show();
+//                                        return false;
+//                                    }
+//
+//                                    @Override
+//                                    public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+//                                        return false;
+//                                    }
+//                                })
+//                                .into(displayImage);
+//                        Glide.with(getApplicationContext())
+//                                .load(bytes)
+//                                .into(editImage);
+//                    }
+//                }).addOnFailureListener(new OnFailureListener() {
+//                    @Override
+//                    public void onFailure(@NonNull Exception e) {
+////                        Toast.makeText(getApplicationContext(), "Image Load Failed", Toast.LENGTH_SHORT).show();
+//                        Glide.with(getApplicationContext())
+//                                .load(R.mipmap.image_not_provided)
+//                                .into(displayImage);
+//                        Glide.with(getApplicationContext())
+//                                .load(R.mipmap.image_not_provided)
+//                                .into(editImage);
+//                    }
+//                });
+                RequestOptions options = new RequestOptions().error(R.mipmap.image_not_provided);
+                GlideApp.with(getApplicationContext())
+                        .load(storageReference)
+                        .apply(options)
+                        .diskCacheStrategy(DiskCacheStrategy.DATA)
+                        .into(displayImage);
+                GlideApp.with(getApplicationContext())
+                        .load(storageReference)
+                        .apply(options)
+                        .diskCacheStrategy(DiskCacheStrategy.DATA)
+                        .into(editImage);
 
             }
 
@@ -157,6 +170,11 @@ public class ArtisanProductPageActivity extends AppCompatActivity {
 
             }
         });
+
+        final Tutorial tutorial = new Tutorial(this);
+        tutorial.checkIfFirstRun();
+        tutorial.requestFocusForView(fab,"Click here to edit details", "");
+        tutorial.finishedTutorial();
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -167,6 +185,7 @@ public class ArtisanProductPageActivity extends AppCompatActivity {
                 if(drawable instanceof Animatable){
                     ((Animatable) drawable).start();
                 }
+                
 
                 if(displayLayout.getVisibility()==View.VISIBLE) {
                     editLayout.setVisibility(View.VISIBLE);

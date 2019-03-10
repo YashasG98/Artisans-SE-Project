@@ -2,6 +2,8 @@ package com.example.artisansfinal;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -53,6 +55,10 @@ public class SelectedCategoryActivity extends AppCompatActivity {
     private RelativeLayout noMatchLayout;
     private RelativeLayout recyclerViewLayout;
     private ImageView loading;
+
+    //Tutorials (done by shashwatha)
+    private boolean isCompleteTutorial = false;
+    private boolean isDismissed = false;
 
     class sorting implements Comparator<ProductInfo>
     {
@@ -113,6 +119,27 @@ public class SelectedCategoryActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         categoryRecyclerViewAdapter = new CategoryRecyclerViewAdapter(this, productInfos);
         recyclerView.setAdapter(categoryRecyclerViewAdapter);
+
+
+        ArrayList<View> views = new ArrayList<>();
+        views.add(searchOption);
+        views.add(searchQuery);
+        views.add(sortChoice);
+
+        HashMap<View, String> title = new HashMap<>();
+        title.put(searchOption,"Search for products\n with these options");
+        title.put(searchQuery,"Search for your product here");
+        title.put(sortChoice,"Filtering choices");
+
+        HashMap<View, String> content = new HashMap<>();
+        content.put(searchOption,"");
+        content.put(searchQuery,"");
+        content.put(sortChoice,"");
+
+        Tutorial tutorial = new Tutorial(this,views);
+        tutorial.checkIfFirstRun();
+        tutorial.requestFocusForViews(title, content);
+        tutorial.finishedTutorial();
 
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override

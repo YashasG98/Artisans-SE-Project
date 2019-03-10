@@ -6,7 +6,6 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -19,36 +18,38 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class OrderHistory extends AppCompatActivity {
+public class ArtisanOrderHistoryPageActivity extends AppCompatActivity {
 
-
-    FirebaseAuth firebaseAuth= FirebaseAuth.getInstance();
+    FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
 
     FirebaseUser userX = firebaseAuth.getCurrentUser();
 
-    private ArrayList<orderInfo> orders =new ArrayList<orderInfo>();
+    private ArrayList<orderInfo> orders = new ArrayList<orderInfo>();
     private DatabaseReference databaseReference;
-    private OHAdapter ohAdapter;
+    private ArtisanOrderHistoryAdapter AOHAdapter;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState){
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.order_history);
+        setContentView(R.layout.activity_artisan_order_history);
 
-        final RecyclerView recyclerView = (RecyclerView) findViewById(R.id.orderHistory_rv);
+        final RecyclerView recyclerView = (RecyclerView) findViewById(R.id.artisanOrderHistory_rv);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        ohAdapter =new OHAdapter(this, orders, "OrderHistory");
-        recyclerView.setAdapter(ohAdapter);
-
-        databaseReference= FirebaseDatabase.getInstance().getReference("Orders/"+userX.getEmail().substring(0,userX.getEmail().indexOf('@')));
+        AOHAdapter = new ArtisanOrderHistoryAdapter(this, orders);
+        recyclerView.setAdapter(AOHAdapter);
+        recyclerView.setHasFixedSize(false);
+        //Log.d("HERE",userX.getPhoneNumber());
+        databaseReference = FirebaseDatabase.getInstance().getReference("Orders/Artisans/" + userX.getPhoneNumber() + "/Orders Completed");
         databaseReference.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                orderInfo order;
-                HashMap<String,String>map=(HashMap<String, String>) dataSnapshot.getValue();
-                Log.d("HERE",map.toString());
-                order = new orderInfo(map.get("name"),map.get("price"),map.get("date"),map.get("userUID"));
-                ohAdapter.added(order);
+                orderInfo order = new orderInfo();
+                //Log.d("tag", order.toString() + "!" + dataSnapshot.getValue()+"!"+dataSnapshot.getKey());
+                HashMap<String, String> map = (HashMap<String, String>) dataSnapshot.getValue();
+
+                //Log.d("HERE",map.toString());
+                order = new orderInfo(map.get("name"), map.get("price"), map.get("date"), map.get("userUID"));
+                AOHAdapter.added(order);
             }
 
             @Override
@@ -58,6 +59,8 @@ public class OrderHistory extends AppCompatActivity {
 
             @Override
             public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+                //Log.d("childRemoved",dataSnapshot.toString());
 
             }
 
