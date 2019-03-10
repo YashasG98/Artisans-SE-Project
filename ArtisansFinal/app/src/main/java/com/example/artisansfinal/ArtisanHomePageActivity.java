@@ -117,7 +117,8 @@ public class ArtisanHomePageActivity extends AppCompatActivity {
     }
 
     public void order_history_button(MenuItem item) {
-        Toast.makeText(this, "Your order history", Toast.LENGTH_SHORT).show();
+        Intent newIntent = new Intent(this, ArtisanOrderHistoryPageActivity.class);
+        startActivity(newIntent);
     }
 
     public void tutorial_button(MenuItem item) {
@@ -133,8 +134,8 @@ public class ArtisanHomePageActivity extends AppCompatActivity {
 
 
     public void Order_history(View view) {
-        Toast.makeText(this, "Order history", Toast.LENGTH_SHORT).show();
-
+        Intent newIntent = new Intent(this, ArtisanOrderHistoryPageActivity.class);
+        startActivity(newIntent);
     }
 
     public void Order_requests(View view) {
