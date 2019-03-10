@@ -158,6 +158,11 @@ public class ArtisanProductPageActivity extends AppCompatActivity {
             }
         });
 
+        final Tutorial tutorial = new Tutorial(this);
+        tutorial.checkIfFirstRun();
+        tutorial.requestFocusForView(fab,"Click here to edit details", "");
+        tutorial.finishedTutorial();
+
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -167,6 +172,7 @@ public class ArtisanProductPageActivity extends AppCompatActivity {
                 if(drawable instanceof Animatable){
                     ((Animatable) drawable).start();
                 }
+                
 
                 if(displayLayout.getVisibility()==View.VISIBLE) {
                     editLayout.setVisibility(View.VISIBLE);

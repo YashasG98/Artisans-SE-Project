@@ -42,7 +42,7 @@
         <activity android:name=".ArtisanPendingOrderActivity"></activity>
         <activity android:name=".OrderHistory" />
         <activity android:name=".CommonLoginActivity"/>
-        <activity android:name=".CommonLoginActivityTabbed"
+        <activity android:name=".CommonLoginActivityTabbed">
             android:label="Artisanfinal"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>

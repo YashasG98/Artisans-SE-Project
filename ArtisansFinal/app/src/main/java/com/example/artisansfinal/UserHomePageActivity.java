@@ -1,7 +1,10 @@
 package com.example.artisansfinal;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
@@ -15,11 +18,16 @@ import android.widget.Toast;
 import com.example.artisansfinal.R;
 import com.google.firebase.auth.FirebaseAuth;
 
+import smartdevelop.ir.eram.showcaseviewlib.GuideView;
+import smartdevelop.ir.eram.showcaseviewlib.config.DismissType;
+import smartdevelop.ir.eram.showcaseviewlib.config.Gravity;
+
 public class UserHomePageActivity extends AppCompatActivity {
     private DrawerLayout user_home_page_dl;
     private ActionBarDrawerToggle abdt;
     private String userType;
     private FirebaseAuth firebaseAuth;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,9 +36,6 @@ public class UserHomePageActivity extends AppCompatActivity {
         setContentView(R.layout.user_home_page_activity);
         firebaseAuth = FirebaseAuth.getInstance();
 
-
-        Intent intent = getIntent();
-        //userType = intent.getStringExtra("userType");
         user_home_page_dl = (DrawerLayout) findViewById(R.id.user_home_page_dl);
         abdt = new ActionBarDrawerToggle(this, user_home_page_dl, R.string.Open, R.string.Close);
         abdt.setDrawerIndicatorEnabled(true);
@@ -39,6 +44,13 @@ public class UserHomePageActivity extends AppCompatActivity {
 
         final NavigationView nav_view = (NavigationView) findViewById(R.id.user_home_page_navigation_view);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        Tutorial tutorial = new Tutorial(this);
+        tutorial.checkIfFirstRun();
+        tutorial.requestFocusForView(findViewById(R.id.user_home_page_cv_bracelet),
+                "Category", "Click to search products of this category");
+        tutorial.finishedTutorial();
+
         nav_view.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
