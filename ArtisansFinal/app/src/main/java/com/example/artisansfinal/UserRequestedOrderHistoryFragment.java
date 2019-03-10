@@ -45,7 +45,7 @@ public class UserRequestedOrderHistoryFragment extends Fragment
                 orderInfo order;
                 HashMap<String,String> map=(HashMap<String, String>) dataSnapshot.getValue();
                 Log.d("HERE",map.toString());
-                order = new orderInfo(map.get("name"),map.get("price"),map.get("date"), map.get("userUID"));
+                order = new orderInfo(map.get("name"),map.get("price"),map.get("date"), map.get("userUID"), map.get("productCategory"), map.get("productID"));
                 ohAdapter.added(order);
             }
 
