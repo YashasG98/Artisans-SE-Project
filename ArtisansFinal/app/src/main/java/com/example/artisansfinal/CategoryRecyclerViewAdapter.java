@@ -144,7 +144,7 @@ public class CategoryRecyclerViewAdapter extends RecyclerView.Adapter<CategoryRe
                     Log.d("SELECTION", productInfo.toString());
                     String prodName = productInfo.getProductName();
                     String prodCategory = productInfo.getProductCategory();
-                    Intent newintent = new Intent(context, ProductPageActivity.class);
+                    Intent newintent = new Intent(context, UserProductPageTabbedActivity.class);
 
 //                    Drawable drawable = viewHolder.image.getDrawable();
 //                    Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();
