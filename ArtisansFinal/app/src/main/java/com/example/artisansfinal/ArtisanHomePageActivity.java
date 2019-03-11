@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
@@ -34,6 +35,28 @@ public class ArtisanHomePageActivity extends AppCompatActivity {
     private String name;
     int counter;
     //private String name2; // added by shrinidhi
+    private static final String TAG = "artisanHomePageActivity";
+
+//    @Override
+//    public void onSaveInstanceState(Bundle savedInstanceState) {
+//        if(artisanPhoneNumber!=null && !artisanPhoneNumber.isEmpty()){
+//            savedInstanceState.putString("phoneNumber",artisanPhoneNumber);
+//        }
+//        if(name!=null && !name.isEmpty()){
+//            savedInstanceState.putString("name",name);
+//        }
+//        Log.d(TAG, "onSaveInstanceState: "+name+" "+artisanPhoneNumber);
+//        super.onSaveInstanceState(savedInstanceState);
+//    }
+//
+//    @Override
+//    public void onRestoreInstanceState(Bundle savedInstanceState){
+//        artisanPhoneNumber = savedInstanceState.getString("phoneNumber");
+//        name = savedInstanceState.getString("name");
+//        Log.d(TAG, "onRestoreInstanceState: "+name+" "+artisanPhoneNumber);
+//        super.onRestoreInstanceState(savedInstanceState);
+//    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,9 +65,12 @@ public class ArtisanHomePageActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         //userType = intent.getStringExtra("userType");
-        artisanPhoneNumber = FirebaseAuth.getInstance().getCurrentUser().getPhoneNumber();
+//        artisanPhoneNumber = FirebaseAuth.getInstance().getCurrentUser().getPhoneNumber();
         //Log.d("artisanPhoneNumber", artisanPhoneNumber);
+        artisanPhoneNumber = intent.getStringExtra("phoneNumber");
+        name = intent.getStringExtra("name");
 
+        Log.d(TAG, "onCreate: "+name+" "+artisanPhoneNumber);
         //Added by Dhanasekhar
 
         DatabaseReference nameRef = FirebaseDatabase.getInstance().getReference("Artisans/" + artisanPhoneNumber + "/username");
@@ -101,25 +127,6 @@ public class ArtisanHomePageActivity extends AppCompatActivity {
         counter++;
     }
 
-    // added by Shrinidhi
-    @Override
-    public void onSaveInstanceState(Bundle savedInstanceState)
-    {
-        super.onSaveInstanceState(savedInstanceState);
-        savedInstanceState.putString("Phone number",artisanPhoneNumber);
-        savedInstanceState.putString("Artisan name",name);
-    }
-    // added by Shrinidhi
-    @Override
-    public void onRestoreInstanceState(Bundle savedInstanceState) {
-        if(savedInstanceState != null)
-        {
-            String restoreArtisanPhNo = savedInstanceState.getString("Phone number");
-            String restoreName = savedInstanceState.getString("Artisan name");
-        }
-        super.onRestoreInstanceState(savedInstanceState);
-    }
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
@@ -173,12 +180,8 @@ public class ArtisanHomePageActivity extends AppCompatActivity {
 
     public void upload_product(MenuItem item) {
         Toast.makeText(this, "Upload a product", Toast.LENGTH_SHORT).show();
-        Intent intentArtisanInfo = getIntent();
-//        String artisanName = intentArtisanInfo.getStringExtra("name");
-        String artisanContactNumber = intentArtisanInfo.getStringExtra("phoneNumber");
-        Log.d("Here", artisanContactNumber+" "+name);
         Intent intent = new Intent(this, ProductRegistrationActivity.class);
-        intent.putExtra("phoneNumber", artisanContactNumber);
+        intent.putExtra("phoneNumber", artisanPhoneNumber);
         intent.putExtra("name", name);
         //Log.d("nam", artisanName);
         startActivity(intent);

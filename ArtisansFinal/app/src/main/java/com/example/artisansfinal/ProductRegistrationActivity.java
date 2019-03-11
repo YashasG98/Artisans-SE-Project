@@ -61,9 +61,12 @@ public class ProductRegistrationActivity extends AppCompatActivity {
     private ImageView imageView;
     private FirebaseStorage firebaseStorage;
     private StorageReference storageReference;
-    private Uri mainImageURI;
+    private Uri mainImageURI,firebaseUri;
     private ProductInfo product;
+    private static final String TAG = "productRegistration";
     private static boolean viewedOnce = false;
+    private static String artisanName = null;
+    private static String artisanContactNumber = null;
     //private double resizeFactorForHighRes[] = {1,0.8,0.7,0.6,0.5};
 
     @Override
@@ -80,6 +83,10 @@ public class ProductRegistrationActivity extends AppCompatActivity {
         imageView = findViewById(R.id.product_registration_iv_product_image);
         Button register = findViewById(R.id.product_registration_button_register);
 
+        Intent intent = getIntent();
+        artisanName = intent.getStringExtra("name");
+        artisanContactNumber = intent.getStringExtra("phoneNumber");
+        Log.d(TAG, "onClick: "+artisanName+" "+artisanContactNumber);
 
         browse.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -113,10 +120,6 @@ public class ProductRegistrationActivity extends AppCompatActivity {
                 String productPrice = price_of_product.getText().toString();
                 String productID = databaseReference.push().getKey();
 
-                Intent intent = getIntent();
-                String artisanName = intent.getStringExtra("name");
-                String artisanContactNumber = intent.getStringExtra("phoneNumber");
-
                 boolean productNameflag = true, productPriceflag = true;
 
                 if (productName.length() == 0) {
@@ -132,11 +135,14 @@ public class ProductRegistrationActivity extends AppCompatActivity {
                 }
 
                 if (productPriceflag && productNameflag) {
-                    product = new ProductInfo(productID, productName, productDescription, productCategory, productPrice, artisanName, artisanContactNumber);
-                    databaseReference.child("Categories").child(productCategory).child(productName).setValue(product);
-                    databaseReference.child("ArtisanProducts").child(artisanContactNumber).child(productName).setValue(product);
-//                    databaseReference.child("Products").child(productName).setValue(product);
 
+                    product = new ProductInfo(productID, productName, productDescription, productCategory, productPrice, artisanName, artisanContactNumber);
+                    product.setTotalRating("0");
+                    product.setNumberOfPeopleWhoHaveRated("0");
+                    databaseReference.child("Categories").child(productCategory).child(productID).setValue(product);
+                    databaseReference.child("ArtisanProducts").child(artisanContactNumber).child(productID).setValue(product);
+
+//                    databaseReference.child("Products").child(productName).setValue(product);
                     if (mainImageURI != null) {
                         Log.d("IMAGEURI", mainImageURI.toString());
                         uploadImage(mainImageURI);
@@ -144,7 +150,8 @@ public class ProductRegistrationActivity extends AppCompatActivity {
 
                     Toast.makeText(getApplicationContext(), "Product Registered", Toast.LENGTH_SHORT).show();
                     Intent intent1 = new Intent(ProductRegistrationActivity.this, ArtisanHomePageActivity.class);
-//                    intent1.putExtra("param", "");
+                    intent1.putExtra("phoneNumber", artisanContactNumber);
+                    intent1.putExtra("name", artisanName);
                     startActivity(intent1);
                     finish();
                 }
