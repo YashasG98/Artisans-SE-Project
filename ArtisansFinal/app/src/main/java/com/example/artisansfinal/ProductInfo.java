@@ -1,5 +1,6 @@
 package com.example.artisansfinal;
 
+import android.net.Uri;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -12,6 +13,9 @@ public class ProductInfo implements Parcelable {
     private String productPrice;
     private String artisanName;
     private String artisanContactNumber;
+    private String totalRating;
+    private String numberOfPeopleWhoHaveRated;
+
 
     public ProductInfo(String productID, String productName, String productDescription, String productCategory, String productPrice, String artisanName, String artisanContactNumber) {
         this.productID = productID;
@@ -21,6 +25,14 @@ public class ProductInfo implements Parcelable {
         this.productPrice = productPrice;
         this.artisanName = artisanName;
         this.artisanContactNumber = artisanContactNumber;
+    }
+
+    public void setTotalRating(String totalRating) {
+        this.totalRating = totalRating;
+    }
+
+    public void setNumberOfPeopleWhoHaveRated(String numberOfPeopleWhoHaveRated) {
+        this.numberOfPeopleWhoHaveRated = numberOfPeopleWhoHaveRated;
     }
 
     public ProductInfo(Parcel in) {
@@ -81,6 +93,14 @@ public class ProductInfo implements Parcelable {
 
     public void setArtisanContactNumber(String artisanContactNumber) {
         this.artisanContactNumber = artisanContactNumber;
+    }
+
+    public String getTotalRating() {
+        return totalRating;
+    }
+
+    public String getNumberOfPeopleWhoHaveRated() {
+        return numberOfPeopleWhoHaveRated;
     }
 
     @Override
