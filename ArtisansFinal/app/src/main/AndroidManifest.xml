@@ -20,7 +20,6 @@
         android:theme="@style/AppTheme">
 	<activity
             android:name=".UserProductPageTabbedActivity"
-            android:label="@string/title_activity_user_product_page_tabbed"
             android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity android:name=".ArtisanProductPageActivity" />
         <activity android:name=".OrderHistoryTabbedActivity"
@@ -47,8 +46,7 @@
         <activity android:name=".ArtisanOrderHistoryPageActivity"></activity>
         <activity android:name=".OrderHistory" />
         <activity android:name=".CommonLoginActivity"/>
-        <activity android:name=".CommonLoginActivityTabbed">
-            android:label="Artisanfinal"
+        <activity android:name=".CommonLoginActivityTabbed"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

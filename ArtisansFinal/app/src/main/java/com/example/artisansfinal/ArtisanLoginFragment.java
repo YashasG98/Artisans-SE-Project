@@ -168,25 +168,25 @@ public class ArtisanLoginFragment extends Fragment {
                 //contactNoEdit = view.findViewById(R.id.edit_artisan_login_activity_Contact_No);
                 ContactNo = "+91" + contactNoEdit.getText().toString();
 
-                databaseReferenceVerify.addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
-                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                            ArtisanInfo ArtisanNo = snapshot.getValue(ArtisanInfo.class);
-                            contactsList.add(ArtisanNo.getContact_no());
-                            usernameList.add(ArtisanNo.getUsername());
-
-
-                        }
-
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                    }
-                });
+//                databaseReferenceVerify.addValueEventListener(new ValueEventListener() {
+//                    @Override
+//                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//
+//                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+//                            ArtisanInfo ArtisanNo = snapshot.getValue(ArtisanInfo.class);
+//                            contactsList.add(ArtisanNo.getContact_no());
+//                            usernameList.add(ArtisanNo.getUsername());
+//
+//
+//                        }
+//
+//                    }
+//
+//                    @Override
+//                    public void onCancelled(@NonNull DatabaseError databaseError) {
+//
+//                    }
+//                });
 
                 if(ContactNo.length() !=0 && contactsList.contains(ContactNo))
                     SendCode(view);
@@ -336,28 +336,28 @@ public class ArtisanLoginFragment extends Fragment {
 
     };
 
-//    @Override
-//    public void onStart() {
-//        super.onStart();
-//
-//        databaseReferenceVerify.addListenerForSingleValueEvent(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//
-//                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-//                    ArtisanInfo ArtisanNo = snapshot.getValue(ArtisanInfo.class);
-//                    contactsList.add(ArtisanNo.getContact_no());
-//                    usernameList.add(ArtisanNo.getUsername());
-//
-//
-//                }
-//
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError databaseError) {
-//
-//            }
-//        });
-//    }
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        databaseReferenceVerify.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    ArtisanInfo ArtisanNo = snapshot.getValue(ArtisanInfo.class);
+                    contactsList.add(ArtisanNo.getContact_no());
+                    usernameList.add(ArtisanNo.getUsername());
+
+
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
 }

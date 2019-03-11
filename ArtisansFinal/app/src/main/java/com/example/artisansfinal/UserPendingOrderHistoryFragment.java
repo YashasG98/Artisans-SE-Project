@@ -45,7 +45,8 @@ public class UserPendingOrderHistoryFragment extends Fragment
                 orderInfo order;
                 HashMap<String,Object> map=(HashMap<String, Object>) dataSnapshot.getValue();
                 //Log.d("HERE",map.toString());
-                order = new orderInfo(String.valueOf(map.get("name")),String.valueOf(map.get("price")),String.valueOf(map.get("date")), String.valueOf(map.get("userUID")));
+                order = new orderInfo(String.valueOf(map.get("name")),String.valueOf(map.get("price")),String.valueOf(map.get("date")), String.valueOf(map.get("userUID")),
+                        String.valueOf(map.get("productCategory")), String.valueOf(map.get("productID")));
                 ohAdapter.added(order);
             }
 

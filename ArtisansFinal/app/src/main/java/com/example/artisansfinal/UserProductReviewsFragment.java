@@ -69,9 +69,9 @@ public class UserProductReviewsFragment extends Fragment {
         // Inflate the layout for this fragment
 //        return inflater.inflate(R.layout.fragment_user_product_reviews, container, false);
 
-        final View view = inflater.inflate(R.layout.fragment_user_product_details, container, false);
+        final View view = inflater.inflate(R.layout.fragment_user_product_reviews, container, false);
 
-        final TextView pname = view.findViewById(R.id.user_product_details_tv_product_name);
+        /*final TextView pname = view.findViewById(R.id.user_product_details_tv_product_name);
         final TextView aname = view.findViewById(R.id.user_product_details_tv_artisan_name);
         final Button price = view.findViewById(R.id.user_product_details_button_product_price);
         final TextView desc = view.findViewById(R.id.user_product_details_tv_product_description);
@@ -127,7 +127,7 @@ public class UserProductReviewsFragment extends Fragment {
 //                    }
 //                });
                 RequestOptions options = new RequestOptions().error(R.mipmap.image_not_provided);
-                GlideApp.with(getContext())
+                GlideApp.with(getActivity().getApplicationContext())
                         .load(storageReference)
                         .apply(options)
                         .diskCacheStrategy(DiskCacheStrategy.DATA)
@@ -197,7 +197,7 @@ public class UserProductReviewsFragment extends Fragment {
                 builder.show();
             }
 
-        });
+        });*/
 
         return view;
     }
