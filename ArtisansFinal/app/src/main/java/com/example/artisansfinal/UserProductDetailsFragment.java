@@ -79,7 +79,7 @@ public class UserProductDetailsFragment extends Fragment {
         final String productName = intent.getStringExtra("productName");
         final String productID = intent.getStringExtra("productID");
 
-        databaseReference = FirebaseDatabase.getInstance().getReference("Categories/"+productCategory+"/"+productName);
+        databaseReference = FirebaseDatabase.getInstance().getReference("Categories/"+productCategory+"/"+productID);
         storageReference = FirebaseStorage.getInstance().getReference("ProductImages/HighRes/" + productID);
         users = FirebaseDatabase.getInstance().getReference("User");
 

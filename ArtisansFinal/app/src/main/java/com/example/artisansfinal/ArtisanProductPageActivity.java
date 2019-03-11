@@ -86,7 +86,7 @@ public class ArtisanProductPageActivity extends AppCompatActivity {
         final String productID = intent.getStringExtra("productID");
         final String productCategory = intent.getStringExtra("productCategory");
 
-        databaseReference = FirebaseDatabase.getInstance().getReference("ArtisanProducts/"+artisanPhoneNumber+"/"+productName);
+        databaseReference = FirebaseDatabase.getInstance().getReference("ArtisanProducts/"+artisanPhoneNumber+"/"+productID);
         storageReference = FirebaseStorage.getInstance().getReference("ProductImages/HighRes/" + productID);
 
         final String key = databaseReference.getKey();
