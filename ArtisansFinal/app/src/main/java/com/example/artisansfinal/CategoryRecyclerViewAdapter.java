@@ -146,7 +146,7 @@ public class CategoryRecyclerViewAdapter extends RecyclerView.Adapter<CategoryRe
         viewHolder.layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(context, productInfo.getProductName(), Toast.LENGTH_LONG).show();
+//                Toast.makeText(context, productInfo.getProductName(), Toast.LENGTH_LONG).show();
 //                if(imageLoaded) {
                     Log.d("SELECTION", v.toString());
                     Log.d("SELECTION", productInfo.toString());

@@ -11,12 +11,15 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,6 +34,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -39,7 +43,10 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import org.w3c.dom.Text;
+
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -47,18 +54,15 @@ import java.util.HashMap;
 
 public class UserProductReviewsFragment extends Fragment {
 
-
+    private ReviewRecyclerViewAdapter reviewRecyclerViewAdapter;
+    private ArrayList<ProductReview> productReviews = new ArrayList<>();
     private DatabaseReference databaseReference;
-    private DatabaseReference users;
-    private StorageReference storageReference;
-    final long ONE_MB = 1024*1024;
-    private DatabaseReference ordHis;
-    private String userPhoneNumber;
-    private String artisanContactNumber;
-    FirebaseAuth firebaseAuth= FirebaseAuth.getInstance();
-
-    FirebaseUser userX = firebaseAuth.getCurrentUser();
-
+    private int five=0;
+    private int four=0;
+    private int three=0;
+    private int two=0;
+    private int one=0;
+    private int total=0;
     public UserProductReviewsFragment() {
         // Required empty public constructor
     }
@@ -70,134 +74,110 @@ public class UserProductReviewsFragment extends Fragment {
 //        return inflater.inflate(R.layout.fragment_user_product_reviews, container, false);
 
         final View view = inflater.inflate(R.layout.fragment_user_product_reviews, container, false);
+        final RecyclerView recyclerView = view.findViewById(R.id.user_product_review_rv);
+        final TextView averageRating = view.findViewById(R.id.user_product_reviews_average_rating);
+        final TextView totalRated = view.findViewById(R.id.user_product_reviews_total);
+        final SeekBar fiveStar = view.findViewById(R.id.fiveStar);
+        final SeekBar fourStar = view.findViewById(R.id.fourStar);
+        final SeekBar threeStar = view.findViewById(R.id.threeStar);
+        final SeekBar twoStar = view.findViewById(R.id.twoStar);
+        final SeekBar oneStar = view.findViewById(R.id.oneStar);
 
-        /*final TextView pname = view.findViewById(R.id.user_product_details_tv_product_name);
-        final TextView aname = view.findViewById(R.id.user_product_details_tv_artisan_name);
-        final Button price = view.findViewById(R.id.user_product_details_button_product_price);
-        final TextView desc = view.findViewById(R.id.user_product_details_tv_product_description);
-        final ImageView image = view.findViewById((R.id.user_product_details_iv_product_image));
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        reviewRecyclerViewAdapter = new ReviewRecyclerViewAdapter(getContext(), productReviews);
+        recyclerView.setAdapter(reviewRecyclerViewAdapter);
 
-        final Intent intent = getActivity().getIntent();
+        Intent intent = getActivity().getIntent();
+        String productID = intent.getStringExtra("productID");
         String productCategory = intent.getStringExtra("productCategory");
-        final String productName = intent.getStringExtra("productName");
-        final String productID = intent.getStringExtra("productID");
-
-        databaseReference = FirebaseDatabase.getInstance().getReference("Categories/"+productCategory+"/"+productName);
-        storageReference = FirebaseStorage.getInstance().getReference("ProductImages/HighRes/" + productID);
-        users = FirebaseDatabase.getInstance().getReference("User");
-
-
+        databaseReference = FirebaseDatabase.getInstance().getReference("Categories/"+productCategory+"/"+productID);
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
                 HashMap<String, String> map = (HashMap<String, String>) dataSnapshot.getValue();
-                pname.setText(map.get("productName"));
-                aname.setText(map.get("artisanName"));
-                price.setText(map.get("productPrice"));
-                desc.setText(map.get("productDescription"));
-                artisanContactNumber = map.get("artisanContactNumber");
-                Log.d("STORAGE", storageReference.child(map.get("productID")).toString());
-//                storageReference.getBytes(ONE_MB).addOnSuccessListener(new OnSuccessListener<byte[]>() {
-//                    @Override
-//                    public void onSuccess(byte[] bytes) {
-//                        Glide.with(getContext())
-//                                .load(bytes)
-//                                .listener(new RequestListener<Drawable>() {
-//                                    @Override
-//                                    public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
-//                                        Toast.makeText(getContext(), "Glide load failed", Toast.LENGTH_SHORT).show();
-//                                        return false;
-//                                    }
-//
-//                                    @Override
-//                                    public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
-//                                        return false;
-//                                    }
-//                                })
-//                                .into(image);
-//                    }
-//                }).addOnFailureListener(new OnFailureListener() {
-//                    @Override
-//                    public void onFailure(@NonNull Exception e) {
-////                        Toast.makeText(getApplicationContext(), "Image Load Failed", Toast.LENGTH_SHORT).show();
-//                        Glide.with(getContext())
-//                                .load(R.mipmap.image_not_provided)
-//                                .into(image);
-//                    }
-//                });
-                RequestOptions options = new RequestOptions().error(R.mipmap.image_not_provided);
-                GlideApp.with(getActivity().getApplicationContext())
-                        .load(storageReference)
-                        .apply(options)
-                        .diskCacheStrategy(DiskCacheStrategy.DATA)
-                        .into(image);
+                totalRated.setText(map.get("numberOfPeopleWhoHaveRated"));
+                averageRating.setText(map.get("totalRating"));
             }
+
             @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {}
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
         });
 
-        users.addValueEventListener(new ValueEventListener() {
+        databaseReference = FirebaseDatabase.getInstance().getReference("Reviews/" + productID);
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for(DataSnapshot userSnapshot : dataSnapshot.getChildren())
-                {
-                    UserInfo userInfo = userSnapshot.getValue(UserInfo.class);
-                    if(userInfo.userEmail.equals(userX.getEmail()))
-                    {
-                        userPhoneNumber = userInfo.userPnumber;
-                        break;
-                    }
+                if (dataSnapshot.getValue() != null) {
+                    databaseReference.addChildEventListener(new ChildEventListener() {
+                        @Override
+                        public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                            ProductReview productReview;
+                            HashMap<String, String> map = (HashMap<String, String>) dataSnapshot.getValue();
+                            productReview = new ProductReview();
+                            productReview.setRating(map.get("rating"));
+                            productReview.setReview(map.get("review"));
+                            productReview.setUserName(map.get("userName")+" :");
+                            reviewRecyclerViewAdapter.added(productReview);
+                            int rating = Integer.parseInt(map.get("rating"));
+                            Toast.makeText(getContext(), ""+rating, Toast.LENGTH_SHORT).show();
+                            if(rating==5){
+                                five+=1;
+                                total++;
+                            }
+                            else if(rating==4){
+                                four+=1;
+                                total++;
+                            }
+                            else if(rating==3){
+                                three+=1;
+                                total++;
+                            }
+                            else if(rating==2){
+                                two+=1;
+                                total++;
+                            }
+                            else{
+                                one+=1;
+                                total++;
+                            }
+
+                            fiveStar.setProgress(five*100/total);
+                            fourStar.setProgress(four*100/total);
+                            threeStar.setProgress(three*100/total);
+                            twoStar.setProgress(two*100/total);
+                            oneStar.setProgress(one*100/total);
+                        }
+
+                        @Override
+                        public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                        }
+
+                        @Override
+                        public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+                        }
+
+                        @Override
+                        public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
                 }
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {}
-        });
+            public void onCancelled(@NonNull DatabaseError databaseError) {
 
-        ordHis = FirebaseDatabase.getInstance().getReference("Orders");
-
-        price.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                final AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
-                builder.setTitle("Choose");
-                builder.setMessage("Want to buy this?");
-
-                builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-
-                        String opname=pname.getText().toString();
-                        //Log.d("HERE",opname);
-                        String oprice=price.getText().toString();
-                        Date c = Calendar.getInstance().getTime();
-                        SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
-                        String formattedDate = df.format(c);
-                        orderInfo order=new orderInfo(opname,oprice,formattedDate,userX.getUid());
-                        String orderID = ordHis.push().getKey();
-                        //ordHis.child(userX.getEmail().substring(0,userX.getEmail().indexOf('@'))).child(orderID).setValue(order);
-                        ordHis.child("Users").child(userX.getUid()).child("Orders Requested").child(orderID).setValue(order);
-                        orderID = ordHis.push().getKey();
-                        ordHis.child("Artisans").child(artisanContactNumber).child("Order Requests").child(orderID).setValue(order);
-
-
-                    }
-                });
-
-                builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                });
-
-                Dialog dialog = builder.create();
-                builder.show();
             }
-
-        });*/
+        });
 
         return view;
     }
