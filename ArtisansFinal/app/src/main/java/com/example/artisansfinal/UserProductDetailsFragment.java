@@ -17,6 +17,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CalendarView;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -43,6 +44,7 @@ import com.google.firebase.storage.StorageReference;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 
 public class UserProductDetailsFragment extends Fragment {
@@ -50,11 +52,13 @@ public class UserProductDetailsFragment extends Fragment {
     private DatabaseReference databaseReference;
     private DatabaseReference users;
     private StorageReference storageReference;
-    final long ONE_MB = 1024*1024;
+    final long ONE_MB = 1024 * 1024;
     private DatabaseReference ordHis;
     private String userPhoneNumber;
     private String artisanContactNumber;
-    FirebaseAuth firebaseAuth= FirebaseAuth.getInstance();
+    Calendar calendar;
+    private String formattedDate;
+    FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
 
     FirebaseUser userX = firebaseAuth.getCurrentUser();
 
@@ -63,7 +67,7 @@ public class UserProductDetailsFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(final LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         final View view = inflater.inflate(R.layout.fragment_user_product_details, container, false);
@@ -79,7 +83,7 @@ public class UserProductDetailsFragment extends Fragment {
         final String productName = intent.getStringExtra("productName");
         final String productID = intent.getStringExtra("productID");
 
-        databaseReference = FirebaseDatabase.getInstance().getReference("Categories/"+productCategory+"/"+productID);
+        databaseReference = FirebaseDatabase.getInstance().getReference("Categories/" + productCategory + "/" + productID);
         storageReference = FirebaseStorage.getInstance().getReference("ProductImages/HighRes/" + productID);
         users = FirebaseDatabase.getInstance().getReference("User");
 
@@ -130,18 +134,18 @@ public class UserProductDetailsFragment extends Fragment {
                         .diskCacheStrategy(DiskCacheStrategy.DATA)
                         .into(image);
             }
+
             @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {}
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
         });
 
         users.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for(DataSnapshot userSnapshot : dataSnapshot.getChildren())
-                {
+                for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
                     UserInfo userInfo = userSnapshot.getValue(UserInfo.class);
-                    if(userInfo.userEmail.equals(userX.getEmail()))
-                    {
+                    if (userInfo.userEmail.equals(userX.getEmail())) {
                         userPhoneNumber = userInfo.userPnumber;
                         break;
                     }
@@ -149,7 +153,8 @@ public class UserProductDetailsFragment extends Fragment {
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {}
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
         });
 
         ordHis = FirebaseDatabase.getInstance().getReference("Orders");
@@ -159,39 +164,58 @@ public class UserProductDetailsFragment extends Fragment {
             public void onClick(View v) {
 
                 final AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
-                builder.setTitle("Choose");
-                builder.setMessage("Want to buy this?");
+                builder.setTitle("Choose a delivery date");
 
-                builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+                //Added by dhanasekhar
+                LayoutInflater layoutInflater = inflater.from(v.getContext());
+                final View userConfirmationView = layoutInflater.inflate(R.layout.user_confirmation, null);
+                builder.setView(userConfirmationView);
+                final CalendarView calendarView = userConfirmationView.findViewById(R.id.calendarView);
+                calendarView.setMinDate(Calendar.getInstance().getTimeInMillis());
+
+                final String months[] = { "Jan", "Feb", "Mar", "Apr",
+                        "May", "Jun", "Jul", "Aug",
+                        "Sep", "Oct", "Nov", "Dec" };
+
+                calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
-
-                        String opname=pname.getText().toString();
-                        //Log.d("HERE",opname);
-                        String oprice=price.getText().toString();
-                        Date c = Calendar.getInstance().getTime();
-                        SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
-                        String formattedDate = df.format(c);
-                        orderInfo order=new orderInfo(opname,oprice,formattedDate,userX.getUid(), productCategory, productID);
-                        String orderID = ordHis.push().getKey();
-                        //ordHis.child(userX.getEmail().substring(0,userX.getEmail().indexOf('@'))).child(orderID).setValue(order);
-                        ordHis.child("Users").child(userX.getUid()).child("Orders Requested").child(orderID).setValue(order);
-                        orderID = ordHis.push().getKey();
-                        ordHis.child("Artisans").child(artisanContactNumber).child("Order Requests").child(orderID).setValue(order);
-
+                    public void onSelectedDayChange(CalendarView view, int year, int month, int dayOfMonth)
+                    {
+                        calendar = new GregorianCalendar(year, month, dayOfMonth);
+                        formattedDate = calendar.get(Calendar.DATE) + "-" +months[calendar.get(Calendar.MONTH)] + "-" + calendar.get(Calendar.YEAR);
 
                     }
                 });
 
-                builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                });
+                        builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
 
-                Dialog dialog = builder.create();
-                builder.show();
+
+                                String opname = pname.getText().toString();
+                                //Log.d("HERE",opname);
+                                String oprice = price.getText().toString();
+                                orderInfo order = new orderInfo(opname, oprice, formattedDate, userX.getUid(), productCategory, productID);
+                                String orderID = ordHis.push().getKey();
+                                //ordHis.child(userX.getEmail().substring(0,userX.getEmail().indexOf('@'))).child(orderID).setValue(order);
+                                ordHis.child("Users").child(userX.getUid()).child("Orders Requested").child(orderID).setValue(order);
+                                orderID = ordHis.push().getKey();
+                                ordHis.child("Artisans").child(artisanContactNumber).child("Order Requests").child(orderID).setValue(order);
+
+
+                            }
+                        });
+
+                        builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+
+                        Dialog dialog = builder.create();
+                        builder.show();
+
             }
 
         });
