@@ -57,8 +57,7 @@ public class SelectedCategoryActivity extends AppCompatActivity {
     private ImageView loading;
 
     //Tutorials (done by shashwatha)
-    private boolean isCompleteTutorial = false;
-    private boolean isDismissed = false;
+    private static boolean runInOnePage = false;
 
     class sorting implements Comparator<ProductInfo>
     {
@@ -185,8 +184,6 @@ public class SelectedCategoryActivity extends AppCompatActivity {
                     categoryRecyclerViewAdapter = new CategoryRecyclerViewAdapter(SelectedCategoryActivity.this, searchResults);
                     recyclerView.setAdapter(categoryRecyclerViewAdapter);
                 }
-
-
             }
 
             @Override
@@ -216,10 +213,11 @@ public class SelectedCategoryActivity extends AppCompatActivity {
                                 recyclerViewLayout.setVisibility(View.VISIBLE);
                                 noMatchLayout.setVisibility(View.GONE);
 
-                                if(contentLayout.getVisibility() == View.VISIBLE){
+                                if(contentLayout.getVisibility() == View.VISIBLE && !runInOnePage){
 
                                     tutorial.requestFocusForViews(title);
                                     tutorial.finishedTutorial();
+                                    runInOnePage = true;
 
                                 }
 

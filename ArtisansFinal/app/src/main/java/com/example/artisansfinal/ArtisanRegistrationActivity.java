@@ -220,7 +220,7 @@ public class ArtisanRegistrationActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "Registered", Toast.LENGTH_LONG).show();
 
                     Intent intent = new Intent(ArtisanRegistrationActivity.this, ArtisanHomePageActivity.class);
-                    intent.putExtra("userType", userType);
+//                    intent.putExtra("userType", userType);
                     intent.putExtra("phoneNumber", ContactNo);
                     intent.putExtra("name", username);
                     startActivity(intent);
