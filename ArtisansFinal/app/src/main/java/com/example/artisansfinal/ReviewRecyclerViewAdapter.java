@@ -53,6 +53,7 @@ public class ReviewRecyclerViewAdapter extends RecyclerView.Adapter<ReviewRecycl
         final ProductReview productReview = reviews.get(i);
         viewHolder.userName.setText(productReview.getUserName());
         viewHolder.ratingBar.setNumStars(Integer.parseInt(productReview.getRating()));
+        viewHolder.ratingBar.setRating(Integer.parseInt(productReview.getRating()));
         viewHolder.review.setText(productReview.getReview());
     }
 

@@ -4,140 +4,142 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".UserProductReviewsFragment">
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical">
-    <android.support.v7.widget.CardView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="2dp">
-        <LinearLayout
+        android:orientation="vertical">
+        <android.support.v7.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/entire_thing">
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:id="@+id/left_thing"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="24dp"
-                android:layout_marginBottom="4dp"
-                android:layout_marginTop="4dp">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center|top"
-                    android:id="@+id/user_product_reviews_average_rating"
-                    android:text="3.5"
-                    android:textSize="60dp"
-                    android:fontFamily="sans-serif-condensed"/>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="top|center"
-                    android:id="@+id/user_product_reviews_total"
-                    android:text="10"
-                    android:textSize="16sp"/>
-            </LinearLayout>
+            android:layout_marginTop="2dp">
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="fill_parent"
-                android:id="@+id/right_thing">
+                android:layout_height="wrap_content"
+                android:id="@+id/entire_thing">
                 <LinearLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:id="@+id/rating_number">
+                    android:id="@+id/left_thing"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="24dp"
+                    android:layout_marginBottom="4dp"
+                    android:layout_marginTop="4dp">
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="5"
-                        android:layout_weight="0.2"/>
+                        android:gravity="center|top"
+                        android:id="@+id/user_product_reviews_average_rating"
+                        android:text="0.0"
+                        android:textSize="60dp"
+                        android:fontFamily="sans-serif-condensed"/>
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="4"
-                        android:layout_weight="0.2"/>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="3"
-                        android:layout_weight="0.2"/>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="2"
-                        android:layout_weight="0.2"/>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="1"
-                        android:layout_weight="0.2"/>
-
+                        android:layout_gravity="top|center"
+                        android:id="@+id/user_product_reviews_total"
+                        android:text="0"
+                        android:textSize="16sp"/>
                 </LinearLayout>
+
                 <LinearLayout
-                    android:layout_width="fill_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:id="@+id/seekbar_thing">
-                    <SeekBar
-                        android:layout_weight="0.2"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:clickable="false"
-                        android:thumbTint="@android:color/transparent"
-                        android:id="@+id/fiveStar"
-                        android:progress="75"
-                        android:progressDrawable="@drawable/custom_seekbar"/>
-                    <SeekBar
-                        android:layout_weight="0.2"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:clickable="false"
-                        android:thumbTint="@android:color/transparent"
-                        android:id="@+id/fourStar"
-                        android:progress="100"
-                        android:progressDrawable="@drawable/custom_seekbar"/>
-                    <SeekBar
-                        android:layout_weight="0.2"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:clickable="false"
-                        android:thumbTint="@android:color/transparent"
-                        android:id="@+id/threeStar"
-                        android:progress="40"
-                        android:progressDrawable="@drawable/custom_seekbar"/>
-                    <SeekBar
-                        android:layout_weight="0.2"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:clickable="false"
-                        android:thumbTint="@android:color/transparent"
-                        android:id="@+id/twoStar"
-                        android:progress="20"
-                        android:progressDrawable="@drawable/custom_seekbar"/>
-                    <SeekBar
-                        android:layout_weight="0.2"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:clickable="false"
-                        android:thumbTint="@android:color/transparent"
-                        android:id="@+id/oneStar"
-                        android:progress="10"
-                        android:progressDrawable="@drawable/custom_seekbar"/>
+                    android:layout_width="match_parent"
+                    android:layout_height="fill_parent"
+                    android:id="@+id/right_thing">
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:id="@+id/rating_number">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="5"
+                            android:layout_weight="0.2"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="4"
+                            android:layout_weight="0.2"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="3"
+                            android:layout_weight="0.2"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="2"
+                            android:layout_weight="0.2"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="1"
+                            android:layout_weight="0.2"/>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:id="@+id/seekbar_thing">
+                        <SeekBar
+                            android:layout_weight="0.2"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:clickable="false"
+                            android:thumbTint="@android:color/transparent"
+                            android:id="@+id/fiveStar"
+                            android:progress="100"
+                            android:progressDrawable="@drawable/custom_seekbar"/>
+                        <SeekBar
+                            android:layout_weight="0.2"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:clickable="false"
+                            android:thumbTint="@android:color/transparent"
+                            android:id="@+id/fourStar"
+                            android:progress="100"
+                            android:progressDrawable="@drawable/custom_seekbar"/>
+                        <SeekBar
+                            android:layout_weight="0.2"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:clickable="false"
+                            android:thumbTint="@android:color/transparent"
+                            android:id="@+id/threeStar"
+                            android:progress="100"
+                            android:progressDrawable="@drawable/custom_seekbar"/>
+                        <SeekBar
+                            android:layout_weight="0.2"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:clickable="false"
+                            android:thumbTint="@android:color/transparent"
+                            android:id="@+id/twoStar"
+                            android:progress="100"
+                            android:progressDrawable="@drawable/custom_seekbar"/>
+                        <SeekBar
+                            android:layout_weight="0.2"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:clickable="false"
+                            android:thumbTint="@android:color/transparent"
+                            android:id="@+id/oneStar"
+                            android:progress="100"
+                            android:progressDrawable="@drawable/custom_seekbar"/>
+                    </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
-        </LinearLayout>
-    </android.support.v7.widget.CardView>
+        </android.support.v7.widget.CardView>
 
-    <android.support.v7.widget.RecyclerView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/user_product_review_rv">
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/user_product_review_rv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-    </android.support.v7.widget.RecyclerView>
-</LinearLayout>
+        </android.support.v7.widget.RecyclerView>
+    </LinearLayout>
 
 </android.support.v4.widget.NestedScrollView>
