@@ -35,11 +35,10 @@ public class CommonLoginActivityTabbed extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setTheme(R.style.splashScreenTheme);
         super.onCreate(savedInstanceState);
 
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-
-
 
         setContentView(R.layout.activity_common_login_tabbed);
 

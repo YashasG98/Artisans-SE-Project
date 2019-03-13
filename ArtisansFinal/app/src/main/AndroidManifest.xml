@@ -6,11 +6,6 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
-    <!--<activity-->
-    <!--android:name=".CommonLoginActivityTabbed"-->
-    <!--android:label="@string/title_activity_main"-->
-    <!--android:theme="@style/AppTheme.NoActionBar"></activity>-->
-
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -18,12 +13,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-	<activity
+        <activity android:name=".SplashScreen"></activity>
+        <activity
             android:name=".UserProductPageTabbedActivity"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".ArtisanProductPageActivity" />
-        <activity android:name=".OrderHistoryTabbedActivity"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".OrderHistoryTabbedActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".ArtisanProductsActivity" />
         <activity android:name=".ArtisanLoginActivity" />
         <activity android:name=".ProductRegistrationActivity" />
@@ -41,13 +38,14 @@
         <activity android:name=".UserProfileUpdateActivity" />
         <activity android:name=".ArtisanProfileUpdateActivity" />
         <activity android:name=".ArtisanProfilePageActivity" />
-        <activity android:name=".ArtisanOrderRequestPageActivity"/>
-        <activity android:name=".ArtisanPendingOrderActivity"></activity>
-        <activity android:name=".ArtisanOrderHistoryPageActivity"></activity>
+        <activity android:name=".ArtisanOrderRequestPageActivity" />
+        <activity android:name=".ArtisanPendingOrderActivity" />
+        <activity android:name=".ArtisanOrderHistoryPageActivity" />
         <activity android:name=".OrderHistory" />
-        <activity android:name=".CommonLoginActivity"/>
-        <activity android:name=".CommonLoginActivityTabbed"
-            android:theme="@style/AppTheme.NoActionBar">
+        <activity android:name=".CommonLoginActivity" />
+        <activity
+            android:name=".CommonLoginActivityTabbed"
+            android:theme="@style/splashScreenTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
