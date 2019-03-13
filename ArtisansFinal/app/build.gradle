@@ -58,5 +58,8 @@ dependencies {
     //tutorials
     implementation 'com.github.AppIntro:AppIntro:v4.2.3'
     implementation 'com.github.mreram:showcaseview:1.1'
+
+    //splash
+    implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.10'
 }
 apply plugin: 'com.google.gms.google-services'
