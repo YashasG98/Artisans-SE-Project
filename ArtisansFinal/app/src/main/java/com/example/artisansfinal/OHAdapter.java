@@ -15,6 +15,9 @@ import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -47,6 +50,7 @@ public class OHAdapter extends RecyclerView.Adapter<OHAdapter.OHViewHolder> {
         TextView reviewTextView;
         RatingBar ratingBar;
         CardView cardView;
+        View divider;
 
         public OHViewHolder(@NonNull View itemView, String className) {
             super(itemView);
@@ -57,6 +61,7 @@ public class OHAdapter extends RecyclerView.Adapter<OHAdapter.OHViewHolder> {
             reviewTextView = itemView.findViewById(R.id.review);
             layout = itemView.findViewById(R.id.orderHistoryRL);
             cardView = itemView.findViewById(R.id.orderHistoryCv);
+            divider = itemView.findViewById(R.id.divider_line);
 
 
         }
@@ -73,7 +78,7 @@ public class OHAdapter extends RecyclerView.Adapter<OHAdapter.OHViewHolder> {
     public OHViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View view;
         LayoutInflater inflater = LayoutInflater.from(context);
-        view = inflater.inflate(R.layout.order_history_layout, viewGroup, false);
+        view = inflater.inflate(R.layout.order_history_layout_im, viewGroup, false);
         OHViewHolder viewHolder = new OHViewHolder(view, this.className);
         return viewHolder;
     }
@@ -84,6 +89,13 @@ public class OHAdapter extends RecyclerView.Adapter<OHAdapter.OHViewHolder> {
         viewHolder.productName.setText(orderX.getName());
         viewHolder.date.setText(orderX.getDate());
         viewHolder.productPrice.setText(orderX.getPrice());
+        viewHolder.image.setClipToOutline(true);
+        storageReference = FirebaseStorage.getInstance().getReference("ProductImages/LowRes/" + orderX.getProductID());
+        Glide.with(context).asGif().load(R.mipmap.loading3).into(viewHolder.image);
+
+        RequestOptions requestOptions = new RequestOptions().error(R.mipmap.not_found);
+        Glide.with(context).load(storageReference).apply(requestOptions).diskCacheStrategy(DiskCacheStrategy.DATA).into(viewHolder.image);
+
 
         DatabaseReference users = FirebaseDatabase.getInstance().getReference("User");
         final String email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
@@ -91,7 +103,6 @@ public class OHAdapter extends RecyclerView.Adapter<OHAdapter.OHViewHolder> {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                userPhoneNumber = "34";
 
                 for(DataSnapshot userSnapshot : dataSnapshot.getChildren())
                 {
@@ -117,6 +128,7 @@ public class OHAdapter extends RecyclerView.Adapter<OHAdapter.OHViewHolder> {
         {
             viewHolder.reviewTextView.setClickable(true);
             viewHolder.reviewTextView.setVisibility(VISIBLE);
+            viewHolder.divider.setVisibility(VISIBLE);
             viewHolder.reviewTextView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -181,7 +193,7 @@ public class OHAdapter extends RecyclerView.Adapter<OHAdapter.OHViewHolder> {
                         }
                     });
 
-                    builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    builder.setNegativeButton("Later!", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
 
