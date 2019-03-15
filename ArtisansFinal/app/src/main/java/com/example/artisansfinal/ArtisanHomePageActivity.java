@@ -74,32 +74,6 @@ public class ArtisanHomePageActivity extends AppCompatActivity {
         setContentView(R.layout.artisan_home_page_activity);
         DrawerLayout drawerLayout = findViewById(R.id.artisan_home_page_dl);
 
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://artisansfinal.firebaseapp.com/api/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
-        Api api = retrofit.create(Api.class);
-
-        Call<ResponseBody> call=api.sendNotification("dzvux4lZkGg:APA91bH0aTFEzaINHxD6Xvk-nVEmsTOzV9bD3y-YV8b7l_HwnhYZcli7nrYv4giNDKKyn1Z03oQf0GiRECSol542To3LclXk6YnwUebv5Dhnfhds-hJoqDfAc4jSmpSTbPOkDjpqFgb0","HEY","WASSUP");
-
-        call.enqueue(new Callback<ResponseBody>() {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    Toast.makeText(getApplicationContext(), response.body().string(), Toast.LENGTH_LONG).show();
-                }
-                catch(IOException e){
-                    e.printStackTrace();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
-
-            }
-        });
-
         Intent intent = getIntent();
         //userType = intent.getStringExtra("userType");
 //        artisanPhoneNumber = FirebaseAuth.getInstance().getCurrentUser().getPhoneNumber();

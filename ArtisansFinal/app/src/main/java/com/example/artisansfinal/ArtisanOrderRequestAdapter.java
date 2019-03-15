@@ -106,6 +106,8 @@ public class ArtisanOrderRequestAdapter extends RecyclerView.Adapter<ArtisanOrde
 
         final Api api = retrofit.create(Api.class);
 
+        Log.d("HEY",orderX.toString());
+
         if (orderX.getC().equals("g")) {
             viewHolder.card.setCardBackgroundColor(Color.parseColor("#76FF03"));
         } else if (orderX.getC().equals("r")) {
@@ -188,7 +190,7 @@ public class ArtisanOrderRequestAdapter extends RecyclerView.Adapter<ArtisanOrde
                             //dbu.child(userKey).setValue(null);
                             //Log.d("HERE2",artisanKey);
                             //Log.d("HERE2",userKey);
-                            Call<ResponseBody> call=api.sendNotification("dzvux4lZkGg:APA91bH0aTFEzaINHxD6Xvk-nVEmsTOzV9bD3y-YV8b7l_HwnhYZcli7nrYv4giNDKKyn1Z03oQf0GiRECSol542To3LclXk6YnwUebv5Dhnfhds-hJoqDfAc4jSmpSTbPOkDjpqFgb0","Order Accepted!","Your order for "+viewHolder.productName.getText().toString()+" has been accepted by the artisan");
+                            Call<ResponseBody> call=api.sendNotification(orderX.fcmToken,"Order Accepted!","Your order for "+viewHolder.productName.getText().toString()+" has been accepted by the artisan");
                             call.enqueue(new Callback<ResponseBody>() {
                                 @Override
                                 public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -209,6 +211,17 @@ public class ArtisanOrderRequestAdapter extends RecyclerView.Adapter<ArtisanOrde
                             viewHolder.card.setCardBackgroundColor(Color.parseColor("#E64A19"));
                             dba.child(artisanKey).setValue(null);
                             dbu.child(userKey).setValue(null);
+                            Call<ResponseBody> call=api.sendNotification(orderX.fcmToken,"Order Rejected :(","Your order for "+viewHolder.productName.getText().toString()+" has been rejected as the artisan is very busy at this point.");
+                            call.enqueue(new Callback<ResponseBody>() {
+                                @Override
+                                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                                }
+
+                                @Override
+                                public void onFailure(Call<ResponseBody> call, Throwable t) {
+
+                                }
+                            });
                             dialog.dismiss();
                         }
                     });

@@ -26,6 +26,13 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+
 public class ArtisanPendingOrderAdapter extends RecyclerView.Adapter<ArtisanPendingOrderAdapter.ArtisanPendingOrderViewHolder> {
 
     private ArrayList<orderInfo> order;
@@ -73,6 +80,14 @@ public class ArtisanPendingOrderAdapter extends RecyclerView.Adapter<ArtisanPend
 
     @Override
     public void onBindViewHolder(@NonNull final ArtisanPendingOrderAdapter.ArtisanPendingOrderViewHolder viewHolder, final int i) {
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("https://artisansfinal.firebaseapp.com/api/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        final Api api = retrofit.create(Api.class);
+
         final orderInfo orderX = order.get(i);
 
         viewHolder.productName.setText(orderX.getName());
@@ -166,6 +181,18 @@ public class ArtisanPendingOrderAdapter extends RecyclerView.Adapter<ArtisanPend
                             x = dbum.push().getKey();
                             //dbum.child(x).setValue("Hai");
                             move(dbu.child(userKey), dbum.child(x), userKey);
+                            Log.d("HEY",orderX.fcmToken);
+                            Call<ResponseBody> call=api.sendNotification(orderX.fcmToken,"Order Completed!","Your order for "+viewHolder.productName.getText().toString()+" has been completed by the artisan and will be delivered shortly");
+                            call.enqueue(new Callback<ResponseBody>() {
+                                @Override
+                                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                                }
+
+                                @Override
+                                public void onFailure(Call<ResponseBody> call, Throwable t) {
+
+                                }
+                            });
                             //Log.d("HERE", dbu.child(userKey).toString());
                             //dbu.child(userKey).setValue(null);
                             //Log.d("HERE2",artisanKey);

@@ -191,9 +191,9 @@ public class UserProductDetailsFragment extends Fragment {
                         builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                String opname = pname.getText().toString();
+                                final String opname = pname.getText().toString();
                                 //Log.d("HERE",opname);
-                                String oprice = price.getText().toString();
+                                final String oprice = price.getText().toString();
                                 final DatabaseReference database= FirebaseDatabase.getInstance().getReference("User/");
                                 database.addListenerForSingleValueEvent(new ValueEventListener() {
                                     @Override
@@ -201,6 +201,13 @@ public class UserProductDetailsFragment extends Fragment {
                                         for(DataSnapshot data: dataSnapshot.getChildren()){
                                             if(data.child("userEmail").getValue().toString().equals(userX.getEmail())){
                                                 token=data.child("FCMToken").getValue().toString();
+
+                                                orderInfo order = new orderInfo(opname, oprice, formattedDate, userX.getUid(), productCategory, productID,userX.getEmail(),token);
+                                                String orderID = ordHis.push().getKey();
+                                                //ordHis.child(userX.getEmail().substring(0,userX.getEmail().indexOf('@'))).child(orderID).setValue(order);
+                                                ordHis.child("Users").child(userX.getUid()).child("Orders Requested").child(orderID).setValue(order);
+                                                orderID = ordHis.push().getKey();
+                                                ordHis.child("Artisans").child(artisanContactNumber).child("Order Requests").child(orderID).setValue(order);
                                             }
                                         }
                                     }
@@ -210,15 +217,7 @@ public class UserProductDetailsFragment extends Fragment {
 
                                     }
                                 });
-                                int i=0;
-                                while(i<10000){i++;}
 
-                                orderInfo order = new orderInfo(opname, oprice, formattedDate, userX.getUid(), productCategory, productID,userX.getEmail(),token);
-                                String orderID = ordHis.push().getKey();
-                                //ordHis.child(userX.getEmail().substring(0,userX.getEmail().indexOf('@'))).child(orderID).setValue(order);
-                                ordHis.child("Users").child(userX.getUid()).child("Orders Requested").child(orderID).setValue(order);
-                                orderID = ordHis.push().getKey();
-                                ordHis.child("Artisans").child(artisanContactNumber).child("Order Requests").child(orderID).setValue(order);
                             }
                         });
 
