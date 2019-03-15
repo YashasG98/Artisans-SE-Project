@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
+import android.os.Message;
 import android.os.PersistableBundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -22,6 +23,16 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.messaging.FirebaseMessaging;
+
+import java.io.IOException;
+
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 //import e.shrinidhiav.artisanhomepageactivity.R;
 
@@ -62,6 +73,32 @@ public class ArtisanHomePageActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.artisan_home_page_activity);
         DrawerLayout drawerLayout = findViewById(R.id.artisan_home_page_dl);
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("https://artisansfinal.firebaseapp.com/api/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        Api api = retrofit.create(Api.class);
+
+        Call<ResponseBody> call=api.sendNotification("dzvux4lZkGg:APA91bH0aTFEzaINHxD6Xvk-nVEmsTOzV9bD3y-YV8b7l_HwnhYZcli7nrYv4giNDKKyn1Z03oQf0GiRECSol542To3LclXk6YnwUebv5Dhnfhds-hJoqDfAc4jSmpSTbPOkDjpqFgb0","HEY","WASSUP");
+
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    Toast.makeText(getApplicationContext(), response.body().string(), Toast.LENGTH_LONG).show();
+                }
+                catch(IOException e){
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+
+            }
+        });
 
         Intent intent = getIntent();
         //userType = intent.getStringExtra("userType");

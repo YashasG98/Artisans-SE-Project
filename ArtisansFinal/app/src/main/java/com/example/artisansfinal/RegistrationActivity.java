@@ -15,8 +15,14 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 
 public class RegistrationActivity extends AppCompatActivity {
     private EditText userName,userPassword,userEmail,userPnumber,userPcode,userCpassword;
@@ -44,7 +50,39 @@ public class RegistrationActivity extends AppCompatActivity {
                            if(task.isSuccessful())
                            {
                                sendUserData();
+                               int i=0;
+                               while(i!=10000){i++;}
                                Toast.makeText(RegistrationActivity.this,"Registration Successful",Toast.LENGTH_SHORT).show();
+                               FirebaseInstanceId.getInstance().getInstanceId()
+                                       .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+                                           @Override
+                                           public void onComplete(@NonNull Task<InstanceIdResult> task) {
+                                               if(task.isSuccessful()){
+                                                   final String token=task.getResult().getToken();
+                                                   final FirebaseUser user=FirebaseAuth.getInstance().getCurrentUser();
+                                                   final DatabaseReference database= FirebaseDatabase.getInstance().getReference("User/");
+                                                   database.addListenerForSingleValueEvent(new ValueEventListener() {
+                                                       @Override
+                                                       public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                                           for(DataSnapshot data: dataSnapshot.getChildren()){
+                                                               if(data.child("userEmail").getValue().toString().equals(user.getEmail())){
+                                                                   DatabaseReference db=FirebaseDatabase.getInstance().getReference("User/");
+                                                                   db.child(data.child("userPnumber").getValue().toString()).child("FCMToken").setValue(token);
+                                                               }
+                                                           }
+                                                       }
+
+                                                       @Override
+                                                       public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                                       }
+                                                   });
+                                               }
+                                               else {
+                                                   Toast.makeText(getApplicationContext(),task.getException().getMessage(),Toast.LENGTH_LONG).show();
+                                               }
+                                           }
+                                       });
                                Intent intent = new Intent(RegistrationActivity.this, UserHomePageActivity.class);
                                startActivity(intent);
                            }
@@ -117,9 +155,9 @@ public class RegistrationActivity extends AppCompatActivity {
     private  void sendUserData()
     {
         FirebaseDatabase firebaseDatabase=FirebaseDatabase.getInstance();
+        FirebaseUser user=FirebaseAuth.getInstance().getCurrentUser();
         DatabaseReference myRef=firebaseDatabase.getReference();
-        UserInfo userinfo=new UserInfo(name,pcode,pnumber,email);
+        UserInfo userinfo=new UserInfo(name,pcode,pnumber,email,user.getUid());
         myRef.child("User").child(userinfo.userPnumber).setValue(userinfo);
-
     }
 }

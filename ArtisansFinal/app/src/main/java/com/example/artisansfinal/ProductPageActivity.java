@@ -212,7 +212,7 @@ public class ProductPageActivity extends AppCompatActivity {
                         String productCategory2 = "abd";
                         productID2 = "ab";
 
-                        orderInfo orderUser = new orderInfo(opname, oprice, formattedDate, userX.getUid(), "ss", "saa");
+                        orderInfo orderUser = new orderInfo(opname, oprice, formattedDate, userX.getUid(), "ss", "saa","xyz","hai");
                         UserOrderHistory.child(orderID).setValue(orderUser);
                         //ordHis.child("Users").child(userX.getUid()).child("Orders Requested").child(orderID).setValue(orderUser);
 //                        String orderID2 = ordHis.push().getKey();

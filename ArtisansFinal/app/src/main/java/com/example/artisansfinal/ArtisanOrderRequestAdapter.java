@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -24,7 +25,15 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.io.IOException;
 import java.util.ArrayList;
+
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ArtisanOrderRequestAdapter extends RecyclerView.Adapter<ArtisanOrderRequestAdapter.ArtisanOrderRequestViewHolder> {
 
@@ -89,6 +98,13 @@ public class ArtisanOrderRequestAdapter extends RecyclerView.Adapter<ArtisanOrde
 //
 //            }
 //        });
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("https://artisansfinal.firebaseapp.com/api/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        final Api api = retrofit.create(Api.class);
 
         if (orderX.getC().equals("g")) {
             viewHolder.card.setCardBackgroundColor(Color.parseColor("#76FF03"));
@@ -172,6 +188,17 @@ public class ArtisanOrderRequestAdapter extends RecyclerView.Adapter<ArtisanOrde
                             //dbu.child(userKey).setValue(null);
                             //Log.d("HERE2",artisanKey);
                             //Log.d("HERE2",userKey);
+                            Call<ResponseBody> call=api.sendNotification("dzvux4lZkGg:APA91bH0aTFEzaINHxD6Xvk-nVEmsTOzV9bD3y-YV8b7l_HwnhYZcli7nrYv4giNDKKyn1Z03oQf0GiRECSol542To3LclXk6YnwUebv5Dhnfhds-hJoqDfAc4jSmpSTbPOkDjpqFgb0","Order Accepted!","Your order for "+viewHolder.productName.getText().toString()+" has been accepted by the artisan");
+                            call.enqueue(new Callback<ResponseBody>() {
+                                @Override
+                                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                                }
+
+                                @Override
+                                public void onFailure(Call<ResponseBody> call, Throwable t) {
+
+                                }
+                            });
                         }
                     });
 
