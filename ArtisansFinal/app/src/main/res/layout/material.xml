@@ -160,7 +160,8 @@
                     <!--</LinearLayout>-->
                 <!--</LinearLayout>-->
                 <!--<View android:background="@color/grey_20" android:layout_width="fill_parent" android:layout_height="1.0px" />-->
-                <!--<LinearLayout android:gravity="center_vertical" android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="wrap_content" android:minHeight="?actionBarSize">-->
+
+    <!--<LinearLayout android:gravity="center_vertical" android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="wrap_content" android:minHeight="?actionBarSize">-->
                     <!--<ImageButton android:background="@android:color/transparent" android:layout_width="?actionBarSize" android:layout_height="?actionBarSize" android:tint="@color/grey_60" app:srcCompat="@drawable/ic_verified_user" />-->
                     <!--<TextView android:textAppearance="@style/TextAppearance.AppCompat.Medium" android:textColor="@color/grey_80" android:layout_width="0.0dip" android:layout_height="wrap_content" android:text="Warranty" android:layout_weight="1.0" />-->
                     <!--<View android:layout_width="@dimen/spacing_large" android:layout_height="wrap_content" />-->

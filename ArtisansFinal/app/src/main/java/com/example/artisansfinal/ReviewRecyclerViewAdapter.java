@@ -1,6 +1,7 @@
 package com.example.artisansfinal;
 
 import android.content.Context;
+import android.support.v7.widget.AppCompatRatingBar;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,7 +22,7 @@ public class ReviewRecyclerViewAdapter extends RecyclerView.Adapter<ReviewRecycl
     public class ViewHolder extends RecyclerView.ViewHolder{
 
         TextView userName;
-        RatingBar ratingBar;
+        AppCompatRatingBar ratingBar;
         TextView review;
 
         public ViewHolder(@NonNull View itemView){
@@ -52,7 +53,7 @@ public class ReviewRecyclerViewAdapter extends RecyclerView.Adapter<ReviewRecycl
 
         final ProductReview productReview = reviews.get(i);
         viewHolder.userName.setText(productReview.getUserName());
-        viewHolder.ratingBar.setNumStars(Integer.parseInt(productReview.getRating()));
+//        viewHolder.ratingBar.setNumStars(Integer.parseInt(productReview.getRating()));
         viewHolder.ratingBar.setRating(Integer.parseInt(productReview.getRating()));
         viewHolder.review.setText(productReview.getReview());
     }
