@@ -47,6 +47,8 @@
         <activity android:name=".ArtisanOrderHistoryPageActivity" />
         <activity android:name=".OrderHistory" />
         <activity android:name=".CommonLoginActivity" />
+        <activity android:name=".UserTutorialActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".CommonLoginActivityTabbed"
             android:theme="@style/splashScreenTheme">
