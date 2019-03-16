@@ -46,8 +46,8 @@ public class UserCompletedOrderHistoryFragment extends Fragment {
                 orderInfo order;
                 HashMap<String,Object> map= (HashMap<String, Object>) dataSnapshot.getValue();
                 //Log.d("HERE",map.toString());
-                order = new orderInfo(String.valueOf(map.get("name")),String.valueOf(map.get("price")),String.valueOf(map.get("date")),
-                                      String.valueOf(map.get("userUID")), String.valueOf(map.get("productCategory")), String.valueOf(map.get("productID")));
+                order = new orderInfo(String.valueOf(map.get("name")),String.valueOf(map.get("price")),String.valueOf(map.get("date")), String.valueOf(map.get("userUID")),
+                        String.valueOf(map.get("productCategory")), String.valueOf(map.get("productID")),String.valueOf(map.get("userEmail")),String.valueOf(map.get("FCMToken")));
                 if(!map.isEmpty())
                     ohAdapter.added(order);
             }
