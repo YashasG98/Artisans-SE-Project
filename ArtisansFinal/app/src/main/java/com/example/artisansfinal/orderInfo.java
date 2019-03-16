@@ -32,6 +32,7 @@ public class orderInfo {
         this.userEmail=userEmail;
         this.fcmToken=FCMToken;
         this.reviewExists="false";
+        this.c = "d";
     }
 
     public String getC() {

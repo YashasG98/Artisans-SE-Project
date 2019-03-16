@@ -181,7 +181,7 @@ public class ArtisanPendingOrderAdapter extends RecyclerView.Adapter<ArtisanPend
                             x = dbum.push().getKey();
                             //dbum.child(x).setValue("Hai");
                             move(dbu.child(userKey), dbum.child(x), userKey);
-                            Log.d("HEY",orderX.fcmToken);
+                            //Log.d("HEY",orderX.fcmToken);
                             Call<ResponseBody> call=api.sendNotification(orderX.fcmToken,"Order Completed!","Your order for "+viewHolder.productName.getText().toString()+" has been completed by the artisan and will be delivered shortly");
                             call.enqueue(new Callback<ResponseBody>() {
                                 @Override
