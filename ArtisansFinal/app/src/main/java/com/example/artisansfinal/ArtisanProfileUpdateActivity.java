@@ -7,6 +7,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -31,7 +32,7 @@ public class ArtisanProfileUpdateActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.edit_artisan_info);
 
-        databaseArtisans= FirebaseDatabase.getInstance().getReference("Artisans");
+        databaseArtisans= FirebaseDatabase.getInstance().getReference("Artisans/"+ userX.getPhoneNumber());
         updateArtisanName = (EditText) findViewById(R.id.updateArtisanName);
         updateArtisanPin = (EditText) findViewById(R.id.updateArtisanPin);
         buttonUpdateArtisan = (Button) findViewById(R.id.buttonUpdateArtisan);
@@ -55,23 +56,9 @@ public class ArtisanProfileUpdateActivity extends AppCompatActivity {
                     pf=false;
                 }
                 if(nf && pf) {
-                    databaseArtisans.addValueEventListener(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            for (DataSnapshot data : dataSnapshot.getChildren()) {
-                                if (data.child("email").getValue().toString().equals(userX.getEmail())) {
-                                    String uid = data.getKey();
-                                    databaseArtisans.child(uid).child("userName").setValue(newName);
-                                    databaseArtisans.child(uid).child("userPC").setValue(newPin);
-                                }
-                            }
-                        }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                        }
-                    });
+                    databaseArtisans.child("username").setValue(newName);
+                    databaseArtisans.child("postal_address").setValue(newPin);
+                    Toast.makeText(ArtisanProfileUpdateActivity.this,"Profile Updated",Toast.LENGTH_LONG).show();
                 }
             }
 

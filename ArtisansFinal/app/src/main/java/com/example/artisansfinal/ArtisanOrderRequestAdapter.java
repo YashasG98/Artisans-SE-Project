@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -24,7 +25,15 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.io.IOException;
 import java.util.ArrayList;
+
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ArtisanOrderRequestAdapter extends RecyclerView.Adapter<ArtisanOrderRequestAdapter.ArtisanOrderRequestViewHolder> {
 
@@ -33,7 +42,6 @@ public class ArtisanOrderRequestAdapter extends RecyclerView.Adapter<ArtisanOrde
     FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
     FirebaseUser userX = firebaseAuth.getCurrentUser();
     final DatabaseReference dba = FirebaseDatabase.getInstance().getReference("Orders/Artisans/" + userX.getPhoneNumber() + "/Order Requests");
-    ;
 
     public static class ArtisanOrderRequestViewHolder extends RecyclerView.ViewHolder {
         TextView productName;
@@ -89,6 +97,15 @@ public class ArtisanOrderRequestAdapter extends RecyclerView.Adapter<ArtisanOrde
 //
 //            }
 //        });
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("https://artisansfinal.firebaseapp.com/api/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        final Api api = retrofit.create(Api.class);
+
+        Log.d("HEY",orderX.toString());
 
         if (orderX.getC().equals("g")) {
             viewHolder.card.setCardBackgroundColor(Color.parseColor("#76FF03"));
@@ -172,6 +189,17 @@ public class ArtisanOrderRequestAdapter extends RecyclerView.Adapter<ArtisanOrde
                             //dbu.child(userKey).setValue(null);
                             //Log.d("HERE2",artisanKey);
                             //Log.d("HERE2",userKey);
+                            Call<ResponseBody> call=api.sendNotification(orderX.fcmToken,"Order Accepted!","Your order for "+viewHolder.productName.getText().toString()+" has been accepted by the artisan");
+                            call.enqueue(new Callback<ResponseBody>() {
+                                @Override
+                                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                                }
+
+                                @Override
+                                public void onFailure(Call<ResponseBody> call, Throwable t) {
+
+                                }
+                            });
                         }
                     });
 
@@ -182,6 +210,17 @@ public class ArtisanOrderRequestAdapter extends RecyclerView.Adapter<ArtisanOrde
                             viewHolder.card.setCardBackgroundColor(Color.parseColor("#E64A19"));
                             dba.child(artisanKey).setValue(null);
                             dbu.child(userKey).setValue(null);
+                            Call<ResponseBody> call=api.sendNotification(orderX.fcmToken,"Order Rejected :(","Your order for "+viewHolder.productName.getText().toString()+" has been rejected as the artisan is very busy at this point.");
+                            call.enqueue(new Callback<ResponseBody>() {
+                                @Override
+                                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                                }
+
+                                @Override
+                                public void onFailure(Call<ResponseBody> call, Throwable t) {
+
+                                }
+                            });
                             dialog.dismiss();
                         }
                     });
