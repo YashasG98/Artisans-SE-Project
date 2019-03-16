@@ -120,8 +120,7 @@ public class UserProductReviewsFragment extends Fragment {
                             productReview.setReview(map.get("review"));
                             productReview.setUserName(map.get("userName")+" :");
                             reviewRecyclerViewAdapter.added(productReview);
-                            int rating = Integer.parseInt(map.get("rating"));
-                            Toast.makeText(getContext(), ""+rating, Toast.LENGTH_SHORT).show();
+                            int rating = Integer.valueOf(map.get("rating"));
                             if(rating==5){
                                 five+=1;
                                 total++;

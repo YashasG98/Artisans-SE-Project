@@ -7,4 +7,12 @@
     <color name="colorPrimaryText">#000000</color>
     <color name="common">#bbdefb</color>
     <color name="common_dark">#73bbf7</color>
+
+    <color name="grey_10">#ffe6e6e6</color>
+    <color name="grey_60">#ff666666</color>
+    <color name="grey_80">#ff37474f</color>
+    <color name="grey_20">#ffcccccc</color>
+    <color name="deep_orange_500">#ffff5722</color>
+    <color name="yellow_600">#fffdd835</color>
+
 </resources>

@@ -18,6 +18,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -42,13 +43,20 @@ public class UserProductPageTabbedActivity extends AppCompatActivity {
         TabLayout tabLayout = (TabLayout) findViewById(R.id.user_product_page_tabs);
         tabLayout.setupWithViewPager(mViewPager);
 
+        toolbar.setVisibility(View.GONE);
+        tabLayout.setVisibility(View.GONE);
+
     }
 
     public void setUpViewPager(ViewPager viewPager) {
         UserProductPageSectionsPagerAdapter sectionsPagerAdapter = new UserProductPageSectionsPagerAdapter(getSupportFragmentManager());
-        sectionsPagerAdapter.addFragment(new UserProductDetailsFragment(), "Details");
+        sectionsPagerAdapter.addFragment(new UserProductDetails1Fragment(), "Details");
         sectionsPagerAdapter.addFragment(new UserProductReviewsFragment(), "Reviews");
         viewPager.setAdapter(sectionsPagerAdapter);
+    }
+
+    public void toggleTab(){
+        mViewPager.setCurrentItem(2);
     }
 }
 

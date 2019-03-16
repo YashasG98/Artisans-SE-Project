@@ -42,4 +42,9 @@
 
     </style>
 
+    <style name="Yellow.Small.AppCompatRatingBar.White" parent="@style/Base.Widget.AppCompat.RatingBar.Small">
+        <item name="colorControlActivated">@color/yellow_600</item>
+        <item name="colorControlNormal">@color/grey_20</item>
+    </style>
+
 </resources>
