@@ -1,36 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item
-        android:id="@+id/Home_button"
-        android:title="Home"
-        android:onClick="home_button"
-        android:icon="@drawable/ic_home_black_24dp11"
-        >
-    </item>
-    <item
-        android:id="@+id/my_profile_button"
-        android:title="My profile"
-        android:onClick="my_profile_button"
-        android:icon="@drawable/ic_account_circle_black_24dp1">
-    </item>
-    <item
-        android:id="@+id/order_history_button"
-        android:title="Order history"
-        android:onClick="order_history_button"
-        android:icon="@drawable/ic_add_shopping_cart_black_24dp12">
-    </item>
-    <item
-        android:id="@+id/tutorial_button"
-        android:title="Tutorial"
-        android:onClick="tutorial_button"
-        android:icon="@drawable/ic_help_black_24dp13">
-    </item>
+    <group>
+        <item
+            android:id="@+id/Home_button"
+            android:title="Home"
+            android:onClick="home_button"
+            android:icon="@drawable/ic_home_black_24dp11"
+            >
+        </item>
+        <item
+            android:id="@+id/my_profile_button"
+            android:title="My profile"
+            android:onClick="my_profile_button"
+            android:icon="@drawable/ic_account_circle_black_24dp1">
+        </item>
+        <item
+            android:id="@+id/order_history_button"
+            android:title="Order history"
+            android:onClick="order_history_button"
+            android:icon="@drawable/ic_add_shopping_cart_black_24dp12">
+        </item>
+        <item
+            android:id="@+id/tutorial_switch"
+            android:title="Tutorial"
+            android:icon="@drawable/ic_help_black_24dp13"
+            android:onClick="tutorial_button">
+        </item>
 
-    <item
-        android:id="@+id/logout"
-        android:title="Log out"
-        android:onClick="Logout"
-        android:icon="@drawable/ic_close_black_24dp4">
-    </item>
+        <item
+            android:id="@+id/logout"
+            android:title="Log out"
+            android:onClick="Logout"
+            android:icon="@drawable/ic_close_black_24dp4">
+        </item>
+    </group>
+
 </menu>

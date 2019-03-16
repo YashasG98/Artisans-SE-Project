@@ -13,10 +13,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity
-            android:name=".UserProductPageTabbed1Activity"
-            android:label="@string/title_activity_user_product_page_tabbed1"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity android:name=".SplashScreen" />
         <activity
             android:name=".UserProductPageTabbedActivity"
@@ -47,6 +43,8 @@
         <activity android:name=".ArtisanOrderHistoryPageActivity" />
         <activity android:name=".OrderHistory" />
         <activity android:name=".CommonLoginActivity" />
+        <activity android:name=".UserTutorialActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".CommonLoginActivityTabbed"
             android:theme="@style/splashScreenTheme">
