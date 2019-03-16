@@ -33,13 +33,10 @@ public class UserHomePageActivity extends AppCompatActivity {
     int counter = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.user_home_page_activity);
         firebaseAuth = FirebaseAuth.getInstance();
         DrawerLayout drawerLayout = findViewById(R.id.user_home_page_dl);
-
-
         Intent intent = getIntent();
 
         FirebaseUser user = firebaseAuth.getCurrentUser();
@@ -116,9 +113,10 @@ public class UserHomePageActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-        if (abdt.onOptionsItemSelected(item))
-            return true;
+        if (abdt.onOptionsItemSelected(item)) {
 
+            return true;
+        }
         return super.onOptionsItemSelected(item);
     }
 
