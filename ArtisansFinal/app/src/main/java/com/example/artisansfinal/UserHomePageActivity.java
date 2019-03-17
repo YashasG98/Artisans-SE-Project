@@ -1,6 +1,8 @@
 package com.example.artisansfinal;
 
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -9,6 +11,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MenuItem;
@@ -42,10 +45,16 @@ public class UserHomePageActivity extends AppCompatActivity {
         Intent intent = getIntent();
 
         FirebaseUser user = firebaseAuth.getCurrentUser();
+
+
+
+
+
+
         if(user != null)
         {
-        userType = user.getDisplayName();
-        emailID = user.getEmail();
+            userType = user.getDisplayName();
+            emailID = user.getEmail();
         }
         user_home_page_dl = (DrawerLayout) findViewById(R.id.user_home_page_dl);
         abdt = new ActionBarDrawerToggle(this, user_home_page_dl, R.string.Open, R.string.Close);
@@ -154,10 +163,31 @@ public class UserHomePageActivity extends AppCompatActivity {
     }
 
     public void Logout(MenuItem item) {
-        firebaseAuth.signOut();
-        finish();
-        startActivity(new Intent(UserHomePageActivity.this, CommonLoginActivityTabbed.class));
-        Toast.makeText(this, "Logged out", Toast.LENGTH_SHORT).show();
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Logout Confirmation");
+        builder.setMessage("Are you sure you want to logout?");
+
+        builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                firebaseAuth.signOut();
+                finish();
+                startActivity(new Intent(UserHomePageActivity.this, CommonLoginActivityTabbed.class));
+                Toast.makeText(UserHomePageActivity.this, "Logged out", Toast.LENGTH_SHORT).show();
+
+            }
+        });
+
+        builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+
+        Dialog dialog = builder.create();
+        builder.show();
     }
 
     public void Toys(View view) {
