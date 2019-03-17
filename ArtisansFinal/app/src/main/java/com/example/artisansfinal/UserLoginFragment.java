@@ -131,48 +131,20 @@ public class UserLoginFragment extends Fragment {
     }
 
     private void validate(String userName, String userPassword) {
-        progressDialog.setMessage("Please wait while we Log you in");
+        progressDialog.setMessage("Please wait while we log you in");
         progressDialog.show();
         firebaseAuth.signInWithEmailAndPassword(userName, userPassword).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
                     progressDialog.dismiss();
-                    Toast.makeText(getContext(), "Login Successful", Toast.LENGTH_SHORT).show();
+                    checkEmailVerification();
+                    //Toast.makeText(getContext(), "Login Successful", Toast.LENGTH_SHORT).show();
 //                    if(userType.equals("u")) {
-                    FirebaseInstanceId.getInstance().getInstanceId()
-                            .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
-                                @Override
-                                public void onComplete(@NonNull Task<InstanceIdResult> task) {
-                                    if(task.isSuccessful()){
-                                        final String token=task.getResult().getToken();
-                                        final FirebaseUser user=FirebaseAuth.getInstance().getCurrentUser();
-                                        final DatabaseReference database= FirebaseDatabase.getInstance().getReference("User/");
-                                        database.addListenerForSingleValueEvent(new ValueEventListener() {
-                                            @Override
-                                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                                for(DataSnapshot data: dataSnapshot.getChildren()){
-                                                    if(data.child("userEmail").getValue().toString().equals(user.getEmail())){
-                                                        DatabaseReference db=FirebaseDatabase.getInstance().getReference("User/");
-                                                        db.child(data.child("userPnumber").getValue().toString()).child("FCMToken").setValue(token);
-                                                    }
-                                                }
-                                            }
 
-                                            @Override
-                                            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                                            }
-                                        });
-                                    }
-                                    else {
-                                        Toast.makeText(getContext(),task.getException().getMessage(),Toast.LENGTH_LONG).show();
-                                    }
-                                }
-                            });
-                    Intent intent1 = new Intent(getContext(), UserHomePageActivity.class);
-                    getActivity().finish();
-                    startActivity(intent1);
+//                    Intent intent1 = new Intent(getContext(), UserHomePageActivity.class);
+//                    getActivity().finish();
+//                    startActivity(intent1);
 
                 } else {
                     progressDialog.dismiss();
@@ -181,6 +153,55 @@ public class UserLoginFragment extends Fragment {
             }
         });
 
+    }
+
+    private void checkEmailVerification(){
+        FirebaseUser firebaseUser = firebaseAuth.getInstance().getCurrentUser();
+        Boolean emailflag = firebaseUser.isEmailVerified();
+
+        //startActivity(new Intent(UserLoginFragment.this, SecondActivity.class));
+
+        if(emailflag){
+
+            FirebaseInstanceId.getInstance().getInstanceId()
+                    .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<InstanceIdResult> task) {
+                            if(task.isSuccessful()){
+                                final String token=task.getResult().getToken();
+                                final FirebaseUser user=FirebaseAuth.getInstance().getCurrentUser();
+                                final DatabaseReference database= FirebaseDatabase.getInstance().getReference("User/");
+                                database.addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                        for(DataSnapshot data: dataSnapshot.getChildren()){
+                                            if(data.child("userEmail").getValue().toString().equals(user.getEmail())){
+                                                DatabaseReference db=FirebaseDatabase.getInstance().getReference("User/");
+                                                db.child(data.child("userPnumber").getValue().toString()).child("FCMToken").setValue(token);
+                                            }
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                    }
+                                });
+                            }
+                            else {
+                                Toast.makeText(getContext(),task.getException().getMessage(),Toast.LENGTH_LONG).show();
+                            }
+                        }
+                    });
+
+
+
+            getActivity().finish();
+            startActivity(new Intent(getContext(), UserHomePageActivity.class));
+        }else{
+            Toast.makeText(getContext(), "Verify your email", Toast.LENGTH_SHORT).show();
+            firebaseAuth.signOut();
+        }
     }
 
 

@@ -47,50 +47,51 @@ public class RegistrationActivity extends AppCompatActivity {
                     firebaseAuth.createUserWithEmailAndPassword(user_email,user_password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
-                           if(task.isSuccessful())
-                           {
-                               sendUserData();
-                               int i=0;
-                               while(i!=10000){i++;}
-                               Toast.makeText(RegistrationActivity.this,"Registration Successful",Toast.LENGTH_SHORT).show();
-                               FirebaseInstanceId.getInstance().getInstanceId()
-                                       .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
-                                           @Override
-                                           public void onComplete(@NonNull Task<InstanceIdResult> task) {
-                                               if(task.isSuccessful()){
-                                                   final String token=task.getResult().getToken();
-                                                   final FirebaseUser user=FirebaseAuth.getInstance().getCurrentUser();
-                                                   final DatabaseReference database= FirebaseDatabase.getInstance().getReference("User/");
-                                                   database.addListenerForSingleValueEvent(new ValueEventListener() {
-                                                       @Override
-                                                       public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                                           for(DataSnapshot data: dataSnapshot.getChildren()){
-                                                               if(data.child("userEmail").getValue().toString().equals(user.getEmail())){
-                                                                   DatabaseReference db=FirebaseDatabase.getInstance().getReference("User/");
-                                                                   db.child(data.child("userPnumber").getValue().toString()).child("FCMToken").setValue(token);
-                                                               }
-                                                           }
-                                                       }
+                            if(task.isSuccessful())
+                            {
+                                sendUserData();
+                                int i=0;
+                                while(i!=10000){i++;}
+                                //Toast.makeText(RegistrationActivity.this,"Registration Successful",Toast.LENGTH_SHORT).show();
+                                FirebaseInstanceId.getInstance().getInstanceId()
+                                        .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<InstanceIdResult> task) {
+                                                if(task.isSuccessful()){
+                                                    final String token=task.getResult().getToken();
+                                                    final FirebaseUser user=FirebaseAuth.getInstance().getCurrentUser();
+                                                    final DatabaseReference database= FirebaseDatabase.getInstance().getReference("User/");
+                                                    database.addListenerForSingleValueEvent(new ValueEventListener() {
+                                                        @Override
+                                                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                                            for(DataSnapshot data: dataSnapshot.getChildren()){
+                                                                if(data.child("userEmail").getValue().toString().equals(user.getEmail())){
+                                                                    DatabaseReference db=FirebaseDatabase.getInstance().getReference("User/");
+                                                                    db.child(data.child("userPnumber").getValue().toString()).child("FCMToken").setValue(token);
+                                                                }
+                                                            }
+                                                        }
 
-                                                       @Override
-                                                       public void onCancelled(@NonNull DatabaseError databaseError) {
+                                                        @Override
+                                                        public void onCancelled(@NonNull DatabaseError databaseError) {
 
-                                                       }
-                                                   });
-                                               }
-                                               else {
-                                                   Toast.makeText(getApplicationContext(),task.getException().getMessage(),Toast.LENGTH_LONG).show();
-                                               }
-                                           }
-                                       });
-                               Intent intent = new Intent(RegistrationActivity.this, UserHomePageActivity.class);
-                               startActivity(intent);
-                           }
-                           else
-                           {
-                               Toast.makeText(RegistrationActivity.this,"User Already Exists",Toast.LENGTH_SHORT).show();
+                                                        }
+                                                    });
+                                                }
+                                                else {
+                                                    Toast.makeText(getApplicationContext(),task.getException().getMessage(),Toast.LENGTH_LONG).show();
+                                                }
+                                            }
+                                        });
+//                               Intent intent = new Intent(RegistrationActivity.this, UserHomePageActivity.class);
+//                               startActivity(intent);
+                                sendEmailVerification();
+                            }
+                            else
+                            {
+                                Toast.makeText(RegistrationActivity.this,"Registration Failed",Toast.LENGTH_SHORT).show();
 
-                           }
+                            }
 
                         }
                     });
@@ -114,12 +115,12 @@ public class RegistrationActivity extends AppCompatActivity {
     private Boolean validate()
     {
         Boolean result=false;
-         name=userName.getText().toString();
-         email=userEmail.getText().toString();
-         String password=userPassword.getText().toString();
-         String cpassword=userCpassword.getText().toString();
-         pcode=userPcode.getText().toString();
-         pnumber=userPnumber.getText().toString();
+        name=userName.getText().toString();
+        email=userEmail.getText().toString();
+        String password=userPassword.getText().toString();
+        String cpassword=userCpassword.getText().toString();
+        pcode=userPcode.getText().toString();
+        pnumber=userPnumber.getText().toString();
 
 
         if(name.isEmpty())
@@ -151,6 +152,27 @@ public class RegistrationActivity extends AppCompatActivity {
         }
         return result;
     }
+
+    private void sendEmailVerification(){
+        FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
+        if(firebaseUser!=null){
+            firebaseUser.sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+                    if(task.isSuccessful()){
+                        sendUserData();
+                        Toast.makeText(RegistrationActivity.this, "Successfully Registered, Verification mail sent!", Toast.LENGTH_SHORT).show();
+                        firebaseAuth.signOut();
+                        finish();
+                        startActivity(new Intent(RegistrationActivity.this, CommonLoginActivityTabbed.class));
+                    }else{
+                        Toast.makeText(RegistrationActivity.this, "Verification mail has'nt been sent!", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
+        }
+    }
+
 
     private  void sendUserData()
     {
