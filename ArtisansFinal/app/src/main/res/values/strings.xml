@@ -23,6 +23,8 @@
     <string-array name="sortChoice">
         <item>Price: Low to High</item>
         <item>Price: High to Low</item>
+        <item>Rating: Low to High</item>
+        <item>Rating: High to Low</item>
     </string-array>
     <string-array name="choice">
         <item>Product</item>

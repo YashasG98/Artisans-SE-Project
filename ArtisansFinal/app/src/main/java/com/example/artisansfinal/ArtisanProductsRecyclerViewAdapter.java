@@ -150,7 +150,7 @@ public class ArtisanProductsRecyclerViewAdapter extends RecyclerView.Adapter<Art
                 String prodName = productInfo.getProductName();
 //                String prodCategory = productInfo.getProductCategory();
                 String artisanPhoneNumber = productInfo.getArtisanContactNumber();
-                Intent newintent = new Intent(context, ArtisanProductPageActivity.class);
+                Intent newintent = new Intent(context, ArtisanProductPageTabbedActivity.class);
 
 //                    Drawable drawable = viewHolder.image.getDrawable();
 //                    Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();
