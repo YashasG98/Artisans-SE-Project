@@ -86,13 +86,11 @@ public class ArtisanHomePageActivity extends AppCompatActivity {
 
         DatabaseReference nameRef = FirebaseDatabase.getInstance().getReference("Artisans/" + artisanPhoneNumber + "/username");
         final ProgressDialog progressDialog = new ProgressDialog(this);
-        progressDialog.setMessage("wait");
-        progressDialog.show();
+
         nameRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 name = dataSnapshot.getValue(String.class);
-                progressDialog.dismiss();
             }
 
             @Override

@@ -40,6 +40,13 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+
 public class UserProductDetails1Fragment extends Fragment {
 
     private DatabaseReference databaseReference;
@@ -53,6 +60,8 @@ public class UserProductDetails1Fragment extends Fragment {
     private UserProductPageTabbedActivity act;
     private String token;
     FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+    private String artisanToken;
+    private ArtisanInfo artisanInfo;
 
     FirebaseUser userX = firebaseAuth.getCurrentUser();
 
@@ -127,10 +136,23 @@ public class UserProductDetails1Fragment extends Fragment {
                 ratingBar.setRating(Float.parseFloat(map.get("totalRating")));
                 numberRated.setText(map.get("numberOfPeopleWhoHaveRated"));
                 artisanContactNumber = map.get("artisanContactNumber");
+
+                FirebaseDatabase.getInstance().getReference("Artisans").child(artisanContactNumber).child("FCMToken")
+                        .addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                artisanToken = dataSnapshot.getValue(String.class);
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                            }
+                        });
                 Log.d("STORAGE", storageReference.child(map.get("productID")).toString());
 
                 RequestOptions options = new RequestOptions().error(R.mipmap.image_not_provided);
-                GlideApp.with(getActivity().getApplicationContext())
+                GlideApp.with(getContext())
                         .load(storageReference)
                         .apply(options)
                         .diskCacheStrategy(DiskCacheStrategy.DATA)
@@ -142,6 +164,10 @@ public class UserProductDetails1Fragment extends Fragment {
             }
         });
 
+
+
+
+
         users.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -149,6 +175,7 @@ public class UserProductDetails1Fragment extends Fragment {
                     UserInfo userInfo = userSnapshot.getValue(UserInfo.class);
                     if (userInfo.userEmail.equals(userX.getEmail())) {
                         userPhoneNumber = userInfo.userPnumber;
+
                         break;
                     }
                 }
@@ -194,6 +221,7 @@ public class UserProductDetails1Fragment extends Fragment {
 
                         final String opname = pname.getText().toString();
                         //Log.d("HERE",opname);
+                        Log.d("token", artisanToken);
                         final String oprice = price.getText().toString();
                         final DatabaseReference database= FirebaseDatabase.getInstance().getReference("User/");
                         database.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -209,6 +237,26 @@ public class UserProductDetails1Fragment extends Fragment {
                                         ordHis.child("Users").child(userX.getUid()).child("Orders Requested").child(orderID).setValue(order);
                                         orderID = ordHis.push().getKey();
                                         ordHis.child("Artisans").child(artisanContactNumber).child("Order Requests").child(orderID).setValue(order);
+
+                                        Retrofit retrofit = new Retrofit.Builder()
+                                                .baseUrl("https://artisansfinal.firebaseapp.com/api/")
+                                                .addConverterFactory(GsonConverterFactory.create())
+                                                .build();
+
+                                        final Api api = retrofit.create(Api.class);
+                                        Call<ResponseBody> call=api.sendNotification(artisanToken,"Order Request!","You have request for "+opname);
+                                        call.enqueue(new Callback<ResponseBody>() {
+                                            @Override
+                                            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                                            }
+
+                                            @Override
+                                            public void onFailure(Call<ResponseBody> call, Throwable t) {
+
+                                            }
+                                        });
+
+
                                     }
                                 }
                             }

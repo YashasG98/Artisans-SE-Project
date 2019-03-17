@@ -19,6 +19,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -38,6 +40,7 @@ public class CommonLoginActivityTabbed extends AppCompatActivity {
         setTheme(R.style.splashScreenTheme);
         super.onCreate(savedInstanceState);
 
+
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
         setContentView(R.layout.activity_common_login_tabbed);
@@ -49,6 +52,7 @@ public class CommonLoginActivityTabbed extends AppCompatActivity {
         setUpViewPager(mViewPager);
         TabLayout tabLayout = findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
+
 
 
     }
