@@ -15,6 +15,7 @@ import android.provider.MediaStore;
 import android.renderscript.ScriptGroup;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -79,8 +80,8 @@ public class ProductRegistrationActivity extends AppCompatActivity {
         firebaseStorage = FirebaseStorage.getInstance();
         storageReference = firebaseStorage.getReference();
 
-        final Button browse = findViewById(R.id.product_registration_button_browse_image);
-        imageView = findViewById(R.id.product_registration_iv_product_image);
+        final FloatingActionButton browse = findViewById(R.id.product_page_fab_insert_image);
+        imageView = findViewById(R.id.product_page_iv_product_image);
         Button register = findViewById(R.id.product_registration_button_register);
 
         Intent intent = getIntent();
