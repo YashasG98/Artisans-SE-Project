@@ -24,8 +24,10 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -94,39 +96,48 @@ public class ArtisanProductsRecyclerViewAdapter extends RecyclerView.Adapter<Art
 
         Glide.with(context)
                 .asGif()
-                .load(R.mipmap.loading1)
+                .load(R.mipmap.loading3)
                 .into(viewHolder.image);
 
-        storageReference.getBytes(ONE_MB).addOnSuccessListener(new OnSuccessListener<byte[]>() {
-            @Override
-            public void onSuccess(byte[] bytes) {
-                Glide.with(context)
-                        .load(bytes)
-                        .listener(new RequestListener<Drawable>() {
-                            @Override
-                            public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
-//                                viewHolder.progressBar.setVisibility(View.GONE);
-                                Toast.makeText(context,"Failed: " + productInfo.getProductName(), Toast.LENGTH_LONG).show();
-                                return false;
-                            }
-
-                            @Override
-                            public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
-//                                viewHolder.progressBar.setVisibility(View.GONE);
-//                                imageLoaded = true;
-                                return false;
-                            }
-                        })
-                        .into(viewHolder.image);
-
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Toast.makeText(context, "IMAGE Load Failed: " + productInfo.getProductName(), Toast.LENGTH_SHORT).show();
-                Log.d("FAIL: ", e.toString());
-            }
-        });
+//        storageReference.getBytes(ONE_MB).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+//            @Override
+//            public void onSuccess(byte[] bytes) {
+//                Glide.with(context)
+//                        .load(bytes)
+//                        .listener(new RequestListener<Drawable>() {
+//                            @Override
+//                            public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+////                                viewHolder.progressBar.setVisibility(View.GONE);
+//                                Toast.makeText(context,"Failed: " + productInfo.getProductName(), Toast.LENGTH_LONG).show();
+//                                return false;
+//                            }
+//
+//                            @Override
+//                            public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+////                                viewHolder.progressBar.setVisibility(View.GONE);
+////                                imageLoaded = true;
+//                                return false;
+//                            }
+//                        })
+//                        .into(viewHolder.image);
+//
+//            }
+//        }).addOnFailureListener(new OnFailureListener() {
+//            @Override
+//            public void onFailure(@NonNull Exception e) {
+////                Toast.makeText(context, "IMAGE Load Failed: " + productInfo.getProductName(), Toast.LENGTH_SHORT).show();
+//                Glide.with(context)
+//                        .load(R.mipmap.not_found)
+//                        .into(viewHolder.image);
+//                Log.d("FAIL: ", e.toString());
+//            }
+//        });
+        RequestOptions options = new RequestOptions().error(R.mipmap.not_found);
+        GlideApp.with(context)
+                .load(storageReference)
+                .apply(options)
+                .diskCacheStrategy(DiskCacheStrategy.DATA)
+                .into(viewHolder.image);
 
 
         viewHolder.layout.setOnClickListener(new View.OnClickListener() {
@@ -139,7 +150,7 @@ public class ArtisanProductsRecyclerViewAdapter extends RecyclerView.Adapter<Art
                 String prodName = productInfo.getProductName();
 //                String prodCategory = productInfo.getProductCategory();
                 String artisanPhoneNumber = productInfo.getArtisanContactNumber();
-                Intent newintent = new Intent(context, ArtisanProductPageActivity.class);
+                Intent newintent = new Intent(context, ArtisanProductPageTabbedActivity.class);
 
 //                    Drawable drawable = viewHolder.image.getDrawable();
 //                    Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();
@@ -152,6 +163,7 @@ public class ArtisanProductsRecyclerViewAdapter extends RecyclerView.Adapter<Art
 //                newintent.putExtra("productCategory", prodCategory);
                 newintent.putExtra("artisanPhoneNumber", artisanPhoneNumber);
                 newintent.putExtra("productID", productInfo.getProductID());
+                newintent.putExtra("productCategory", productInfo.getProductCategory());
                 newintent.putExtra("productInfo", (Parcelable) productInfo);
                 Log.d("pINFO", productInfo.toString());
                 context.startActivity(newintent);

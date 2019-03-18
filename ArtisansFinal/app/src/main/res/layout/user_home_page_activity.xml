@@ -1,378 +1,384 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.DrawerLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="#bbdefb"
-    android:id="@+id/user_home_page_dl">
+    android:orientation="vertical">
 
-    <LinearLayout
+    <android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/user_home_page_dl"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:id="@+id/user_home_page_ll_outer">
-
-        <LinearLayout
-            android:layout_weight="1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingTop="8dp"
-            android:paddingBottom="4dp"
-            android:layout_marginLeft="6dp"
-            android:layout_marginRight="6dp"
-            android:paddingStart="2dp"
-            android:paddingEnd="2dp"
-            android:id="@+id/user_home_page_ll_inner_1">
-
-            <android.support.v7.widget.CardView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:background="@drawable/border"
-                app:cardBackgroundColor="#F5FFFA"
-                app:cardCornerRadius="7sp"
-                android:paddingStart="2dp"
-                android:paddingEnd="2dp"
-                android:layout_marginRight="4dp"
-                android:onClick="bracelets"
-                android:id="@+id/user_home_page_cv_bracelet"
-                >
-
-                <RelativeLayout
-                    android:layout_gravity="center"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/user_home_page_rl_bracelet">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Bracelet"
-                        android:gravity="center"
-                        android:textSize="25sp"
-                        android:id="@+id/user_home_page_tv_bracelet"
-                        android:layout_below="@id/user_home_page_iv_bracelet"
-                        />
-
-                    <ImageView
-                        android:id="@+id/user_home_page_iv_bracelet"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:src="@mipmap/ic_launcher_bracelets1_round"/>
-
-                </RelativeLayout>
-
-
-            </android.support.v7.widget.CardView>
-
-            <android.support.v7.widget.CardView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                app:cardBackgroundColor="#F5FFFA"
-                app:cardCornerRadius="7sp"
-                android:onClick="Saree"
-                android:id="@+id/user_home_page_cv_saree"
-                android:padding="2dp"
-                android:layout_marginLeft="4dp">
-
-                <RelativeLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    >
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Saree"
-                        android:gravity="center"
-                        android:textSize="25sp"
-                        android:id="@+id/user_home_page_tv_saree"
-                        android:layout_below="@id/user_home_page_iv_saree"
-                        />
-
-                    <ImageView
-                        android:id="@+id/user_home_page_iv_saree"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:src="@mipmap/ic_launcher_sarees_round"/>
-
-                </RelativeLayout>
-
-            </android.support.v7.widget.CardView>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_weight="1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:id="@+id/user_home_page_ll_inner_2"
-            android:paddingTop="4dp"
-            android:paddingBottom="4dp"
-            android:layout_marginLeft="6dp"
-            android:layout_marginRight="6dp">
-
-            <android.support.v7.widget.CardView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:id="@+id/user_home_page_cv_shawl"
-                app:cardBackgroundColor="#F5FFFA"
-                app:cardCornerRadius="7sp"
-                android:layout_marginRight="4dp"
-                android:onClick="Shawl">
-
-                <RelativeLayout
-                    android:layout_gravity="center"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/user_home_page_rl_shawl">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Shawl"
-                        android:gravity="center"
-                        android:textSize="25sp"
-                        android:layout_below="@id/user_home_page_iv_shawl"
-                        android:id="@+id/user_home_page_tv_shawl"
-                        />
-
-                    <ImageView
-                        android:id="@+id/user_home_page_iv_shawl"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:src="@mipmap/ic_launcher_shawl_round"/>
-
-                </RelativeLayout>
-
-
-            </android.support.v7.widget.CardView>
-
-            <android.support.v7.widget.CardView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                app:cardBackgroundColor="#F5FFFA"
-                app:cardCornerRadius="7sp"
-                android:layout_marginLeft="4dp"
-                android:onClick="Garland"
-                android:id="@+id/user_home_page_cv_garland">
-
-                <RelativeLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:id="@+id/user_home_page_rl_garland">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Garland"
-                        android:gravity="center"
-                        android:textSize="25sp"
-                        android:layout_below="@id/user_home_page_iv_garland"
-                        android:id="@+id/user_home_page_tv_garland"
-                        />
-
-                    <ImageView
-                        android:id="@+id/user_home_page_iv_garland"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:src="@mipmap/ic_launcher_garlands_round"/>
-
-                </RelativeLayout>
-
-            </android.support.v7.widget.CardView>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_weight="1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingTop="4dp"
-            android:paddingBottom="4dp"
-            android:layout_marginLeft="6dp"
-            android:layout_marginRight="6dp"
-            android:id="@+id/user_home_page_ll_inner_3">
-
-            <android.support.v7.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                app:cardBackgroundColor="#F5FFFA"
-                app:cardCornerRadius="7sp"
-                android:onClick="Pottery"
-                android:layout_marginRight="4dp"
-                android:id="@+id/user_home_page_cv_pottery">
-
-                <RelativeLayout
-                    android:layout_gravity="center"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/user_home_page_rl_pottery">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Pottery"
-                        android:gravity="center"
-                        android:textSize="25sp"
-                        android:layout_below="@id/user_home_page_iv_pottery"
-                        android:id="@+id/user_home_page_tv_pottery"
-                        />
-
-                    <ImageView
-                        android:id="@+id/user_home_page_iv_pottery"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:src="@mipmap/ic_launcher_pottery_round"/>
-
-                </RelativeLayout>
-
-
-            </android.support.v7.widget.CardView>
-
-            <android.support.v7.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                app:cardBackgroundColor="#F5FFFA"
-                app:cardCornerRadius="7sp"
-                android:onClick="Glass_painting"
-                android:layout_marginLeft="4dp"
-                android:id="@+id/user_home_page_cv_glass_painting">
-
-                <RelativeLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:id="@+id/user_home_page_rl_glass_painting">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Glass painting"
-                        android:gravity="center"
-                        android:textSize="25sp"
-                        android:id="@+id/user_home_page_tv_glass_painting"
-                        android:layout_below="@id/user_home_page_iv_glass_painting"
-                        />
-
-                    <ImageView
-                        android:id="@+id/user_home_page_iv_glass_painting"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:src="@mipmap/ic_launcher_glass_painting_round"/>
-
-                </RelativeLayout>
-
-            </android.support.v7.widget.CardView>
-
-        </LinearLayout>
-        <LinearLayout
-            android:layout_weight="1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingTop="4dp"
-            android:paddingBottom="8dp"
-            android:layout_marginLeft="6dp"
-            android:layout_marginRight="6dp"
-            android:id="@+id/user_home_page_ll_inner_4">
-
-            <android.support.v7.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                app:cardBackgroundColor="#F5FFFA"
-                app:cardCornerRadius="5sp"
-                android:onClick="Shirt"
-                android:layout_marginRight="4dp"
-                android:id="@+id/user_home_page_cv_shirt">
-
-                <RelativeLayout
-                    android:layout_gravity="center"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/user_home_page_rl_shirt">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Shirt"
-                        android:gravity="center"
-                        android:textSize="25sp"
-                        android:layout_below="@id/user_home_page_iv_shirt"
-                        android:id="@+id/user_home_page_tv_shirt"
-                        />
-
-                    <ImageView
-                        android:id="@+id/user_home_page_iv_shirt"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:src="@mipmap/ic_launcher_shirts_round"/>
-
-                </RelativeLayout>
-
-
-            </android.support.v7.widget.CardView>
-
-            <android.support.v7.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                app:cardBackgroundColor="#F5FFFA"
-                app:cardCornerRadius="5sp"
-                android:onClick="Toys"
-                android:layout_marginLeft="4dp"
-                android:id="@+id/user_home_page_cv_toy">
-
-                <RelativeLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:id="@+id/user_home_page_rl_toy">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Toy"
-                        android:gravity="center"
-                        android:textSize="25sp"
-                        android:layout_below="@id/user_home_page_iv_toy"
-                        android:id="@+id/user_home_page_tv_toy"
-                        />
-
-                    <ImageView
-                        android:id="@+id/user_home_page_iv_toy"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:src="@mipmap/ic_launcher_toy_round"/>
-
-                </RelativeLayout>
-
-            </android.support.v7.widget.CardView>
-
-        </LinearLayout>
-
-    </LinearLayout>
-
-
-    <android.support.design.widget.NavigationView
-        android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:id="@+id/user_home_page_navigation_view"
-        android:layout_gravity="start"
-        app:headerLayout="@layout/user_home_page_navigation_header"
-        app:menu="@menu/user_home_page_navigation_menu"></android.support.design.widget.NavigationView>
-</android.support.v4.widget.DrawerLayout>
+        android:background="#bbdefb"
+        android:orientation="vertical">
+
+        <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true">
+
+            <LinearLayout
+                android:id="@+id/user_home_page_ll_outer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:id="@+id/user_home_page_ll_inner_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="6dp"
+                    android:layout_marginRight="6dp"
+                    android:layout_weight="1"
+                    android:orientation="horizontal"
+                    android:paddingStart="2dp"
+                    android:paddingTop="8dp"
+                    android:paddingEnd="2dp"
+                    android:paddingBottom="4dp">
+
+                    <android.support.v7.widget.CardView
+                        android:id="@+id/user_home_page_cv_bracelet"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginRight="4dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/border"
+                        android:onClick="bracelets"
+                        android:paddingStart="2dp"
+                        android:paddingEnd="2dp"
+                        app:cardBackgroundColor="#F5FFFA"
+                        app:cardCornerRadius="7sp">
+
+                        <RelativeLayout
+                            android:id="@+id/user_home_page_rl_bracelet"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center">
+
+                            <TextView
+                                android:id="@+id/user_home_page_tv_bracelet"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@id/user_home_page_iv_bracelet"
+                                android:gravity="center"
+                                android:text="Bracelet"
+                                android:textSize="25sp" />
+
+                            <ImageView
+                                android:id="@+id/user_home_page_iv_bracelet"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:src="@mipmap/ic_launcher_bracelets1_round" />
+
+                        </RelativeLayout>
+
+
+                    </android.support.v7.widget.CardView>
+
+                    <android.support.v7.widget.CardView
+                        android:id="@+id/user_home_page_cv_saree"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="4dp"
+                        android:layout_weight="1"
+                        android:onClick="Saree"
+                        android:padding="2dp"
+                        app:cardBackgroundColor="#F5FFFA"
+                        app:cardCornerRadius="7sp">
+
+                        <RelativeLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center">
+
+                            <TextView
+                                android:id="@+id/user_home_page_tv_saree"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@id/user_home_page_iv_saree"
+                                android:gravity="center"
+                                android:text="Saree"
+                                android:textSize="25sp" />
+
+                            <ImageView
+                                android:id="@+id/user_home_page_iv_saree"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:src="@mipmap/ic_launcher_sarees_round" />
+
+                        </RelativeLayout>
+
+                    </android.support.v7.widget.CardView>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/user_home_page_ll_inner_2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="6dp"
+                    android:layout_marginRight="6dp"
+                    android:layout_weight="1"
+                    android:orientation="horizontal"
+                    android:paddingTop="4dp"
+                    android:paddingBottom="4dp">
+
+                    <android.support.v7.widget.CardView
+                        android:id="@+id/user_home_page_cv_shawl"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginRight="4dp"
+                        android:layout_weight="1"
+                        android:onClick="Shawl"
+                        app:cardBackgroundColor="#F5FFFA"
+                        app:cardCornerRadius="7sp">
+
+                        <RelativeLayout
+                            android:id="@+id/user_home_page_rl_shawl"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center">
+
+                            <TextView
+                                android:id="@+id/user_home_page_tv_shawl"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@id/user_home_page_iv_shawl"
+                                android:gravity="center"
+                                android:text="Shawl"
+                                android:textSize="25sp" />
+
+                            <ImageView
+                                android:id="@+id/user_home_page_iv_shawl"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:src="@mipmap/ic_launcher_shawls3_round" />
+
+                        </RelativeLayout>
+
+
+                    </android.support.v7.widget.CardView>
+
+                    <android.support.v7.widget.CardView
+                        android:id="@+id/user_home_page_cv_garland"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="4dp"
+                        android:layout_weight="1"
+                        android:onClick="Garland"
+                        app:cardBackgroundColor="#F5FFFA"
+                        app:cardCornerRadius="7sp">
+
+                        <RelativeLayout
+                            android:id="@+id/user_home_page_rl_garland"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center">
+
+                            <TextView
+                                android:id="@+id/user_home_page_tv_garland"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@id/user_home_page_iv_garland"
+                                android:gravity="center"
+                                android:text="Garland"
+                                android:textSize="25sp" />
+
+                            <ImageView
+                                android:id="@+id/user_home_page_iv_garland"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:src="@mipmap/ic_launcher_garlands_round" />
+
+                        </RelativeLayout>
+
+                    </android.support.v7.widget.CardView>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/user_home_page_ll_inner_3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="6dp"
+                    android:layout_marginRight="6dp"
+                    android:layout_weight="1"
+                    android:orientation="horizontal"
+                    android:paddingTop="4dp"
+                    android:paddingBottom="4dp">
+
+                    <android.support.v7.widget.CardView
+                        android:id="@+id/user_home_page_cv_pottery"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginRight="4dp"
+                        android:layout_weight="1"
+                        android:onClick="Pottery"
+                        app:cardBackgroundColor="#F5FFFA"
+                        app:cardCornerRadius="7sp">
+
+                        <RelativeLayout
+                            android:id="@+id/user_home_page_rl_pottery"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center">
+
+                            <TextView
+                                android:id="@+id/user_home_page_tv_pottery"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@id/user_home_page_iv_pottery"
+                                android:gravity="center"
+                                android:text="Pottery"
+                                android:textSize="25sp" />
+
+                            <ImageView
+                                android:id="@+id/user_home_page_iv_pottery"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:src="@mipmap/ic_launcher_pottery_round" />
+
+                        </RelativeLayout>
+
+
+                    </android.support.v7.widget.CardView>
+
+                    <android.support.v7.widget.CardView
+                        android:id="@+id/user_home_page_cv_glass_painting"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="4dp"
+                        android:layout_weight="1"
+                        android:onClick="Glass_painting"
+                        app:cardBackgroundColor="#F5FFFA"
+                        app:cardCornerRadius="7sp">
+
+                        <RelativeLayout
+                            android:id="@+id/user_home_page_rl_glass_painting"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center">
+
+                            <TextView
+                                android:id="@+id/user_home_page_tv_glass_painting"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@id/user_home_page_iv_glass_painting"
+                                android:gravity="center"
+                                android:text="Glass painting"
+                                android:textSize="25sp" />
+
+                            <ImageView
+                                android:id="@+id/user_home_page_iv_glass_painting"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:src="@mipmap/ic_launcher_glass_painting_round" />
+
+                        </RelativeLayout>
+
+                    </android.support.v7.widget.CardView>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/user_home_page_ll_inner_4"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="6dp"
+                    android:layout_marginRight="6dp"
+                    android:layout_weight="1"
+                    android:orientation="horizontal"
+                    android:paddingTop="4dp"
+                    android:paddingBottom="8dp">
+
+                    <android.support.v7.widget.CardView
+                        android:id="@+id/user_home_page_cv_shirt"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginRight="4dp"
+                        android:layout_weight="1"
+                        android:onClick="Shirt"
+                        app:cardBackgroundColor="#F5FFFA"
+                        app:cardCornerRadius="5sp">
+
+                        <RelativeLayout
+                            android:id="@+id/user_home_page_rl_shirt"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center">
+
+                            <TextView
+                                android:id="@+id/user_home_page_tv_shirt"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@id/user_home_page_iv_shirt"
+                                android:gravity="center"
+                                android:text="Shirt"
+                                android:textSize="25sp" />
+
+                            <ImageView
+                                android:id="@+id/user_home_page_iv_shirt"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:src="@mipmap/ic_launcher_shirts_round" />
+
+                        </RelativeLayout>
+
+
+                    </android.support.v7.widget.CardView>
+
+                    <android.support.v7.widget.CardView
+                        android:id="@+id/user_home_page_cv_toy"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="4dp"
+                        android:layout_weight="1"
+                        android:onClick="Toys"
+                        app:cardBackgroundColor="#F5FFFA"
+                        app:cardCornerRadius="5sp">
+
+                        <RelativeLayout
+                            android:id="@+id/user_home_page_rl_toy"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center">
+
+                            <TextView
+                                android:id="@+id/user_home_page_tv_toy"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@id/user_home_page_iv_toy"
+                                android:gravity="center"
+                                android:text="Toy"
+                                android:textSize="25sp" />
+
+                            <ImageView
+                                android:id="@+id/user_home_page_iv_toy"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:src="@mipmap/ic_launcher_toy_round" />
+
+                        </RelativeLayout>
+
+                    </android.support.v7.widget.CardView>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </ScrollView>
+
+        <android.support.design.widget.NavigationView
+            android:id="@+id/user_home_page_navigation_view"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="start"
+            app:headerLayout="@layout/user_home_page_navigation_header"
+            app:menu="@menu/user_home_page_navigation_menu">
+        </android.support.design.widget.NavigationView>
+
+    </android.support.v4.widget.DrawerLayout>
+
+</LinearLayout>

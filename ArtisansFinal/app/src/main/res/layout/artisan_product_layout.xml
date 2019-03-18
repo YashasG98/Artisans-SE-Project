@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 
-<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_margin="5sp"
+    style="@style/Widget.MaterialComponents.CardView"
+    android:layout_marginTop="2sp"
+    android:layout_marginBottom="2sp"
     android:orientation="vertical"
-    app:cardCornerRadius="6sp"
     android:id="@+id/artisan_product_layout_cv">
 
     <RelativeLayout
@@ -42,6 +43,6 @@
             android:textSize="18sp" />
     </RelativeLayout>
 
-</android.support.v7.widget.CardView>
+</android.support.design.card.MaterialCardView>
 
 

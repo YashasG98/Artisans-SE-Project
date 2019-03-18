@@ -2,6 +2,8 @@ package com.example.artisansfinal;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -54,6 +56,9 @@ public class SelectedCategoryActivity extends AppCompatActivity {
     private RelativeLayout recyclerViewLayout;
     private ImageView loading;
 
+    //Tutorials (done by shashwatha)
+    private static boolean runInOnePage = false;
+
     class sorting implements Comparator<ProductInfo>
     {
 
@@ -65,6 +70,22 @@ public class SelectedCategoryActivity extends AppCompatActivity {
                 return 1;
             else
                 return -1;
+        }
+    }
+
+    class sortingByRating implements Comparator<ProductInfo>
+    {
+
+        @Override
+        public int compare(ProductInfo o1, ProductInfo o2) {
+
+            Log.d("rating", o1.getNumberOfPeopleWhoHaveRated() + " !" + o2.getTotalRating() +" =" +o1.toString());
+            if(Float.parseFloat(o1.getTotalRating()) > Float.parseFloat(o2.getTotalRating()))
+                return 1;
+            else if(Float.parseFloat(o1.getTotalRating()) < Float.parseFloat(o2.getTotalRating()))
+                return -1;
+            else
+                return 0;
         }
     }
 
@@ -113,6 +134,19 @@ public class SelectedCategoryActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         categoryRecyclerViewAdapter = new CategoryRecyclerViewAdapter(this, productInfos);
         recyclerView.setAdapter(categoryRecyclerViewAdapter);
+
+        ArrayList<View> views = new ArrayList<>();
+        views.add(searchOption);
+        views.add(searchQuery);
+        views.add(sortChoice);
+
+        final HashMap<View, String> title = new HashMap<>();
+        title.put(searchOption,"Search for products\n with these options");
+        title.put(searchQuery,"Search for your product here");
+        title.put(sortChoice,"Filtering choices");
+
+        final Tutorial tutorial = new Tutorial(this,views);
+        tutorial.checkIfFirstRun();
 
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -166,8 +200,6 @@ public class SelectedCategoryActivity extends AppCompatActivity {
                     categoryRecyclerViewAdapter = new CategoryRecyclerViewAdapter(SelectedCategoryActivity.this, searchResults);
                     recyclerView.setAdapter(categoryRecyclerViewAdapter);
                 }
-
-
             }
 
             @Override
@@ -196,6 +228,15 @@ public class SelectedCategoryActivity extends AppCompatActivity {
                                 contentLayout.setVisibility(View.VISIBLE);
                                 recyclerViewLayout.setVisibility(View.VISIBLE);
                                 noMatchLayout.setVisibility(View.GONE);
+
+                                if(contentLayout.getVisibility() == View.VISIBLE && !runInOnePage){
+
+                                    tutorial.requestFocusForViews(title);
+                                    tutorial.finishedTutorial();
+                                    runInOnePage = true;
+
+                                }
+
                             }
                             ProductInfo productInfo;
                             Log.d("FOUND",dataSnapshot.toString());
@@ -204,6 +245,8 @@ public class SelectedCategoryActivity extends AppCompatActivity {
                             HashMap<String, String> map = (HashMap<String, String>) dataSnapshot.getValue();
                             Log.d("HASHMAP", map.toString());
                             productInfo = new ProductInfo(map.get("productID"), map.get("productName"), map.get("productDescription"), map.get("productCategory"), map.get("productPrice"), map.get("artisanName"), map.get("artisanContactNumber"));
+                            productInfo.setTotalRating(map.get("totalRating"));
+                            productInfo.setNumberOfPeopleWhoHaveRated(map.get("numberOfPeopleWhoHaveRated"));
                             Log.d("MAP", map.get("productDescription"));
                             categoryRecyclerViewAdapter.added(productInfo);
                             //categoryRecyclerViewAdapter.addedImage(storageReference.child("ProductImage/"+(map.get("productID"))));
@@ -293,9 +336,24 @@ public class SelectedCategoryActivity extends AppCompatActivity {
 
     public void sort(ArrayList<ProductInfo> product_list, String sorting_order) {
 
-        Collections.sort(product_list, new sorting());
 
-        if(sorting_order.equals("Price: High to Low"))
-            Collections.reverse(product_list);
+        if(sorting_order.equals("Price: Low to High") || sorting_order.equals("Price: High to Low")) {
+            Collections.sort(product_list, new sorting());
+
+            if(sorting_order.equals("Price: High to Low"))
+                Collections.reverse(product_list);
+
+        }
+
+
+
+        if(sorting_order.equals("Rating: Low to High") || sorting_order.equals("Rating: High to Low")) {
+            Collections.sort(product_list, new sortingByRating());
+
+            if(sorting_order.equals("Rating: High to Low"))
+                Collections.reverse(product_list);
+        }
+
+
     }
 }

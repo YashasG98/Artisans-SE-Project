@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.AppCompatRatingBar;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -24,8 +25,10 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -57,6 +60,7 @@ public class CategoryRecyclerViewAdapter extends RecyclerView.Adapter<CategoryRe
         TextView productPrice;
         TextView artisanName;
         RelativeLayout layout;
+        AppCompatRatingBar rb;
 //        ProgressBar progressBar;
 
         public ViewHolder(@NonNull View itemView) {
@@ -66,6 +70,7 @@ public class CategoryRecyclerViewAdapter extends RecyclerView.Adapter<CategoryRe
             productPrice = itemView.findViewById(R.id.category_layout_tv_product_price);
             artisanName = itemView.findViewById(R.id.category_layout_tv_artisan_name);
             layout = itemView.findViewById(R.id.category_layout_rl);
+            rb = itemView.findViewById(R.id.category_layout_rb);
 //            progressBar = itemView.findViewById(R.id.category_layout_pb_progress);
         }
     }
@@ -94,54 +99,64 @@ public class CategoryRecyclerViewAdapter extends RecyclerView.Adapter<CategoryRe
         viewHolder.artisanName.setText(productInfo.getArtisanName());
         viewHolder.productPrice.setText(productInfo.getProductPrice());
         viewHolder.productName.setText(productInfo.getProductName());
+        viewHolder.rb.setRating(Float.parseFloat(productInfo.getTotalRating()));
 
         Glide.with(context)
                 .asGif()
                 .load(R.mipmap.loading1)
                 .into(viewHolder.image);
 
-        storageReference.getBytes(ONE_MB).addOnSuccessListener(new OnSuccessListener<byte[]>() {
-            @Override
-            public void onSuccess(byte[] bytes) {
-                Glide.with(context)
-                        .load(bytes)
-                        .listener(new RequestListener<Drawable>() {
-                            @Override
-                            public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
-//                                viewHolder.progressBar.setVisibility(View.GONE);
-                                Toast.makeText(context,"Failed: " + productInfo.getProductName(), Toast.LENGTH_LONG).show();
-                                return false;
-                            }
-
-                            @Override
-                            public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
-//                                viewHolder.progressBar.setVisibility(View.GONE);
-//                                imageLoaded = true;
-                                return false;
-                            }
-                        })
-                        .into(viewHolder.image);
-
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Toast.makeText(context, "IMAGE Load Failed: " + productInfo.getProductName(), Toast.LENGTH_SHORT).show();
-                Log.d("FAIL: ", e.toString());
-            }
-        });
+//        storageReference.getBytes(ONE_MB).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+//            @Override
+//            public void onSuccess(byte[] bytes) {
+//                Glide.with(context)
+//                        .load(bytes)
+//                        .listener(new RequestListener<Drawable>() {
+//                            @Override
+//                            public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+////                                viewHolder.progressBar.setVisibility(View.GONE);
+//                                Toast.makeText(context,"Failed: " + productInfo.getProductName(), Toast.LENGTH_LONG).show();
+//                                return false;
+//                            }
+//
+//                            @Override
+//                            public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+////                                viewHolder.progressBar.setVisibility(View.GONE);
+////                                imageLoaded = true;
+//                                return false;
+//                            }
+//                        })
+//                        .into(viewHolder.image);
+//
+//            }
+//        }).addOnFailureListener(new OnFailureListener() {
+//            @Override
+//            public void onFailure(@NonNull Exception e) {
+////                Toast.makeText(context, "IMAGE Load Failed: " + productInfo.getProductName(), Toast.LENGTH_SHORT).show();
+//                Glide.with(context)
+//                        .load(R.mipmap.not_found)
+//                        .into(viewHolder.image);
+//                Log.d("FAIL: ", e.toString());
+//            }
+//        });
+        RequestOptions options = new RequestOptions().error(R.mipmap.not_found);
+        GlideApp.with(context)
+                .load(storageReference)
+                .apply(options)
+                .diskCacheStrategy(DiskCacheStrategy.DATA)
+                .into(viewHolder.image);
 
 
         viewHolder.layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(context, productInfo.getProductName(), Toast.LENGTH_LONG).show();
+//                Toast.makeText(context, productInfo.getProductName(), Toast.LENGTH_LONG).show();
 //                if(imageLoaded) {
                     Log.d("SELECTION", v.toString());
                     Log.d("SELECTION", productInfo.toString());
                     String prodName = productInfo.getProductName();
                     String prodCategory = productInfo.getProductCategory();
-                    Intent newintent = new Intent(context, ProductPageActivity.class);
+                    Intent newintent = new Intent(context, UserProductPageTabbedActivity.class);
 
 //                    Drawable drawable = viewHolder.image.getDrawable();
 //                    Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();

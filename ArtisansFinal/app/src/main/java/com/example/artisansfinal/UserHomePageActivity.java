@@ -1,11 +1,17 @@
 package com.example.artisansfinal;
 
+import android.app.Dialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MenuItem;
@@ -14,13 +20,21 @@ import android.widget.Toast;
 
 import com.example.artisansfinal.R;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
+import java.util.Objects;
+
+import smartdevelop.ir.eram.showcaseviewlib.GuideView;
+import smartdevelop.ir.eram.showcaseviewlib.config.DismissType;
+import smartdevelop.ir.eram.showcaseviewlib.config.Gravity;
 
 public class UserHomePageActivity extends AppCompatActivity {
     private DrawerLayout user_home_page_dl;
     private ActionBarDrawerToggle abdt;
     private String userType;
     private FirebaseAuth firebaseAuth;
-
+    private String emailID;
+    int counter = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -28,9 +42,20 @@ public class UserHomePageActivity extends AppCompatActivity {
         setContentView(R.layout.user_home_page_activity);
         firebaseAuth = FirebaseAuth.getInstance();
 
-
         Intent intent = getIntent();
-        userType = intent.getStringExtra("userType");
+
+        FirebaseUser user = firebaseAuth.getCurrentUser();
+
+
+
+
+
+
+        if(user != null)
+        {
+            userType = user.getDisplayName();
+            emailID = user.getEmail();
+        }
         user_home_page_dl = (DrawerLayout) findViewById(R.id.user_home_page_dl);
         abdt = new ActionBarDrawerToggle(this, user_home_page_dl, R.string.Open, R.string.Close);
         abdt.setDrawerIndicatorEnabled(true);
@@ -39,6 +64,13 @@ public class UserHomePageActivity extends AppCompatActivity {
 
         final NavigationView nav_view = (NavigationView) findViewById(R.id.user_home_page_navigation_view);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        Tutorial tutorial = new Tutorial(this);
+        tutorial.checkIfFirstRun();
+        tutorial.requestFocusForView(findViewById(R.id.user_home_page_cv_bracelet),
+                "Category", "Click to search products of this category");
+        tutorial.finishedTutorial();
+
         nav_view.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
@@ -53,7 +85,42 @@ public class UserHomePageActivity extends AppCompatActivity {
         });
 
     }
+    //added by shrinidhi
+    @Override
+    protected void onResume() {
+        super.onResume();
+        counter++;
+    }
 
+    // added by shrinidhi
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        FirebaseUser user = firebaseAuth.getCurrentUser();
+        if(user != null) {
+            userType = user.getDisplayName();
+            emailID = user.getEmail();
+
+            outState.putString("username", userType);
+            outState.putString("email id", emailID);
+        }
+        Log.d("userType",counter+"onSaveInstanceState");
+        Log.d("emailID",counter+"onSaveInstanceState");
+    }
+    // added by Shrinidhi
+    @Override
+    public void onRestoreInstanceState(Bundle savedInstanceState) {
+        if(savedInstanceState != null)
+        {
+            String restoreUserType = savedInstanceState.getString("username");
+            String restoreEmailID = savedInstanceState.getString("email id");
+            Log.d("restoreEmailID",counter+"onRestoreInstanceState");
+            Log.d("restoreUserType",counter+"onRestoreInstanceState");
+        }
+        super.onRestoreInstanceState(savedInstanceState);
+
+
+    }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
@@ -84,22 +151,43 @@ public class UserHomePageActivity extends AppCompatActivity {
     }
 
     public void order_history_button(MenuItem item) {
-        Intent i = new Intent(this, OrderHistory.class);
+        Intent i = new Intent(this, OrderHistoryTabbedActivity.class);
         startActivity(i);
         Toast.makeText(this, "Your order history", Toast.LENGTH_SHORT).show();
     }
 
     public void tutorial_button(MenuItem item) {
-        Intent i = new Intent(this, UserHomePageActivity.class);
+        Intent i = new Intent(this, UserTutorialActivity.class);
         startActivity(i);
         Toast.makeText(this, "Tutorial", Toast.LENGTH_SHORT).show();
     }
 
     public void Logout(MenuItem item) {
-        firebaseAuth.signOut();
-        finish();
-        startActivity(new Intent(UserHomePageActivity.this, LoginActivity.class));
-        Toast.makeText(this, "Logged out", Toast.LENGTH_SHORT).show();
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Logout Confirmation");
+        builder.setMessage("Are you sure you want to logout?");
+
+        builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                firebaseAuth.signOut();
+                finish();
+                startActivity(new Intent(UserHomePageActivity.this, CommonLoginActivityTabbed.class));
+                Toast.makeText(UserHomePageActivity.this, "Logged out", Toast.LENGTH_SHORT).show();
+
+            }
+        });
+
+        builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+
+        Dialog dialog = builder.create();
+        builder.show();
     }
 
     public void Toys(View view) {

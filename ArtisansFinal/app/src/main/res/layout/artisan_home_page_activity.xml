@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <android.support.v4.widget.DrawerLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-
-android:orientation="vertical"
+    android:orientation="vertical"
     android:background="#bbdefb"
     android:id="@+id/artisan_home_page_dl">
     <LinearLayout
@@ -19,43 +17,166 @@ android:orientation="vertical"
             android:layout_height="wrap_content"
             android:text="Log out"
             android:id="@+id/artisan_home_page_button_logout"/>-->
+        <!--<LinearLayout-->
+
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:orientation="vertical"-->
+            <!--android:padding="20dp">-->
+
+            <!--<android.support.v7.widget.CardView-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_weight="0.33"-->
+                <!--app:cardBackgroundColor="#F5FFFA"-->
+                <!--app:cardCornerRadius="20sp"-->
+                <!--android:onClick="Order_history"-->
+                <!--android:layout_marginBottom="20dp"-->
+                <!--&gt;-->
+
+                <!--<RelativeLayout-->
+                    <!--android:layout_gravity="center"-->
+                    <!--android:layout_weight="1"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content">-->
+
+                    <!--<TextView-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:text="Order history"-->
+                        <!--android:gravity="center"-->
+                        <!--android:textSize="25sp"-->
+                        <!--android:layout_below="@id/order_history"-->
+                        <!--/>-->
+
+                    <!--<ImageView-->
+                        <!--android:id="@+id/order_history"-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:src="@mipmap/ic_launcher_foreground1"/>-->
+
+                <!--</RelativeLayout>-->
+
+
+            <!--</android.support.v7.widget.CardView>-->
+
+            <!--<android.support.v7.widget.CardView-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_weight="0.33"-->
+                <!--app:cardBackgroundColor="#F5FFFA"-->
+                <!--app:cardCornerRadius="20sp"-->
+                <!--android:onClick="Order_requests"-->
+                <!--android:layout_marginBottom="20dp"-->
+                <!--&gt;-->
+
+                <!--<RelativeLayout-->
+                    <!--android:layout_gravity="center"-->
+                    <!--android:layout_weight="1"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content">-->
+
+                    <!--<TextView-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:text="Order requests"-->
+                        <!--android:gravity="center"-->
+                        <!--android:textSize="25sp"-->
+                        <!--android:layout_below="@id/order_requests"-->
+                        <!--/>-->
+
+                    <!--<ImageView-->
+                        <!--android:id="@+id/order_requests"-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:src="@mipmap/ic_launcher_foreground2"/>-->
+
+                <!--</RelativeLayout>-->
+
+
+            <!--</android.support.v7.widget.CardView>-->
+            <!--<android.support.v7.widget.CardView-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_weight="0.33"-->
+                <!--app:cardBackgroundColor="#F5FFFA"-->
+                <!--app:cardCornerRadius="20sp"-->
+                <!--android:onClick="my_products"-->
+                <!--android:layout_marginBottom="20dp"-->
+                <!--&gt;-->
+
+                <!--<RelativeLayout-->
+                    <!--android:layout_gravity="center"-->
+                    <!--android:layout_weight="1"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content">-->
+
+                    <!--<TextView-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:text="My products"-->
+                        <!--android:gravity="center"-->
+                        <!--android:textSize="25sp"-->
+                        <!--android:layout_below="@id/my_products"-->
+                        <!--/>-->
+
+                    <!--<ImageView-->
+                        <!--android:id="@+id/my_products"-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:src="@mipmap/ic_launcher_my_products_round"/>-->
+
+                <!--</RelativeLayout>-->
+
+
+            <!--</android.support.v7.widget.CardView>-->
+        <!--</LinearLayout>-->
         <LinearLayout
-
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:padding="20dp">
+            android:id="@+id/artisan_home_page_ll_inner_1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="6dp"
+            android:layout_marginRight="6dp"
+            android:layout_weight="0.5"
+            android:orientation="horizontal"
+            android:paddingStart="20dp"
+            android:paddingTop="20dp"
+            android:paddingEnd="20dp"
+            android:paddingBottom="10dp">
 
             <android.support.v7.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                app:cardBackgroundColor="#F5FFFA"
-                app:cardCornerRadius="20sp"
+                android:id="@+id/artisan_home_page_cv_order_history"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginRight="4dp"
+                android:layout_weight="0.5"
+                android:background="@drawable/border"
                 android:onClick="Order_history"
-                android:layout_marginBottom="20dp"
-                >
+                android:paddingStart="2dp"
+                android:paddingEnd="2dp"
+                app:cardBackgroundColor="#F5FFFA"
+                app:cardCornerRadius="20sp">
 
                 <RelativeLayout
-                    android:layout_gravity="center"
-                    android:layout_weight="1"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:id="@+id/artisan_home_page_rl_order_history"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center">
 
                     <TextView
+                        android:id="@+id/artisan_home_page_tv_order_history"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_below="@id/artisan_home_page_iv_order_history"
+                        android:gravity="center"
                         android:text="Order history"
-                        android:gravity="center"
-                        android:textSize="25sp"
-                        android:layout_below="@id/order_history"
-                        />
+                        android:textSize="25sp" />
 
                     <ImageView
-                        android:id="@+id/order_history"
+                        android:id="@+id/artisan_home_page_iv_order_history"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:src="@mipmap/ic_launcher_foreground1"/>
+                        android:src="@mipmap/ic_launcher_order_history_round" />
 
                 </RelativeLayout>
 
@@ -63,73 +184,123 @@ android:orientation="vertical"
             </android.support.v7.widget.CardView>
 
             <android.support.v7.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                app:cardBackgroundColor="#F5FFFA"
-                app:cardCornerRadius="20sp"
+                android:id="@+id/artisan_home_page_cv_order_requests"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="4dp"
+                android:layout_weight="0.5"
                 android:onClick="Order_requests"
-                android:layout_marginBottom="20dp"
-                >
+                android:padding="2dp"
+                app:cardBackgroundColor="#F5FFFA"
+                app:cardCornerRadius="20sp">
 
                 <RelativeLayout
-                    android:layout_gravity="center"
-                    android:layout_weight="1"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center">
 
                     <TextView
+                        android:id="@+id/artisan_home_page_tv_order_requests"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Order requests"
+                        android:layout_below="@id/artisan_home_page_iv_order_requests"
                         android:gravity="center"
-                        android:textSize="25sp"
-                        android:layout_below="@id/order_requests"
-                        />
+                        android:text="Order requests"
+                        android:textSize="25sp" />
 
                     <ImageView
-                        android:id="@+id/order_requests"
+                        android:id="@+id/artisan_home_page_iv_order_requests"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:src="@mipmap/ic_launcher_foreground2"/>
+                        android:src="@mipmap/ic_launcher_order_requests_round" />
+
+                </RelativeLayout>
+
+            </android.support.v7.widget.CardView>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/artisan_home_page_ll_inner_2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="6dp"
+            android:layout_marginRight="6dp"
+            android:layout_weight="0.5"
+            android:orientation="horizontal"
+            android:paddingTop="10dp"
+            android:paddingRight="20dp"
+            android:paddingLeft="20dp"
+            android:paddingBottom="20dp">
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/artisan_home_page_cv_my_products"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginRight="4dp"
+                android:layout_weight="0.5"
+                android:onClick="My_products"
+                app:cardBackgroundColor="#F5FFFA"
+                app:cardCornerRadius="20sp">
+
+                <RelativeLayout
+                    android:id="@+id/artisan_home_page_rl_my_products"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center">
+
+                    <TextView
+                        android:id="@+id/artisan_home_page_tv_my_products"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/artisan_home_page_iv_my_products"
+                        android:gravity="center"
+                        android:text="My products"
+                        android:textSize="25sp" />
+
+                    <ImageView
+                        android:id="@+id/artisan_home_page_iv_my_products"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:src="@mipmap/ic_launcher_my_products_round" />
 
                 </RelativeLayout>
 
 
             </android.support.v7.widget.CardView>
+
             <android.support.v7.widget.CardView
+                android:id="@+id/artisan_home_page_cv_pending_orders"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="4dp"
+                android:layout_weight="0.5"
+                android:onClick="Pending_orders"
                 app:cardBackgroundColor="#F5FFFA"
-                app:cardCornerRadius="20sp"
-                android:onClick="My_products"
-                android:layout_marginBottom="20dp"
-                >
+                app:cardCornerRadius="20sp">
 
                 <RelativeLayout
-                    android:layout_gravity="center"
-                    android:layout_weight="1"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:id="@+id/artisan_home_page_rl_pending_orders"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center">
 
                     <TextView
+                        android:id="@+id/user_home_page_tv_garland"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="My products"
+                        android:layout_below="@id/artisan_home_page_iv_pending_orders"
                         android:gravity="center"
-                        android:textSize="25sp"
-                        android:layout_below="@id/my_products"
-                        />
+                        android:text="Pending orders"
+                        android:textSize="25sp" />
 
                     <ImageView
-                        android:id="@+id/my_products"
+                        android:id="@+id/artisan_home_page_iv_pending_orders"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:src="@mipmap/ic_launcher_my_products_round"/>
+                        android:src="@mipmap/ic_launcher_pending_order_round" />
 
                 </RelativeLayout>
-
 
             </android.support.v7.widget.CardView>
 

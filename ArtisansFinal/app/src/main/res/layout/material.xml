@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#66CEFF"
+    android:id="@+id/loading_layout_cl"
+    >
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@mipmap/loading2"
+        android:id="@+id/loading_layout_iv"/>
+
+</android.support.constraint.ConstraintLayout>
+<!--<?xml version="1.0" encoding="utf-8"?>-->
+<!--<android.support.design.widget.CoordinatorLayout-->
+    <!--android:id="@id/parent_view"-->
+    <!--android:background="@android:color/white"-->
+    <!--android:layout_width="fill_parent"-->
+    <!--android:layout_height="fill_parent"-->
+    <!--xmlns:android="http://schemas.android.com/apk/res/android"-->
+    <!--xmlns:app="http://schemas.android.com/apk/res-auto">-->
+    <!--<android.support.design.widget.AppBarLayout-->
+        <!--android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"-->
+        <!--android:id="@id/app_bar_layout"-->
+        <!--android:layout_width="fill_parent"-->
+        <!--android:layout_height="260.0dip">-->
+        <!--<android.support.design.widget.CollapsingToolbarLayout-->
+            <!--android:id="@id/collapsing_toolbar"-->
+            <!--android:layout_width="fill_parent"-->
+            <!--android:layout_height="fill_parent"-->
+            <!--app:contentScrim="?colorPrimary"-->
+            <!--app:expandedTitleTextAppearance="@style/TextAppearance.AppCompat.Headline"-->
+            <!--app:layout_scrollFlags="exitUntilCollapsed|scroll"-->
+            <!--app:titleEnabled="false">-->
+            <!--<ImageView-->
+                <!--android:id="@id/image"-->
+                <!--android:layout_width="fill_parent"-->
+                <!--android:layout_height="fill_parent"-->
+                <!--android:src="@drawable/image_shop_10"-->
+                <!--android:scaleType="centerCrop"-->
+                <!--app:layout_collapseMode="parallax" />-->
+
+        <!--</android.support.design.widget.CollapsingToolbarLayout>-->
+    <!--</android.support.design.widget.AppBarLayout>-->
+
+    <!--<LinearLayout-->
+        <!--android:orientation="vertical"-->
+        <!--android:layout_width="fill_parent"-->
+        <!--android:layout_height="fill_parent"-->
+        <!--app:layout_behavior="@string/appbar_scrolling_view_behavior">-->
+        <!--<android.support.v7.widget.Toolbar-->
+            <!--android:layout_gravity="bottom"-->
+            <!--android:id="@id/toolbar"-->
+            <!--android:background="@color/colorPrimary"-->
+            <!--android:layout_width="fill_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--app:contentInsetStartWithNavigation="0.0dip"-->
+            <!--app:layout_collapseMode="pin"-->
+            <!--app:popupTheme="@style/ThemeOverlay.AppCompat.Light">-->
+            <!--<LinearLayout-->
+                <!--android:orientation="vertical"-->
+                <!--android:layout_width="fill_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginTop="@dimen/spacing_large"-->
+                <!--android:layout_marginRight="@dimen/spacing_large"-->
+                <!--android:layout_marginBottom="@dimen/spacing_large">-->
+                <!--<TextView-->
+                    <!--android:textAppearance="@style/TextAppearance.AppCompat.Large"-->
+                    <!--android:textColor="@android:color/white"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:text="Roll-Up Neocity Backpack" />-->
+                <!--<TextView-->
+                    <!--android:textAppearance="@style/TextAppearance.AppCompat.Small"-->
+                    <!--android:textColor="@color/grey_10"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_marginTop="@dimen/spacing_medium"-->
+                    <!--android:text="Shop Adidas" />-->
+
+                <!--<LinearLayout-->
+                    <!--android:gravity="center_vertical"-->
+                    <!--android:orientation="horizontal"-->
+                    <!--android:layout_width="fill_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_marginTop="@dimen/spacing_large">-->
+                    <!--<android.support.v7.widget.AppCompatRatingBar-->
+                        <!--android:theme="@style/Yellow.Small.AppCompatRatingBar.White"-->
+                        <!--android:clickable="false"-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:numStars="5"-->
+                        <!--android:rating="3.5"-->
+                        <!--android:stepSize="1.0"-->
+                        <!--style="@style/Yellow.Small.AppCompatRatingBar.White" />-->
+                    <!--<TextView-->
+                        <!--android:textAppearance="@style/TextAppearance.AppCompat.Caption"-->
+                        <!--android:textColor="@color/grey_10"-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_marginLeft="@dimen/spacing_medium"-->
+                        <!--android:text="381,380" />-->
+                    <!--<View-->
+                        <!--android:layout_width="0.0dip"-->
+                        <!--android:layout_height="0.0dip"-->
+                        <!--android:layout_weight="1.0" />-->
+                    <!--<TextView-->
+                        <!--android:textAppearance="@style/TextAppearance.AppCompat.Large"-->
+                        <!--android:textStyle="bold"-->
+                        <!--android:textColor="@android:color/white"-->
+                        <!--android:id="@id/price"-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:text="$ 80.00" />-->
+
+                <!--</LinearLayout>-->
+            <!--</LinearLayout>-->
+        <!--</android.support.v7.widget.Toolbar>-->
+
+        <!--<android.support.v4.widget.NestedScrollView android:id="@id/nested_scroll_view" android:scrollbars="none" android:clipToPadding="false" android:layout_width="fill_parent" android:layout_height="fill_parent" android:scrollingCache="true" app:layout_behavior="@string/appbar_scrolling_view_behavior">-->
+            <!--<LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="wrap_content">-->
+                <!--<LinearLayout android:gravity="center_vertical" android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="wrap_content" android:minHeight="?actionBarSize">-->
+                    <!--<ImageButton android:background="@android:color/transparent" android:layout_width="?actionBarSize" android:layout_height="?actionBarSize" android:tint="@color/grey_60" app:srcCompat="@drawable/ic_error_outline" />-->
+                    <!--<TextView android:textAppearance="@style/TextAppearance.AppCompat.Medium" android:textColor="@color/grey_80" android:layout_width="0.0dip" android:layout_height="wrap_content" android:text="Description" android:layout_weight="1.0" />-->
+                    <!--<View android:layout_width="@dimen/spacing_large" android:layout_height="wrap_content" />-->
+                    <!--<ImageButton android:id="@id/bt_toggle_description" android:background="?selectableItemBackgroundBorderless" android:layout_width="?actionBarSize" android:layout_height="?actionBarSize" android:tint="@color/grey_60" app:srcCompat="@drawable/ic_arrow_drop" />-->
+                <!--</LinearLayout>-->
+                <!--<LinearLayout android:gravity="center_vertical" android:orientation="horizontal" android:id="@id/lyt_expand_description" android:paddingTop="@dimen/spacing_medium" android:paddingBottom="@dimen/spacing_large" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="?actionBarSize" android:layout_marginRight="@dimen/spacing_smlarge" android:layout_marginBottom="@dimen/spacing_middle">-->
+                    <!--<TextView android:textAppearance="@style/TextAppearance.AppCompat.Subhead" android:layout_width="0.0dip" android:layout_height="wrap_content" android:text="@string/lorem_ipsum" android:layout_weight="1.0" />-->
+                <!--</LinearLayout>-->
+                <!--<View android:background="@color/grey_20" android:layout_width="fill_parent" android:layout_height="1.0px" />-->
+                <!--<LinearLayout android:gravity="center_vertical" android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="wrap_content" android:minHeight="?actionBarSize">-->
+                    <!--<ImageButton android:background="@android:color/transparent" android:layout_width="?actionBarSize" android:layout_height="?actionBarSize" android:tint="@color/grey_60" app:srcCompat="@drawable/ic_chat" />-->
+                    <!--<TextView android:textAppearance="@style/TextAppearance.AppCompat.Medium" android:textColor="@color/grey_80" android:layout_width="0.0dip" android:layout_height="wrap_content" android:text="Reviews" android:layout_weight="1.0" />-->
+                    <!--<View android:layout_width="@dimen/spacing_smlarge" android:layout_height="wrap_content" />-->
+                    <!--<ImageButton android:id="@id/bt_toggle_reviews" android:background="?selectableItemBackgroundBorderless" android:layout_width="?actionBarSize" android:layout_height="?actionBarSize" android:tint="@color/grey_60" app:srcCompat="@drawable/ic_arrow_drop" />-->
+                <!--</LinearLayout>-->
+                <!--<LinearLayout android:orientation="vertical" android:id="@id/lyt_expand_reviews" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginBottom="@dimen/spacing_middle">-->
+                    <!--<LinearLayout android:gravity="center_vertical" android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="?actionBarSize" android:layout_marginRight="@dimen/spacing_smlarge" android:minHeight="@dimen/spacing_mxlarge">-->
+                        <!--<android.support.v7.widget.AppCompatRatingBar android:theme="@style/Yellow.Small.AppCompatRatingBar" android:clickable="false" android:layout_width="wrap_content" android:layout_height="wrap_content" android:numStars="5" android:rating="4.0" android:stepSize="1.0" style="@style/Yellow.Small.AppCompatRatingBar" />-->
+                        <!--<TextView android:textAppearance="@style/TextAppearance.AppCompat.Small" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="@dimen/spacing_middle" android:text="Adams Green" android:maxLines="1" android:singleLine="true" />-->
+                    <!--</LinearLayout>-->
+                    <!--<LinearLayout android:gravity="center_vertical" android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="?actionBarSize" android:layout_marginRight="@dimen/spacing_smlarge" android:minHeight="@dimen/spacing_mxlarge">-->
+                        <!--<android.support.v7.widget.AppCompatRatingBar android:theme="@style/Yellow.Small.AppCompatRatingBar" android:clickable="false" android:layout_width="wrap_content" android:layout_height="wrap_content" android:numStars="5" android:rating="5.0" android:stepSize="1.0" style="@style/Yellow.Small.AppCompatRatingBar" />-->
+                        <!--<TextView android:textAppearance="@style/TextAppearance.AppCompat.Small" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="@dimen/spacing_middle" android:text="Anderson Thomas" android:maxLines="1" android:singleLine="true" />-->
+                    <!--</LinearLayout>-->
+                    <!--<LinearLayout android:gravity="center_vertical" android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="?actionBarSize" android:layout_marginRight="@dimen/spacing_smlarge" android:minHeight="@dimen/spacing_mxlarge">-->
+                        <!--<android.support.v7.widget.AppCompatRatingBar android:theme="@style/Yellow.Small.AppCompatRatingBar" android:clickable="false" android:layout_width="wrap_content" android:layout_height="wrap_content" android:numStars="5" android:rating="5.0" android:stepSize="1.0" style="@style/Yellow.Small.AppCompatRatingBar" />-->
+                        <!--<TextView android:textAppearance="@style/TextAppearance.AppCompat.Small" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="@dimen/spacing_middle" android:text="Roberts Turner" android:maxLines="1" android:singleLine="true" />-->
+                    <!--</LinearLayout>-->
+                    <!--<LinearLayout android:gravity="center_vertical" android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="?actionBarSize" android:layout_marginRight="@dimen/spacing_smlarge" android:minHeight="@dimen/spacing_mxlarge">-->
+                        <!--<android.support.v7.widget.AppCompatRatingBar android:theme="@style/Yellow.Small.AppCompatRatingBar" android:clickable="false" android:layout_width="wrap_content" android:layout_height="wrap_content" android:numStars="5" android:rating="4.5" android:stepSize="0.5" style="@style/Yellow.Small.AppCompatRatingBar" />-->
+                        <!--<TextView android:textAppearance="@style/TextAppearance.AppCompat.Small" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="@dimen/spacing_middle" android:text="Evans Collins" android:maxLines="1" android:singleLine="true" />-->
+                    <!--</LinearLayout>-->
+                    <!--<LinearLayout android:gravity="center_vertical" android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="?actionBarSize" android:layout_marginRight="@dimen/spacing_smlarge" android:minHeight="@dimen/spacing_mxlarge">-->
+                        <!--<android.support.v7.widget.AppCompatRatingBar android:theme="@style/Yellow.Small.AppCompatRatingBar" android:clickable="false" android:layout_width="wrap_content" android:layout_height="wrap_content" android:numStars="5" android:rating="5.0" android:stepSize="1.0" style="@style/Yellow.Small.AppCompatRatingBar" />-->
+                        <!--<TextView android:textAppearance="@style/TextAppearance.AppCompat.Small" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="@dimen/spacing_middle" android:text="Garcia Lewis" android:maxLines="1" android:singleLine="true" />-->
+                    <!--</LinearLayout>-->
+                <!--</LinearLayout>-->
+                <!--<View android:background="@color/grey_20" android:layout_width="fill_parent" android:layout_height="1.0px" />-->
+
+    <!--<LinearLayout android:gravity="center_vertical" android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="wrap_content" android:minHeight="?actionBarSize">-->
+                    <!--<ImageButton android:background="@android:color/transparent" android:layout_width="?actionBarSize" android:layout_height="?actionBarSize" android:tint="@color/grey_60" app:srcCompat="@drawable/ic_verified_user" />-->
+                    <!--<TextView android:textAppearance="@style/TextAppearance.AppCompat.Medium" android:textColor="@color/grey_80" android:layout_width="0.0dip" android:layout_height="wrap_content" android:text="Warranty" android:layout_weight="1.0" />-->
+                    <!--<View android:layout_width="@dimen/spacing_large" android:layout_height="wrap_content" />-->
+                    <!--<ImageButton android:id="@id/bt_toggle_warranty" android:background="?selectableItemBackgroundBorderless" android:layout_width="?actionBarSize" android:layout_height="?actionBarSize" android:tint="@color/grey_60" app:srcCompat="@drawable/ic_arrow_drop" />-->
+                <!--</LinearLayout>-->
+                <!--<LinearLayout android:gravity="center_vertical" android:orientation="horizontal" android:id="@id/lyt_expand_warranty" android:paddingTop="@dimen/spacing_medium" android:paddingBottom="@dimen/spacing_medium" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="?actionBarSize" android:layout_marginRight="@dimen/spacing_smlarge" android:layout_marginBottom="@dimen/spacing_middle">-->
+                    <!--<TextView android:textAppearance="@style/TextAppearance.AppCompat.Subhead" android:layout_width="0.0dip" android:layout_height="wrap_content" android:text="@string/invoice_address" android:layout_weight="1.0" />-->
+                <!--</LinearLayout>-->
+            <!--</LinearLayout>-->
+        <!--</android.support.v4.widget.NestedScrollView>-->
+    <!--</LinearLayout>-->
+    <!--<android.support.design.widget.FloatingActionButton android:id="@id/fab" android:clickable="true" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_margin="@dimen/spacing_large" android:tint="@android:color/white" app:backgroundTint="@color/deep_orange_500" app:fabSize="normal" app:layout_anchor="@id/app_bar_layout" app:layout_anchorGravity="end|bottom|center" app:rippleColor="@android:color/white" app:srcCompat="@drawable/ic_add" />-->
+<!--</android.support.design.widget.CoordinatorLayout>-->

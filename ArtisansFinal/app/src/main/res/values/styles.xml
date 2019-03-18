@@ -28,4 +28,27 @@
         <item name="android:textSize">14sp</item>
     </style>
 
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="splashScreenTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowBackground">@mipmap/splashscreen3</item>
+
+    </style>
+
+    <style name="Yellow.Small.AppCompatRatingBar.White" parent="@style/Base.Widget.AppCompat.RatingBar.Small">
+        <item name="colorControlActivated">@color/yellow_600</item>
+        <item name="colorControlNormal">@color/grey_20</item>
+    </style>
+
+    <style name="alertDialogTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="android:background">@color/common</item>
+    </style>
+
 </resources>
