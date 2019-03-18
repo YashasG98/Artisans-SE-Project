@@ -67,8 +67,11 @@ public class ArtisanEditProductInfoActivity extends AppCompatActivity {
         productCategory = intent.getStringExtra("productCategory");
         artisanContactNumber = intent.getStringExtra("artisanContactNumber");
 
-        final FloatingActionButton fab = findViewById(R.id.artisan_edit_product_info_fab);
 
+        //Added by shashwatha
+        storageReference = FirebaseStorage.getInstance().getReference();
+
+        final FloatingActionButton fab = findViewById(R.id.artisan_edit_product_info_fab);
         final TextInputEditText editName = findViewById(R.id.artisan_edit_product_info_et_product_name);
         final TextInputEditText editPrice = findViewById(R.id.artisan_edit_product_info_et_product_price);
         final TextInputEditText editDescription = findViewById(R.id.artisan_edit_product_info_et_product_description);
@@ -137,7 +140,8 @@ public class ArtisanEditProductInfoActivity extends AppCompatActivity {
                             db1.child("productName").setValue(updateName);
 
                             // update image here
-
+                            if(mainImageURI!=null)
+                                uploadImage(mainImageURI);
                             finish();
                         }
                     }

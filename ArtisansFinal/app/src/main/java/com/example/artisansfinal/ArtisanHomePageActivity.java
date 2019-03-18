@@ -169,7 +169,8 @@ public class ArtisanHomePageActivity extends AppCompatActivity {
     }
 
     public void tutorial_button(MenuItem item) {
-        Toast.makeText(this, "Tutorial", Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(this,ArtisanTutorialActivity.class);
+        startActivity(intent);
     }
 
     public void Logout(MenuItem item) {
