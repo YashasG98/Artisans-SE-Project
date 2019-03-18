@@ -6,11 +6,30 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
 import android.os.ResultReceiver;
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
@@ -18,6 +37,9 @@ public class GeocodeAddressIntentService extends IntentService {
 
     protected ResultReceiver resultReceiver;
     private static final String TAG = "GEO_ADDY_SERVICE";
+    private String name,pincode;
+    private DatabaseReference databaseReference;
+    private String artisanContactNumber;
 
     public GeocodeAddressIntentService() {
         super("GeocodeAddressIntentService");
@@ -25,19 +47,45 @@ public class GeocodeAddressIntentService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
-        Log.e(TAG, "onHandleIntent");
+        Log.d(TAG, "onHandleIntent");
         Geocoder geocoder = new Geocoder(this, Locale.getDefault());
         String errorMessage = "";
         List<Address> addresses = null;
         //List<Address> addresses2 = null;
         int fetchType = intent.getIntExtra(Constants.FETCH_TYPE_EXTRA, 0);
-        Log.e(TAG, "fetchType == " + fetchType);
-
+        Log.d(TAG, "fetchType == " + fetchType);
+//        databaseReference.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//
+//                HashMap<String, String> map = (HashMap<String, String>) dataSnapshot.getValue();
+//                artisanContactNumber = map.get("artisanContactNumber");
+//
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError databaseError) {
+//            }
+//        });
         if(fetchType == Constants.USE_ADDRESS_NAME) {
-            String name = intent.getStringExtra(Constants.LOCATION_NAME_DATA_EXTRA);
-            //String name2 = intent.getStringExtra(Constants.LOCATION_NAME_DATA_EXTRA2);
+            name = intent.getStringExtra(Constants.LOCATION_NAME_DATA_EXTRA);
+//            FirebaseDatabase.getInstance().getReference("Artisans").child(name).child("postal_address").
+//                    addValueEventListener(new ValueEventListener() {
+//                        @Override
+//                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//
+//                            //pincode = dataSnapshot.getValue(String.class);
+//                            pincode = dataSnapshot.getValue(String.class);
+//                        }
+//
+//                        @Override
+//                        public void onCancelled(@NonNull DatabaseError databaseError) {
+//
+//                        }
+//                    });
+//            //String name2 = intent.getStringExtra(Constants.LOCATION_NAME_DATA_EXTRA2);
             try {
-                addresses = geocoder.getFromLocationName(name, 1);
+                 addresses = geocoder.getFromLocationName(name, 1);
                 //addresses2 = geocoder.getFromLocationName(name2,1);
             } catch (IOException e) {
                 errorMessage = "Service not available";
@@ -69,7 +117,7 @@ public class GeocodeAddressIntentService extends IntentService {
         if (addresses == null || addresses.size()  == 0) {
             if (errorMessage.isEmpty()) {
                 errorMessage = "Not Found";
-                Log.e(TAG, errorMessage);
+                Log.d(TAG, errorMessage);
             }
             deliverResultToReceiver(Constants.FAILURE_RESULT, errorMessage, null);
         } else {

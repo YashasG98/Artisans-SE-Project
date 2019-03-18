@@ -239,7 +239,7 @@
                 android:layout_height="match_parent"
                 android:layout_marginRight="4dp"
                 android:layout_weight="0.5"
-                android:onClick="Shawl"
+                android:onClick="My_products"
                 app:cardBackgroundColor="#F5FFFA"
                 app:cardCornerRadius="20sp">
 

@@ -77,6 +77,7 @@ public class UserProductDetails1Fragment extends Fragment {
     private DatabaseReference ordHis;
     private StorageReference storageReference;
     private String artisanContactNumber;
+    private String artisanPin;
     private String userPhoneNumber;
     Calendar calendar;
     private String formattedDate;
@@ -85,6 +86,7 @@ public class UserProductDetails1Fragment extends Fragment {
     FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
     private String artisanToken;
     private ArtisanInfo artisanInfo;
+    private String pincode;
 
     //Lcation based
     AddressResultReceiver mResultReceiver;
@@ -94,6 +96,7 @@ public class UserProductDetails1Fragment extends Fragment {
     TextView infoText;
     TextView current_location;
     CheckBox checkBox;
+    public String name;
     //private static final String TAG = "MainActivity";
     private int STORAGE_PERMISSION_CODE = 1;
     //private LocationManager locationManager;
@@ -201,7 +204,7 @@ public class UserProductDetails1Fragment extends Fragment {
                 ratingBar.setRating(Float.parseFloat(map.get("totalRating")));
                 numberRated.setText(map.get("numberOfPeopleWhoHaveRated"));
                 artisanContactNumber = map.get("artisanContactNumber");
-
+                artisanPin = map.get("pincode");
                 FirebaseDatabase.getInstance().getReference("Artisans").child(artisanContactNumber).child("FCMToken")
                         .addValueEventListener(new ValueEventListener() {
                             @Override
@@ -215,6 +218,21 @@ public class UserProductDetails1Fragment extends Fragment {
                             }
                         });
                 Log.d("STORAGE", storageReference.child(map.get("productID")).toString());
+                FirebaseDatabase.getInstance().getReference("Artisans").child(artisanContactNumber).child("postal_address").
+                        addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                                pincode = dataSnapshot.getValue(String.class);
+                                name = dataSnapshot.getValue(String.class);
+
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                            }
+                        });
 
                 RequestOptions options = new RequestOptions().error(R.mipmap.image_not_provided);
                 GlideApp.with(getContext())
@@ -348,6 +366,7 @@ public class UserProductDetails1Fragment extends Fragment {
 
         return view;
     }
+
     public boolean isServicesOK() {
 
         Log.d(TAG, "isServicesOK: checking google services version");
@@ -452,7 +471,23 @@ public class UserProductDetails1Fragment extends Fragment {
 
 //        addressEdit.setEnabled(true);
 //        addressEdit.requestFocus();
-        Intent intent = new Intent(getActivity(), GeocodeAddressIntentService.class);
+        FirebaseDatabase.getInstance().getReference("Artisans").child(artisanContactNumber).child("postal_address").
+                addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                        pincode = dataSnapshot.getValue(String.class);
+                        name = dataSnapshot.getValue(String.class);
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+
+        final Intent intent = new Intent(getActivity(), GeocodeAddressIntentService.class);
         intent.putExtra(Constants.RECEIVER, mResultReceiver);
         intent.putExtra(Constants.FETCH_TYPE_EXTRA, fetchType);
         if (fetchType == Constants.USE_ADDRESS_NAME) {
@@ -460,9 +495,11 @@ public class UserProductDetails1Fragment extends Fragment {
 //              Toast.makeText(this, "Please enter an address name", Toast.LENGTH_LONG).show();
 //              return;
 //            }
-            String name = "Delhi";
+            //FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+            //name = "Bangalore";
             //intent.putExtra(Constants.LOCATION_NAME_DATA_EXTRA2, name);
             intent.putExtra(Constants.LOCATION_NAME_DATA_EXTRA, name);
+
         } else {
             fetchAddress = true;
             fetchType = Constants.USE_ADDRESS_LOCATION;
@@ -505,9 +542,23 @@ public class UserProductDetails1Fragment extends Fragment {
                         double R = 6371; // Radius of the earth in km
                         double charges = Math.sqrt((latid-address.getLatitude())*(latid-address.getLatitude()) + (longit-address.getLongitude())*(longit-address.getLongitude()));
                         charges = charges*R*0.01;
+                        FirebaseDatabase.getInstance().getReference("Artisans").child(artisanContactNumber).child("postal_address").
+                                addValueEventListener(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                                        pincode = dataSnapshot.getValue(String.class);
+
+                                    }
+
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                    }
+                                });
                         progressBar.setVisibility(View.GONE);
                         infoText.setVisibility(View.VISIBLE);
-                        infoText.setText("Delivery Charges: " + charges);
+                        infoText.setText("Delivery Charges: " + charges + "\nPincode: "+pincode);
                     }
                 });
             }
