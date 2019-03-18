@@ -56,7 +56,7 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="10sp"
                         android:text="Product Description"
-                        android:inputType="text"/>
+                        android:inputType="text|textMultiLine" />
                 </android.support.design.widget.TextInputLayout>
 
 
