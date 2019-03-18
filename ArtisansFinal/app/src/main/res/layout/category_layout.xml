@@ -56,12 +56,24 @@
             android:layout_marginLeft="8dp"
             android:text="Artisan Name" />
 
+        <android.support.v7.widget.AppCompatRatingBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/category_layout_tv_artisan_name"
+            android:layout_toRightOf="@+id/category_layout_iv_product_image"
+            android:theme="@style/Yellow.Small.AppCompatRatingBar.White"
+            android:clickable="false"
+            android:numStars="5"
+            android:stepSize="1.0"
+            style="@style/Yellow.Small.AppCompatRatingBar.White"
+            android:id="@+id/category_layout_rb"/>
+
         <TextView
             android:id="@+id/category_layout_tv_product_price"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toRightOf="@id/category_layout_iv_product_image"
-            android:layout_below="@id/category_layout_tv_artisan_name"
+            android:layout_below="@id/category_layout_rb"
             android:layout_marginStart="8dp"
             android:layout_marginLeft="8dp"
             android:text="Product Price"

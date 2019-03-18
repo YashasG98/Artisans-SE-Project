@@ -14,7 +14,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".ArtisanEditProductInfoActivity"></activity>
-        <activity android:name=".ArtisanProductPageTabbedActivity" />
+        <activity android:name=".ArtisanProductPageTabbedActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity android:name=".SplashScreen" />
         <activity
             android:name=".UserProductPageTabbedActivity"
