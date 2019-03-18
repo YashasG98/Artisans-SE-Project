@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.AppCompatRatingBar;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -59,6 +60,7 @@ public class CategoryRecyclerViewAdapter extends RecyclerView.Adapter<CategoryRe
         TextView productPrice;
         TextView artisanName;
         RelativeLayout layout;
+        AppCompatRatingBar rb;
 //        ProgressBar progressBar;
 
         public ViewHolder(@NonNull View itemView) {
@@ -68,6 +70,7 @@ public class CategoryRecyclerViewAdapter extends RecyclerView.Adapter<CategoryRe
             productPrice = itemView.findViewById(R.id.category_layout_tv_product_price);
             artisanName = itemView.findViewById(R.id.category_layout_tv_artisan_name);
             layout = itemView.findViewById(R.id.category_layout_rl);
+            rb = itemView.findViewById(R.id.category_layout_rb);
 //            progressBar = itemView.findViewById(R.id.category_layout_pb_progress);
         }
     }
@@ -96,6 +99,7 @@ public class CategoryRecyclerViewAdapter extends RecyclerView.Adapter<CategoryRe
         viewHolder.artisanName.setText(productInfo.getArtisanName());
         viewHolder.productPrice.setText(productInfo.getProductPrice());
         viewHolder.productName.setText(productInfo.getProductName());
+        viewHolder.rb.setRating(Float.parseFloat(productInfo.getTotalRating()));
 
         Glide.with(context)
                 .asGif()

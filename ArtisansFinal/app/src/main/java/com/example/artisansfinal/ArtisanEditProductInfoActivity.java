@@ -56,7 +56,7 @@ public class ArtisanEditProductInfoActivity extends AppCompatActivity {
     private String productID;
     private String productCategory;
     private String artisanContactNumber;
-
+    private static boolean runInOnePage = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,21 +67,31 @@ public class ArtisanEditProductInfoActivity extends AppCompatActivity {
         productCategory = intent.getStringExtra("productCategory");
         artisanContactNumber = intent.getStringExtra("artisanContactNumber");
 
-        final FloatingActionButton fab = findViewById(R.id.artisan_edit_product_info_fab);
 
+        //Added by shashwatha
+        storageReference = FirebaseStorage.getInstance().getReference();
+
+        final FloatingActionButton fab = findViewById(R.id.artisan_edit_product_info_fab);
         final TextInputEditText editName = findViewById(R.id.artisan_edit_product_info_et_product_name);
         final TextInputEditText editPrice = findViewById(R.id.artisan_edit_product_info_et_product_price);
         final TextInputEditText editDescription = findViewById(R.id.artisan_edit_product_info_et_product_description);
         editImage = findViewById(R.id.artisan_edit_product_info_iv_product_image);
 
-        storageReference = FirebaseStorage.getInstance().getReference("ProductImages/HighRes/" + productID);
+        if(!runInOnePage){
+            Tutorial tutorial = new Tutorial(this);
+            tutorial.checkIfFirstRun();
+            tutorial.requestFocusForView(fab,"Click here to edit product","");
+            tutorial.finishedTutorial();
+            runInOnePage=true;
+        }
+        StorageReference sr = storageReference.child("ProductImages/HighRes/" + productID);
 
         editName.setText(intent.getStringExtra("productName"));
         editDescription.setText(intent.getStringExtra("productDescription"));
         editPrice.setText(intent.getStringExtra("productPrice"));
         RequestOptions options = new RequestOptions().error(R.mipmap.image_not_provided);
         GlideApp.with(getApplicationContext())
-                .load(storageReference)
+                .load(sr)
                 .apply(options)
                 .diskCacheStrategy(DiskCacheStrategy.DATA)
                 .into(editImage);
@@ -137,7 +147,8 @@ public class ArtisanEditProductInfoActivity extends AppCompatActivity {
                             db1.child("productName").setValue(updateName);
 
                             // update image here
-
+                            if(mainImageURI!=null)
+                                uploadImage(mainImageURI);
                             finish();
                         }
                     }

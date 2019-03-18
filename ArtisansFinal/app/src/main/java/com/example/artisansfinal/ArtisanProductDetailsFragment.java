@@ -34,6 +34,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class ArtisanProductDetailsFragment extends Fragment {
@@ -44,6 +45,7 @@ public class ArtisanProductDetailsFragment extends Fragment {
     private StorageReference storageReference;
     private String artisanContactNumber;
     private ArtisanProductPageTabbedActivity act;
+    private static boolean runInOnePage=false;
 
     public ArtisanProductDetailsFragment(){}
 
@@ -74,6 +76,24 @@ public class ArtisanProductDetailsFragment extends Fragment {
         final ImageButton toggleDescription = view.findViewById(R.id.artisan_product_details_bt_toggle_description);
         final ImageButton toggleReviewTab = view.findViewById(R.id.artisan_product_details_bt_tab_reviews);
         final LinearLayout expandDescription = view.findViewById(R.id.artisan_product_details_ll_expand_description);
+
+        HashMap<View,String> title= new HashMap<>();
+        title.put(fab,"Click here to edit product information");
+        title.put(toggleDescription,"Click here to view description of product");
+        title.put(toggleReviewTab,"Click here to view reviews of the product");
+
+        ArrayList<View> views = new ArrayList<>();
+        views.add(fab);
+        views.add(toggleDescription);
+        views.add(toggleReviewTab);
+
+        if(!runInOnePage){
+            Tutorial tutorial = new Tutorial(getActivity(),views);
+            tutorial.checkIfFirstRun();
+            tutorial.requestFocusForViews(title);
+            tutorial.finishedTutorial();
+            runInOnePage=true;
+        }
 
         toggleDescription.setOnClickListener(new View.OnClickListener() {
             @Override

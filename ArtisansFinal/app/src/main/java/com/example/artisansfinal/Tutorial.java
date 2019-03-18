@@ -53,8 +53,8 @@ public class Tutorial {
                     .setGravity(Gravity.auto)
                     .setDismissType(DismissType.anywhere)
                     .setTargetView(view)
-                    .setContentTextSize(12)
-                    .setTitleTextSize(14);
+                    .setContentTextSize(14)
+                    .setTitleTextSize(18);
 
             guideView = builder.build();
             guideView.show();
