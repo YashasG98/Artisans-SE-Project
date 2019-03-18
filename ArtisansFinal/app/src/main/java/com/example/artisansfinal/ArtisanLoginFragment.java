@@ -30,6 +30,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -111,6 +113,7 @@ public class ArtisanLoginFragment extends Fragment {
 
                 intent.putExtra("phoneNumber", contactNo);
                 startActivity(intent);
+                progressDialog.dismiss();
                 getActivity().finish();
 //            final String nameTry = mAuth.getCurrentUser().get
 //                DatabaseReference nameRef = FirebaseDatabase.getInstance().getReference("Artisans/" + contactNo + "/username");
@@ -249,6 +252,18 @@ public class ArtisanLoginFragment extends Fragment {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
+
+
+                    FirebaseInstanceId.getInstance().getInstanceId().addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<InstanceIdResult> task) {
+                            final String token = task.getResult().getToken();
+                            FirebaseDatabase.getInstance().getReference("Artisans")
+                                    .child(FirebaseAuth.getInstance().getCurrentUser().getPhoneNumber()).child("FCMToken").setValue(token);
+
+
+                        }
+                    });
 
                     progressDialog.dismiss();
                     Toast.makeText(getContext(),   "Verification successful", Toast.LENGTH_LONG).show();

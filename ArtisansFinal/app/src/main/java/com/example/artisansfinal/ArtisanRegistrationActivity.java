@@ -24,6 +24,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,6 +57,7 @@ public class ArtisanRegistrationActivity extends AppCompatActivity {
     private String OTP;
     private String id;
     private String userType;
+    private String token;
 
     private EditText emailEdit;
     private EditText contactEdit;
@@ -211,7 +214,7 @@ public class ArtisanRegistrationActivity extends AppCompatActivity {
         if (emailFlag && pincodeFlag && usernameFlag && passwordFlag && contactNoFlag && OTPFlag) {
 
 
-            ArtisanInfo artisan = new ArtisanInfo(id, email, ContactNo, pincode, username);
+            ArtisanInfo artisan = new ArtisanInfo(id, email, ContactNo, pincode, username, token);
 
             databaseReference.child(ContactNo).setValue(artisan);
 
@@ -241,6 +244,14 @@ public class ArtisanRegistrationActivity extends AppCompatActivity {
                 if (task.isSuccessful()) {
 
                     Toast.makeText(getApplicationContext(), "Verification successful", Toast.LENGTH_LONG).show();
+
+                    FirebaseInstanceId.getInstance().getInstanceId().addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<InstanceIdResult> task) {
+
+                            token = task.getResult().getToken();
+                        }
+                    });
 
                     OTPFlag = true;
                 } else {

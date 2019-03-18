@@ -1,6 +1,5 @@
 package com.example.artisansfinal;
 
-import android.content.Intent;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -19,55 +18,54 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
-import android.view.Window;
-import android.view.WindowManager;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-
 import java.util.ArrayList;
+import java.util.HashMap;
 
-public class CommonLoginActivityTabbed extends AppCompatActivity {
+public class ArtisanProductPageTabbedActivity extends AppCompatActivity {
 
-    private SectionsPagerAdapter mSectionsPagerAdapter;
-    private FirebaseUser firebaseUser;
+    private ArtisanProductPageSectionsPagerAdapter mSectionsPagerAdapter;
     private ViewPager mViewPager;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        setTheme(R.style.splashScreenTheme);
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_artisan_product_page_tabbed);
 
+//        Toolbar toolbar = (Toolbar) findViewById(R.id.artisan_product_page_toolbar);
+//        setSupportActionBar(toolbar);
 
-        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-
-        setContentView(R.layout.activity_common_login_tabbed);
-
-
-
-        mSectionsPagerAdapter  = new SectionsPagerAdapter(getSupportFragmentManager());
-        mViewPager = findViewById(R.id.container);
+        mSectionsPagerAdapter = new ArtisanProductPageSectionsPagerAdapter(getSupportFragmentManager());
+        mViewPager = (ViewPager) findViewById(R.id.artisan_product_page_container);
         setUpViewPager(mViewPager);
-        TabLayout tabLayout = findViewById(R.id.tabs);
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.artisan_product_page_tabs);
         tabLayout.setupWithViewPager(mViewPager);
 
-
+//        toolbar.setVisibility(View.GONE);
+        tabLayout.setVisibility(View.GONE);
 
     }
 
-    public void setUpViewPager(ViewPager viewPager)
-    {
-        SectionsPagerAdapter sectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
-        sectionsPagerAdapter.addFragment(new ArtisanLoginFragment(), "Artisan");
-        sectionsPagerAdapter.addFragment(new UserLoginFragment(), "User");
+    public void setUpViewPager(ViewPager viewPager) {
+        ArtisanProductPageSectionsPagerAdapter sectionsPagerAdapter = new ArtisanProductPageSectionsPagerAdapter(getSupportFragmentManager());
+        sectionsPagerAdapter.addFragment(new ArtisanProductDetailsFragment(), "Details");
+        sectionsPagerAdapter.addFragment(new UserProductReviewsFragment(), "Reviews");
         viewPager.setAdapter(sectionsPagerAdapter);
     }
 
+    public void toggleTab(){
+        mViewPager.setCurrentItem(2);
+    }
 }
-class SectionsPagerAdapter extends FragmentPagerAdapter
-{
+
+class ArtisanProductPageSectionsPagerAdapter extends FragmentPagerAdapter {
+
+    public ArtisanProductPageSectionsPagerAdapter(FragmentManager fm) {
+        super(fm);
+    }
+
     private final ArrayList<Fragment> fragmentList = new ArrayList<>();
     private final ArrayList<String> titleList = new ArrayList<>();
 
@@ -75,11 +73,6 @@ class SectionsPagerAdapter extends FragmentPagerAdapter
     {
         fragmentList.add(fragment);
         titleList.add(title);
-    }
-
-    public SectionsPagerAdapter(FragmentManager fm) {
-        super(fm);
-
     }
 
     @Nullable
@@ -98,3 +91,4 @@ class SectionsPagerAdapter extends FragmentPagerAdapter
         return fragmentList.size();
     }
 }
+

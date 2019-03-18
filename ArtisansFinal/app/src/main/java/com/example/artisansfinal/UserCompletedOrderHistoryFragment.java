@@ -1,11 +1,13 @@
 package com.example.artisansfinal;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +20,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -32,7 +35,7 @@ public class UserCompletedOrderHistoryFragment extends Fragment {
     {
         View view = inflater.inflate(R.layout.activity_user_completed_order_history, container, false);
         final RecyclerView recyclerView = view.findViewById(R.id.user_completed_order_history_rv);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerView.setLayoutManager(new CustomLinearLayoutManager(getContext()));
         orders.clear();
         final OHAdapter ohAdapter = new OHAdapter(getContext(), orders, "UserCompletedOrderHistoryFragment");
         recyclerView.setAdapter(ohAdapter);
@@ -40,30 +43,54 @@ public class UserCompletedOrderHistoryFragment extends Fragment {
 
         String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
         databaseReference= FirebaseDatabase.getInstance().getReference("Orders/"+"Users/"+FirebaseAuth.getInstance().getCurrentUser().getUid()+"/Orders Received");
-        databaseReference.addChildEventListener(new ChildEventListener() {
+//        databaseReference.addChildEventListener(new ChildEventListener() {
+//            @Override
+//            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+//                orderInfo order;
+//                HashMap<String,Object> map= (HashMap<String, Object>) dataSnapshot.getValue();
+//                //Log.d("HERE",map.toString());
+//                order = new orderInfo(String.valueOf(map.get("name")),String.valueOf(map.get("price")),String.valueOf(map.get("date")), String.valueOf(map.get("userUID")),
+//                        String.valueOf(map.get("productCategory")), String.valueOf(map.get("productID")),String.valueOf(map.get("userEmail")),String.valueOf(map.get("FCMToken")));
+//                if(!map.isEmpty())
+//                    ohAdapter.added(order);
+//            }
+//
+//            @Override
+//            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+//
+//
+//            }
+//
+//            @Override
+//            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+//
+//            }
+//
+//            @Override
+//            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+//
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError databaseError) {
+//
+//            }
+//        });
+
+        databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                orderInfo order;
-                HashMap<String,Object> map= (HashMap<String, Object>) dataSnapshot.getValue();
-                //Log.d("HERE",map.toString());
-                order = new orderInfo(String.valueOf(map.get("name")),String.valueOf(map.get("price")),String.valueOf(map.get("date")), String.valueOf(map.get("userUID")),
-                        String.valueOf(map.get("productCategory")), String.valueOf(map.get("productID")),String.valueOf(map.get("userEmail")),String.valueOf(map.get("FCMToken")));
-                if(!map.isEmpty())
-                    ohAdapter.added(order);
-            }
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-            @Override
-            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                int i = 0;
 
-            }
+                orders.clear();
 
-            @Override
-            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+                for(DataSnapshot snapshot:dataSnapshot.getChildren())
+                {
+                    orderInfo order = snapshot.getValue(orderInfo.class);
+                    ohAdapter.added(snapshot.getValue(orderInfo.class));
+                }
 
-            }
-
-            @Override
-            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
 
             }
 
@@ -75,5 +102,26 @@ public class UserCompletedOrderHistoryFragment extends Fragment {
 
         return view;
 
+    }
+}
+
+class CustomLinearLayoutManager extends LinearLayoutManager {
+    public CustomLinearLayoutManager(Context context) {
+        super(context);
+    }
+
+    public CustomLinearLayoutManager(Context context, int orientation, boolean reverseLayout) {
+        super(context, orientation, reverseLayout);
+    }
+
+    public CustomLinearLayoutManager(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+        super(context, attrs, defStyleAttr, defStyleRes);
+    }
+
+    //Generate constructors
+
+    @Override
+    public boolean supportsPredictiveItemAnimations() {
+        return false;
     }
 }

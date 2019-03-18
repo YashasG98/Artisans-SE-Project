@@ -47,4 +47,8 @@
         <item name="colorControlNormal">@color/grey_20</item>
     </style>
 
+    <style name="alertDialogTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="android:background">@color/common</item>
+    </style>
+
 </resources>

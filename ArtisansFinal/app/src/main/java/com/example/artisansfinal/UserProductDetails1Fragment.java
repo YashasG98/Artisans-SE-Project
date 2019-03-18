@@ -63,6 +63,13 @@ import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
 
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+
 public class UserProductDetails1Fragment extends Fragment {
 
     private DatabaseReference databaseReference;
@@ -76,8 +83,33 @@ public class UserProductDetails1Fragment extends Fragment {
     private UserProductPageTabbedActivity act;
     private String token;
     FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+    private String artisanToken;
+    private ArtisanInfo artisanInfo;
+
+    //Lcation based
+    AddressResultReceiver mResultReceiver;
+    double latid = 0,longit = 0;
+    EditText latitudeEdit, longitudeEdit, addressEdit;
+    ProgressBar progressBar;
+    TextView infoText;
+    TextView current_location;
+    CheckBox checkBox;
+    //private static final String TAG = "MainActivity";
+    private int STORAGE_PERMISSION_CODE = 1;
+    //private LocationManager locationManager;
+    protected LocationManager locationManager;
+    private FusedLocationProviderClient mFusedLocationClient;
+
+    Button fetch;
+    TextView user_location;
+    private static final int ERROR_DIALOG_REQUEST = 9001;
+
+
+    boolean fetchAddress;
+    int fetchType = Constants.USE_ADDRESS_LOCATION;
 
     FirebaseUser userX = firebaseAuth.getCurrentUser();
+    String TAG ="userProductDetails";
 
     public UserProductDetails1Fragment(){}
 
@@ -110,7 +142,25 @@ public class UserProductDetails1Fragment extends Fragment {
         final ImageButton toggleReviewTab = view.findViewById(R.id.user_product_details1_bt_tab_reviews);
         final LinearLayout expandDescription = view.findViewById(R.id.user_product_details1_ll_expand_description);
 
+        addressEdit = (EditText) view.findViewById(R.id.addressEdit);
+        progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
+        infoText = (TextView) view.findViewById(R.id.infoText);
+        checkBox = (CheckBox) view.findViewById(R.id.checkbox);
         final Button buttonaddress = view.findViewById(R.id.buttonaddress);
+        locationManager = (LocationManager) getContext().getSystemService(Context.LOCATION_SERVICE);
+        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(getActivity());
+
+        mResultReceiver = new AddressResultReceiver(null);
+        if (isServicesOK()) {
+            fetchLocation();
+        }
+        buttonaddress.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                artisanfetch(v);
+
+            }
+        });
         toggleDescription.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -151,10 +201,23 @@ public class UserProductDetails1Fragment extends Fragment {
                 ratingBar.setRating(Float.parseFloat(map.get("totalRating")));
                 numberRated.setText(map.get("numberOfPeopleWhoHaveRated"));
                 artisanContactNumber = map.get("artisanContactNumber");
+
+                FirebaseDatabase.getInstance().getReference("Artisans").child(artisanContactNumber).child("FCMToken")
+                        .addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                artisanToken = dataSnapshot.getValue(String.class);
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                            }
+                        });
                 Log.d("STORAGE", storageReference.child(map.get("productID")).toString());
 
                 RequestOptions options = new RequestOptions().error(R.mipmap.image_not_provided);
-                GlideApp.with(getActivity().getApplicationContext())
+                GlideApp.with(getContext())
                         .load(storageReference)
                         .apply(options)
                         .diskCacheStrategy(DiskCacheStrategy.DATA)
@@ -166,6 +229,10 @@ public class UserProductDetails1Fragment extends Fragment {
             }
         });
 
+
+
+
+
         users.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -173,6 +240,7 @@ public class UserProductDetails1Fragment extends Fragment {
                     UserInfo userInfo = userSnapshot.getValue(UserInfo.class);
                     if (userInfo.userEmail.equals(userX.getEmail())) {
                         userPhoneNumber = userInfo.userPnumber;
+
                         break;
                     }
                 }
@@ -218,6 +286,7 @@ public class UserProductDetails1Fragment extends Fragment {
 
                         final String opname = pname.getText().toString();
                         //Log.d("HERE",opname);
+                        Log.d("token", artisanToken);
                         final String oprice = price.getText().toString();
                         final DatabaseReference database= FirebaseDatabase.getInstance().getReference("User/");
                         database.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -233,6 +302,26 @@ public class UserProductDetails1Fragment extends Fragment {
                                         ordHis.child("Users").child(userX.getUid()).child("Orders Requested").child(orderID).setValue(order);
                                         orderID = ordHis.push().getKey();
                                         ordHis.child("Artisans").child(artisanContactNumber).child("Order Requests").child(orderID).setValue(order);
+
+                                        Retrofit retrofit = new Retrofit.Builder()
+                                                .baseUrl("https://artisansfinal.firebaseapp.com/api/")
+                                                .addConverterFactory(GsonConverterFactory.create())
+                                                .build();
+
+                                        final Api api = retrofit.create(Api.class);
+                                        Call<ResponseBody> call=api.sendNotification(artisanToken,"Order Request!","You have request for "+opname);
+                                        call.enqueue(new Callback<ResponseBody>() {
+                                            @Override
+                                            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                                            }
+
+                                            @Override
+                                            public void onFailure(Call<ResponseBody> call, Throwable t) {
+
+                                            }
+                                        });
+
+
                                     }
                                 }
                             }
@@ -258,6 +347,182 @@ public class UserProductDetails1Fragment extends Fragment {
         });
 
         return view;
+    }
+    public boolean isServicesOK() {
+
+        Log.d(TAG, "isServicesOK: checking google services version");
+        int available = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(getContext());
+        if (available == ConnectionResult.SUCCESS) {
+            Log.d(TAG, "isServicesOK: Google Play services is working");
+            return true;
+        } else if (GoogleApiAvailability.getInstance().isUserResolvableError(available)) {
+            Log.d(TAG, "isServicesOK: an error occurred but we can fix it");
+            Dialog dialog = GoogleApiAvailability.getInstance().getErrorDialog(getActivity(), available, ERROR_DIALOG_REQUEST);
+            dialog.show();
+        } else {
+            Toast.makeText(getContext(), "You can't make map requests", Toast.LENGTH_SHORT).show();
+        }
+        return false;
+    }
+    public void onLocationChanged(Location location) {
+        double longitude = location.getLongitude();
+        double latitude = location.getLatitude();
+        user_location.setText("Longitude: " + longitude + "\n" + "Latitude: " + latitude);
+    }
+
+    private void fetchLocation() {
+// Here, thisActivity is the current activity
+
+        if (ContextCompat.checkSelfPermission(getContext(),
+                Manifest.permission.ACCESS_COARSE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            // Permission is not granted
+            // Should we show an explanation?
+            if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(),
+                    Manifest.permission.ACCESS_COARSE_LOCATION)) {
+                // Show an explanation to the user *asynchronously* -- don't block
+                // this thread waiting for the user's response! After the user
+                // sees the explanation, try again to request the permission.
+                new android.app.AlertDialog.Builder(getContext()).setTitle("Permission needed!").setMessage("This permission is needed to enable delivery services").setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        ActivityCompat.requestPermissions(getActivity() ,new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, STORAGE_PERMISSION_CODE);
+                    }
+                }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                }).create().show();
+            } else {
+                // No explanation needed; request the permission
+                ActivityCompat.requestPermissions(getActivity(),
+                        new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},
+                        STORAGE_PERMISSION_CODE);
+
+                // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
+                // app-defined int constant. The callback method gets the
+                // result of the request.
+            }
+        } else {
+            // Permission has already been granted
+            mFusedLocationClient.getLastLocation().addOnSuccessListener(getActivity(), new OnSuccessListener<Location>() {
+                @Override
+                public void onSuccess(Location location) {
+                    if (location != null) {
+                        double latitude = location.getLatitude();
+                        double longitude = location.getLongitude();
+                        // user_location.setText("Latitude = " + latitude + "\n" + "Longitude = " + longitude);
+                        latid = latitude;
+                        longit = longitude;
+
+                        //if (ContextCompat.checkSelfPermission(MainActivity.this,
+                        //      Manifest.permission.ACCESS_COARSE_LOCATION)
+                        //    == PackageManager.PERMISSION_GRANTED){
+                        //location = locationManager.getLastKnownLocation(locationManager.NETWORK_PROVIDER);
+                        //onLocationChanged(location);
+                    }
+                }
+
+            });
+        }
+    }
+    public void onRequestPermissionResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode == STORAGE_PERMISSION_CODE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Toast.makeText(getContext(), "Permission granted!", Toast.LENGTH_SHORT).show();
+
+            } else {
+                Toast.makeText(getContext(), "Permission denied!", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+    public void artisanfetch(View view) {
+        fetchAddress = false;
+        fetchType = Constants.USE_ADDRESS_NAME;
+        //longitude.setEnabled(false);
+        //latitude.setEnabled(false);
+//        fetch.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                fetchLocation();
+//            }
+//        });
+
+//        addressEdit.setEnabled(true);
+//        addressEdit.requestFocus();
+        Intent intent = new Intent(getActivity(), GeocodeAddressIntentService.class);
+        intent.putExtra(Constants.RECEIVER, mResultReceiver);
+        intent.putExtra(Constants.FETCH_TYPE_EXTRA, fetchType);
+        if (fetchType == Constants.USE_ADDRESS_NAME) {
+//          if (addressEdit.getText().length() == 0) {
+//              Toast.makeText(this, "Please enter an address name", Toast.LENGTH_LONG).show();
+//              return;
+//            }
+            String name = "Delhi";
+            //intent.putExtra(Constants.LOCATION_NAME_DATA_EXTRA2, name);
+            intent.putExtra(Constants.LOCATION_NAME_DATA_EXTRA, name);
+        } else {
+            fetchAddress = true;
+            fetchType = Constants.USE_ADDRESS_LOCATION;
+            //latitudeEdit = latid;
+            //longitudeEdit = longit;
+            latitudeEdit.setEnabled(true);
+            latitudeEdit.requestFocus();
+            longitudeEdit.setEnabled(true);
+            addressEdit.setEnabled(false);
+
+            if (latitudeEdit.getText().length() == 0 || longitudeEdit.getText().length() == 0) {
+                Toast.makeText(getContext(),
+                        "Please enter both latitude and longitude",
+                        Toast.LENGTH_LONG).show();
+                return;
+            }
+            intent.putExtra(Constants.LOCATION_LATITUDE_DATA_EXTRA,
+                    (latid));
+            intent.putExtra(Constants.LOCATION_LONGITUDE_DATA_EXTRA,
+                    longit);
+        }
+        infoText.setVisibility(View.INVISIBLE);
+        progressBar.setVisibility(View.VISIBLE);
+        Log.e(TAG, "Starting Service");
+        getContext().startService(intent);
+    }
+    class AddressResultReceiver extends ResultReceiver {
+        public AddressResultReceiver(Handler handler) {
+            super(handler);
+        }
+
+        @Override
+        protected void onReceiveResult(int resultCode, final Bundle resultData) {
+            Log.d(TAG,"Rec result");
+            if (resultCode == Constants.SUCCESS_RESULT) {
+                final Address address = resultData.getParcelable(Constants.RESULT_ADDRESS);
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run(){
+                        double R = 6371; // Radius of the earth in km
+                        double charges = Math.sqrt((latid-address.getLatitude())*(latid-address.getLatitude()) + (longit-address.getLongitude())*(longit-address.getLongitude()));
+                        charges = charges*R*0.01;
+                        progressBar.setVisibility(View.GONE);
+                        infoText.setVisibility(View.VISIBLE);
+                        infoText.setText("Delivery Charges: " + charges);
+                    }
+                });
+            }
+            else{
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        progressBar.setVisibility(View.GONE);
+                        infoText.setVisibility(View.VISIBLE);
+                        infoText.setText(resultData.getString(Constants.RESULT_DATA_KEY));
+                    }
+                });
+            }
+        }
+
     }
 
 }

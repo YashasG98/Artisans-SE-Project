@@ -73,6 +73,22 @@ public class SelectedCategoryActivity extends AppCompatActivity {
         }
     }
 
+    class sortingByRating implements Comparator<ProductInfo>
+    {
+
+        @Override
+        public int compare(ProductInfo o1, ProductInfo o2) {
+
+            Log.d("rating", o1.getNumberOfPeopleWhoHaveRated() + " !" + o2.getTotalRating() +" =" +o1.toString());
+            if(Float.parseFloat(o1.getTotalRating()) > Float.parseFloat(o2.getTotalRating()))
+                return 1;
+            else if(Float.parseFloat(o1.getTotalRating()) < Float.parseFloat(o2.getTotalRating()))
+                return -1;
+            else
+                return 0;
+        }
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 //        progressDialog = new ProgressDialog(this);
@@ -229,6 +245,8 @@ public class SelectedCategoryActivity extends AppCompatActivity {
                             HashMap<String, String> map = (HashMap<String, String>) dataSnapshot.getValue();
                             Log.d("HASHMAP", map.toString());
                             productInfo = new ProductInfo(map.get("productID"), map.get("productName"), map.get("productDescription"), map.get("productCategory"), map.get("productPrice"), map.get("artisanName"), map.get("artisanContactNumber"));
+                            productInfo.setTotalRating(map.get("totalRating"));
+                            productInfo.setNumberOfPeopleWhoHaveRated(map.get("numberOfPeopleWhoHaveRated"));
                             Log.d("MAP", map.get("productDescription"));
                             categoryRecyclerViewAdapter.added(productInfo);
                             //categoryRecyclerViewAdapter.addedImage(storageReference.child("ProductImage/"+(map.get("productID"))));
@@ -318,9 +336,24 @@ public class SelectedCategoryActivity extends AppCompatActivity {
 
     public void sort(ArrayList<ProductInfo> product_list, String sorting_order) {
 
-        Collections.sort(product_list, new sorting());
 
-        if(sorting_order.equals("Price: High to Low"))
-            Collections.reverse(product_list);
+        if(sorting_order.equals("Price: Low to High") || sorting_order.equals("Price: High to Low")) {
+            Collections.sort(product_list, new sorting());
+
+            if(sorting_order.equals("Price: High to Low"))
+                Collections.reverse(product_list);
+
+        }
+
+
+
+        if(sorting_order.equals("Rating: Low to High") || sorting_order.equals("Rating: High to Low")) {
+            Collections.sort(product_list, new sortingByRating());
+
+            if(sorting_order.equals("Rating: High to Low"))
+                Collections.reverse(product_list);
+        }
+
+
     }
 }

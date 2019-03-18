@@ -9,6 +9,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
@@ -48,6 +49,8 @@ import org.w3c.dom.Text;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 
@@ -67,6 +70,15 @@ public class UserProductReviewsFragment extends Fragment {
         // Required empty public constructor
     }
 
+    public boolean toggleArrow(View view) {
+        if (view.getRotation() == 0.0f) {
+            view.animate().setDuration(400).rotation(180.0f);
+            return true;
+        }
+        view.animate().setDuration(400).rotation(0.0f);
+        return false;
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -82,10 +94,12 @@ public class UserProductReviewsFragment extends Fragment {
         final SeekBar threeStar = view.findViewById(R.id.threeStar);
         final SeekBar twoStar = view.findViewById(R.id.twoStar);
         final SeekBar oneStar = view.findViewById(R.id.oneStar);
+        final FloatingActionButton fab = view.findViewById(R.id.user_product_reviews_fab);
 
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         reviewRecyclerViewAdapter = new ReviewRecyclerViewAdapter(getContext(), productReviews);
         recyclerView.setAdapter(reviewRecyclerViewAdapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
 
         Intent intent = getActivity().getIntent();
         String productID = intent.getStringExtra("productID");
@@ -119,6 +133,8 @@ public class UserProductReviewsFragment extends Fragment {
                             productReview.setRating(map.get("rating"));
                             productReview.setReview(map.get("review"));
                             productReview.setUserName(map.get("userName")+" :");
+                            reviewRecyclerViewAdapter = new ReviewRecyclerViewAdapter(getContext(), productReviews);
+                            recyclerView.setAdapter(reviewRecyclerViewAdapter);
                             reviewRecyclerViewAdapter.added(productReview);
                             int rating = Integer.valueOf(map.get("rating"));
                             if(rating==5){
@@ -178,7 +194,41 @@ public class UserProductReviewsFragment extends Fragment {
             }
         });
 
+        class sorting implements Comparator<ProductReview>
+        {
+
+
+            @Override
+            public int compare(ProductReview o1, ProductReview o2) {
+
+                if(Integer.parseInt(o1.getRating()) > Integer.parseInt(o2.getRating()))
+                    return 1;
+                else if(Integer.parseInt(o1.getRating()) < Integer.parseInt(o2.getRating()))
+                    return -1;
+                else
+                    return 0;
+            }
+        }
+
+        Collections.sort(productReviews, new sorting());
+        reviewRecyclerViewAdapter = new ReviewRecyclerViewAdapter(getContext(), productReviews);
+        recyclerView.setAdapter(reviewRecyclerViewAdapter);
+
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                toggleArrow(fab);
+                Collections.reverse(productReviews);
+                reviewRecyclerViewAdapter = new ReviewRecyclerViewAdapter(getContext(), productReviews);
+                recyclerView.setAdapter(reviewRecyclerViewAdapter);
+            }
+        });
+
         return view;
     }
+
+
+
 
 }

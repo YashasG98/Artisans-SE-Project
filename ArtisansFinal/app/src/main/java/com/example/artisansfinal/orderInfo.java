@@ -35,6 +35,19 @@ public class orderInfo {
         this.c = "d";
     }
 
+//    public orderInfo(String date, String name, String price, String userUID, String c, String productCategory, String productID, String reviewExists, String userEmail, String fcmToken) {
+//        this.date = date;
+//        this.name = name;
+//        this.price = price;
+//        this.userUID = userUID;
+//        this.c = c;
+//        this.productCategory = productCategory;
+//        this.productID = productID;
+//        this.reviewExists = reviewExists;
+//        this.userEmail = userEmail;
+//        this.fcmToken = fcmToken;
+//    }
+
     public String getC() {
         return c;
     }

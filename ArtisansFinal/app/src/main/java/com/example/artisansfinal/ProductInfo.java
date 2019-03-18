@@ -27,6 +27,21 @@ public class ProductInfo implements Parcelable {
         this.artisanContactNumber = artisanContactNumber;
     }
 
+    public ProductInfo(String productID, String productName, String productDescription, String productCategory, String productPrice, String artisanName, String artisanContactNumber, String totalRating, String numberOfPeopleWhoHaveRated) {
+        this.productID = productID;
+        this.productName = productName;
+        this.productDescription = productDescription;
+        this.productCategory = productCategory;
+        this.productPrice = productPrice;
+        this.artisanName = artisanName;
+        this.artisanContactNumber = artisanContactNumber;
+        this.totalRating = totalRating;
+        this.numberOfPeopleWhoHaveRated = numberOfPeopleWhoHaveRated;
+    }
+
+    public ProductInfo() {
+    }
+
     public void setTotalRating(String totalRating) {
         this.totalRating = totalRating;
     }

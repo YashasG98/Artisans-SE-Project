@@ -51,6 +51,8 @@ public class ReviewRecyclerViewAdapter extends RecyclerView.Adapter<ReviewRecycl
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder viewHolder, final int i){
 
+
+
         final ProductReview productReview = reviews.get(i);
         viewHolder.userName.setText(productReview.getUserName());
 //        viewHolder.ratingBar.setNumStars(Integer.parseInt(productReview.getRating()));

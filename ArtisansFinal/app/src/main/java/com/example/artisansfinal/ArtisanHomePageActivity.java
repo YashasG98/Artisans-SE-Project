@@ -1,7 +1,9 @@
 package com.example.artisansfinal;
 
 
+import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
@@ -11,6 +13,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MenuItem;
@@ -86,13 +89,11 @@ public class ArtisanHomePageActivity extends AppCompatActivity {
 
         DatabaseReference nameRef = FirebaseDatabase.getInstance().getReference("Artisans/" + artisanPhoneNumber + "/username");
         final ProgressDialog progressDialog = new ProgressDialog(this);
-        progressDialog.setMessage("wait");
-        progressDialog.show();
+
         nameRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 name = dataSnapshot.getValue(String.class);
-                progressDialog.dismiss();
             }
 
             @Override
@@ -172,10 +173,36 @@ public class ArtisanHomePageActivity extends AppCompatActivity {
     }
 
     public void Logout(MenuItem item) {
-        firebaseAuth.signOut();
-        finish();
-        startActivity(new Intent(ArtisanHomePageActivity.this, CommonLoginActivityTabbed.class));
-        Toast.makeText(this, "Logged out", Toast.LENGTH_SHORT).show();
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Logout Confirmation");
+        builder.setMessage("Are you sure you want to logout?");
+
+        builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                firebaseAuth.signOut();
+                finish();
+                startActivity(new Intent(ArtisanHomePageActivity.this, CommonLoginActivityTabbed.class));
+                Toast.makeText(ArtisanHomePageActivity.this, "Logged out", Toast.LENGTH_SHORT).show();
+
+            }
+        });
+
+        builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+
+        Dialog dialog = builder.create();
+        builder.show();
+
+
+
+
+
     }
 
 

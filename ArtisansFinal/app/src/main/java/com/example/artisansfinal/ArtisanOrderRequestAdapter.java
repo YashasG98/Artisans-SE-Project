@@ -4,6 +4,8 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.CardView;
@@ -27,6 +29,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Hashtable;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -42,6 +45,8 @@ public class ArtisanOrderRequestAdapter extends RecyclerView.Adapter<ArtisanOrde
     FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
     FirebaseUser userX = firebaseAuth.getCurrentUser();
     final DatabaseReference dba = FirebaseDatabase.getInstance().getReference("Orders/Artisans/" + userX.getPhoneNumber() + "/Order Requests");
+    String fromMail="artisanuser@gmail.com";
+
 
     public static class ArtisanOrderRequestViewHolder extends RecyclerView.ViewHolder {
         TextView productName;
@@ -173,6 +178,25 @@ public class ArtisanOrderRequestAdapter extends RecyclerView.Adapter<ArtisanOrde
                     builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
+
+                            Handler handler = new Handler(Looper.getMainLooper());
+                            handler.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    sendMailUsingSendGrid(fromMail,orderX.getUserEmail(),
+                                            "Email from the artisan developers team",
+                                            "Your Order has been accepted by the artisan and will be delivered shortly.Have a Good Day Sir/Maam :)");
+
+                                    Toast.makeText(context,"Sending mail...", Toast.LENGTH_SHORT).show();
+                                }
+
+
+                            });
+
+
+
+
+
                             orderX.setC("g");
                             Log.d("HERE", "Val" + i);
                             viewHolder.card.setCardBackgroundColor(Color.parseColor("#76FF03"));
@@ -201,11 +225,43 @@ public class ArtisanOrderRequestAdapter extends RecyclerView.Adapter<ArtisanOrde
                                 }
                             });
                         }
+
+                        private void sendMailUsingSendGrid(String from, String to, String subject, String mailBody){
+                            Hashtable<String, String> params = new Hashtable<>();
+                            params.put("to", to);
+                            params.put("from", from);
+                            params.put("subject", subject);
+                            params.put("text", mailBody);
+
+                            SendGridAsyncTask email = new SendGridAsyncTask();
+                            try{
+                                email.execute(params);
+                            }catch (Exception e){
+                                e.printStackTrace();
+                            }
+                        }
+
                     });
 
                     builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
+
+                            Handler handler = new Handler(Looper.getMainLooper());
+                            handler.post(new Runnable() {
+                                @Override
+
+
+                                public void run() {
+                                    sendMailUsingSendGrid(fromMail, "sayan.biswas089@gmail.com",
+                                            "Email from the artisan developers team",
+                                            "Sorry to say but your order is rejected as the artisan is already busy.Please place order to some other artisan.Have a Good Day Sir/Maam :)");
+
+                                    Toast.makeText(context,"Sending mail...", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+
+
                             orderX.setC("r");
                             viewHolder.card.setCardBackgroundColor(Color.parseColor("#E64A19"));
                             dba.child(artisanKey).setValue(null);
@@ -222,6 +278,22 @@ public class ArtisanOrderRequestAdapter extends RecyclerView.Adapter<ArtisanOrde
                                 }
                             });
                             dialog.dismiss();
+                        }
+
+
+                        private void sendMailUsingSendGrid(String from, String to, String subject, String mailBody){
+                            Hashtable<String, String> params = new Hashtable<>();
+                            params.put("to", to);
+                            params.put("from", from);
+                            params.put("subject", subject);
+                            params.put("text", mailBody);
+
+                            SendGridAsyncTask email = new SendGridAsyncTask();
+                            try{
+                                email.execute(params);
+                            }catch (Exception e){
+                                e.printStackTrace();
+                            }
                         }
                     });
 
