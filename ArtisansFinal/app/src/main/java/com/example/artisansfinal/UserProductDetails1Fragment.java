@@ -1,27 +1,42 @@
 package com.example.artisansfinal;
 
+import android.Manifest;
 import android.app.Dialog;
 import android.app.TabActivity;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.ResultReceiver;
 import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatRatingBar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.animation.TranslateAnimation;
 import android.widget.CalendarView;
+import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -39,6 +54,14 @@ import com.google.firebase.storage.StorageReference;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
+import android.widget.Button;
+import android.widget.Toast;
+
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnSuccessListener;
 
 public class UserProductDetails1Fragment extends Fragment {
 
@@ -87,7 +110,8 @@ public class UserProductDetails1Fragment extends Fragment {
         final ImageButton toggleReviewTab = view.findViewById(R.id.user_product_details1_bt_tab_reviews);
         final LinearLayout expandDescription = view.findViewById(R.id.user_product_details1_ll_expand_description);
 
-        toggleDescription.setOnClickListener(new View.OnClickListener() {
+        final Button buttonaddress = view.findViewById(R.id.buttonaddress);
+        toggleDescription.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 toggleArrow(toggleDescription);
@@ -100,7 +124,7 @@ public class UserProductDetails1Fragment extends Fragment {
             }
         });
 
-        toggleReviewTab.setOnClickListener(new View.OnClickListener() {
+        toggleReviewTab.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 act.toggleTab();
@@ -161,7 +185,7 @@ public class UserProductDetails1Fragment extends Fragment {
 
         ordHis = FirebaseDatabase.getInstance().getReference("Orders");
 
-        fab.setOnClickListener(new View.OnClickListener() {
+        fab.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -235,4 +259,5 @@ public class UserProductDetails1Fragment extends Fragment {
 
         return view;
     }
+
 }
