@@ -1,27 +1,42 @@
 package com.example.artisansfinal;
 
+import android.Manifest;
 import android.app.Dialog;
 import android.app.TabActivity;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.ResultReceiver;
 import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatRatingBar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.animation.TranslateAnimation;
 import android.widget.CalendarView;
+import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -36,10 +51,17 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
+import android.widget.Button;
+import android.widget.Toast;
+
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnSuccessListener;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -55,6 +77,7 @@ public class UserProductDetails1Fragment extends Fragment {
     private DatabaseReference ordHis;
     private StorageReference storageReference;
     private String artisanContactNumber;
+    private String artisanPin;
     private String userPhoneNumber;
     Calendar calendar;
     private String formattedDate;
@@ -63,9 +86,33 @@ public class UserProductDetails1Fragment extends Fragment {
     FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
     private String artisanToken;
     private ArtisanInfo artisanInfo;
-    private static boolean runInOnePage = false;
+    private String pincode;
+
+    //Lcation based
+    AddressResultReceiver mResultReceiver;
+    double latid = 0,longit = 0;
+    EditText latitudeEdit, longitudeEdit, addressEdit;
+    ProgressBar progressBar;
+    TextView infoText;
+    TextView current_location;
+    CheckBox checkBox;
+    public String name;
+    //private static final String TAG = "MainActivity";
+    private int STORAGE_PERMISSION_CODE = 1;
+    //private LocationManager locationManager;
+    protected LocationManager locationManager;
+    private FusedLocationProviderClient mFusedLocationClient;
+
+    Button fetch;
+    TextView user_location;
+    private static final int ERROR_DIALOG_REQUEST = 9001;
+
+
+    boolean fetchAddress;
+    int fetchType = Constants.USE_ADDRESS_LOCATION;
 
     FirebaseUser userX = firebaseAuth.getCurrentUser();
+    String TAG ="userProductDetails";
 
     public UserProductDetails1Fragment(){}
 
@@ -98,28 +145,26 @@ public class UserProductDetails1Fragment extends Fragment {
         final ImageButton toggleReviewTab = view.findViewById(R.id.user_product_details1_bt_tab_reviews);
         final LinearLayout expandDescription = view.findViewById(R.id.user_product_details1_ll_expand_description);
 
-        HashMap<View,String> title= new HashMap<>();
-        title.put(fab,"Click here to buy product");
-        title.put(toggleDescription,"Click here to view description of product");
-        title.put(toggleReviewTab,"Click here to view reviews of the product");
+        addressEdit = (EditText) view.findViewById(R.id.addressEdit);
+        progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
+        infoText = (TextView) view.findViewById(R.id.infoText);
+        checkBox = (CheckBox) view.findViewById(R.id.checkbox);
+        final Button buttonaddress = view.findViewById(R.id.buttonaddress);
+        locationManager = (LocationManager) getContext().getSystemService(Context.LOCATION_SERVICE);
+        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(getActivity());
 
-        ArrayList<View> views = new ArrayList<>();
-        views.add(fab);
-        views.add(toggleDescription);
-        views.add(toggleReviewTab);
-
-        if(!runInOnePage){
-            Tutorial tutorial = new Tutorial(getActivity(),views);
-            tutorial.checkIfFirstRun();
-            tutorial.requestFocusForViews(title);
-            tutorial.finishedTutorial();
-            runInOnePage=true;
+        mResultReceiver = new AddressResultReceiver(null);
+        if (isServicesOK()) {
+            fetchLocation();
         }
+        buttonaddress.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                artisanfetch(v);
 
-
-
-
-        toggleDescription.setOnClickListener(new View.OnClickListener() {
+            }
+        });
+        toggleDescription.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 toggleArrow(toggleDescription);
@@ -132,7 +177,7 @@ public class UserProductDetails1Fragment extends Fragment {
             }
         });
 
-        toggleReviewTab.setOnClickListener(new View.OnClickListener() {
+        toggleReviewTab.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 act.toggleTab();
@@ -159,7 +204,7 @@ public class UserProductDetails1Fragment extends Fragment {
                 ratingBar.setRating(Float.parseFloat(map.get("totalRating")));
                 numberRated.setText(map.get("numberOfPeopleWhoHaveRated"));
                 artisanContactNumber = map.get("artisanContactNumber");
-
+                artisanPin = map.get("pincode");
                 FirebaseDatabase.getInstance().getReference("Artisans").child(artisanContactNumber).child("FCMToken")
                         .addValueEventListener(new ValueEventListener() {
                             @Override
@@ -173,6 +218,21 @@ public class UserProductDetails1Fragment extends Fragment {
                             }
                         });
                 Log.d("STORAGE", storageReference.child(map.get("productID")).toString());
+                FirebaseDatabase.getInstance().getReference("Artisans").child(artisanContactNumber).child("postal_address").
+                        addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                                pincode = dataSnapshot.getValue(String.class);
+                                name = dataSnapshot.getValue(String.class);
+
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                            }
+                        });
 
                 RequestOptions options = new RequestOptions().error(R.mipmap.image_not_provided);
                 GlideApp.with(getContext())
@@ -211,7 +271,7 @@ public class UserProductDetails1Fragment extends Fragment {
 
         ordHis = FirebaseDatabase.getInstance().getReference("Orders");
 
-        fab.setOnClickListener(new View.OnClickListener() {
+        fab.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -306,4 +366,214 @@ public class UserProductDetails1Fragment extends Fragment {
 
         return view;
     }
+
+    public boolean isServicesOK() {
+
+        Log.d(TAG, "isServicesOK: checking google services version");
+        int available = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(getContext());
+        if (available == ConnectionResult.SUCCESS) {
+            Log.d(TAG, "isServicesOK: Google Play services is working");
+            return true;
+        } else if (GoogleApiAvailability.getInstance().isUserResolvableError(available)) {
+            Log.d(TAG, "isServicesOK: an error occurred but we can fix it");
+            Dialog dialog = GoogleApiAvailability.getInstance().getErrorDialog(getActivity(), available, ERROR_DIALOG_REQUEST);
+            dialog.show();
+        } else {
+            Toast.makeText(getContext(), "You can't make map requests", Toast.LENGTH_SHORT).show();
+        }
+        return false;
+    }
+    public void onLocationChanged(Location location) {
+        double longitude = location.getLongitude();
+        double latitude = location.getLatitude();
+        user_location.setText("Longitude: " + longitude + "\n" + "Latitude: " + latitude);
+    }
+
+    private void fetchLocation() {
+// Here, thisActivity is the current activity
+
+        if (ContextCompat.checkSelfPermission(getContext(),
+                Manifest.permission.ACCESS_COARSE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            // Permission is not granted
+            // Should we show an explanation?
+            if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(),
+                    Manifest.permission.ACCESS_COARSE_LOCATION)) {
+                // Show an explanation to the user *asynchronously* -- don't block
+                // this thread waiting for the user's response! After the user
+                // sees the explanation, try again to request the permission.
+                new android.app.AlertDialog.Builder(getContext()).setTitle("Permission needed!").setMessage("This permission is needed to enable delivery services").setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        ActivityCompat.requestPermissions(getActivity() ,new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, STORAGE_PERMISSION_CODE);
+                    }
+                }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                }).create().show();
+            } else {
+                // No explanation needed; request the permission
+                ActivityCompat.requestPermissions(getActivity(),
+                        new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},
+                        STORAGE_PERMISSION_CODE);
+
+                // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
+                // app-defined int constant. The callback method gets the
+                // result of the request.
+            }
+        } else {
+            // Permission has already been granted
+            mFusedLocationClient.getLastLocation().addOnSuccessListener(getActivity(), new OnSuccessListener<Location>() {
+                @Override
+                public void onSuccess(Location location) {
+                    if (location != null) {
+                        double latitude = location.getLatitude();
+                        double longitude = location.getLongitude();
+                        // user_location.setText("Latitude = " + latitude + "\n" + "Longitude = " + longitude);
+                        latid = latitude;
+                        longit = longitude;
+
+                        //if (ContextCompat.checkSelfPermission(MainActivity.this,
+                        //      Manifest.permission.ACCESS_COARSE_LOCATION)
+                        //    == PackageManager.PERMISSION_GRANTED){
+                        //location = locationManager.getLastKnownLocation(locationManager.NETWORK_PROVIDER);
+                        //onLocationChanged(location);
+                    }
+                }
+
+            });
+        }
+    }
+    public void onRequestPermissionResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode == STORAGE_PERMISSION_CODE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Toast.makeText(getContext(), "Permission granted!", Toast.LENGTH_SHORT).show();
+
+            } else {
+                Toast.makeText(getContext(), "Permission denied!", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+    public void artisanfetch(View view) {
+        fetchAddress = false;
+        fetchType = Constants.USE_ADDRESS_NAME;
+        //longitude.setEnabled(false);
+        //latitude.setEnabled(false);
+//        fetch.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                fetchLocation();
+//            }
+//        });
+
+//        addressEdit.setEnabled(true);
+//        addressEdit.requestFocus();
+        FirebaseDatabase.getInstance().getReference("Artisans").child(artisanContactNumber).child("postal_address").
+                addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                        pincode = dataSnapshot.getValue(String.class);
+                        name = dataSnapshot.getValue(String.class);
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+
+        final Intent intent = new Intent(getActivity(), GeocodeAddressIntentService.class);
+        intent.putExtra(Constants.RECEIVER, mResultReceiver);
+        intent.putExtra(Constants.FETCH_TYPE_EXTRA, fetchType);
+        if (fetchType == Constants.USE_ADDRESS_NAME) {
+//          if (addressEdit.getText().length() == 0) {
+//              Toast.makeText(this, "Please enter an address name", Toast.LENGTH_LONG).show();
+//              return;
+//            }
+            //FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+            //name = "Bangalore";
+            //intent.putExtra(Constants.LOCATION_NAME_DATA_EXTRA2, name);
+            intent.putExtra(Constants.LOCATION_NAME_DATA_EXTRA, name);
+
+        } else {
+            fetchAddress = true;
+            fetchType = Constants.USE_ADDRESS_LOCATION;
+            //latitudeEdit = latid;
+            //longitudeEdit = longit;
+            latitudeEdit.setEnabled(true);
+            latitudeEdit.requestFocus();
+            longitudeEdit.setEnabled(true);
+            addressEdit.setEnabled(false);
+
+            if (latitudeEdit.getText().length() == 0 || longitudeEdit.getText().length() == 0) {
+                Toast.makeText(getContext(),
+                        "Please enter both latitude and longitude",
+                        Toast.LENGTH_LONG).show();
+                return;
+            }
+            intent.putExtra(Constants.LOCATION_LATITUDE_DATA_EXTRA,
+                    (latid));
+            intent.putExtra(Constants.LOCATION_LONGITUDE_DATA_EXTRA,
+                    longit);
+        }
+        infoText.setVisibility(View.INVISIBLE);
+        progressBar.setVisibility(View.VISIBLE);
+        Log.e(TAG, "Starting Service");
+        getContext().startService(intent);
+    }
+    class AddressResultReceiver extends ResultReceiver {
+        public AddressResultReceiver(Handler handler) {
+            super(handler);
+        }
+
+        @Override
+        protected void onReceiveResult(int resultCode, final Bundle resultData) {
+            Log.d(TAG,"Rec result");
+            if (resultCode == Constants.SUCCESS_RESULT) {
+                final Address address = resultData.getParcelable(Constants.RESULT_ADDRESS);
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run(){
+                        double R = 6371; // Radius of the earth in km
+                        double charges = Math.sqrt((latid-address.getLatitude())*(latid-address.getLatitude()) + (longit-address.getLongitude())*(longit-address.getLongitude()));
+                        charges = charges*R*0.01;
+                        FirebaseDatabase.getInstance().getReference("Artisans").child(artisanContactNumber).child("postal_address").
+                                addValueEventListener(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                                        pincode = dataSnapshot.getValue(String.class);
+
+                                    }
+
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                    }
+                                });
+                        progressBar.setVisibility(View.GONE);
+                        infoText.setVisibility(View.VISIBLE);
+                        infoText.setText("Delivery Charges: " + charges + "\nPincode: "+pincode);
+                    }
+                });
+            }
+            else{
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        progressBar.setVisibility(View.GONE);
+                        infoText.setVisibility(View.VISIBLE);
+                        infoText.setText(resultData.getString(Constants.RESULT_DATA_KEY));
+                    }
+                });
+            }
+        }
+
+    }
+
 }

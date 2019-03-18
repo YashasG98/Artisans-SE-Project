@@ -75,7 +75,7 @@ public class ArtisanHomePageActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.artisan_home_page_activity);
-        DrawerLayout drawerLayout = findViewById(R.id.artisan_home_page_dl);
+        //DrawerLayout drawerLayout = findViewById(R.id.artisan_home_page_dl);
 
         Intent intent = getIntent();
         //userType = intent.getStringExtra("userType");
@@ -148,10 +148,10 @@ public class ArtisanHomePageActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void bracelets(View view) {
-        Toast.makeText(this, "Bracelets", Toast.LENGTH_SHORT).show();
-
-    }
+//    public void bracelets(View view) {
+//        Toast.makeText(this, "Bracelets", Toast.LENGTH_SHORT).show();
+//
+//    }
 
     public void my_profile_button(MenuItem item) {
         Intent i = new Intent(this, ArtisanProfilePageActivity.class);
@@ -238,6 +238,17 @@ public class ArtisanHomePageActivity extends AppCompatActivity {
     }
 
     public void my_products(View view) {
+        Intent newIntent = new Intent(this, ArtisanProductsActivity.class);
+        newIntent.putExtra("phoneNumber", artisanPhoneNumber);
+        startActivity(newIntent);
+    }
+
+    public void Pending_orders(View view) {
+        Intent newIntent = new Intent(this, ArtisanPendingOrderActivity.class);
+        startActivity(newIntent);
+    }
+
+    public void My_products(View view) {
         Intent newIntent = new Intent(this, ArtisanProductsActivity.class);
         newIntent.putExtra("phoneNumber", artisanPhoneNumber);
         startActivity(newIntent);

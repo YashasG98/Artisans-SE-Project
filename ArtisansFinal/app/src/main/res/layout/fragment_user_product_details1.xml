@@ -159,12 +159,61 @@
                         android:id="@+id/user_product_details1_tv_product_description"
                         android:layout_weight="1.0" />
                 </LinearLayout>
-                <View
-                    android:background="@color/grey_20"
-                    android:layout_width="fill_parent"
-                    android:layout_height="1.0px" />
 
                 <!-- location part here-->
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/user_product_details1_ll_location_service"
+                    android:orientation="horizontal"
+                    android:minHeight="?actionBarSize"
+                    android:layout_gravity="center_vertical"
+                    >
+                    <ImageButton
+                        android:background="@mipmap/ic_launcher_delivery_round"
+                        android:layout_width="?actionBarSize"
+                        android:layout_height="?actionBarSize"
+                        android:tint="@color/grey_60"
+                        app:srcCompat="@drawable/ic_chat" />
+                    <EditText
+                        android:id="@+id/addressEdit"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:minLines="0"
+                        android:hint="Enter your address"
+                        android:scrollHorizontally="false"
+                        android:scrollbars="vertical"
+                        android:enabled="true"
+                        android:visibility="invisible"/>
+
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Delivery charges"
+                        android:clickable="true"
+                        android:textAlignment="center"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="0dp"
+                        android:id="@+id/buttonaddress"
+                        />
+                    <TextView
+                        android:id="@+id/infoText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                    <ProgressBar
+                        android:id="@+id/progressBar"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAlignment="center"
+                        android:scrollbarSize="@dimen/spacing_xlarge"
+                        android:visibility="invisible"
+                        android:layout_marginLeft="150dp"/>
+                    <View
+                        android:background="@color/grey_20"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
 
                 <LinearLayout
                     android:gravity="center_vertical"

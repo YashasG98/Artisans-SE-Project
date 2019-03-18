@@ -59,6 +59,12 @@ dependencies {
     implementation 'com.squareup.retrofit2:converter-gson:2.5.0'
     //circle image
     implementation 'de.hdodenhof:circleimageview:3.0.0'
+
+
+    //location based services
+    implementation 'com.google.android.gms:play-services-location:16.0.0'
+
     implementation files('libs/sendgrid-0.1.2-jar.jar')
+
 }
 apply plugin: 'com.google.gms.google-services'
