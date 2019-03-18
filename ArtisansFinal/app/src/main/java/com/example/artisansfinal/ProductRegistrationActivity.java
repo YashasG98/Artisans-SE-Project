@@ -65,11 +65,10 @@ public class ProductRegistrationActivity extends AppCompatActivity {
     private Uri mainImageURI,firebaseUri;
     private ProductInfo product;
     private static final String TAG = "productRegistration";
-    private static boolean viewedOnce = false;
+    private static boolean runInOnePage = false;
     private static String artisanName = null;
     private static String artisanContactNumber = null;
     //private double resizeFactorForHighRes[] = {1,0.8,0.7,0.6,0.5};
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -88,6 +87,14 @@ public class ProductRegistrationActivity extends AppCompatActivity {
         artisanName = intent.getStringExtra("name");
         artisanContactNumber = intent.getStringExtra("phoneNumber");
         Log.d(TAG, "onClick: "+artisanName+" "+artisanContactNumber);
+
+        if(!runInOnePage){
+            Tutorial tutorial = new Tutorial(this);
+            tutorial.checkIfFirstRun();
+            tutorial.requestFocusForView(browse, "Click here to browse for image","");
+            tutorial.finishedTutorial();
+            runInOnePage=false;
+        }
 
         browse.setOnClickListener(new View.OnClickListener() {
             @Override

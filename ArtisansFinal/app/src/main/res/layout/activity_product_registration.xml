@@ -113,7 +113,7 @@
                 android:layout_height="match_parent"
                 android:ems="10"
                 android:hint="@string/productDescription"
-                android:inputType="text"
+                android:inputType="textMultiLine|text|textCapSentences"
                 android:textColorLink="@color/colorPrimaryText"/>
 
         </android.support.design.widget.TextInputLayout>

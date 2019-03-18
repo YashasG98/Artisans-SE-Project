@@ -56,7 +56,7 @@ public class ArtisanEditProductInfoActivity extends AppCompatActivity {
     private String productID;
     private String productCategory;
     private String artisanContactNumber;
-
+    private static boolean runInOnePage = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,14 +77,21 @@ public class ArtisanEditProductInfoActivity extends AppCompatActivity {
         final TextInputEditText editDescription = findViewById(R.id.artisan_edit_product_info_et_product_description);
         editImage = findViewById(R.id.artisan_edit_product_info_iv_product_image);
 
-        storageReference = FirebaseStorage.getInstance().getReference("ProductImages/HighRes/" + productID);
+        if(!runInOnePage){
+            Tutorial tutorial = new Tutorial(this);
+            tutorial.checkIfFirstRun();
+            tutorial.requestFocusForView(fab,"Click here to edit product","");
+            tutorial.finishedTutorial();
+            runInOnePage=true;
+        }
+        StorageReference sr = storageReference.child("ProductImages/HighRes/" + productID);
 
         editName.setText(intent.getStringExtra("productName"));
         editDescription.setText(intent.getStringExtra("productDescription"));
         editPrice.setText(intent.getStringExtra("productPrice"));
         RequestOptions options = new RequestOptions().error(R.mipmap.image_not_provided);
         GlideApp.with(getApplicationContext())
-                .load(storageReference)
+                .load(sr)
                 .apply(options)
                 .diskCacheStrategy(DiskCacheStrategy.DATA)
                 .into(editImage);
