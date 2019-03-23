@@ -205,41 +205,53 @@ public class UserProductDetails1Fragment extends Fragment {
                 numberRated.setText(map.get("numberOfPeopleWhoHaveRated"));
                 artisanContactNumber = map.get("artisanContactNumber");
                 artisanPin = map.get("pincode");
-                FirebaseDatabase.getInstance().getReference("Artisans").child(artisanContactNumber).child("FCMToken")
-                        .addValueEventListener(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                artisanToken = dataSnapshot.getValue(String.class);
-                            }
+                try {
+                    FirebaseDatabase.getInstance().getReference("Artisans").child(artisanContactNumber).child("FCMToken")
+                            .addValueEventListener(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                    artisanToken = dataSnapshot.getValue(String.class);
+                                }
 
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError databaseError) {
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError databaseError) {
 
-                            }
-                        });
-                Log.d("STORAGE", storageReference.child(map.get("productID")).toString());
-                FirebaseDatabase.getInstance().getReference("Artisans").child(artisanContactNumber).child("postal_address").
-                        addValueEventListener(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                }
+                            });
+                    Log.d("STORAGE", storageReference.child(map.get("productID")).toString());
+                    FirebaseDatabase.getInstance().getReference("Artisans").child(artisanContactNumber).child("postal_address").
+                            addValueEventListener(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                                pincode = dataSnapshot.getValue(String.class);
-                                name = dataSnapshot.getValue(String.class);
+                                    pincode = dataSnapshot.getValue(String.class);
+                                    name = dataSnapshot.getValue(String.class);
 
-                            }
+                                }
 
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError databaseError) {
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError databaseError) {
 
-                            }
-                        });
+                                }
+                            });
+                }
+                catch (Exception e)
+                {
+
+                }
 
                 RequestOptions options = new RequestOptions().error(R.mipmap.image_not_provided);
-                GlideApp.with(getContext())
-                        .load(storageReference)
-                        .apply(options)
-                        .diskCacheStrategy(DiskCacheStrategy.DATA)
-                        .into(image);
+                try {
+                    GlideApp.with(getContext())
+                            .load(storageReference)
+                            .apply(options)
+                            .diskCacheStrategy(DiskCacheStrategy.DATA)
+                            .into(image);
+                }
+                catch (Exception e)
+                {
+
+                }
             }
 
             @Override
