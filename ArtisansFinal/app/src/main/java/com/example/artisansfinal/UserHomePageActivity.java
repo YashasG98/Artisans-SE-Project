@@ -34,6 +34,7 @@ public class UserHomePageActivity extends AppCompatActivity {
     private String userType;
     private FirebaseAuth firebaseAuth;
     private String emailID;
+    private static boolean runInOnePage=false;
     int counter = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,12 +66,14 @@ public class UserHomePageActivity extends AppCompatActivity {
         final NavigationView nav_view = (NavigationView) findViewById(R.id.user_home_page_navigation_view);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        Tutorial tutorial = new Tutorial(this);
-        tutorial.checkIfFirstRun();
-        tutorial.requestFocusForView(findViewById(R.id.user_home_page_cv_bracelet),
-                "Category", "Click to search products of this category");
-        tutorial.finishedTutorial();
-
+        if(!runInOnePage){
+            Tutorial tutorial = new Tutorial(this);
+            tutorial.checkIfFirstRun();
+            tutorial.requestFocusForView(findViewById(R.id.user_home_page_cv_bracelet),
+                    "Category", "Click to search products of this category");
+            tutorial.finishedTutorial();
+            runInOnePage = true;
+        }
         nav_view.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
