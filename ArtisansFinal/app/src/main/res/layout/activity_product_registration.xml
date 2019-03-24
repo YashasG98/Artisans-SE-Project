@@ -135,7 +135,7 @@
                 android:layout_height="match_parent"
                 android:ems="10"
                 android:hint="@string/productPrice"
-                android:inputType="text"
+                android:inputType="number"
                 android:textColorLink="@color/colorPrimaryText"/>
 
         </android.support.design.widget.TextInputLayout>
