@@ -75,7 +75,11 @@ public class ArtisanProductsActivity extends AppCompatActivity {
                             ProductInfo productInfo;
                             HashMap<String, String> map = (HashMap<String, String>) dataSnapshot.getValue();
                             Log.d("MAP", dataSnapshot.toString());
-                            productInfo = new ProductInfo(map.get("productID"), map.get("productName"), map.get("productDescription"), map.get("productCategory"), map.get("productPrice"), map.get("artisanName"), map.get("artisanContactNumber"));
+                            productInfo = new ProductInfo(map.get("productID"), map.get("productName"), map.get("productDescription"),
+                                    map.get("productCategory"), map.get("productPrice"), map.get("artisanName"),
+                                    map.get("artisanContactNumber"));
+                            productInfo.setNumberOfPeopleWhoHaveRated(map.get("numberOfPeopleWhoHaveRated"));
+                            productInfo.setTotalRating(map.get("totalRating"));
                             artisanProductsRecyclerViewAdapter.added(productInfo);
                         }
 
