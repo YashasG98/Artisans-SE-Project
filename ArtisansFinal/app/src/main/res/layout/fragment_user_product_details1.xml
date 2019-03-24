@@ -7,7 +7,7 @@
     <android.support.design.widget.AppBarLayout
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         android:layout_width="fill_parent"
-        android:layout_height="400dp"
+        android:layout_height="350dp"
         android:id="@+id/user_product_details1_abl">
         <android.support.design.widget.CollapsingToolbarLayout
             android:layout_width="fill_parent"
