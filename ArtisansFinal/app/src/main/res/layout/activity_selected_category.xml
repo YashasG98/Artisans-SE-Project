@@ -1,10 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<RelativeLayout android:layout_width="match_parent"
+<RelativeLayout
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <!--Loading layout-->
+    <!--Search Toolbar-->
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/appBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/explore_base_tb"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:popupTheme="@style/AppTheme.PopupOverlay">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:weightSum="1"
+                android:orientation="horizontal">
+
+                <Spinner
+                    android:id="@+id/selected_category_spinner_search_choice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:entries="@array/choice"
+                    android:layout_gravity="center" />
+
+                <SearchView
+                    android:id="@+id/selected_category_sv_search"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:iconifiedByDefault="false"
+                    android:queryHint="Search Here"
+                    android:layout_weight="1"/>
+
+            </LinearLayout>
+
+        </android.support.v7.widget.Toolbar>
+
+
+    </android.support.design.widget.AppBarLayout>
+
+
+    <!--Loading Layout-->
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -19,7 +64,7 @@
 
     </RelativeLayout>
 
-    <!--Empty category layout-->
+    <!--Empty Category Layout-->
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -38,48 +83,17 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/selected_category_content_rl">
+        android:id="@+id/selected_category_content_rl"
+        android:layout_below="@+id/appBar">
 
         <LinearLayout
-            xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:app="http://schemas.android.com/apk/res-auto"
-            xmlns:tools="http://schemas.android.com/tools"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
             tools:context=".SelectedCategoryActivity"
             android:weightSum="1"
-            android:background="#bbdefb"
+            android:background="@color/common"
             android:id="@+id/selected_category_ll">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.1"
-                android:weightSum="1">
-
-                <Spinner
-                    android:id="@+id/selected_category_spinner_search_choice"
-                    android:layout_width="wrap_content"
-                    android:layout_height="50dp"
-                    android:entries="@array/choice" />
-
-                <EditText
-                    android:id="@+id/selected_category_et_search_query"
-                    android:layout_width="wrap_content"
-                    android:layout_height="50dp"
-                    android:layout_weight="1"
-                    android:hint="Search"/>
-
-                <ImageButton
-                    android:id="@+id/selected_category_iButton_search"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:layout_weight="0.15"
-                    android:backgroundTint="#bbdefb"
-                    android:src="@drawable/ic_search_black" />
-
-            </LinearLayout>
 
 
             <LinearLayout
@@ -88,7 +102,8 @@
                 android:orientation="horizontal"
                 android:layout_weight="0.01"
                 android:gravity="center_horizontal"
-                android:paddingBottom="5dp">
+                android:paddingBottom="5dp"
+                android:paddingTop="3dp">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -101,9 +116,7 @@
                     android:id="@+id/selected_category_spinner_sort_choice"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:entries="@array/sortChoice"
-                    />
-
+                    android:entries="@array/sortChoice" />
 
             </LinearLayout>
 
@@ -123,7 +136,7 @@
 
             </RelativeLayout>
 
-            <!--No search results-->
+            <!--No products found-->
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -135,7 +148,7 @@
                     android:text="No Matching Products Found"
                     android:gravity="center"
                     android:textSize="50sp"
-                    android:background="#bbdefb"/>
+                    android:background="@color/common"/>
             </RelativeLayout>
 
         </LinearLayout>

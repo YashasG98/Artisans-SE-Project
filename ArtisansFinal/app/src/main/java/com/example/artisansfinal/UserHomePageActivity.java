@@ -230,7 +230,7 @@ public class UserHomePageActivity extends AppCompatActivity {
 
     public void Glass_painting(View view) {
         Intent i = new Intent(this, SelectedCategoryActivity.class);
-        i.putExtra("category", "Glass painting");
+        i.putExtra("category", "Glass Painting");
         startActivity(i);
         Toast.makeText(this, "Glass paintings", Toast.LENGTH_SHORT).show();
     }

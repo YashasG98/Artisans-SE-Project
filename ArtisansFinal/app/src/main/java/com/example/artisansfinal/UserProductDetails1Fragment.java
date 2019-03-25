@@ -10,6 +10,7 @@ import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Location;
 import android.location.LocationManager;
+import android.media.Image;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.ResultReceiver;
@@ -26,6 +27,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatRatingBar;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
+import android.view.ScaleGestureDetector;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -62,6 +65,7 @@ import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.jsibbold.zoomage.ZoomageView;
 
 import org.w3c.dom.Text;
 
@@ -141,7 +145,7 @@ public class UserProductDetails1Fragment extends Fragment {
         final TextView aname = view.findViewById(R.id.user_product_details1_tv_artisan_name);
         final TextView price = view.findViewById(R.id.user_product_details1_tv_product_price);
         final TextView desc = view.findViewById(R.id.user_product_details1_tv_product_description);
-        final ImageView image = view.findViewById((R.id.user_product_details1_iv_product_image));
+        final ZoomageView image = view.findViewById((R.id.user_product_details1_iv_product_image));
         final FloatingActionButton fab = view.findViewById(R.id.user_product_details1_fab);
         final AppCompatRatingBar ratingBar = view.findViewById(R.id.user_product_details1_rb_rating);
         final TextView numberRated = view.findViewById(R.id.user_product_details1_tv_number_of_ratings);
