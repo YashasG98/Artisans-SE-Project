@@ -93,6 +93,7 @@ public class UserProductDetails1Fragment extends Fragment {
     private String artisanToken;
     private ArtisanInfo artisanInfo;
     private String pincode;
+    private boolean confirmationFlag = false;
 
     //Lcation based
     AddressResultReceiver mResultReceiver;
@@ -344,6 +345,7 @@ public class UserProductDetails1Fragment extends Fragment {
                     public void onClick(DialogInterface dialog, int which) {
 
                         final String opname = pname.getText().toString();
+                        confirmationFlag = true;
                         //Log.d("HERE",opname);
                         Log.d("token", artisanToken);
                         final String oprice = price.getText().toString();
@@ -390,6 +392,8 @@ public class UserProductDetails1Fragment extends Fragment {
 
                             }
                         });
+
+
                     }
                 });
 
@@ -404,6 +408,9 @@ public class UserProductDetails1Fragment extends Fragment {
                 builder.show();
             }
         });
+
+        if(confirmationFlag)
+            Snackbar.make(view.getRootView(), "Product order confirmed", Snackbar.LENGTH_SHORT);
 
         return view;
     }

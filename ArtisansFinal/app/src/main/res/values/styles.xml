@@ -38,7 +38,7 @@
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
     <style name="splashScreenTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="android:windowBackground">@mipmap/splashscreen3</item>
+        <item name="android:windowBackground">@mipmap/custom_splash_screen5</item>
 
     </style>
 
