@@ -33,6 +33,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.jsibbold.zoomage.ZoomageView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -68,7 +69,7 @@ public class ArtisanProductDetailsFragment extends Fragment {
         final TextView pname = view.findViewById(R.id.artisan_product_details_tv_product_name);
         final TextView price = view.findViewById(R.id.artisan_product_details_tv_product_price);
         final TextView desc = view.findViewById(R.id.artisan_product_details_tv_product_description);
-        final ImageView image = view.findViewById((R.id.artisan_product_details_iv_product_image));
+        final ZoomageView image = view.findViewById((R.id.artisan_product_details_iv_product_image));
         final FloatingActionButton fab = view.findViewById(R.id.artisan_product_details_fab);
         final AppCompatRatingBar ratingBar = view.findViewById(R.id.artisan_product_details_rb_rating);
         final TextView numberRated = view.findViewById(R.id.artisan_product_details_tv_number_of_ratings);

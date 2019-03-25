@@ -15,7 +15,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ArtisanEditProductInfoActivity"></activity>
+        <activity android:name=".ArtisanEditProductInfoActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".ArtisanProductPageTabbedActivity"
             android:theme="@style/AppTheme.NoActionBar"/>
         <activity android:name=".SplashScreen" />
@@ -26,12 +27,15 @@
         <activity
             android:name=".OrderHistoryTabbedActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".ArtisanProductsActivity" />
+        <activity android:name=".ArtisanProductsActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity android:name=".ArtisanLoginActivity" />
         <activity android:name=".ProductRegistrationActivity" />
         <activity android:name=".ProductPageActivity" />
-        <activity android:name=".SelectedCategoryActivity" />
-        <activity android:name=".ArtisanRegistrationActivity" />
+        <activity android:name=".ArtisanRegistrationActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity android:name=".SelectedCategoryActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity android:name=".PasswordActivity" />
         <activity android:name=".RegistrationActivity" />
         <activity android:name=".SecondActivity" />
