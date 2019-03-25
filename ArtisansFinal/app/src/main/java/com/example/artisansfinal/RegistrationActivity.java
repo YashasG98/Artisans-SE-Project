@@ -25,11 +25,11 @@ import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
 
 public class RegistrationActivity extends AppCompatActivity {
-    private EditText userName,userPassword,userEmail,userPnumber,userPcode,userCpassword;
+    private EditText userName,userPassword,userEmail,userPnumber,userPcode,userCpassword,userWallet;
     private Button regButton;
 
     private FirebaseAuth firebaseAuth;
-    String name,pcode,pnumber,email;
+    String name,pcode,pnumber,email,wallet;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -107,16 +107,17 @@ public class RegistrationActivity extends AppCompatActivity {
         userPassword=(EditText)findViewById(R.id.registration_page_et_user_password);
         userEmail=(EditText)findViewById(R.id.registration_page_et_user_email);
         regButton=(Button)findViewById(R.id.registration_page_button_user_registration);
-
+        userWallet=(EditText)findViewById(R.id.registration_page_et_user_wallet);
         userPcode=(EditText) findViewById(R.id.registration_page_et_user_pcode);
         userPnumber=(EditText) findViewById(R.id.registration_page_et_user_number);
         userCpassword=(EditText) findViewById(R.id.registration_page_et_user_cpassword);
     }
     private Boolean validate()
     {
-        Boolean result=false;
+        Boolean result=true;
         name=userName.getText().toString();
         email=userEmail.getText().toString();
+        wallet=userWallet.getText().toString();
         String password=userPassword.getText().toString();
         String cpassword=userCpassword.getText().toString();
         pcode=userPcode.getText().toString();
@@ -125,31 +126,65 @@ public class RegistrationActivity extends AppCompatActivity {
 
         if(name.isEmpty())
         {
-            Toast.makeText(this,"Name is empty",Toast.LENGTH_SHORT).show();
+            //Toast.makeText(this,"Name is empty",Toast.LENGTH_SHORT).show();
+            userName.setError("Name is empty");
+            userName.requestFocus();
+            result=false;
         }
-        else if(email.isEmpty())
-            Toast.makeText(this, "Email is empty", Toast.LENGTH_SHORT).show();
-        else if(pnumber.isEmpty())
-            Toast.makeText(this, "Phone Number is empty", Toast.LENGTH_SHORT).show();
-        else if(pcode.isEmpty())
-            Toast.makeText(this, "Pincode is empty", Toast.LENGTH_SHORT).show();
+        if(email.isEmpty())
+        {
+            //Toast.makeText(this,"Name is empty",Toast.LENGTH_SHORT).show();
+            userEmail.setError("Email is empty");
+            userEmail.requestFocus();
+            result=false;
+        }
+        if(wallet.isEmpty())
+        {
+            //Toast.makeText(this,"Name is empty",Toast.LENGTH_SHORT).show();
+            userWallet.setError("Wallet is empty");
+            userWallet.requestFocus();
+            result=false;
+        }
 
-        else if(password.isEmpty())
-            Toast.makeText(this, "Password is empty", Toast.LENGTH_SHORT).show();
-        else if(password.length()<8)
-            Toast.makeText(this, "Password should be of min 8 characters", Toast.LENGTH_SHORT).show();
+         if(pnumber.isEmpty())
+        {
+            //Toast.makeText(this,"Name is empty",Toast.LENGTH_SHORT).show();
+            userPnumber.setError("Phone Number is empty");
+            userPnumber.requestFocus();
+            result=false;
+        }
+        if(pcode.isEmpty())
+        {
+            //Toast.makeText(this,"Name is empty",Toast.LENGTH_SHORT).show();
+            userPcode.setError("Pincode is empty");
+            userPcode.requestFocus();
+            result=false;
+        }
 
-        else if(cpassword.isEmpty())
-            Toast.makeText(this, "Confirm Password is empty", Toast.LENGTH_SHORT).show();
+        if(password.isEmpty())
+        {
+            //Toast.makeText(this,"Name is empty",Toast.LENGTH_SHORT).show();
+            userPassword.setError("Password is empty");
+            userPassword.requestFocus();
+            result=false;
+        }
+        if(password.length()<8)
+        {Toast.makeText(this, "Password should be of min 8 characters", Toast.LENGTH_SHORT).show();
+            result=false;}
 
-        else if(!cpassword.equals(password))
+        if(cpassword.isEmpty())
+        {
+            //Toast.makeText(this,"Name is empty",Toast.LENGTH_SHORT).show();
+            userCpassword.setError("Confirm Password empty");
+            userCpassword.requestFocus();
+            result=false;
+        }
+        if(!cpassword.equals(password))
         {
             Toast.makeText(this,"Passwords do not match",Toast.LENGTH_SHORT).show();
+            result=false;
         }
-        else
-        {
-            result=true;
-        }
+
         return result;
     }
 
@@ -181,5 +216,7 @@ public class RegistrationActivity extends AppCompatActivity {
         DatabaseReference myRef=firebaseDatabase.getReference();
         UserInfo userinfo=new UserInfo(name,pcode,pnumber,email,user.getUid());
         myRef.child("User").child(userinfo.userPnumber).setValue(userinfo);
+
+        myRef.child("Wallet").child("User").child(userinfo.userPnumber).setValue(wallet);
     }
 }
