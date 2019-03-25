@@ -92,7 +92,7 @@
             android:orientation="vertical"
             tools:context=".SelectedCategoryActivity"
             android:weightSum="1"
-            android:background="#bbdefb"
+            android:background="@color/common"
             android:id="@+id/selected_category_ll">
 
 
@@ -148,7 +148,7 @@
                     android:text="No Matching Products Found"
                     android:gravity="center"
                     android:textSize="50sp"
-                    android:background="#bbdefb"/>
+                    android:background="@color/common"/>
             </RelativeLayout>
 
         </LinearLayout>

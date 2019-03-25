@@ -36,7 +36,8 @@
         android:layout_height="match_parent"
         android:id="@+id/artisan_products_content_rl"
         android:paddingTop="3dp"
-        android:layout_below="@+id/appBar">
+        android:layout_below="@+id/appBar"
+        android:background="@color/common">
         <android.support.v7.widget.RecyclerView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
