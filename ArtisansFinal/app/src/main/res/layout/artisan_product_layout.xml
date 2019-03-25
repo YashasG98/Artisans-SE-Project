@@ -42,7 +42,7 @@
             android:theme="@style/Yellow.Small.AppCompatRatingBar.White"
             android:clickable="false"
             android:numStars="5"
-            android:stepSize="1.0"
+            android:stepSize="0.1"
             style="@style/Yellow.Small.AppCompatRatingBar.White"
             android:id="@+id/artisan_product_layout_rb"
             android:layout_marginStart="8dp"
