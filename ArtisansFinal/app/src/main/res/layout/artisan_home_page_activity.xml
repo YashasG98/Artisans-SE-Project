@@ -314,5 +314,7 @@
         android:id="@+id/user_home_page_navigation_view"
         android:layout_gravity="start"
         app:headerLayout="@layout/artisan_home_page_navigation_header"
-        app:menu="@menu/artisan_home_page_navigation_menu"></android.support.design.widget.NavigationView>
+        app:menu="@menu/artisan_home_page_navigation_menu">
+
+    </android.support.design.widget.NavigationView>
 </android.support.v4.widget.DrawerLayout>
