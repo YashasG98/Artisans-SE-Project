@@ -71,16 +71,17 @@ public class ArtisanEditProductInfoActivity extends AppCompatActivity {
         //Added by shashwatha
         storageReference = FirebaseStorage.getInstance().getReference();
 
-        final FloatingActionButton fab = findViewById(R.id.artisan_edit_product_info_fab);
+        final FloatingActionButton saveFab = findViewById(R.id.artisan_edit_product_info_fab_save);
         final TextInputEditText editName = findViewById(R.id.artisan_edit_product_info_et_product_name);
         final TextInputEditText editPrice = findViewById(R.id.artisan_edit_product_info_et_product_price);
         final TextInputEditText editDescription = findViewById(R.id.artisan_edit_product_info_et_product_description);
         editImage = findViewById(R.id.artisan_edit_product_info_iv_product_image);
+        final FloatingActionButton imageFab = findViewById(R.id.artisan_edit_product_info_fab_image);
 
         if(!runInOnePage){
             Tutorial tutorial = new Tutorial(this);
             tutorial.checkIfFirstRun();
-            tutorial.requestFocusForView(fab,"Click here to edit product","");
+            tutorial.requestFocusForView(saveFab,"Click here to edit product","");
             tutorial.finishedTutorial();
             runInOnePage=true;
         }
@@ -96,7 +97,7 @@ public class ArtisanEditProductInfoActivity extends AppCompatActivity {
                 .diskCacheStrategy(DiskCacheStrategy.DATA)
                 .into(editImage);
 
-        editImage.setOnClickListener(new View.OnClickListener() {
+        imageFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -113,7 +114,7 @@ public class ArtisanEditProductInfoActivity extends AppCompatActivity {
             }
         });
 
-        fab.setOnClickListener(new View.OnClickListener() {
+        saveFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 final AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
