@@ -49,7 +49,7 @@
                 android:id="@+id/login_page_et_user_name"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-
+                android:textCursorDrawable="@drawable/cursor_color"
                 android:ems="10"
                 android:hint="Email"
                 android:inputType="textPersonName"
@@ -88,7 +88,7 @@
                 android:id="@+id/login_page_et_user_password"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-
+                android:textCursorDrawable="@drawable/cursor_color"
                 android:ems="10"
                 android:hint="Password"
                 android:inputType="textPassword" />

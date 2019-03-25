@@ -31,9 +31,10 @@
         <activity android:name=".ArtisanLoginActivity" />
         <activity android:name=".ProductRegistrationActivity" />
         <activity android:name=".ProductPageActivity" />
+        <activity android:name=".ArtisanRegistrationActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity android:name=".SelectedCategoryActivity"
             android:theme="@style/AppTheme.NoActionBar"/>
-        <activity android:name=".ArtisanRegistrationActivity" />
         <activity android:name=".PasswordActivity" />
         <activity android:name=".RegistrationActivity" />
         <activity android:name=".SecondActivity" />

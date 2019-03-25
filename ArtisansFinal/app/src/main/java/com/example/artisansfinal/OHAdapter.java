@@ -1,8 +1,10 @@
 package com.example.artisansfinal;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.os.CountDownTimer;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
@@ -14,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -33,6 +36,8 @@ import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.logging.Handler;
+import java.util.logging.LogRecord;
 
 import static android.view.View.VISIBLE;
 
@@ -162,6 +167,16 @@ public class OHAdapter extends RecyclerView.Adapter<OHAdapter.OHViewHolder> {
 
                     final EditText ReviewInput = view.findViewById(R.id.review);
                     final RatingBar ratingBar = view.findViewById(R.id.ratingBar);
+                    final ProgressDialog progressDialog = new ProgressDialog(context);
+                    final ProgressBar progressBar = view.findViewById(R.id.review_progress_bar);
+
+//                    progressDialog.setMessage("Loading reviews");
+//                    progressDialog.show();
+
+                    progressBar.setVisibility(VISIBLE);
+
+
+
 
                     final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Reviews").child(orderX.getProductID()).child(userPhoneNumber);
 
@@ -169,6 +184,7 @@ public class OHAdapter extends RecyclerView.Adapter<OHAdapter.OHViewHolder> {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                             ProductReview productReview;
+
                             if (dataSnapshot.exists()) {
 
                                 productReview = dataSnapshot.getValue(ProductReview.class);
@@ -178,6 +194,18 @@ public class OHAdapter extends RecyclerView.Adapter<OHAdapter.OHViewHolder> {
                                 ratingBar.setRating(Float.parseFloat(productReview.getRating()));
                                 ratingBefore = Integer.parseInt(productReview.getRating());
                             }
+
+                            progressBar.setVisibility(View.GONE);
+
+//                            new CountDownTimer(2000, 1000) {
+//                                public void onTick(long millisUntilFinished) {
+//                                    // You don't need anything here
+//                                }
+//
+//                                public void onFinish() {
+//                                    progressDialog.dismiss();
+//                                }
+//                            }.start();
 
                         }
 
