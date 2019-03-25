@@ -26,11 +26,13 @@
         <activity
             android:name=".OrderHistoryTabbedActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".ArtisanProductsActivity" />
+        <activity android:name=".ArtisanProductsActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity android:name=".ArtisanLoginActivity" />
         <activity android:name=".ProductRegistrationActivity" />
         <activity android:name=".ProductPageActivity" />
-        <activity android:name=".SelectedCategoryActivity" />
+        <activity android:name=".SelectedCategoryActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity android:name=".ArtisanRegistrationActivity" />
         <activity android:name=".PasswordActivity" />
         <activity android:name=".RegistrationActivity" />
