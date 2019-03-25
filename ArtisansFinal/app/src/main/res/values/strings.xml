@@ -46,10 +46,10 @@
     <string name="Artisan">Artisan</string>
     <string name="Welcome">Welcome</string>
     <string name="Enter_the_email">Email</string>
-    <string name="Contact_no">Contact Number</string>
+    <string name="Contact_no">Contact Number*</string>
     <string name="UID">Unique Identification Number</string>
-    <string name="Pincode">Pincode</string>
-    <string name="Username">Username</string>
+    <string name="Pincode">Pincode*</string>
+    <string name="Username">Username*</string>
     <string name="Enter_password">Password</string>
     <string name="Registration">Register</string>
     <string name="skillset">Select Skillset</string>
@@ -60,7 +60,7 @@
     <string name="productDescription">Description</string>
     <string name="productPrice">Product Price</string>
     <string name="VerifyOTP">Verify OTP</string>
-    <string name="enter_otp">Enter OTP</string>
+    <string name="enter_otp">Enter OTP*</string>
     <string name="title_activity_common_login_tabbed">common_login_tabbed</string>
     <string name="section_format">Hello World from section: %1$d</string>
     <string name="title_activity_main">MainActivity</string>

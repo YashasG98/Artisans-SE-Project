@@ -169,6 +169,7 @@ public class ArtisanLoginFragment extends Fragment {
 
 
                 //contactNoEdit = view.findViewById(R.id.edit_artisan_login_activity_Contact_No);
+
                 ContactNo = "+91" + contactNoEdit.getText().toString();
 
 //                databaseReferenceVerify.addValueEventListener(new ValueEventListener() {
@@ -194,7 +195,7 @@ public class ArtisanLoginFragment extends Fragment {
                 if(ContactNo.length() !=0 && contactsList.contains(ContactNo))
                     SendCode(view);
                 else {
-                    if(ContactNo.length() == 0) {
+                    if(ContactNo.equals("+91")) {
 
                         contactNoEdit.setError("Enter Contact Number");
                         contactNoEdit.requestFocus();

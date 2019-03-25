@@ -53,6 +53,9 @@ public class CommonLoginActivityTabbed extends AppCompatActivity {
         TabLayout tabLayout = findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
 
+        Toolbar toolbar = findViewById(R.id.common_login_toolbar);
+        toolbar.setVisibility(View.GONE);
+
 
 
     }
