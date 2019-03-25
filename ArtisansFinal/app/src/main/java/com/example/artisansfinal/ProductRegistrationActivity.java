@@ -89,11 +89,13 @@ public class ProductRegistrationActivity extends AppCompatActivity {
         Log.d(TAG, "onClick: "+artisanName+" "+artisanContactNumber);
 
         if(!runInOnePage){
-            Tutorial tutorial = new Tutorial(this);
-            tutorial.checkIfFirstRun();
-            tutorial.requestFocusForView(browse, "Click here to browse for image","");
-            tutorial.finishedTutorial();
-            runInOnePage=false;
+            if(browse.getVisibility() == View.VISIBLE){
+                Tutorial tutorial = new Tutorial(this);
+                tutorial.checkIfFirstRun();
+                tutorial.requestFocusForView(browse, "Click here to browse for image","");
+                tutorial.finishedTutorial();
+                runInOnePage=false;
+            }
         }
 
         browse.setOnClickListener(new View.OnClickListener() {
