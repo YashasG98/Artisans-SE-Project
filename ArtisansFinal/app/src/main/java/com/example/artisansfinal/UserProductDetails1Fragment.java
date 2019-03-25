@@ -229,7 +229,7 @@ public class UserProductDetails1Fragment extends Fragment {
                 aname.setText(map.get("artisanName"));
                 price.setText(map.get("productPrice"));
                 desc.setText(map.get("productDescription"));
-                locText.setText("Rs."+0.1*Float.parseFloat(map.get("productPrice")));
+                locText.setText("Rs."+(int)(0.1*Float.parseFloat(map.get("productPrice"))));
                 ratingBar.setRating(Float.parseFloat(map.get("totalRating")));
                 numberRated.setText(map.get("numberOfPeople////WhoHaveRated"));
                 artisanContactNumber = map.get("artisanContactNumber");

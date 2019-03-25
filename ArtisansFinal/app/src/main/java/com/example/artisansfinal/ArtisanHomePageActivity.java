@@ -236,7 +236,10 @@ public class ArtisanHomePageActivity extends AppCompatActivity {
         Intent newIntent = new Intent(this, ArtisanPendingOrderActivity.class);
         startActivity(newIntent);
     }
-
+    public void wallet(MenuItem item) {
+        Intent i = new Intent(this, ArtisanHomePageActivity.class);
+        startActivity(i);
+    }
     public void my_products(View view) {
         Intent newIntent = new Intent(this, ArtisanProductsActivity.class);
         newIntent.putExtra("phoneNumber", artisanPhoneNumber);
@@ -253,4 +256,17 @@ public class ArtisanHomePageActivity extends AppCompatActivity {
         newIntent.putExtra("phoneNumber", artisanPhoneNumber);
         startActivity(newIntent);
     }
+
+    public void wallet(View view) {
+        Intent i = new Intent(this, ArtisanHomePageActivity.class);
+        startActivity(i);
+    }
+
+    public void My_Profile(View view) {
+        Intent i = new Intent(this, ArtisanProfilePageActivity.class);
+        startActivity(i);
+        Toast.makeText(this, "Your profile", Toast.LENGTH_SHORT).show();
+    }
+
+
 }
