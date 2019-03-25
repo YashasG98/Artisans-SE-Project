@@ -9,8 +9,10 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.SearchView;
 
 import com.bumptech.glide.Glide;
 import com.google.firebase.database.ChildEventListener;
@@ -26,6 +28,7 @@ import java.util.HashMap;
 public class ArtisanProductsActivity extends AppCompatActivity {
 
     private ArrayList<ProductInfo> productInfos = new ArrayList<ProductInfo>();
+    private ArrayList<ProductInfo> searchResults = new ArrayList<>();
     private ArtisanProductsRecyclerViewAdapter artisanProductsRecyclerViewAdapter;
     private DatabaseReference databaseReference;
     private RelativeLayout contentLayout;
@@ -33,9 +36,11 @@ public class ArtisanProductsActivity extends AppCompatActivity {
     private RelativeLayout notFoundLayout;
     private ImageView loading;
     private String artisanPhoneNumber;
+    private SearchView searchView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_artisan_products);
         loading = findViewById(R.id.artisan_products_iv);
@@ -49,8 +54,7 @@ public class ArtisanProductsActivity extends AppCompatActivity {
         loadingLayout.setVisibility(View.VISIBLE);
         notFoundLayout = findViewById(R.id.artisan_products_not_found_rl);
         notFoundLayout.setVisibility(View.GONE);
-
-
+        searchView = findViewById(R.id.artisan_product_sv_search);
 
         Intent i = getIntent();
         artisanPhoneNumber = i.getStringExtra("phoneNumber");
@@ -59,6 +63,34 @@ public class ArtisanProductsActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         artisanProductsRecyclerViewAdapter = new ArtisanProductsRecyclerViewAdapter(this, productInfos);
         recyclerView.setAdapter(artisanProductsRecyclerViewAdapter);
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                searchResults.clear();
+                for(ProductInfo product : productInfos){
+                    if(product.getProductName().toLowerCase().contains(query)){
+                        searchResults.add(product);
+                    }
+                }
+                artisanProductsRecyclerViewAdapter = new ArtisanProductsRecyclerViewAdapter(getBaseContext(),searchResults);
+                recyclerView.setAdapter(artisanProductsRecyclerViewAdapter);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                searchResults.clear();
+                for(ProductInfo products: productInfos){
+                    if(products.getProductName().toLowerCase().startsWith(newText)){
+                        searchResults.add(products);
+                    }
+                }
+                artisanProductsRecyclerViewAdapter = new ArtisanProductsRecyclerViewAdapter(getBaseContext(),searchResults);
+                recyclerView.setAdapter(artisanProductsRecyclerViewAdapter);
+                return false;
+            }
+        });
 
         databaseReference = FirebaseDatabase.getInstance().getReference("ArtisanProducts/"+artisanPhoneNumber);
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -75,7 +107,11 @@ public class ArtisanProductsActivity extends AppCompatActivity {
                             ProductInfo productInfo;
                             HashMap<String, String> map = (HashMap<String, String>) dataSnapshot.getValue();
                             Log.d("MAP", dataSnapshot.toString());
-                            productInfo = new ProductInfo(map.get("productID"), map.get("productName"), map.get("productDescription"), map.get("productCategory"), map.get("productPrice"), map.get("artisanName"), map.get("artisanContactNumber"));
+                            productInfo = new ProductInfo(map.get("productID"), map.get("productName"), map.get("productDescription"),
+                                    map.get("productCategory"), map.get("productPrice"), map.get("artisanName"),
+                                    map.get("artisanContactNumber"));
+                            productInfo.setNumberOfPeopleWhoHaveRated(map.get("numberOfPeopleWhoHaveRated"));
+                            productInfo.setTotalRating(map.get("totalRating"));
                             artisanProductsRecyclerViewAdapter.added(productInfo);
                         }
 

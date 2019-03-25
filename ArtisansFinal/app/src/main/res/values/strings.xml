@@ -78,4 +78,5 @@
     <string name="lorem_ipsum">"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam efficitur ipsum in placerat molestie. Fusce quis mauris a enim sollicitudin
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam efficitur ipsum in placerat molestie. Fusce quis mauris a enim sollicitudin"</string>
 
+    <string name="rupee">"\u20B9 "</string>
 </resources>

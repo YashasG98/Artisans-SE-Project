@@ -6,15 +6,44 @@
     android:layout_height="match_parent"
     tools:context=".ArtisanProductsActivity">
 
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/appBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/explore_base_tb"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:popupTheme="@style/AppTheme.PopupOverlay">
+
+            <SearchView
+                android:id="@+id/artisan_product_sv_search"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:iconifiedByDefault="false"
+                android:queryHint="Search Here" />
+
+        </android.support.v7.widget.Toolbar>
+
+    </android.support.design.widget.AppBarLayout>
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/artisan_products_content_rl">
+        android:id="@+id/artisan_products_content_rl"
+        android:paddingTop="3dp"
+        android:layout_below="@+id/appBar"
+        android:background="@color/common">
         <android.support.v7.widget.RecyclerView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/artisan_products_content_rv">
         </android.support.v7.widget.RecyclerView>
+
     </RelativeLayout>
 
     <RelativeLayout

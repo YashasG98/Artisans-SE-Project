@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.AppCompatRatingBar;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -58,6 +59,8 @@ public class ArtisanProductsRecyclerViewAdapter extends RecyclerView.Adapter<Art
         ImageView image;
         TextView productPrice;
         RelativeLayout layout;
+        TextView numberRated;
+        AppCompatRatingBar rb;
 //        ProgressBar progressBar;
 
         public ViewHolder(@NonNull View itemView) {
@@ -66,6 +69,8 @@ public class ArtisanProductsRecyclerViewAdapter extends RecyclerView.Adapter<Art
             image = itemView.findViewById(R.id.artisan_product_layout_iv_product_image);
             productPrice = itemView.findViewById(R.id.artisan_product_layout_tv_product_price);
             layout = itemView.findViewById(R.id.artisan_product_layout_rl);
+            numberRated = itemView.findViewById(R.id.artisan_product_layout_tv_number_rated);
+            rb = itemView.findViewById(R.id.artisan_product_layout_rb);
 //            progressBar = itemView.findViewById(R.id.category_layout_pb_progress);
         }
     }
@@ -90,9 +95,11 @@ public class ArtisanProductsRecyclerViewAdapter extends RecyclerView.Adapter<Art
     public void onBindViewHolder(@NonNull final ViewHolder viewHolder, final int i) {
         final ProductInfo productInfo = info.get(i);
         storageReference = FirebaseStorage.getInstance().getReference("ProductImages/LowRes/" + productInfo.getProductID());
-        Log.d("STORAGE", productInfo.getProductID());
+        Log.d("STORAGE", productInfo.toString());
         viewHolder.productPrice.setText(productInfo.getProductPrice());
         viewHolder.productName.setText(productInfo.getProductName());
+        viewHolder.numberRated.setText("(" + productInfo.getNumberOfPeopleWhoHaveRated() + ")");
+        viewHolder.rb.setRating(Float.parseFloat(productInfo.getTotalRating()));
 
         Glide.with(context)
                 .asGif()
