@@ -87,9 +87,13 @@ public class LoginActivity extends AppCompatActivity implements AdapterView.OnIt
             @Override
             public void onClick(View v) {
                 if (Name.getText().toString().isEmpty()) {
-                    Toast.makeText(LoginActivity.this, "Email is empty", Toast.LENGTH_SHORT).show();
-                } else if (Password.getText().toString().isEmpty()) {
-                    Toast.makeText(LoginActivity.this, "Password is empty", Toast.LENGTH_SHORT).show();
+                    Name.setError("Email is Empty");
+                    Name.requestFocus();
+                    //Toast.makeText(LoginActivity.this, "Email is empty", Toast.LENGTH_SHORT).show();
+                }  if (Password.getText().toString().isEmpty()) {
+                    Password.setError("Password is empty");
+                    Password.requestFocus();
+                    //Toast.makeText(LoginActivity.this, "Password is empty", Toast.LENGTH_SHORT).show();
                 } else {
                     validate(Name.getText().toString(), Password.getText().toString());
                 }
