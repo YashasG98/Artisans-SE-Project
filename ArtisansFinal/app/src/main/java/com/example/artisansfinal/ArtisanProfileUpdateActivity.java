@@ -1,9 +1,11 @@
 package com.example.artisansfinal;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -31,11 +33,15 @@ public class ArtisanProfileUpdateActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.edit_artisan_info);
-
+        Intent i=getIntent();
+        String name=i.getStringExtra("Name");
+        String pc=i.getStringExtra("PC");
         databaseArtisans= FirebaseDatabase.getInstance().getReference("Artisans/"+ userX.getPhoneNumber());
         updateArtisanName = (EditText) findViewById(R.id.updateArtisanName);
         updateArtisanPin = (EditText) findViewById(R.id.updateArtisanPin);
         buttonUpdateArtisan = (Button) findViewById(R.id.buttonUpdateArtisan);
+        updateArtisanName.setText(name);
+        updateArtisanPin.setText(pc);
 
         buttonUpdateArtisan.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -59,6 +65,9 @@ public class ArtisanProfileUpdateActivity extends AppCompatActivity {
                     databaseArtisans.child("username").setValue(newName);
                     databaseArtisans.child("postal_address").setValue(newPin);
                     Toast.makeText(ArtisanProfileUpdateActivity.this,"Profile Updated",Toast.LENGTH_LONG).show();
+                    Intent i= new Intent(getApplicationContext(), ArtisanProfilePageActivity.class);
+                    startActivity(i);
+                    finish();
                 }
             }
 
