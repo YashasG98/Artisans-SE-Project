@@ -165,6 +165,11 @@ public class UserHomePageActivity extends AppCompatActivity {
         Toast.makeText(this, "Tutorial", Toast.LENGTH_SHORT).show();
     }
 
+    public void wallet_button(MenuItem item) {
+        Intent i = new Intent(this, UserWalletActivity.class);
+        startActivity(i);
+
+    }
     public void Logout(MenuItem item) {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
