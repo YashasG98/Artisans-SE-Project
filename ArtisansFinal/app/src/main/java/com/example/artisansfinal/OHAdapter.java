@@ -4,7 +4,6 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.CountDownTimer;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
@@ -146,25 +145,6 @@ public class OHAdapter extends RecyclerView.Adapter<OHAdapter.OHViewHolder> {
         if (className.equals("UserCompletedOrderHistoryFragment")) {
 
             OKtext = "Send";
-
-            if(orderX.reviewExists.equals("true"))
-            {
-                viewHolder.cardView.setClickable(true);
-                viewHolder.cardView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v)
-                    {
-
-                        Intent intent = new Intent(context, UserProductPageTabbedActivity.class);
-                        intent.putExtra("productName", orderX.getName());
-                        intent.putExtra("productCategory", orderX.getProductCategory());
-                        intent.putExtra("productID", orderX.getProductID());
-                        context.startActivity(intent);
-
-
-                    }
-                });
-            }
 
 
 

@@ -5,14 +5,14 @@
     android:id="@+id/nestedScrollView"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/common_background"
+    android:background="#bbdefb"
     android:fillViewport="true"
     android:overScrollMode="never">
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/white"
+        android:background="#bbdefb"
         tools:context=".ArtisanLoginActivity">
 
         <android.support.design.widget.TextInputLayout
@@ -26,7 +26,7 @@
             android:layout_marginEnd="24dp"
             android:layout_marginBottom="8dp"
             android:textColorHint="#000306"
-            app:boxStrokeColor="@color/common"
+            app:boxStrokeColor="#73bbf7"
             app:helperTextEnabled="true"
             app:hintAnimationEnabled="false"
             app:hintEnabled="true"
@@ -61,7 +61,7 @@
             android:layout_marginEnd="24dp"
             android:layout_marginBottom="8dp"
             android:textColorHint="#000306"
-            app:boxStrokeColor="@color/common"
+            app:boxStrokeColor="#73bbf7"
             app:helperTextEnabled="true"
             app:hintAnimationEnabled="false"
             app:hintEnabled="true"
@@ -95,7 +95,6 @@
             android:layout_marginTop="64dp"
             android:layout_marginEnd="8dp"
             android:background="@drawable/border_login"
-            style="?android:attr/borderlessButtonStyle"
             android:elevation="0dp"
             android:text="  Verify and Login  "
             app:layout_constraintBottom_toBottomOf="parent"
@@ -113,7 +112,6 @@
             android:layout_marginEnd="16dp"
             android:background="@drawable/border_login"
             android:text="Send OTP"
-            style="?android:attr/borderlessButtonStyle"
             app:layout_constraintBottom_toBottomOf="@+id/TextInput_artisan_login_activity_Contact_No"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
@@ -156,9 +154,9 @@
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="8dp"
-            android:text="Log In"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline3"
+            android:text="Log in"
             android:textColor="@color/black"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline3"
             app:layout_constraintBottom_toTopOf="@+id/TextInput_artisan_login_activity_Contact_No"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.06"
