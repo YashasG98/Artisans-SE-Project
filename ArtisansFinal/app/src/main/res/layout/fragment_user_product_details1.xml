@@ -168,6 +168,67 @@
                         android:layout_weight="1.0" />
                 </LinearLayout>
 
+                <LinearLayout
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:minHeight="?actionBarSize">
+                    <ImageButton
+                        android:background="@android:color/transparent"
+                        android:layout_width="?actionBarSize"
+                        android:layout_height="?actionBarSize"
+                        android:tint="@color/grey_60"
+                        app:srcCompat="@drawable/rupee_symbol" />
+                    <TextView
+                        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                        android:textColor="@color/grey_80"
+                        android:layout_width="0.0dip"
+                        android:layout_height="wrap_content"
+                        android:text="Delivery charges"
+                        android:layout_weight="1.0" />
+                    <View
+                        android:layout_width="@dimen/spacing_large"
+                        android:layout_height="wrap_content" />
+                    <ImageButton
+                        android:id="@+id/user_product_details1_bt_toggle_description_location"
+                        android:background="?selectableItemBackgroundBorderless"
+                        android:layout_width="?actionBarSize"
+                        android:layout_height="?actionBarSize"
+                        android:tint="@color/grey_60"
+                        app:srcCompat="@drawable/ic_arrow_drop" />
+                </LinearLayout>
+                <LinearLayout
+                    android:animateLayoutChanges="true"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:id="@+id/user_product_details1_ll_expand_description_location"
+                    android:paddingTop="@dimen/spacing_medium"
+                    android:paddingBottom="@dimen/spacing_large"
+                    android:visibility="gone"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="?actionBarSize"
+                    android:layout_marginRight="@dimen/spacing_smlarge"
+                    android:layout_marginBottom="@dimen/spacing_middle">
+                    <TextView
+                        android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+                        android:layout_width="0.0dip"
+                        android:layout_height="wrap_content"
+                        android:text="@string/lorem_ipsum"
+                        android:id="@+id/user_product_details1_tv_product_description_location"
+                        android:layout_weight="1.0" />
+                    <ProgressBar
+                        android:id="@+id/locProg"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAlignment="center"
+                        android:scrollbarSize="@dimen/spacing_xlarge"
+                        android:visibility="invisible"
+                        android:layout_marginLeft="150dp"/>
+
+                </LinearLayout>
+
                 <!-- location part here-->
                 <LinearLayout
                     android:layout_width="fill_parent"

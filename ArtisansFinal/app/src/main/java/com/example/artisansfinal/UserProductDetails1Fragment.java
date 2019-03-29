@@ -67,6 +67,8 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.jsibbold.zoomage.ZoomageView;
 
+import org.w3c.dom.Text;
+
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -99,8 +101,11 @@ public class UserProductDetails1Fragment extends Fragment {
     EditText latitudeEdit, longitudeEdit, addressEdit;
     ProgressBar progressBar;
     TextView infoText;
+    TextView locText;
+    ProgressBar locProg;
     TextView current_location;
     CheckBox checkBox;
+    int ch;
     public String name;
     //private static final String TAG = "MainActivity";
     private int STORAGE_PERMISSION_CODE = 1;
@@ -150,6 +155,11 @@ public class UserProductDetails1Fragment extends Fragment {
         final ImageButton toggleReviewTab = view.findViewById(R.id.user_product_details1_bt_tab_reviews);
         final LinearLayout expandDescription = view.findViewById(R.id.user_product_details1_ll_expand_description);
 
+        final ImageButton toggleLocation = view.findViewById(R.id.user_product_details1_bt_toggle_description_location);
+        final LinearLayout expandLocation = view.findViewById(R.id.user_product_details1_ll_expand_description_location);
+        final TextView locText = view.findViewById(R.id.user_product_details1_tv_product_description_location);
+        final ProgressBar locProg = view.findViewById(R.id.locProg);
+
         addressEdit = (EditText) view.findViewById(R.id.addressEdit);
         progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
         infoText = (TextView) view.findViewById(R.id.infoText);
@@ -189,6 +199,20 @@ public class UserProductDetails1Fragment extends Fragment {
             }
         });
 
+        toggleLocation.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                toggleArrow(toggleLocation);
+                if(expandLocation.getVisibility()==View.GONE){
+                    expandLocation.setVisibility(View.VISIBLE);
+                }
+                else{
+                    expandLocation.setVisibility(View.GONE);
+                }
+            }
+        });
+
+
         final Intent intent = getActivity().getIntent();
         final String productCategory = intent.getStringExtra("productCategory");
         final String productID = intent.getStringExtra("productID");
@@ -206,8 +230,10 @@ public class UserProductDetails1Fragment extends Fragment {
                 aname.setText(map.get("artisanName"));
                 price.setText(map.get("productPrice"));
                 desc.setText(map.get("productDescription"));
+                locText.setText("Rs."+(int)(0.1*Float.parseFloat(map.get("productPrice"))));
                 ratingBar.setRating(Float.parseFloat(map.get("totalRating")));
-                numberRated.setText(map.get("numberOfPeopleWhoHaveRated"));
+               
+               numberRated.setText(map.get("numberOfPeopleWhoHaveRated")); 
                 artisanContactNumber = map.get("artisanContactNumber");
                 artisanPin = map.get("pincode");
                 try {
@@ -545,7 +571,9 @@ public class UserProductDetails1Fragment extends Fragment {
                     longit);
         }
         infoText.setVisibility(View.INVISIBLE);
-        progressBar.setVisibility(View.VISIBLE);
+//        locText.setVisibility(View.INVISIBLE);
+      progressBar.setVisibility(View.VISIBLE);
+//        locProg.setVisibility(View.VISIBLE);
         Log.e(TAG, "Starting Service");
         getContext().startService(intent);
     }
@@ -565,6 +593,11 @@ public class UserProductDetails1Fragment extends Fragment {
                         double R = 6371; // Radius of the earth in km
                         double charges = Math.sqrt((latid-address.getLatitude())*(latid-address.getLatitude()) + (longit-address.getLongitude())*(longit-address.getLongitude()));
                         charges = charges*R*0.01;
+                        if(charges > 100)
+                            charges = 0.1*charges;
+                        else
+                            charges = 10;
+                         ch = (int)charges;
                         FirebaseDatabase.getInstance().getReference("Artisans").child(artisanContactNumber).child("postal_address").
                                 addValueEventListener(new ValueEventListener() {
                                     @Override
@@ -581,7 +614,57 @@ public class UserProductDetails1Fragment extends Fragment {
                                 });
                         progressBar.setVisibility(View.GONE);
                         infoText.setVisibility(View.VISIBLE);
-                        infoText.setText("Delivery Charges: " + charges + "\nPincode: "+pincode);
+                        infoText.setText("Rs. " + ch);
+//                        databaseReference.addValueEventListener(new ValueEventListener() {
+//                            @Override
+//                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//
+//                                HashMap<String, String> map = (HashMap<String, String>) dataSnapshot.getValue();
+//                                locText.setText("Rs."+ch);
+//                                try {
+//                                    FirebaseDatabase.getInstance().getReference("Artisans").child(artisanContactNumber).child("FCMToken")
+//                                            .addValueEventListener(new ValueEventListener() {
+//                                                @Override
+//                                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                                                    artisanToken = dataSnapshot.getValue(String.class);
+//                                                }
+//
+//                                                @Override
+//                                                public void onCancelled(@NonNull DatabaseError databaseError) {
+//
+//                                                }
+//                                            });
+//                                    Log.d("STORAGE", storageReference.child(map.get("productID")).toString());
+//                                    FirebaseDatabase.getInstance().getReference("Artisans").child(artisanContactNumber).child("postal_address").
+//                                            addValueEventListener(new ValueEventListener() {
+//                                                @Override
+//                                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//
+//                                                    pincode = dataSnapshot.getValue(String.class);
+//                                                    name = dataSnapshot.getValue(String.class);
+//
+//                                                }
+//
+//                                                @Override
+//                                                public void onCancelled(@NonNull DatabaseError databaseError) {
+//
+//                                                }
+//                                            });
+//                                }
+//                                catch (Exception e)
+//                                {
+//
+//                                }
+//
+//
+//                            }
+//
+//                            @Override
+//                            public void onCancelled(@NonNull DatabaseError databaseError) {
+//                            }
+//                        });
+
+                        //                    locText.setText(ch);
                     }
                 });
             }
