@@ -5,8 +5,11 @@
     <color name="colorAccent">#D81B60</color>
     <color name="black">#000000</color>
     <color name="colorPrimaryText">#000000</color>
-    <color name="common">#bbdefb</color>
-    <color name="common_dark">#73bbf7</color>
+    <color name="common">#1564bf</color>
+    <color name="common_dark">#003b8e</color>
+    <color name="common_background">#5e91f2</color>
+    <color name="white">#ffffff</color>
+    <color name="button_common">#5e91f2</color>
 
     <color name="grey_10">#ffe6e6e6</color>
     <color name="grey_60">#ff666666</color>
