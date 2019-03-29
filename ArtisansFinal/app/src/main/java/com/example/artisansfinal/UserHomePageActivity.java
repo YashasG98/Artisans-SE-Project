@@ -166,7 +166,7 @@ public class UserHomePageActivity extends AppCompatActivity {
     }
 
     public void wallet_button(MenuItem item) {
-        Intent i = new Intent(this, UserHomePageActivity.class);
+        Intent i = new Intent(this, UserWalletActivity.class);
         startActivity(i);
 
     }

@@ -237,7 +237,7 @@ public class ArtisanHomePageActivity extends AppCompatActivity {
         startActivity(newIntent);
     }
     public void wallet(MenuItem item) {
-        Intent i = new Intent(this, ArtisanHomePageActivity.class);
+        Intent i = new Intent(this, ArtisanWalletActivity.class);
         startActivity(i);
     }
     public void my_products(View view) {
@@ -258,7 +258,7 @@ public class ArtisanHomePageActivity extends AppCompatActivity {
     }
 
     public void wallet(View view) {
-        Intent i = new Intent(this, ArtisanHomePageActivity.class);
+        Intent i = new Intent(this, ArtisanWalletActivity.class);
         startActivity(i);
     }
 

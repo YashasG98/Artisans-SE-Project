@@ -3,12 +3,12 @@
     package="com.example.artisansfinal">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
     <application
         android:allowBackup="true"
@@ -17,10 +17,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ArtisanEditProductInfoActivity"
+        <activity android:name=".ArtisanWalletActivity"/>
+        <activity android:name=".UserWalletActivity" />
+        <activity
+            android:name=".ArtisanEditProductInfoActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".ArtisanProductPageTabbedActivity"
-            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity
+            android:name=".ArtisanProductPageTabbedActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".SplashScreen" />
         <activity
             android:name=".UserProductPageTabbedActivity"
@@ -29,15 +33,18 @@
         <activity
             android:name=".OrderHistoryTabbedActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".ArtisanProductsActivity"
-            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity
+            android:name=".ArtisanProductsActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".ArtisanLoginActivity" />
         <activity android:name=".ProductRegistrationActivity" />
         <activity android:name=".ProductPageActivity" />
-        <activity android:name=".ArtisanRegistrationActivity"
-            android:theme="@style/AppTheme.NoActionBar"/>
-        <activity android:name=".SelectedCategoryActivity"
-            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity
+            android:name=".ArtisanRegistrationActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".SelectedCategoryActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".PasswordActivity" />
         <activity android:name=".RegistrationActivity" />
         <activity android:name=".SecondActivity" />
@@ -57,7 +64,7 @@
         <activity
             android:name=".UserTutorialActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".ArtisanTutorialActivity"/>
+        <activity android:name=".ArtisanTutorialActivity" />
         <activity
             android:name=".CommonLoginActivityTabbed"
             android:theme="@style/splashScreenTheme">
@@ -78,8 +85,8 @@
         </service>
         <service
             android:name=".GeocodeAddressIntentService"
-            android:exported="true">
-        </service>
+            android:exported="true" />
+
         <activity android:name=".MainActivityWithAsyncTask" />
     </application>
 
