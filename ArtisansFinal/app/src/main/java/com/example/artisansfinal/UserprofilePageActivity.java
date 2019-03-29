@@ -1,5 +1,6 @@
 package com.example.artisansfinal;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -21,7 +22,7 @@ public class UserprofilePageActivity extends AppCompatActivity {
 
     DatabaseReference databaseUsers;
     Button buttonUpdateUser;
-
+    private String nametp,pctp;
     FirebaseAuth firebaseAuth= FirebaseAuth.getInstance();
 
     FirebaseUser userX = firebaseAuth.getCurrentUser();
@@ -30,7 +31,11 @@ public class UserprofilePageActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_profile_page);
-
+        final ProgressDialog progress = new ProgressDialog(this);
+        progress.setTitle("Loading");
+        progress.setMessage("In a minute!");
+        progress.setCancelable(false); // disable dismiss by tapping outside of the dialog
+        progress.show();
 
         databaseUsers= FirebaseDatabase.getInstance().getReference("User");
 
@@ -40,6 +45,10 @@ public class UserprofilePageActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent i = new Intent(UserprofilePageActivity.this,UserProfileUpdateActivity.class);
                 startActivity(i);
+                i.putExtra("Name",nametp);
+                i.putExtra("PC",pctp);
+                startActivity(i);
+                finish();
             }
         });
 
@@ -59,6 +68,9 @@ public class UserprofilePageActivity extends AppCompatActivity {
                         phno.setText(user.userPnumber);
                         pc.setText(user.userPcode);
 
+                        nametp=user.userName;
+                        pctp=user.userPcode;
+                        progress.dismiss();
                         break;
                     }
                 }
