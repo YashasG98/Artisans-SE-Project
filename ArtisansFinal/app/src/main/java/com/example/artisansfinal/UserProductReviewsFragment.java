@@ -89,11 +89,11 @@ public class UserProductReviewsFragment extends Fragment {
         final RecyclerView recyclerView = view.findViewById(R.id.user_product_review_rv);
         final TextView averageRating = view.findViewById(R.id.user_product_reviews_average_rating);
         final TextView totalRated = view.findViewById(R.id.user_product_reviews_total);
-        final SeekBar fiveStar = view.findViewById(R.id.fiveStar);
-        final SeekBar fourStar = view.findViewById(R.id.fourStar);
-        final SeekBar threeStar = view.findViewById(R.id.threeStar);
-        final SeekBar twoStar = view.findViewById(R.id.twoStar);
-        final SeekBar oneStar = view.findViewById(R.id.oneStar);
+        final SeekBar fiveStar = view.findViewById(R.id.fiveStar); fiveStar.setEnabled(false);
+        final SeekBar fourStar = view.findViewById(R.id.fourStar); fourStar.setEnabled(false);
+        final SeekBar threeStar = view.findViewById(R.id.threeStar); threeStar.setEnabled(false);
+        final SeekBar twoStar = view.findViewById(R.id.twoStar); twoStar.setEnabled(false);
+        final SeekBar oneStar = view.findViewById(R.id.oneStar); oneStar.setEnabled(false);
         final FloatingActionButton fab = view.findViewById(R.id.user_product_reviews_fab);
 
         reviewRecyclerViewAdapter = new ReviewRecyclerViewAdapter(getContext(), productReviews);

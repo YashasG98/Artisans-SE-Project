@@ -24,7 +24,9 @@
         android:id="@+id/pending_orders"
         android:title="Pending Orders"
         android:onClick="pending_orders"
-        android:icon="@drawable/ic_format_list_numbered_black_24dp"></item>
+        android:icon="@drawable/ic_format_list_numbered_black_24dp">
+
+    </item>
     <item
         android:id="@+id/tutorial_button"
         android:title="Tutorial"
@@ -36,12 +38,23 @@
         android:title="Upload a product"
         android:onClick="upload_product"
         android:icon="@drawable/ic_file_upload_black_product_upload"
-        ></item>
+        >
+
+    </item>
     <item
         android:id="@+id/my_products"
         android:title="My Products"
         android:onClick="my_products"
-        android:icon="@drawable/ic_shopping_basket_black_24dp"></item>
+        android:icon="@drawable/ic_shopping_basket_black_24dp">
+
+    </item>
+    <item
+        android:id="@+id/wallet"
+        android:title="Wallet"
+        android:onClick="wallet"
+        android:icon="@drawable/ic_account_balance_wallet_black_24dp">
+
+    </item>
     <item
         android:id="@+id/logout"
         android:title="Log out"

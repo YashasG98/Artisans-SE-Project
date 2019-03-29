@@ -22,6 +22,12 @@
             android:icon="@drawable/ic_add_shopping_cart_black_24dp12">
         </item>
         <item
+            android:id="@+id/wallet_button"
+            android:title="Wallet"
+            android:onClick="wallet_button"
+            android:icon="@drawable/ic_account_balance_wallet_black_24dp">
+        </item>
+        <item
             android:id="@+id/tutorial_switch"
             android:title="Tutorial"
             android:icon="@drawable/ic_help_black_24dp13"

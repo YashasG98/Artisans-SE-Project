@@ -25,7 +25,8 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
                 android:iconifiedByDefault="false"
-                android:queryHint="Search Here" />
+                android:queryHint="Search Here"
+                android:focusedByDefault="false"/>
 
         </android.support.v7.widget.Toolbar>
 
