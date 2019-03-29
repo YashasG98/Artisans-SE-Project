@@ -10,6 +10,7 @@ import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Location;
 import android.location.LocationManager;
+import android.media.Image;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.ResultReceiver;
@@ -26,6 +27,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatRatingBar;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
+import android.view.ScaleGestureDetector;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -62,6 +65,9 @@ import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.jsibbold.zoomage.ZoomageView;
+
+import org.w3c.dom.Text;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -87,6 +93,7 @@ public class UserProductDetails1Fragment extends Fragment {
     private String artisanToken;
     private ArtisanInfo artisanInfo;
     private String pincode;
+    private boolean confirmationFlag = false;
 
     //Lcation based
     AddressResultReceiver mResultReceiver;
@@ -94,8 +101,11 @@ public class UserProductDetails1Fragment extends Fragment {
     EditText latitudeEdit, longitudeEdit, addressEdit;
     ProgressBar progressBar;
     TextView infoText;
+    TextView locText;
+    ProgressBar locProg;
     TextView current_location;
     CheckBox checkBox;
+    int ch;
     public String name;
     //private static final String TAG = "MainActivity";
     private int STORAGE_PERMISSION_CODE = 1;
@@ -136,7 +146,7 @@ public class UserProductDetails1Fragment extends Fragment {
         final TextView aname = view.findViewById(R.id.user_product_details1_tv_artisan_name);
         final TextView price = view.findViewById(R.id.user_product_details1_tv_product_price);
         final TextView desc = view.findViewById(R.id.user_product_details1_tv_product_description);
-        final ImageView image = view.findViewById((R.id.user_product_details1_iv_product_image));
+        final ZoomageView image = view.findViewById((R.id.user_product_details1_iv_product_image));
         final FloatingActionButton fab = view.findViewById(R.id.user_product_details1_fab);
         final AppCompatRatingBar ratingBar = view.findViewById(R.id.user_product_details1_rb_rating);
         final TextView numberRated = view.findViewById(R.id.user_product_details1_tv_number_of_ratings);
@@ -144,6 +154,11 @@ public class UserProductDetails1Fragment extends Fragment {
         final ImageButton toggleDescription = view.findViewById(R.id.user_product_details1_bt_toggle_description);
         final ImageButton toggleReviewTab = view.findViewById(R.id.user_product_details1_bt_tab_reviews);
         final LinearLayout expandDescription = view.findViewById(R.id.user_product_details1_ll_expand_description);
+
+        final ImageButton toggleLocation = view.findViewById(R.id.user_product_details1_bt_toggle_description_location);
+        final LinearLayout expandLocation = view.findViewById(R.id.user_product_details1_ll_expand_description_location);
+        final TextView locText = view.findViewById(R.id.user_product_details1_tv_product_description_location);
+        final ProgressBar locProg = view.findViewById(R.id.locProg);
 
         addressEdit = (EditText) view.findViewById(R.id.addressEdit);
         progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
@@ -184,6 +199,20 @@ public class UserProductDetails1Fragment extends Fragment {
             }
         });
 
+        toggleLocation.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                toggleArrow(toggleLocation);
+                if(expandLocation.getVisibility()==View.GONE){
+                    expandLocation.setVisibility(View.VISIBLE);
+                }
+                else{
+                    expandLocation.setVisibility(View.GONE);
+                }
+            }
+        });
+
+
         final Intent intent = getActivity().getIntent();
         final String productCategory = intent.getStringExtra("productCategory");
         final String productID = intent.getStringExtra("productID");
@@ -201,8 +230,10 @@ public class UserProductDetails1Fragment extends Fragment {
                 aname.setText(map.get("artisanName"));
                 price.setText(map.get("productPrice"));
                 desc.setText(map.get("productDescription"));
+                locText.setText("Rs."+(int)(0.1*Float.parseFloat(map.get("productPrice"))));
                 ratingBar.setRating(Float.parseFloat(map.get("totalRating")));
-                numberRated.setText(map.get("numberOfPeopleWhoHaveRated"));
+               
+               numberRated.setText(map.get("numberOfPeopleWhoHaveRated")); 
                 artisanContactNumber = map.get("artisanContactNumber");
                 artisanPin = map.get("pincode");
                 try {
@@ -315,6 +346,7 @@ public class UserProductDetails1Fragment extends Fragment {
                     public void onClick(DialogInterface dialog, int which) {
 
                         final String opname = pname.getText().toString();
+                        confirmationFlag = true;
                         //Log.d("HERE",opname);
                         Log.d("token", artisanToken);
                         final String oprice = price.getText().toString();
@@ -361,6 +393,8 @@ public class UserProductDetails1Fragment extends Fragment {
 
                             }
                         });
+
+
                     }
                 });
 
@@ -375,6 +409,9 @@ public class UserProductDetails1Fragment extends Fragment {
                 builder.show();
             }
         });
+
+        if(confirmationFlag)
+            Snackbar.make(view.getRootView(), "Product order confirmed", Snackbar.LENGTH_SHORT);
 
         return view;
     }
@@ -534,7 +571,9 @@ public class UserProductDetails1Fragment extends Fragment {
                     longit);
         }
         infoText.setVisibility(View.INVISIBLE);
-        progressBar.setVisibility(View.VISIBLE);
+//        locText.setVisibility(View.INVISIBLE);
+      progressBar.setVisibility(View.VISIBLE);
+//        locProg.setVisibility(View.VISIBLE);
         Log.e(TAG, "Starting Service");
         getContext().startService(intent);
     }
@@ -554,6 +593,11 @@ public class UserProductDetails1Fragment extends Fragment {
                         double R = 6371; // Radius of the earth in km
                         double charges = Math.sqrt((latid-address.getLatitude())*(latid-address.getLatitude()) + (longit-address.getLongitude())*(longit-address.getLongitude()));
                         charges = charges*R*0.01;
+                        if(charges > 100)
+                            charges = 0.1*charges;
+                        else
+                            charges = 10;
+                         ch = (int)charges;
                         FirebaseDatabase.getInstance().getReference("Artisans").child(artisanContactNumber).child("postal_address").
                                 addValueEventListener(new ValueEventListener() {
                                     @Override
@@ -570,7 +614,57 @@ public class UserProductDetails1Fragment extends Fragment {
                                 });
                         progressBar.setVisibility(View.GONE);
                         infoText.setVisibility(View.VISIBLE);
-                        infoText.setText("Delivery Charges: " + charges + "\nPincode: "+pincode);
+                        infoText.setText("Rs. " + ch);
+//                        databaseReference.addValueEventListener(new ValueEventListener() {
+//                            @Override
+//                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//
+//                                HashMap<String, String> map = (HashMap<String, String>) dataSnapshot.getValue();
+//                                locText.setText("Rs."+ch);
+//                                try {
+//                                    FirebaseDatabase.getInstance().getReference("Artisans").child(artisanContactNumber).child("FCMToken")
+//                                            .addValueEventListener(new ValueEventListener() {
+//                                                @Override
+//                                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                                                    artisanToken = dataSnapshot.getValue(String.class);
+//                                                }
+//
+//                                                @Override
+//                                                public void onCancelled(@NonNull DatabaseError databaseError) {
+//
+//                                                }
+//                                            });
+//                                    Log.d("STORAGE", storageReference.child(map.get("productID")).toString());
+//                                    FirebaseDatabase.getInstance().getReference("Artisans").child(artisanContactNumber).child("postal_address").
+//                                            addValueEventListener(new ValueEventListener() {
+//                                                @Override
+//                                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//
+//                                                    pincode = dataSnapshot.getValue(String.class);
+//                                                    name = dataSnapshot.getValue(String.class);
+//
+//                                                }
+//
+//                                                @Override
+//                                                public void onCancelled(@NonNull DatabaseError databaseError) {
+//
+//                                                }
+//                                            });
+//                                }
+//                                catch (Exception e)
+//                                {
+//
+//                                }
+//
+//
+//                            }
+//
+//                            @Override
+//                            public void onCancelled(@NonNull DatabaseError databaseError) {
+//                            }
+//                        });
+
+                        //                    locText.setText(ch);
                     }
                 });
             }

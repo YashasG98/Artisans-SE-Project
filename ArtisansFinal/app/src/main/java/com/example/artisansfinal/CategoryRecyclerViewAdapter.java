@@ -61,6 +61,7 @@ public class CategoryRecyclerViewAdapter extends RecyclerView.Adapter<CategoryRe
         TextView artisanName;
         RelativeLayout layout;
         AppCompatRatingBar rb;
+        TextView numberRated;
 //        ProgressBar progressBar;
 
         public ViewHolder(@NonNull View itemView) {
@@ -71,6 +72,7 @@ public class CategoryRecyclerViewAdapter extends RecyclerView.Adapter<CategoryRe
             artisanName = itemView.findViewById(R.id.category_layout_tv_artisan_name);
             layout = itemView.findViewById(R.id.category_layout_rl);
             rb = itemView.findViewById(R.id.category_layout_rb);
+            numberRated = itemView.findViewById(R.id.category_layout_tv_number_rated);
 //            progressBar = itemView.findViewById(R.id.category_layout_pb_progress);
         }
     }
@@ -100,6 +102,7 @@ public class CategoryRecyclerViewAdapter extends RecyclerView.Adapter<CategoryRe
         viewHolder.productPrice.setText(productInfo.getProductPrice());
         viewHolder.productName.setText(productInfo.getProductName());
         viewHolder.rb.setRating(Float.parseFloat(productInfo.getTotalRating()));
+        viewHolder.numberRated.setText("(" + productInfo.getNumberOfPeopleWhoHaveRated() + ")");
 
         Glide.with(context)
                 .asGif()
@@ -108,7 +111,7 @@ public class CategoryRecyclerViewAdapter extends RecyclerView.Adapter<CategoryRe
 
 //        storageReference.getBytes(ONE_MB).addOnSuccessListener(new OnSuccessListener<byte[]>() {
 //            @Override
-//            public void onSuccess(byte[] bytes) {
+//            public void onSuccess(byte[] bytes) {cd
 //                Glide.with(context)
 //                        .load(bytes)
 //                        .listener(new RequestListener<Drawable>() {
