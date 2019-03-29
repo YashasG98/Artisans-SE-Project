@@ -16,12 +16,20 @@
             app:expandedTitleTextAppearance="@style/TextAppearance.AppCompat.Headline"
             app:layout_scrollFlags="exitUntilCollapsed|scroll"
             app:titleEnabled="false">
-            <ImageView
+            <com.jsibbold.zoomage.ZoomageView
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
                 android:id="@+id/artisan_product_details_iv_product_image"
                 app:layout_collapseMode="parallax"
-                android:scaleType="centerCrop"/>
+                android:scaleType="centerCrop"
+                app:zoomage_restrictBounds="true"
+                app:zoomage_animateOnReset="true"
+                app:zoomage_autoResetMode="UNDER"
+                app:zoomage_autoCenter="true"
+                app:zoomage_zoomable="true"
+                app:zoomage_translatable="true"
+                app:zoomage_minScale="0.8"
+                app:zoomage_maxScale="6"/>
 
         </android.support.design.widget.CollapsingToolbarLayout>
     </android.support.design.widget.AppBarLayout>
@@ -65,7 +73,7 @@
                         android:theme="@style/Yellow.Small.AppCompatRatingBar.White"
                         android:clickable="false"
                         android:numStars="5"
-                        android:stepSize="1.0"
+                        android:stepSize="0.1"
                         style="@style/Yellow.Small.AppCompatRatingBar.White"
                         android:id="@+id/artisan_product_details_rb_rating"/>
                     <TextView

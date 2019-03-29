@@ -101,10 +101,14 @@ public class UserLoginFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if (Name.getText().toString().isEmpty()) {
-                    Toast.makeText(getContext(), "Email is empty", Toast.LENGTH_SHORT).show();
-                } else if (Password.getText().toString().isEmpty()) {
-                    Toast.makeText(getContext(), "Password is empty", Toast.LENGTH_SHORT).show();
-                } else {
+                    Name.setError("Email is Empty");
+                    Name.requestFocus();
+                    //Toast.makeText(LoginActivity.this, "Email is empty", Toast.LENGTH_SHORT).show();
+                }  if (Password.getText().toString().isEmpty()) {
+                    Password.setError("Password is empty");
+                    Password.requestFocus();
+                    //Toast.makeText(LoginActivity.this, "Password is empty", Toast.LENGTH_SHORT).show();
+                } else if(!Name.getText().toString().isEmpty() && !Password.getText().toString().isEmpty() ) {
                     validate(Name.getText().toString(), Password.getText().toString());
                 }
             }

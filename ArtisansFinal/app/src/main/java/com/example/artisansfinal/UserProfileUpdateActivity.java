@@ -1,5 +1,6 @@
 package com.example.artisansfinal;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -35,10 +36,17 @@ public class UserProfileUpdateActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_user_info);
 
+        Intent in=getIntent();
+        String name=in.getStringExtra("Name");
+        String pc=in.getStringExtra("PC");
+
         databaseUsers = FirebaseDatabase.getInstance().getReference("User");
         updateUserName = (EditText) findViewById(R.id.updateUserName);
         updateUserPin = (EditText) findViewById(R.id.updateUserPin);
         buttonUpdateUser = (Button) findViewById(R.id.buttonUpdateUser);
+
+        updateUserPin.setText(pc);
+        updateUserName.setText(name);
 
         buttonUpdateUser.setOnClickListener(new View.OnClickListener() {
             @Override
