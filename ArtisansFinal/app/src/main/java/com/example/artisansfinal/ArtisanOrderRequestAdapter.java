@@ -42,6 +42,12 @@ public class ArtisanOrderRequestAdapter extends RecyclerView.Adapter<ArtisanOrde
 
     private ArrayList<orderInfo> order;
     private Context context;
+    private String temp_id;
+    private String temp_ballance;
+    private String temp_productprice;
+    private String temp_ballance_artisan;
+    DatabaseReference databaseUsers;
+    DatabaseReference databaseArtisans;
     FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
     FirebaseUser userX = firebaseAuth.getCurrentUser();
     final DatabaseReference dba = FirebaseDatabase.getInstance().getReference("Orders/Artisans/" + userX.getPhoneNumber() + "/Order Requests");
@@ -88,6 +94,7 @@ public class ArtisanOrderRequestAdapter extends RecyclerView.Adapter<ArtisanOrde
     @Override
     public void onBindViewHolder(@NonNull final ArtisanOrderRequestViewHolder viewHolder, final int i) {
         final orderInfo orderX = order.get(i);
+        temp_productprice=orderX.getPrice();
 
         viewHolder.productName.setText(orderX.getName());
         viewHolder.dueDate.setText(orderX.getDate());
@@ -119,6 +126,59 @@ public class ArtisanOrderRequestAdapter extends RecyclerView.Adapter<ArtisanOrde
         } else {
             viewHolder.card.setCardBackgroundColor(Color.parseColor("#FFFFFF"));
         }
+
+
+
+        databaseUsers= FirebaseDatabase.getInstance().getReference("User");
+        databaseArtisans= FirebaseDatabase.getInstance().getReference("Artisans");
+
+
+
+
+        databaseUsers.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                for(DataSnapshot user: dataSnapshot.getChildren()){
+                    if(user.child("userEmail").getValue().toString().equals(orderX.getUserEmail()))
+
+                    {
+
+                        temp_id=user.child("userPnumber").getValue().toString();
+                        temp_ballance=user.child("userWallet").getValue().toString();
+
+
+
+
+
+
+                        break;
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+        FirebaseDatabase.getInstance().getReference("Artisans").child(userX.getPhoneNumber()).child("wallet").
+                addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+
+                        temp_ballance_artisan=dataSnapshot.getValue(String.class);
+
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
 
 
         viewHolder.card.setOnClickListener(new View.OnClickListener() {
@@ -179,13 +239,29 @@ public class ArtisanOrderRequestAdapter extends RecyclerView.Adapter<ArtisanOrde
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
 
+                            float f=Float.parseFloat(temp_ballance);
+                            float t=Float.parseFloat(temp_productprice);
+                            float a=Float.parseFloat(temp_ballance_artisan);
+
+                                a=a+t;
+                                f=f-t;
+
+
+                                FirebaseDatabase firebaseDatabase=FirebaseDatabase.getInstance();
+                                DatabaseReference myRef=firebaseDatabase.getReference();
+                                myRef.child("User").child(temp_id).child("userWallet").setValue(Float.toString(f));
+                                myRef.child("Artisans").child(userX.getPhoneNumber()).child("wallet").setValue(Float.toString(a));
+
+
+
+
                             Handler handler = new Handler(Looper.getMainLooper());
                             handler.post(new Runnable() {
                                 @Override
                                 public void run() {
                                     sendMailUsingSendGrid(fromMail,orderX.getUserEmail(),
                                             "Email from the artisan developers team",
-                                            "Your Order has been accepted by the artisan and will be delivered shortly.Have a Good Day Sir/Maam :)");
+                                            "Your Order has been accepted by the artisan and an amount of  Rs."+temp_productprice+" is deducted from your wallet.Your product will be delivered shortly.Have a Good Day Sir/Maam :)");
 
                                     Toast.makeText(context,"Sending mail...", Toast.LENGTH_SHORT).show();
                                 }
@@ -253,7 +329,7 @@ public class ArtisanOrderRequestAdapter extends RecyclerView.Adapter<ArtisanOrde
 
 
                                 public void run() {
-                                    sendMailUsingSendGrid(fromMail, "sayan.biswas089@gmail.com",
+                                    sendMailUsingSendGrid(fromMail, orderX.getUserEmail(),
                                             "Email from the artisan developers team",
                                             "Sorry to say but your order is rejected as the artisan is already busy.Please place order to some other artisan.Have a Good Day Sir/Maam :)");
 
