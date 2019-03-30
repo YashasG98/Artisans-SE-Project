@@ -23,6 +23,8 @@ public class MainActivityWithAsyncTask extends AppCompatActivity {
     EditText latitudeEdit, longitudeEdit, addressEdit;
     ProgressBar locProg;
     TextView LocText;
+    TextView tprice;
+    ProgressBar calProg;
     CheckBox checkBox;
 
     public static final int USE_ADDRESS_NAME = 1;
@@ -43,6 +45,7 @@ public class MainActivityWithAsyncTask extends AppCompatActivity {
         locProg = (ProgressBar) findViewById(R.id.locProg);
         LocText = (TextView) findViewById(R.id.LocText);
         checkBox = (CheckBox) findViewById(R.id.checkbox);
+//        calProg = (ProgressBar) findViewById(R.id.);
     }
 
     /*public void onRadioButtonClicked(View view) {
