@@ -36,23 +36,23 @@
             app:hintTextAppearance="@style/TextLabel"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.44"
+            app:layout_constraintHorizontal_bias="0.47"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.141">
+            app:layout_constraintTop_toBottomOf="@+id/textView6"
+            app:layout_constraintVertical_bias="0.120000005">
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintVertical_bias="0.079">
-
 
 
             <EditText
                 android:id="@+id/login_page_et_user_name"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:textCursorDrawable="@drawable/cursor_color"
                 android:ems="10"
                 android:hint="Email"
                 android:inputType="textPersonName"
+                android:textCursorDrawable="@drawable/cursor_color"
+                android:textSize="18sp"
                 app:layout_constraintBottom_toTopOf="@+id/login_page_et_user_password" />
 
         </android.support.design.widget.TextInputLayout>
@@ -76,11 +76,11 @@
             app:hintTextAppearance="@style/TextLabel"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.43"
+            app:layout_constraintHorizontal_bias="0.48"
             app:layout_constraintStart_toStartOf="parent"
-            app:passwordToggleEnabled="true"
             app:layout_constraintTop_toBottomOf="@+id/TextInput_user_login_activity_email"
-            app:layout_constraintVertical_bias="0.141">
+            app:layout_constraintVertical_bias="0.141"
+            app:passwordToggleEnabled="true">
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintVertical_bias="0.079"
             >
@@ -90,10 +90,10 @@
                 android:id="@+id/login_page_et_user_password"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:textCursorDrawable="@drawable/cursor_color"
                 android:ems="10"
                 android:hint="Password"
-                android:inputType="textPassword" />
+                android:inputType="textPassword"
+                android:textCursorDrawable="@drawable/cursor_color" />
 
         </android.support.design.widget.TextInputLayout>
 
@@ -123,7 +123,7 @@
             android:layout_marginEnd="24dp"
             android:layout_marginBottom="8dp"
             android:text="Forgot Password?Click To Reset"
-            android:textColor="@color/black"
+            android:textColor="@color/colorPrimaryText"
             android:textSize="16sp"
             android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -181,6 +181,24 @@
             app:layout_constraintTop_toBottomOf="@+id/TextInput_user_login_activity_email"
             app:layout_constraintVertical_bias="1.0"
             app:srcCompat="@drawable/sayan_pass" />
+
+        <TextView
+            android:id="@+id/textView6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="24dp"
+            android:text="User Log In"
+            android:textColor="@color/black"
+            android:textSize="50sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.47"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.07999998" />
 
     </android.support.constraint.ConstraintLayout>
 </android.support.v4.widget.NestedScrollView>
