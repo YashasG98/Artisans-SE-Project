@@ -57,6 +57,7 @@ public class ArtisanRegistrationActivity extends AppCompatActivity {
     private String ContactNo;
     private String OTP;
     private String id;
+    private String wallet="0";
     private String userType;
     private String token;
 
@@ -237,7 +238,7 @@ public class ArtisanRegistrationActivity extends AppCompatActivity {
         if (emailFlag && pincodeFlag && usernameFlag && passwordFlag && contactNoFlag && OTPFlag) {
 
 
-            ArtisanInfo artisan = new ArtisanInfo(id, email, ContactNo, pincode, username, token);
+            ArtisanInfo artisan = new ArtisanInfo(id, email, ContactNo,wallet, pincode, username, token);
 
             databaseReference.child(ContactNo).setValue(artisan);
 

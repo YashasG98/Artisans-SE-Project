@@ -80,6 +80,8 @@ public class UserProductDetails1Fragment extends Fragment {
 
     private DatabaseReference databaseReference;
     private DatabaseReference users;
+    private String temp_productprice;
+    private String temp_user_wallet;
     private DatabaseReference ordHis;
     private StorageReference storageReference;
     private String artisanContactNumber;
@@ -230,6 +232,7 @@ public class UserProductDetails1Fragment extends Fragment {
                 HashMap<String, String> map = (HashMap<String, String>) dataSnapshot.getValue();
                 pname.setText(map.get("productName"));
                 aname.setText(map.get("artisanName"));
+                temp_productprice=map.get("productPrice");
                 price.setText(map.get("productPrice"));
                 pp = Integer.parseInt(map.get("productPrice"));
                 desc.setText(map.get("productDescription"));
@@ -305,6 +308,7 @@ public class UserProductDetails1Fragment extends Fragment {
                     UserInfo userInfo = userSnapshot.getValue(UserInfo.class);
                     if (userInfo.userEmail.equals(userX.getEmail())) {
                         userPhoneNumber = userInfo.userPnumber;
+                        temp_user_wallet=userInfo.userWallet;
 
                         break;
                     }
@@ -348,57 +352,67 @@ public class UserProductDetails1Fragment extends Fragment {
                 builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-
-                        final String opname = pname.getText().toString();
-                        confirmationFlag = true;
-                        //Log.d("HERE",opname);
-                        Log.d("token", artisanToken);
-                        final String oprice = price.getText().toString();
-                        final DatabaseReference database= FirebaseDatabase.getInstance().getReference("User/");
-                        database.addListenerForSingleValueEvent(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                for(DataSnapshot data: dataSnapshot.getChildren()){
-                                    if(data.child("userEmail").getValue().toString().equals(userX.getEmail())){
-                                        token=data.child("FCMToken").getValue().toString();
-
-                                        orderInfo order = new orderInfo(opname, oprice, formattedDate, userX.getUid(), productCategory, productID,userX.getEmail(),token);
-                                        String orderID = ordHis.push().getKey();
-                                        //ordHis.child(userX.getEmail().substring(0,userX.getEmail().indexOf('@'))).child(orderID).setValue(order);
-                                        ordHis.child("Users").child(userX.getUid()).child("Orders Requested").child(orderID).setValue(order);
-                                        orderID = ordHis.push().getKey();
-                                        ordHis.child("Artisans").child(artisanContactNumber).child("Order Requests").child(orderID).setValue(order);
-
-                                        Retrofit retrofit = new Retrofit.Builder()
-                                                .baseUrl("https://artisansfinal.firebaseapp.com/api/")
-                                                .addConverterFactory(GsonConverterFactory.create())
-                                                .build();
-
-                                        final Api api = retrofit.create(Api.class);
-                                        Call<ResponseBody> call=api.sendNotification(artisanToken,"Order Request!","You have request for "+opname);
-                                        call.enqueue(new Callback<ResponseBody>() {
-                                            @Override
-                                            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                                            }
-
-                                            @Override
-                                            public void onFailure(Call<ResponseBody> call, Throwable t) {
-
-                                            }
-                                        });
+                        //added by Sayan Biswas
+                        float w = Float.parseFloat(temp_user_wallet);
+                        float pp = Float.parseFloat(temp_productprice);
+                        if (w >= pp) {
 
 
+                            final String opname = pname.getText().toString();
+                            confirmationFlag = true;
+                            //Log.d("HERE",opname);
+                            Log.d("token", artisanToken);
+                            final String oprice = price.getText().toString();
+                            final DatabaseReference database = FirebaseDatabase.getInstance().getReference("User/");
+                            database.addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                    for (DataSnapshot data : dataSnapshot.getChildren()) {
+                                        if (data.child("userEmail").getValue().toString().equals(userX.getEmail())) {
+                                            token = data.child("FCMToken").getValue().toString();
+
+                                            orderInfo order = new orderInfo(opname, oprice, formattedDate, userX.getUid(), productCategory, productID, userX.getEmail(), token);
+                                            String orderID = ordHis.push().getKey();
+                                            //ordHis.child(userX.getEmail().substring(0,userX.getEmail().indexOf('@'))).child(orderID).setValue(order);
+                                            ordHis.child("Users").child(userX.getUid()).child("Orders Requested").child(orderID).setValue(order);
+                                            orderID = ordHis.push().getKey();
+                                            ordHis.child("Artisans").child(artisanContactNumber).child("Order Requests").child(orderID).setValue(order);
+
+                                            Retrofit retrofit = new Retrofit.Builder()
+                                                    .baseUrl("https://artisansfinal.firebaseapp.com/api/")
+                                                    .addConverterFactory(GsonConverterFactory.create())
+                                                    .build();
+
+                                            final Api api = retrofit.create(Api.class);
+                                            Call<ResponseBody> call = api.sendNotification(artisanToken, "Order Request!", "You have request for " + opname);
+                                            call.enqueue(new Callback<ResponseBody>() {
+                                                @Override
+                                                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                                                }
+
+                                                @Override
+                                                public void onFailure(Call<ResponseBody> call, Throwable t) {
+
+                                                }
+                                            });
+
+
+                                        }
                                     }
                                 }
-                            }
 
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError databaseError) {
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError databaseError) {
 
-                            }
-                        });
+                                }
+                            });
 
 
+                        }
+                        else
+                        {
+                            Toast.makeText(getContext(),"Not sufficient ballance to purchase.Please add money to your wallet to continue",Toast.LENGTH_SHORT).show();
+                        }
                     }
                 });
 
