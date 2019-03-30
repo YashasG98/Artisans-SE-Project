@@ -32,11 +32,14 @@ public class ArtisanProfileUpdateActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.edit_artisan_info);
+        setContentView(R.layout.activity_edit_artisan_info);
         Intent i=getIntent();
         String name=i.getStringExtra("Name");
         String pc=i.getStringExtra("PC");
+
         databaseArtisans= FirebaseDatabase.getInstance().getReference("Artisans/"+ userX.getPhoneNumber());
+        final DatabaseReference dbrefArtisanProducts = FirebaseDatabase.getInstance().getReference("ArtisanProducts/"+userX.getPhoneNumber());
+
         updateArtisanName = (EditText) findViewById(R.id.updateArtisanName);
         updateArtisanPin = (EditText) findViewById(R.id.updateArtisanPin);
         buttonUpdateArtisan = (Button) findViewById(R.id.buttonUpdateArtisan);
@@ -62,6 +65,50 @@ public class ArtisanProfileUpdateActivity extends AppCompatActivity {
                     pf=false;
                 }
                 if(nf && pf) {
+
+                    dbrefArtisanProducts.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            for(DataSnapshot data: dataSnapshot.getChildren()){
+                                DatabaseReference tempref= FirebaseDatabase.getInstance().getReference("ArtisanProducts/"+userX.getPhoneNumber()+"/"+data.getKey());
+                                tempref.child("artisanName").setValue(newName);
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
+
+                    FirebaseDatabase.getInstance().getReference("Categories").addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            for(final DataSnapshot data: dataSnapshot.getChildren()){
+                                FirebaseDatabase.getInstance().getReference("Categories/"+data.getKey()).addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot dataSnapshot2) {
+                                        for(DataSnapshot data2:dataSnapshot2.getChildren()){
+                                            if(data2.child("artisanContactNumber").getValue().toString().equals(userX.getPhoneNumber())){
+                                                FirebaseDatabase.getInstance().getReference("Categories/"+data.getKey()+"/"+data2.getKey()).child("artisanName").setValue(newName);
+                                            }
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                    }
+                                });
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
+
                     databaseArtisans.child("username").setValue(newName);
                     databaseArtisans.child("postal_address").setValue(newPin);
                     Toast.makeText(ArtisanProfileUpdateActivity.this,"Profile Updated",Toast.LENGTH_LONG).show();

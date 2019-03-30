@@ -34,7 +34,7 @@ public class ArtisanProfilePageActivity extends AppCompatActivity{
             setContentView(R.layout.activity_artisan_profile_page);
             final ProgressDialog progress = new ProgressDialog(this);
             progress.setTitle("Loading");
-            progress.setMessage("In a minute!");
+            progress.setMessage("Loading your profile...");
             progress.setCancelable(false); // disable dismiss by tapping outside of the dialog
             progress.show();
             databaseArtisans= FirebaseDatabase.getInstance().getReference("Artisans");
