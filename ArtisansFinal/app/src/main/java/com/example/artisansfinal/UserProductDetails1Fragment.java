@@ -97,7 +97,7 @@ public class UserProductDetails1Fragment extends Fragment {
     private String pincode;
     private boolean confirmationFlag = false;
 
-    //Lcation based
+    //Lcation based done by shrinidhi anil varna
     AddressResultReceiver mResultReceiver;
     double latid = 0,longit = 0;
     EditText latitudeEdit, longitudeEdit, addressEdit;
@@ -107,7 +107,7 @@ public class UserProductDetails1Fragment extends Fragment {
     ProgressBar locProg;
     TextView current_location;
     CheckBox checkBox;
-    int ch;
+    int ch,pp;
     public String name;
     //private static final String TAG = "MainActivity";
     private int STORAGE_PERMISSION_CODE = 1;
@@ -157,16 +157,16 @@ public class UserProductDetails1Fragment extends Fragment {
         final ImageButton toggleReviewTab = view.findViewById(R.id.user_product_details1_bt_tab_reviews);
         final LinearLayout expandDescription = view.findViewById(R.id.user_product_details1_ll_expand_description);
 
-        final ImageButton toggleLocation = view.findViewById(R.id.user_product_details1_bt_toggle_description_location);
+        final ImageButton toggleLocation = view.findViewById(R.id.buttonaddress);
         final LinearLayout expandLocation = view.findViewById(R.id.user_product_details1_ll_expand_description_location);
-        final TextView locText = view.findViewById(R.id.user_product_details1_tv_product_description_location);
-        final ProgressBar locProg = view.findViewById(R.id.locProg);
+        locText = (TextView) view.findViewById(R.id.LocText);
+        locProg = (ProgressBar) view.findViewById(R.id.locProg);
 
-        addressEdit = (EditText) view.findViewById(R.id.addressEdit);
-        progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
-        infoText = (TextView) view.findViewById(R.id.infoText);
+        //addressEdit = (EditText) view.findViewById(R.id.addressEdit);
+        //progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
+        //infoText = (TextView) view.findViewById(R.id.infoText2);
         checkBox = (CheckBox) view.findViewById(R.id.checkbox);
-        final Button buttonaddress = view.findViewById(R.id.buttonaddress);
+        //final Button buttonaddress2 = view.findViewById(R.id.buttonaddress2);
         locationManager = (LocationManager) getContext().getSystemService(Context.LOCATION_SERVICE);
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(getActivity());
 
@@ -174,13 +174,13 @@ public class UserProductDetails1Fragment extends Fragment {
         if (isServicesOK()) {
             fetchLocation();
         }
-        buttonaddress.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                artisanfetch(v);
-
-            }
-        });
+//        buttonaddress2.setOnClickListener(new OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                artisanfetch(v);
+//
+//            }
+//        });
         toggleDescription.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -207,6 +207,8 @@ public class UserProductDetails1Fragment extends Fragment {
                 toggleArrow(toggleLocation);
                 if(expandLocation.getVisibility()==View.GONE){
                     expandLocation.setVisibility(View.VISIBLE);
+                    artisanfetch(v);
+                    //locText.setText("Rs."+ch);
                 }
                 else{
                     expandLocation.setVisibility(View.GONE);
@@ -232,11 +234,13 @@ public class UserProductDetails1Fragment extends Fragment {
                 aname.setText(map.get("artisanName"));
                 temp_productprice=map.get("productPrice");
                 price.setText(map.get("productPrice"));
+                pp = Integer.parseInt(map.get("productPrice"));
                 desc.setText(map.get("productDescription"));
-                locText.setText("Rs."+(int)(0.1*Float.parseFloat(map.get("productPrice"))));
+                //locText.setText("Rs."+(int)(0.1*Float.parseFloat(map.get("productPrice"))));
                 ratingBar.setRating(Float.parseFloat(map.get("totalRating")));
-               
+
                numberRated.setText(map.get("numberOfPeopleWhoHaveRated")); 
+
                 artisanContactNumber = map.get("artisanContactNumber");
                 artisanPin = map.get("pincode");
                 try {
@@ -584,9 +588,9 @@ public class UserProductDetails1Fragment extends Fragment {
             intent.putExtra(Constants.LOCATION_LONGITUDE_DATA_EXTRA,
                     longit);
         }
-        infoText.setVisibility(View.INVISIBLE);
+        //infoText.setVisibility(View.INVISIBLE);
 //        locText.setVisibility(View.INVISIBLE);
-      progressBar.setVisibility(View.VISIBLE);
+      //progressBar.setVisibility(View.VISIBLE);
 //        locProg.setVisibility(View.VISIBLE);
         Log.e(TAG, "Starting Service");
         getContext().startService(intent);
@@ -626,9 +630,12 @@ public class UserProductDetails1Fragment extends Fragment {
 
                                     }
                                 });
-                        progressBar.setVisibility(View.GONE);
-                        infoText.setVisibility(View.VISIBLE);
-                        infoText.setText("Rs. " + ch);
+                        //progressBar.setVisibility(View.GONE);
+                        locProg.setVisibility(View.GONE);
+                        //infoText.setVisibility(View.VISIBLE);
+                        locText.setVisibility(View.VISIBLE);
+                        //infoText.setText("Rs. " + ch);
+                        locText.setText("Rs. "+ch);
 //                        databaseReference.addValueEventListener(new ValueEventListener() {
 //                            @Override
 //                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -686,9 +693,12 @@ public class UserProductDetails1Fragment extends Fragment {
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        progressBar.setVisibility(View.GONE);
-                        infoText.setVisibility(View.VISIBLE);
-                        infoText.setText(resultData.getString(Constants.RESULT_DATA_KEY));
+                        //progressBar.setVisibility(View.GONE);
+                        locProg.setVisibility(View.GONE);
+                        //infoText.setVisibility(View.VISIBLE);
+                        locText.setVisibility(View.VISIBLE);
+                        //infoText.setText(resultData.getString(Constants.RESULT_DATA_KEY));
+                        locText.setText(resultData.getString(Constants.RESULT_DATA_KEY));
                     }
                 });
             }
