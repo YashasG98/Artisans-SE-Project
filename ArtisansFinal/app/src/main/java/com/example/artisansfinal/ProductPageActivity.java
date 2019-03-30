@@ -290,9 +290,9 @@ public class ProductPageActivity extends AppCompatActivity {
         });
         // longitudeEdit = (EditText) findViewById(R.id.longitudeEdit);
         //latitudeEdit = (EditText) findViewById(R.id.latitudeEdit);
-        addressEdit = (EditText) findViewById(R.id.addressEdit);
-        progressBar = (ProgressBar) findViewById(R.id.progressBar);
-        infoText = (TextView) findViewById(R.id.infoText);
+        //addressEdit = (EditText) findViewById(R.id.addressEdit);
+        //progressBar = (ProgressBar) findViewById(R.id.progressBar);
+        //infoText = (TextView) findViewById(R.id.infoText2);
         checkBox = (CheckBox) findViewById(R.id.checkbox);
         //fetch = findViewById(R.id.fetch_location); //main
         //user_location = findViewById((R.id.user_location)); //main
@@ -448,8 +448,8 @@ public class ProductPageActivity extends AppCompatActivity {
             intent.putExtra(Constants.LOCATION_LONGITUDE_DATA_EXTRA,
                     Double.parseDouble(longitudeEdit.getText().toString()));
         }
-        infoText.setVisibility(View.INVISIBLE);
-        progressBar.setVisibility(View.VISIBLE);
+        //infoText.setVisibility(View.INVISIBLE);
+        //progressBar.setVisibility(View.VISIBLE);
         Log.e(TAG, "Starting Service");
         startService(intent);
     }
@@ -502,8 +502,8 @@ public class ProductPageActivity extends AppCompatActivity {
             intent.putExtra(Constants.LOCATION_LONGITUDE_DATA_EXTRA,
                     longit);
         }
-        infoText.setVisibility(View.INVISIBLE);
-        progressBar.setVisibility(View.VISIBLE);
+        //infoText.setVisibility(View.INVISIBLE);
+        //progressBar.setVisibility(View.VISIBLE);
         Log.e(TAG, "Starting Service");
         startService(intent);
     }
@@ -523,9 +523,9 @@ public class ProductPageActivity extends AppCompatActivity {
                         double R = 6371; // Radius of the earth in km
                         double charges = Math.sqrt((latid-address.getLatitude())*(latid-address.getLatitude()) + (longit-address.getLongitude())*(longit-address.getLongitude()));
                         charges = charges*R*0.05;
-                        progressBar.setVisibility(View.GONE);
-                        infoText.setVisibility(View.VISIBLE);
-                        infoText.setText("Delivery Charges: " + charges);
+                        //progressBar.setVisibility(View.GONE);
+                        //infoText.setVisibility(View.VISIBLE);
+                        //infoText.setText("Delivery Charges: " + charges);
                     }
                 });
             }
@@ -533,9 +533,9 @@ public class ProductPageActivity extends AppCompatActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        progressBar.setVisibility(View.GONE);
-                        infoText.setVisibility(View.VISIBLE);
-                        infoText.setText(resultData.getString(Constants.RESULT_DATA_KEY));
+                        //progressBar.setVisibility(View.GONE);
+                        //infoText.setVisibility(View.VISIBLE);
+                        //infoText.setText(resultData.getString(Constants.RESULT_DATA_KEY));
                     }
                 });
             }
