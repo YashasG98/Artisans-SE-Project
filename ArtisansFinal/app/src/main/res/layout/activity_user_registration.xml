@@ -280,44 +280,8 @@
             android:text="Register"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.55"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/userWallet" />
-
-
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/userWallet"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="24dp"
-            android:layout_marginBottom="8dp"
-            android:hint="Wallet Amount"
-            android:textColorHint="#000306"
-            app:boxStrokeColor="#73bbf7"
-            app:helperTextEnabled="true"
-            app:hintAnimationEnabled="false"
-            app:hintEnabled="true"
-            app:hintTextAppearance="@style/TextLabel"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.55"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/userPincode"
-            app:layout_constraintVertical_bias="0.0">
-
-            <EditText
-                android:id="@+id/registration_page_et_user_wallet"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:inputType="textPersonName"
-                android:textColor="@color/black"
-                tools:layout_editor_absoluteX="107dp"
-                tools:layout_editor_absoluteY="553dp" />
-        </android.support.design.widget.TextInputLayout>
+            app:layout_constraintTop_toBottomOf="@+id/userPincode" />
 
 
     </android.support.constraint.ConstraintLayout>
