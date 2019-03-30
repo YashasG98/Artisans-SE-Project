@@ -47,6 +47,9 @@ import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.UUID;
 
 import smartdevelop.ir.eram.showcaseviewlib.GuideView;
@@ -68,6 +71,8 @@ public class ProductRegistrationActivity extends AppCompatActivity {
     private static boolean runInOnePage = false;
     private static String artisanName = null;
     private static String artisanContactNumber = null;
+    private static final DateFormat DATE_FORMAT = new SimpleDateFormat("yyyy/MM/dd hh:mm:ss");
+
     //private double resizeFactorForHighRes[] = {1,0.8,0.7,0.6,0.5};
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,9 +91,9 @@ public class ProductRegistrationActivity extends AppCompatActivity {
         Intent intent = getIntent();
         artisanName = intent.getStringExtra("name");
         artisanContactNumber = intent.getStringExtra("phoneNumber");
-        Log.d(TAG, "onClick: "+artisanName+" "+artisanContactNumber);
+        /*Log.d(TAG, "onClick: "+artisanName+" "+artisanContactNumber);*/
 
-        if(!runInOnePage){
+/*        if(!runInOnePage){
             if(browse.getVisibility() == View.VISIBLE){
                 Tutorial tutorial = new Tutorial(this);
                 tutorial.checkIfFirstRun();
@@ -96,7 +101,7 @@ public class ProductRegistrationActivity extends AppCompatActivity {
                 tutorial.finishedTutorial();
                 runInOnePage=false;
             }
-        }
+        }*/
 
         browse.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -149,10 +154,12 @@ public class ProductRegistrationActivity extends AppCompatActivity {
                     product = new ProductInfo(productID, productName, productDescription, productCategory, productPrice, artisanName, artisanContactNumber);
                     product.setTotalRating("0");
                     product.setNumberOfPeopleWhoHaveRated("0");
+                    product.setNumberOfSales("0");
+                    product.setDateOfRegistration(DATE_FORMAT.format(new Date()));
                     databaseReference.child("Categories").child(productCategory).child(productID).setValue(product);
                     databaseReference.child("ArtisanProducts").child(artisanContactNumber).child(productID).setValue(product);
+                    databaseReference.child("Products").child(productID).setValue(product);
 
-//                    databaseReference.child("Products").child(productName).setValue(product);
                     if (mainImageURI != null) {
                         Log.d("IMAGEURI", mainImageURI.toString());
                         uploadImage(mainImageURI);
