@@ -101,7 +101,7 @@ public class ArtisanOrderRequestAdapter extends RecyclerView.Adapter<ArtisanOrde
         viewHolder.productPrice.setText(orderX.getPrice());
         viewHolder.userUID.setText(orderX.getUserUID());
         viewHolder.userUID.setVisibility(View.GONE);
-        Log.d("HEY", orderX.toString() + "!" + i);
+        //Log.d("HEY", orderX.toString() + "!" + i);
 //        viewHolder.card.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View v) {
@@ -117,7 +117,7 @@ public class ArtisanOrderRequestAdapter extends RecyclerView.Adapter<ArtisanOrde
 
         final Api api = retrofit.create(Api.class);
 
-        Log.d("HEY",orderX.toString());
+        //Log.d("HEY",orderX.toString());
 
         if (orderX.getC().equals("g")) {
             viewHolder.card.setCardBackgroundColor(Color.parseColor("#76FF03"));
@@ -189,7 +189,7 @@ public class ArtisanOrderRequestAdapter extends RecyclerView.Adapter<ArtisanOrde
             @Override
             public void onClick(View v) {
                 if(orderX.getC().equals("d")) {
-                    final DatabaseReference dbu = FirebaseDatabase.getInstance().getReference("Orders/Users/" + viewHolder.userUID.getText().toString() + "/Orders Requested");
+                    final DatabaseReference dbu = FirebaseDatabase.getInstance().getReference("Orders/Users/" + orderX.userUID + "/Orders Requested");
                     Log.d("onClick", orderX.toString());
 
                     dba.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -219,7 +219,12 @@ public class ArtisanOrderRequestAdapter extends RecyclerView.Adapter<ArtisanOrde
                             for (DataSnapshot child : dataSnapshot.getChildren()) {
                                 //Log.d("HEY",child.child("userUID").getValue().toString());
                                 //Log.d("HERE",viewHolder.userUID.getText().toString()+" "+child.getKey());
-                                if (child.child("userUID").getValue().toString().equals(viewHolder.userUID.getText().toString()) && child.child("date").getValue().toString().equals(viewHolder.dueDate.getText().toString()) && child.child("name").getValue().toString().equals(viewHolder.productName.getText().toString())) {
+                                Log.d("HEY",child.getKey());
+                                Log.d("HEY2",child.getValue().toString());
+                                Log.d("HEY2",child.child("userUID").getValue().toString());
+                                Log.d("HEY2",child.child("date").getValue().toString());
+                                Log.d("HEY2",child.child("name").getValue().toString());
+                                if (child.child("userUID").getValue().toString().equals(orderX.userUID) && child.child("date").getValue().toString().equals(orderX.date) && child.child("name").getValue().toString().equals(orderX.name)) {
                                     userKey = child.getKey();
                                 }
                             }
