@@ -5,7 +5,9 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.PagerSnapHelper;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SnapHelper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,6 +35,8 @@ public class UserRequestedOrderHistoryFragment extends Fragment
         View view = inflater.inflate(R.layout.order_history, container, false);
         final RecyclerView recyclerView = view.findViewById(R.id.orderHistory_rv);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+//        SnapHelper snapHelper = new PagerSnapHelper();
+//        snapHelper.attachToRecyclerView(recyclerView);
         orders.clear();
         final OHAdapter ohAdapter = new OHAdapter(getContext(), orders, "UserRequestedOrderHistoryFragment");
         recyclerView.setAdapter(ohAdapter);

@@ -16,7 +16,7 @@ import android.widget.SearchView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.cooltechworks.views.shimmer.ShimmerRecyclerView;
+//import com.cooltechworks.views.shimmer.ShimmerRecyclerView;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;

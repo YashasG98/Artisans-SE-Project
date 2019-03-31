@@ -1,6 +1,7 @@
 package com.example.artisansfinal;
 
 import android.Manifest;
+import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.TabActivity;
 import android.content.Context;
@@ -35,6 +36,7 @@ import android.view.ViewGroup;
 import android.view.animation.TranslateAnimation;
 import android.widget.CalendarView;
 import android.widget.CheckBox;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -54,7 +56,9 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import android.widget.Button;
@@ -247,7 +251,7 @@ public class UserProductDetails1Fragment extends Fragment {
                 //locText.setText("Rs."+(int)(0.1*Float.parseFloat(map.get("productPrice"))));
                 ratingBar.setRating(Float.parseFloat(map.get("totalRating")));
 
-               numberRated.setText(map.get("numberOfPeopleWhoHaveRated")); 
+                numberRated.setText(map.get("numberOfPeopleWhoHaveRated"));
 
                 artisanContactNumber = map.get("artisanContactNumber");
                 artisanPin = map.get("pincode");
@@ -351,25 +355,60 @@ public class UserProductDetails1Fragment extends Fragment {
                 dprice = (TextView) userConfirmationView.findViewById(R.id.user_confirmation_delivery_charge);
                 tprice = (TextView) userConfirmationView.findViewById(R.id.user_confirmation_total_charge);
                 //calProg = (ProgressBar) userConfirmationView.findViewById(R.id.CalProg);
-                final CalendarView calendarView = userConfirmationView.findViewById(R.id.calendarView);
-                calendarView.setMinDate(Calendar.getInstance().getTimeInMillis());
-
-                final String months[] = { "Jan", "Feb", "Mar", "Apr",
-                        "May", "Jun", "Jul", "Aug",
-                        "Sep", "Oct", "Nov", "Dec" };
+//                final CalendarView calendarView = userConfirmationView.findViewById(R.id.calendarView);
+//                calendarView.setMinDate(Calendar.getInstance().getTimeInMillis());
+//
+//                final String months[] = { "Jan", "Feb", "Mar", "Apr",
+//                        "May", "Jun", "Jul", "Aug",
+//                        "Sep", "Oct", "Nov", "Dec" };
 
                 pprice.setText("Product price: Rs."+pp);
                 dprice.setText("Shipping price: Rs."+ch);
                 tprice.setText("Total amount: Rs."+(pp+ch));
 
-                calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
+                final EditText selectDeliveryDate = userConfirmationView.findViewById(R.id.delivery_date_et);
+                final Calendar currentDate = Calendar.getInstance();
+                final int day = currentDate.get(Calendar.DAY_OF_MONTH);
+                final int month = currentDate.get(Calendar.MONTH);
+                final int year = currentDate.get(Calendar.YEAR);
+                final SimpleDateFormat sf = new SimpleDateFormat("dd/MM/yyyy");
+
+                final DatePickerDialog.OnDateSetListener datePicker = new DatePickerDialog.OnDateSetListener() {
                     @Override
-                    public void onSelectedDayChange(CalendarView view, int year, int month, int dayOfMonth)
-                    {
-                        calendar = new GregorianCalendar(year, month, dayOfMonth);
-                        formattedDate = calendar.get(Calendar.DATE) + "-" +months[calendar.get(Calendar.MONTH)] + "-" + calendar.get(Calendar.YEAR);
+                    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+
+                        currentDate.set(Calendar.YEAR, year);
+                        currentDate.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                        currentDate.set(Calendar.MONTH, month);
+
+                        view.setMinDate(Calendar.getInstance().getTimeInMillis());
+
+                        Date selectedDate = currentDate.getTime();
+                        selectDeliveryDate.setText(sf.format(selectedDate));
+                        formattedDate = sf.format(selectedDate);
+                    }
+                };
+
+                selectDeliveryDate.setOnClickListener(new OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        DatePickerDialog datePickerDialog = new DatePickerDialog(getActivity(), datePicker, year, month, day );
+                        datePickerDialog.getDatePicker().setMinDate(Calendar.getInstance().getTimeInMillis());
+                        datePickerDialog.show();
+
                     }
                 });
+
+
+
+//                calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
+//                    @Override
+//                    public void onSelectedDayChange(CalendarView view, int year, int month, int dayOfMonth)
+//                    {
+//                        calendar = new GregorianCalendar(year, month, dayOfMonth);
+//                        formattedDate = calendar.get(Calendar.DATE) + "-" +months[calendar.get(Calendar.MONTH)] + "-" + calendar.get(Calendar.YEAR);
+//                    }
+//                });
 
                 builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
                     @Override
@@ -377,7 +416,8 @@ public class UserProductDetails1Fragment extends Fragment {
                         //added by Sayan Biswas
                         float w = Float.parseFloat(temp_user_wallet);
                         float pp = Float.parseFloat(temp_productprice);
-                        if (w >= pp) {
+                        //
+                        if (w >= pp && selectDeliveryDate.getText().toString().length() > 0) {
 
 
                             final String opname = pname.getText().toString();
@@ -433,7 +473,12 @@ public class UserProductDetails1Fragment extends Fragment {
                         }
                         else
                         {
-                            Toast.makeText(getContext(),"Not sufficient ballance to purchase.Please add money to your wallet to continue",Toast.LENGTH_SHORT).show();
+                            if(selectDeliveryDate.getText().length() == 0) {
+                                selectDeliveryDate.setError("Select a delivery date");
+                                Toast.makeText(getContext(), "Enter delivery date", Toast.LENGTH_LONG).show();
+                            }
+                            else
+                                Toast.makeText(getContext(),"Not sufficient balance to purchase.Please add money to your wallet to continue",Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
@@ -446,7 +491,7 @@ public class UserProductDetails1Fragment extends Fragment {
                 });
 
                 Dialog dialog = builder.create();
-                builder.show();
+                dialog.show();
             }
         });
 
@@ -612,7 +657,7 @@ public class UserProductDetails1Fragment extends Fragment {
         }
         //infoText.setVisibility(View.INVISIBLE);
 //        locText.setVisibility(View.INVISIBLE);
-      //progressBar.setVisibility(View.VISIBLE);
+        //progressBar.setVisibility(View.VISIBLE);
 //        locProg.setVisibility(View.VISIBLE);
         Log.e(TAG, "Starting Service");
         getContext().startService(intent);
@@ -709,7 +754,7 @@ public class UserProductDetails1Fragment extends Fragment {
                             charges = 0.1*pp;
                         else
                             charges = 10;
-                         ch = (int)charges;
+                        ch = (int)charges;
                         FirebaseDatabase.getInstance().getReference("Artisans").child(artisanContactNumber).child("postal_address").
                                 addValueEventListener(new ValueEventListener() {
                                     @Override
