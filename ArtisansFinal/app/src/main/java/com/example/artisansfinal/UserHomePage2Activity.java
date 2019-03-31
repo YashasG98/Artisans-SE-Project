@@ -1,22 +1,32 @@
 package com.example.artisansfinal;
 
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.PagerSnapHelper;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.SnapHelper;
-import android.util.Log;
 import android.view.View;
+import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.LinearLayout;
 import android.widget.SearchView;
-import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
-//import com.cooltechworks.views.shimmer.ShimmerRecyclerView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -30,9 +40,8 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 
-import static java.util.Collections.sort;
-
-public class UserHomePage1Activity extends AppCompatActivity {
+public class UserHomePage2Activity extends AppCompatActivity
+        implements NavigationView.OnNavigationItemSelectedListener {
 
     private RecyclerView bestRatedRecyclerView;
     private RecyclerView mostSoldRecyclerView;
@@ -45,41 +54,111 @@ public class UserHomePage1Activity extends AppCompatActivity {
     private ArrayList<ProductInfo> searchResults = new ArrayList<>();
     private LinearLayout contentLayout;
     private LinearLayout searchLayout;
-    private UserHomePage1RecyclerViewAdapter bestRatedRecyclerViewAdapter;
-    private UserHomePage1RecyclerViewAdapter mostSoldRecyclerViewAdapter;
-    private UserHomePage1RecyclerViewAdapter recentlyAddedRecyclerViewAdapter;
+    private UserHomePage2RecyclerViewAdapter bestRatedRecyclerViewAdapter;
+    private UserHomePage2RecyclerViewAdapter mostSoldRecyclerViewAdapter;
+    private UserHomePage2RecyclerViewAdapter recentlyAddedRecyclerViewAdapter;
 
     private String queryText = null;
     private RecyclerView searchRecyclerView;
     private CategoryRecyclerViewAdapter searchRecyclerViewAdapter;
 
+    private DrawerLayout drawerLayout;
+    private ActionBarDrawerToggle actionBarDrawerToggle;
+    private NavigationView navigationView;
+    private Toolbar toolbar;
+
+    private FirebaseAuth firebaseAuth;
+    String username;
+    String email;
+    String uid;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_user_home_page1);
+        setContentView(R.layout.activity_user_home_page2);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        toolbar.setTitle("");
 
-        final LinearLayout contentLayout = findViewById(R.id.user_home_page1_ll_content);
-        final LinearLayout searchLayout = findViewById(R.id.user_home_page1_ll_search);
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        toggle.setDrawerIndicatorEnabled(true);
+
+        drawer.addDrawerListener(toggle);
+
+        toggle.syncState();
+
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.getMenu().getItem(0).setChecked(true);
+        navigationView.setNavigationItemSelectedListener(this);
+
+        firebaseAuth = FirebaseAuth.getInstance();
+        FirebaseUser user = firebaseAuth.getCurrentUser();
+        if(user != null)
+        {
+            uid = user.getUid();
+
+            FirebaseDatabase.getInstance().getReference().child("User").addChildEventListener(new ChildEventListener() {
+                @Override
+                public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                    HashMap<String, String> map = (HashMap<String, String>)dataSnapshot.getValue();
+                    if(map.get("UID").equals(uid)){
+                        username = map.get("userName");
+                        email = map.get("userEmail");
+
+                        TextView displayName = findViewById(R.id.nav_header_user_home_page2_user_name);
+                        TextView displayEmail = findViewById(R.id.nav_header_user_home_page2_user_email);
+
+                        displayEmail.setText(email);
+                        displayName.setText(username);
+                    }
+                }
+
+                @Override
+                public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                }
+
+                @Override
+                public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+                }
+
+                @Override
+                public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+        }
+
+        final LinearLayout contentLayout = findViewById(R.id.user_home_page2_ll_content);
+        final LinearLayout searchLayout = findViewById(R.id.user_home_page2_ll_search);
         searchLayout.setVisibility(View.GONE);
 
-        bestRatedRecyclerView = findViewById(R.id.user_home_page1_srv_best_rated);
+        bestRatedRecyclerView = findViewById(R.id.user_home_page2_srv_best_rated);
         bestRatedRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
-        bestRatedRecyclerViewAdapter = new UserHomePage1RecyclerViewAdapter(this, bestRatedProducts);
+        bestRatedRecyclerViewAdapter = new UserHomePage2RecyclerViewAdapter(this, bestRatedProducts);
 //        SnapHelper snapHelper1 = new PagerSnapHelper();
 //        snapHelper1.attachToRecyclerView(bestRatedRecyclerView);
         bestRatedRecyclerView.setAdapter(bestRatedRecyclerViewAdapter);
 
-        mostSoldRecyclerView = findViewById(R.id.user_home_page1_srv_most_sold);
+        mostSoldRecyclerView = findViewById(R.id.user_home_page2_srv_most_sold);
         mostSoldRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
-        mostSoldRecyclerViewAdapter = new UserHomePage1RecyclerViewAdapter(this, mostSoldProducts);
+        mostSoldRecyclerViewAdapter = new UserHomePage2RecyclerViewAdapter(this, mostSoldProducts);
 //        SnapHelper snapHelper2 = new PagerSnapHelper();
 //        snapHelper2.attachToRecyclerView(mostSoldRecyclerView);
         mostSoldRecyclerView.setAdapter(mostSoldRecyclerViewAdapter);
 
-        recentlyAddedRecyclerView = findViewById(R.id.user_home_page1_srv_recently_added);
+        recentlyAddedRecyclerView = findViewById(R.id.user_home_page2_srv_recently_added);
         recentlyAddedRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
-        recentlyAddedRecyclerViewAdapter = new UserHomePage1RecyclerViewAdapter(this, recentlyAddedProducts);
+        recentlyAddedRecyclerViewAdapter = new UserHomePage2RecyclerViewAdapter(this, recentlyAddedProducts);
         recentlyAddedRecyclerView.setAdapter(recentlyAddedRecyclerViewAdapter);
 
         databaseReference = FirebaseDatabase.getInstance().getReference("Categories/Saree/"); //needs to be changed
@@ -99,28 +178,28 @@ public class UserHomePage1Activity extends AppCompatActivity {
                 searchRecyclerViewAdapter.added(productInfo);
                 recentlyAddedRecyclerViewAdapter.added(productInfo);
 
-                Collections.sort(bestRatedProducts, new SortingByRating());
+                Collections.sort(bestRatedProducts, new UserHomePage2Activity.SortingByRating());
 //                ArrayList<ProductInfo> temp1 = new ArrayList<>();
 //                for(int i=0; i<bestRatedProducts.size() && i<8; i++){
 //                    temp1.add(bestRatedProducts.get(i));
 //                }
-                bestRatedRecyclerViewAdapter = new UserHomePage1RecyclerViewAdapter(UserHomePage1Activity.this, bestRatedProducts);
+                bestRatedRecyclerViewAdapter = new UserHomePage2RecyclerViewAdapter(UserHomePage2Activity.this, bestRatedProducts);
                 bestRatedRecyclerView.setAdapter(bestRatedRecyclerViewAdapter);
 
-                Collections.sort(mostSoldProducts, new SortingBySold());
+                Collections.sort(mostSoldProducts, new UserHomePage2Activity.SortingBySold());
 //                ArrayList<ProductInfo> temp2 = new ArrayList<>();
 //                for(int i=0; i<bestRatedProducts.size() && i<8; i++){
 //                    temp2.add(bestRatedProducts.get(i));
 //                }
-                mostSoldRecyclerViewAdapter = new UserHomePage1RecyclerViewAdapter(UserHomePage1Activity.this, mostSoldProducts);
+                mostSoldRecyclerViewAdapter = new UserHomePage2RecyclerViewAdapter(UserHomePage2Activity.this, mostSoldProducts);
                 mostSoldRecyclerView.setAdapter(mostSoldRecyclerViewAdapter);
 
-                Collections.sort(recentlyAddedProducts, new SortingByDate());
+                Collections.sort(recentlyAddedProducts, new UserHomePage2Activity.SortingByDate());
 //                ArrayList<ProductInfo> temp3 = new ArrayList<>();
 //                for(int i=0; i<bestRatedProducts.size() && i<8; i++){
 //                    temp3.add(bestRatedProducts.get(i));
 //                }
-                recentlyAddedRecyclerViewAdapter = new UserHomePage1RecyclerViewAdapter(UserHomePage1Activity.this, recentlyAddedProducts);
+                recentlyAddedRecyclerViewAdapter = new UserHomePage2RecyclerViewAdapter(UserHomePage2Activity.this, recentlyAddedProducts);
                 recentlyAddedRecyclerView.setAdapter(recentlyAddedRecyclerViewAdapter);
             }
 
@@ -151,8 +230,8 @@ public class UserHomePage1Activity extends AppCompatActivity {
 
 
 
-        final SearchView searchView = findViewById(R.id.user_home_page1_sv_search);
-        searchRecyclerView = findViewById(R.id.user_home_page1_srv_search);
+        final SearchView searchView = findViewById(R.id.user_home_page2_sv_search);
+        searchRecyclerView = findViewById(R.id.user_home_page2_srv_search);
         searchRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         searchRecyclerViewAdapter = new CategoryRecyclerViewAdapter(this, productInfos);
 
@@ -169,7 +248,7 @@ public class UserHomePage1Activity extends AppCompatActivity {
 
                 for(ProductInfo product: productInfos){
                     if(product.getProductName().toLowerCase().contains(query.trim().toLowerCase())
-                        || product.getArtisanName().toLowerCase().contains(query.trim().toLowerCase()))
+                            || product.getArtisanName().toLowerCase().contains(query.trim().toLowerCase()))
                         searchResults.add(product);
                 }
                 searchRecyclerViewAdapter = new CategoryRecyclerViewAdapter(getBaseContext(), searchResults);
@@ -208,14 +287,14 @@ public class UserHomePage1Activity extends AppCompatActivity {
 
 
 
-        final TextView more1 = findViewById(R.id.user_home_page1_tv_most_sold_more);
-        final TextView more2 = findViewById(R.id.user_home_page1_tv_best_rated_more);
-        final TextView more3 = findViewById(R.id.user_home_page1_tv_recently_added_more);
+        final TextView more1 = findViewById(R.id.user_home_page2_tv_most_sold_more);
+        final TextView more2 = findViewById(R.id.user_home_page2_tv_best_rated_more);
+        final TextView more3 = findViewById(R.id.user_home_page2_tv_recently_added_more);
 
         more1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent newIntent = new Intent(UserHomePage1Activity.this, DisplayProductsActivity.class);
+                Intent newIntent = new Intent(UserHomePage2Activity.this, DisplayProductsActivity.class);
                 newIntent.putExtra("choice","sold");
                 startActivity(newIntent);
             }
@@ -224,7 +303,7 @@ public class UserHomePage1Activity extends AppCompatActivity {
         more2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent newIntent = new Intent(UserHomePage1Activity.this, DisplayProductsActivity.class);
+                Intent newIntent = new Intent(UserHomePage2Activity.this, DisplayProductsActivity.class);
                 newIntent.putExtra("choice","rated");
                 startActivity(newIntent);
             }
@@ -233,26 +312,26 @@ public class UserHomePage1Activity extends AppCompatActivity {
         more3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent newIntent = new Intent(UserHomePage1Activity.this, DisplayProductsActivity.class);
+                Intent newIntent = new Intent(UserHomePage2Activity.this, DisplayProductsActivity.class);
                 newIntent.putExtra("choice","added");
                 startActivity(newIntent);
             }
         });
 
 
-        final LinearLayout saree = findViewById(R.id.user_home_page1_ll_saree_category);
-        final LinearLayout shawl = findViewById(R.id.user_home_page1_ll_shawl_category);
-        final LinearLayout shirt = findViewById(R.id.user_home_page1_ll_shirt_category);
-        final LinearLayout bracelet = findViewById(R.id.user_home_page1_ll_bracelet_category);
-        final LinearLayout garland = findViewById(R.id.user_home_page1_ll_garland_category);
-        final LinearLayout pottery = findViewById(R.id.user_home_page1_ll_pottery_category);
-        final LinearLayout glassPainting = findViewById(R.id.user_home_page1_ll_glass_painting_category);
-        final LinearLayout toys = findViewById(R.id.user_home_page1_ll_toys_category);
+        final LinearLayout saree = findViewById(R.id.user_home_page2_ll_saree_category);
+        final LinearLayout shawl = findViewById(R.id.user_home_page2_ll_shawl_category);
+        final LinearLayout shirt = findViewById(R.id.user_home_page2_ll_shirt_category);
+        final LinearLayout bracelet = findViewById(R.id.user_home_page2_ll_bracelet_category);
+        final LinearLayout garland = findViewById(R.id.user_home_page2_ll_garland_category);
+        final LinearLayout pottery = findViewById(R.id.user_home_page2_ll_pottery_category);
+        final LinearLayout glassPainting = findViewById(R.id.user_home_page2_ll_glass_painting_category);
+        final LinearLayout toys = findViewById(R.id.user_home_page2_ll_toys_category);
 
         saree.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(UserHomePage1Activity.this, SelectedCategoryActivity.class);
+                Intent i = new Intent(UserHomePage2Activity.this, SelectedCategoryActivity.class);
                 i.putExtra("category", "Saree");
                 startActivity(i);
             }
@@ -260,7 +339,7 @@ public class UserHomePage1Activity extends AppCompatActivity {
         shawl.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(UserHomePage1Activity.this, SelectedCategoryActivity.class);
+                Intent i = new Intent(UserHomePage2Activity.this, SelectedCategoryActivity.class);
                 i.putExtra("category", "Shawl");
                 startActivity(i);
             }
@@ -268,7 +347,7 @@ public class UserHomePage1Activity extends AppCompatActivity {
         shirt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(UserHomePage1Activity.this, SelectedCategoryActivity.class);
+                Intent i = new Intent(UserHomePage2Activity.this, SelectedCategoryActivity.class);
                 i.putExtra("category", "Shirt");
                 startActivity(i);
             }
@@ -276,7 +355,7 @@ public class UserHomePage1Activity extends AppCompatActivity {
         bracelet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(UserHomePage1Activity.this, SelectedCategoryActivity.class);
+                Intent i = new Intent(UserHomePage2Activity.this, SelectedCategoryActivity.class);
                 i.putExtra("category", "Bracelet");
                 startActivity(i);
             }
@@ -284,7 +363,7 @@ public class UserHomePage1Activity extends AppCompatActivity {
         garland.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(UserHomePage1Activity.this, SelectedCategoryActivity.class);
+                Intent i = new Intent(UserHomePage2Activity.this, SelectedCategoryActivity.class);
                 i.putExtra("category", "Garland");
                 startActivity(i);
             }
@@ -292,7 +371,7 @@ public class UserHomePage1Activity extends AppCompatActivity {
         pottery.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(UserHomePage1Activity.this, SelectedCategoryActivity.class);
+                Intent i = new Intent(UserHomePage2Activity.this, SelectedCategoryActivity.class);
                 i.putExtra("category", "Pottery");
                 startActivity(i);
             }
@@ -300,7 +379,7 @@ public class UserHomePage1Activity extends AppCompatActivity {
         glassPainting.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(UserHomePage1Activity.this, SelectedCategoryActivity.class);
+                Intent i = new Intent(UserHomePage2Activity.this, SelectedCategoryActivity.class);
                 i.putExtra("category", "Glass Painting");
                 startActivity(i);
             }
@@ -308,15 +387,96 @@ public class UserHomePage1Activity extends AppCompatActivity {
         toys.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(UserHomePage1Activity.this, SelectedCategoryActivity.class);
+                Intent i = new Intent(UserHomePage2Activity.this, SelectedCategoryActivity.class);
                 i.putExtra("category", "Toys");
                 startActivity(i);
             }
         });
     }
 
+    @Override
+    public void onBackPressed() {
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
+    }
 
+   /* @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.user_home_page2, menu);
+        return true;
+    }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }*/
+
+    @SuppressWarnings("StatementWithEmptyBody")
+    @Override
+    public boolean onNavigationItemSelected(MenuItem item) {
+        // Handle navigation view item clicks here.
+        int id = item.getItemId();
+
+        if (id == R.id.nav_home) {
+            // Handle the camera action
+        } else if (id == R.id.nav_profile) {
+            Intent i = new Intent(this, UserprofilePageActivity.class);
+            startActivity(i);
+        } else if (id == R.id.nav_order_history) {
+            Intent i = new Intent(this, OrderHistoryTabbedActivity.class);
+            startActivity(i);
+        } else if (id == R.id.nav_wallet) {
+            Intent i = new Intent(this, UserWalletActivity.class);
+            startActivity(i);
+        } else if (id == R.id.nav_tutorial) {
+            Intent i = new Intent(this, UserTutorialActivity.class);
+            startActivity(i);
+        } else if (id == R.id.nav_logout) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("Logout Confirmation");
+            builder.setMessage("Are you sure you want to logout?");
+
+            builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    firebaseAuth.signOut();
+                    finish();
+                    startActivity(new Intent(UserHomePage2Activity.this, CommonLoginActivityTabbed.class));
+                    Toast.makeText(UserHomePage2Activity.this, "Logged out", Toast.LENGTH_SHORT).show();
+
+                }
+            });
+
+            builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+
+            Dialog dialog = builder.create();
+            builder.show();
+        }
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
+    }
 
     class SortingByRating implements Comparator<ProductInfo>
     {

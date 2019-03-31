@@ -23,7 +23,7 @@ import java.util.ArrayList;
 
 import io.reactivex.annotations.NonNull;
 
-public class UserHomePage1RecyclerViewAdapter extends RecyclerView.Adapter<UserHomePage1RecyclerViewAdapter.ViewHolder> {
+public class UserHomePage2RecyclerViewAdapter extends RecyclerView.Adapter<UserHomePage2RecyclerViewAdapter.ViewHolder> {
 
     private ArrayList<ProductInfo> info;
     private Context context;
@@ -50,7 +50,7 @@ public class UserHomePage1RecyclerViewAdapter extends RecyclerView.Adapter<UserH
         }
     }
 
-    public UserHomePage1RecyclerViewAdapter(Context context, ArrayList<ProductInfo> info) {
+    public UserHomePage2RecyclerViewAdapter(Context context, ArrayList<ProductInfo> info) {
 
         this.info = info;
         this.context = context;

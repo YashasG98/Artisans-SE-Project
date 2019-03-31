@@ -79,4 +79,5 @@
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam efficitur ipsum in placerat molestie. Fusce quis mauris a enim sollicitudin"</string>
 
     <string name="rupee">"\u20B9 "</string>
+    <string name="title_activity_user_home_page2">UserHomePage2Activity</string>
 </resources>
