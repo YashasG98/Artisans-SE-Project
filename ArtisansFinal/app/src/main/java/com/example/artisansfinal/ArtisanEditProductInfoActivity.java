@@ -79,11 +79,13 @@ public class ArtisanEditProductInfoActivity extends AppCompatActivity {
         final FloatingActionButton imageFab = findViewById(R.id.artisan_edit_product_info_fab_image);
 
         if(!runInOnePage){
-            Tutorial tutorial = new Tutorial(this);
-            tutorial.checkIfFirstRun();
-            tutorial.requestFocusForView(saveFab,"Click here to edit product","");
-            tutorial.finishedTutorial();
-            runInOnePage=true;
+            if(saveFab.getVisibility() == View.VISIBLE){
+                Tutorial tutorial = new Tutorial(this);
+                tutorial.checkIfFirstRun();
+                tutorial.requestFocusForView(saveFab,"Click here to edit product","");
+                tutorial.finishedTutorial();
+                runInOnePage=true;
+            }
         }
         StorageReference sr = storageReference.child("ProductImages/HighRes/" + productID);
 
@@ -146,6 +148,11 @@ public class ArtisanEditProductInfoActivity extends AppCompatActivity {
                             db1.child("productDescription").setValue(updateDescription);
                             db1.child("productPrice").setValue(updatePrice);
                             db1.child("productName").setValue(updateName);
+
+                            DatabaseReference db2= FirebaseDatabase.getInstance().getReference("Products/"+productID);
+                            db2.child("productDescription").setValue(updateDescription);
+                            db2.child("productPrice").setValue(updatePrice);
+                            db2.child("productName").setValue(updateName);
 
                             // update image here
                             if(mainImageURI!=null)

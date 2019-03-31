@@ -38,7 +38,7 @@
         android:id="@+id/artisan_products_content_rl"
         android:paddingTop="3dp"
         android:layout_below="@+id/appBar"
-        android:background="@color/common">
+        android:background="@color/backgroundDefault">
         <android.support.v7.widget.RecyclerView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -50,7 +50,8 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/artisan_products_loading_rl">
+        android:id="@+id/artisan_products_loading_rl"
+        android:background="@color/backgroundDefault">
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -61,15 +62,15 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/artisan_products_not_found_rl">
+        android:id="@+id/artisan_products_not_found_rl"
+        android:background="@color/backgroundDefault">
         <TextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:text="No Products Found"
             android:gravity="center"
-            android:textColor="#ffffff"
-            android:textSize="50sp"
-            android:background="#66ceff"/>
+            android:textColor="#000"
+            android:textSize="50sp" />
     </RelativeLayout>
 
 </RelativeLayout>

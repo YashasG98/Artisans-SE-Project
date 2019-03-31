@@ -121,6 +121,7 @@ public class UserProductReviewsFragment extends Fragment {
             }
         });
 
+
         final View view = inflater.inflate(R.layout.fragment_user_product_reviews, container, false);
         final RecyclerView recyclerView = view.findViewById(R.id.user_product_review_rv);
         final TextView averageRating = view.findViewById(R.id.user_product_reviews_average_rating);
@@ -288,8 +289,6 @@ public class UserProductReviewsFragment extends Fragment {
                 final RatingBar ratingBar = view.findViewById(R.id.ratingBar);
                 final ProgressDialog progressDialog = new ProgressDialog(getContext());
                 final ProgressBar progressBar = view.findViewById(R.id.review_progress_bar);
-
-                progressBar.setVisibility(VISIBLE);
 
                 ReviewInput.setText(reviewMine.getText());
                 ratingBar.setRating(rbMine.getRating());

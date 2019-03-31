@@ -68,5 +68,8 @@ dependencies {
     //zoom image
     implementation 'com.jsibbold:zoomage:1.2.0'
 
+    //shimmer recycler view
+    implementation 'com.github.sharish:ShimmerRecyclerView:v1.3'
+
 }
 apply plugin: 'com.google.gms.google-services'
