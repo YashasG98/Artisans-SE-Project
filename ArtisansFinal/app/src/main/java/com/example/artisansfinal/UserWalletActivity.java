@@ -114,7 +114,8 @@ public class UserWalletActivity extends AppCompatActivity {
 
                 }
                 else
-                {Toast.makeText(UserWalletActivity.this,"Not sufficient amount to withdraw.",Toast.LENGTH_SHORT).show();
+                {
+                    Toast.makeText(UserWalletActivity.this,"Not sufficient amount to withdraw.",Toast.LENGTH_SHORT).show();
 
                 }
                 FirebaseDatabase firebaseDatabase=FirebaseDatabase.getInstance();
