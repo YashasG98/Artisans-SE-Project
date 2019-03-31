@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--added by Sayan Biswas-->
 <android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -28,7 +29,7 @@
             android:textSize="50sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.52"
+            app:layout_constraintHorizontal_bias="0.57"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.0" />
@@ -44,7 +45,7 @@
             android:layout_marginEnd="24dp"
             android:layout_marginBottom="8dp"
             android:textColorHint="#000306"
-            app:boxStrokeColor="#73bbf7"
+            app:boxStrokeColor="@color/common"
             app:helperTextEnabled="true"
             app:hintEnabled="true"
             app:hintTextAppearance="@style/TextLabel"
@@ -59,9 +60,10 @@
                 android:id="@+id/registration_page_et_user_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/username_material"
                 android:layout_weight="1"
                 android:ems="10"
-                android:hint="Name"
+                android:hint="Name*"
                 android:inputType="textPersonName"
                 android:paddingBottom="16dp"
                 android:textColorLink="@color/black" />
@@ -79,7 +81,7 @@
             android:layout_marginEnd="24dp"
             android:layout_marginBottom="8dp"
             android:textColorHint="#000306"
-            app:boxStrokeColor="#73bbf7"
+            app:boxStrokeColor="@color/common"
             app:helperTextEnabled="true"
             app:hintEnabled="true"
             app:hintTextAppearance="@style/TextLabel"
@@ -97,7 +99,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:ems="10"
-                android:hint="Email"
+                android:hint="Email*"
+                android:drawableLeft="@drawable/sayan_email"
                 android:inputType="textEmailAddress"
                 android:paddingBottom="16dp"
                 android:textColor="@color/black"
@@ -114,13 +117,13 @@
             android:layout_marginEnd="24dp"
             android:layout_marginBottom="8dp"
             android:textColorHint="#000306"
-            app:boxStrokeColor="#73bbf7"
+            app:boxStrokeColor="@color/common"
             app:helperTextEnabled="true"
             app:hintEnabled="true"
             app:hintTextAppearance="@style/TextLabel"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.55"
+            app:layout_constraintHorizontal_bias="0.54"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/userEmail"
             app:layout_constraintVertical_bias="0.0"
@@ -131,12 +134,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:drawableStart="@drawable/sayan_password"
                 android:ems="10"
-                android:hint="Password"
+                android:hint="Password*"
                 android:inputType="textPassword"
                 android:paddingBottom="16dp"
-                android:textColorLink="@color/black"
-                />
+                android:textColorLink="@color/black" />
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
@@ -149,7 +152,7 @@
             android:layout_marginEnd="24dp"
             android:layout_marginBottom="8dp"
             android:textColorHint="#000306"
-            app:boxStrokeColor="#73bbf7"
+            app:boxStrokeColor="@color/common"
             app:helperTextEnabled="true"
             app:hintAnimationEnabled="false"
             app:hintEnabled="true"
@@ -168,7 +171,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:ems="10"
-                android:hint="PhoneNumber"
+                android:hint="PhoneNumber*"
+                android:drawableLeft="@drawable/phone_material"
                 android:inputType="number"
                 android:paddingBottom="16dp"
                 android:textColorLink="@color/black" />
@@ -184,7 +188,7 @@
             android:layout_marginEnd="24dp"
             android:layout_marginBottom="8dp"
             android:textColorHint="#000306"
-            app:boxStrokeColor="#73bbf7"
+            app:boxStrokeColor="@color/common"
             app:helperTextEnabled="true"
             app:hintAnimationEnabled="false"
             app:hintEnabled="true"
@@ -203,7 +207,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:ems="10"
-                android:hint="Pincode"
+                android:hint="Pincode*"
+                android:drawableLeft="@drawable/pincode_material"
                 android:inputType="number"
                 android:paddingBottom="16dp"
                 android:textColorLink="@color/black" />
@@ -220,7 +225,7 @@
             android:layout_marginEnd="24dp"
             android:layout_marginBottom="8dp"
             android:textColorHint="#000306"
-            app:boxStrokeColor="#73bbf7"
+            app:boxStrokeColor="@color/common"
             app:helperTextEnabled="true"
             app:hintEnabled="true"
             app:hintTextAppearance="@style/TextLabel"
@@ -230,7 +235,8 @@
             app:layout_constraintHorizontal_bias="0.55"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/userPassword"
-            app:layout_constraintVertical_bias="0.0">
+            app:layout_constraintVertical_bias="0.0"
+            app:passwordToggleEnabled="true">
 
             <EditText
                 android:id="@+id/registration_page_et_user_cpassword"
@@ -238,7 +244,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:ems="10"
-                android:hint="Confirm Password"
+                android:hint="Confirm Password*"
+                android:drawableStart="@drawable/sayan_password"
                 android:inputType="textPassword"
                 android:paddingBottom="16dp"
                 android:textColorLink="@color/black" />
@@ -247,7 +254,7 @@
 
         <Button
             android:id="@+id/registration_page_button_user_registration"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="24dp"
