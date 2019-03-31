@@ -151,6 +151,7 @@ public class UserProductDetails1Fragment extends Fragment {
         final TextView price = view.findViewById(R.id.user_product_details1_tv_product_price);
         final TextView desc = view.findViewById(R.id.user_product_details1_tv_product_description);
         final ZoomageView image = view.findViewById((R.id.user_product_details1_iv_product_image));
+        GlideApp.with(getContext()).asGif().load(R.mipmap.loading1).into(image);
         final FloatingActionButton fab = view.findViewById(R.id.user_product_details1_fab);
         final AppCompatRatingBar ratingBar = view.findViewById(R.id.user_product_details1_rb_rating);
         final TextView numberRated = view.findViewById(R.id.user_product_details1_tv_number_of_ratings);

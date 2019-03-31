@@ -147,6 +147,11 @@ public class ArtisanEditProductInfoActivity extends AppCompatActivity {
                             db1.child("productPrice").setValue(updatePrice);
                             db1.child("productName").setValue(updateName);
 
+                            DatabaseReference db2= FirebaseDatabase.getInstance().getReference("Products/"+productID);
+                            db2.child("productDescription").setValue(updateDescription);
+                            db2.child("productPrice").setValue(updatePrice);
+                            db2.child("productName").setValue(updateName);
+
                             // update image here
                             if(mainImageURI!=null)
                                 uploadImage(mainImageURI);
