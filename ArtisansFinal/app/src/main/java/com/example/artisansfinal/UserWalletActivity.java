@@ -91,7 +91,13 @@ public class UserWalletActivity extends AppCompatActivity {
         add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                temp=Float.parseFloat(amt_entered.getText().toString());
+                String handle = amt_entered.getText().toString();
+                if(handle.equals("")) {
+                    temp = 0;
+                    Toast.makeText(UserWalletActivity.this,"Enter some amount!",Toast.LENGTH_SHORT).show();
+                }
+                else
+                    temp = Float.parseFloat(handle);
                 float f=Float.parseFloat(temp_ballance);
                 f=f+temp;
 
@@ -106,7 +112,13 @@ public class UserWalletActivity extends AppCompatActivity {
         sub.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                temp=Float.parseFloat(amt_entered.getText().toString());
+                String handle = amt_entered.getText().toString();
+                if(handle.equals("")) {
+                    temp = 0;
+                    Toast.makeText(UserWalletActivity.this,"Enter some amount!",Toast.LENGTH_SHORT).show();
+                }
+                else
+                    temp = Float.parseFloat(amt_entered.getText().toString());
                 float f=Float.parseFloat(temp_ballance);
                 if(temp<=f)
                 {
@@ -114,7 +126,8 @@ public class UserWalletActivity extends AppCompatActivity {
 
                 }
                 else
-                {Toast.makeText(UserWalletActivity.this,"Not sufficient amount to withdraw.",Toast.LENGTH_SHORT).show();
+                {
+                    Toast.makeText(UserWalletActivity.this,"Not sufficient amount to withdraw.",Toast.LENGTH_SHORT).show();
 
                 }
                 FirebaseDatabase firebaseDatabase=FirebaseDatabase.getInstance();
