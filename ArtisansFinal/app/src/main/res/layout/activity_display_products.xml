@@ -8,13 +8,13 @@
 
     <!--Search Toolbar-->
     <android.support.design.widget.AppBarLayout
-        android:id="@+id/appBar"
+        android:id="@+id/display_products_appBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:theme="@style/AppTheme.AppBarOverlay">
 
         <android.support.v7.widget.Toolbar
-            android:id="@+id/explore_base_tb"
+            android:id="@+id/display_products_tb"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
@@ -26,15 +26,8 @@
                 android:weightSum="1"
                 android:orientation="horizontal">
 
-                <Spinner
-                    android:id="@+id/selected_category_spinner_search_choice"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:entries="@array/choice"
-                    android:layout_gravity="center" />
-
                 <SearchView
-                    android:id="@+id/selected_category_sv_search"
+                    android:id="@+id/display_products_sv_search"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:iconifiedByDefault="false"
@@ -54,13 +47,13 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/selected_category_loading_rl">
+        android:id="@+id/display_products_loading_rl">
 
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/backgroundDefault"
-            android:id="@+id/selected_category_loading_iv"
+            android:background="#66ceff"
+            android:id="@+id/display_products_loading_iv"
             android:src="@mipmap/loading2" />
 
     </RelativeLayout>
@@ -69,23 +62,23 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/selected_category_not_found_outer_rl">
+        android:id="@+id/display_products_not_found_outer_rl"
+        android:background="@color/backgroundDefault">
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:text="No Products Found"
             android:gravity="center"
-            android:textColor="#000"
-            android:textSize="50sp"
-            android:background="@color/backgroundDefault"/>
+            android:textColor="#ffffff"
+            android:textSize="50sp"/>
     </RelativeLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/selected_category_content_rl"
-        android:layout_below="@+id/appBar">
+        android:id="@+id/display_products_content_rl"
+        android:layout_below="@+id/display_products_appBar">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -93,45 +86,21 @@
             android:orientation="vertical"
             tools:context=".SelectedCategoryActivity"
             android:weightSum="1"
-            android:background="@color/backgroundDefault"
-            android:id="@+id/selected_category_ll">
-
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_weight="0.01"
-                android:gravity="center_horizontal"
-                android:paddingBottom="5dp"
-                android:paddingTop="3dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/sortBy"
-                    android:textSize="18sp"
-                    android:textColor="#000"/>
-
-                <Spinner
-                    android:id="@+id/selected_category_spinner_sort_choice"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:entries="@array/sortChoice" />
-
-            </LinearLayout>
+            android:background="@color/common"
+            android:id="@+id/display_products_ll">
 
             <!--Products Display-->
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="0.85"
-                android:id="@+id/selected_category_rl">
+                android:id="@+id/display_products_rl"
+                android:background="@color/backgroundDefault">
 
                 <android.support.v7.widget.RecyclerView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:id="@+id/selected_category_rv">
+                    android:id="@+id/display_products_rv">
 
                 </android.support.v7.widget.RecyclerView>
 
@@ -141,8 +110,7 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:id="@+id/selected_category_not_found_inner_rl"
-                android:background="@color/backgroundDefault">
+                android:id="@+id/display_products_not_found_inner_rl">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -150,7 +118,8 @@
                     android:text="No Matching Products Found"
                     android:gravity="center"
                     android:textSize="50sp"
-                    android:textColor="#000"/>
+                    android:textColor="#000"
+                    android:background="@color/backgroundDefault"/>
             </RelativeLayout>
 
         </LinearLayout>

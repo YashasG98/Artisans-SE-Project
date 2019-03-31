@@ -7,7 +7,7 @@
     android:orientation="vertical"
     android:id="@+id/product_page_nsv"
     tools:context=".ProductPageActivity"
-    android:background="#bbdefb">
+    android:background="@color/backgroundDefault">
 
     <LinearLayout
         android:layout_width="match_parent"

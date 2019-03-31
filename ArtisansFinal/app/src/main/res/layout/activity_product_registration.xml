@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
-    android:background="#bbdefb"
+    android:background="@color/backgroundDefault"
     android:id="@+id/product_registration_ll">
 
     <LinearLayout

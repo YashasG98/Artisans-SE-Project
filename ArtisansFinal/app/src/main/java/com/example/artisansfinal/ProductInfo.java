@@ -20,6 +20,10 @@ public class ProductInfo implements Parcelable {
     private String numberOfSales;
     private String dateOfRegistration;
 
+    public String getDateOfRegistration() {
+        return dateOfRegistration;
+    }
+
     public void setDateOfRegistration(String dateOfRegistration) {
         this.dateOfRegistration = dateOfRegistration;
     }
@@ -51,6 +55,10 @@ public class ProductInfo implements Parcelable {
     }
 
     public ProductInfo() {
+    }
+
+    public String getNumberOfSales() {
+        return numberOfSales;
     }
 
     public void setTotalRating(String totalRating) {

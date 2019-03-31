@@ -17,7 +17,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ArtisanWalletActivity"/>
+        <activity android:name=".DisplayProductsActivity"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".UserHomePage1Activity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".ArtisanWalletActivity" />
         <activity android:name=".UserWalletActivity" />
         <activity
             android:name=".ArtisanEditProductInfoActivity"
@@ -44,6 +49,7 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".SelectedCategoryActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".PasswordActivity" />
         <activity android:name=".RegistrationActivity" />

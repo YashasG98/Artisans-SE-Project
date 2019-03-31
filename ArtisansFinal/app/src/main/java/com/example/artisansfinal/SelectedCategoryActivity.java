@@ -331,6 +331,8 @@ public class SelectedCategoryActivity extends AppCompatActivity {
                             Log.d("HASHMAP", map.toString());
                             productInfo = new ProductInfo(map.get("productID"), map.get("productName"), map.get("productDescription"), map.get("productCategory"), map.get("productPrice"), map.get("artisanName"), map.get("artisanContactNumber"));
                             productInfo.setTotalRating(map.get("totalRating"));
+                            productInfo.setNumberOfSales(map.get("numberOfSales"));
+                            productInfo.setDateOfRegistration(map.get("dateOfRegistration"));
                             productInfo.setNumberOfPeopleWhoHaveRated(map.get("numberOfPeopleWhoHaveRated"));
                             Log.d("MAP", map.get("productDescription"));
                             categoryRecyclerViewAdapter.added(productInfo);
