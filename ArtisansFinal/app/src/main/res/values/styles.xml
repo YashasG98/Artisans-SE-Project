@@ -65,7 +65,6 @@
     </style>
 
     <!--number picker color-->
-
     <style name="NumberPickerTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:textColorPrimary">#000000</item>
     </style>
