@@ -7,7 +7,7 @@
     android:orientation="vertical"
 
     tools:context=".ArtisanProductPageActivity"
-    android:background="#bbdefb">
+    android:background="@color/backgroundDefault">
 
     <RelativeLayout
         android:layout_width="match_parent"

@@ -167,15 +167,28 @@ public class UserHomePage1Activity extends AppCompatActivity {
 
                 searchResults.clear();
                 queryText = query;
+                String searchFilter = searchOption.getSelectedItem().toString();
 
-                for(ProductInfo product: productInfos){
-                    if(product.getProductName().toLowerCase().contains(query.trim().toLowerCase())
-                        || product.getArtisanName().toLowerCase().contains(query.trim().toLowerCase()))
-                        searchResults.add(product);
+                if(searchFilter.equals("Artisan")){
+                    for(ProductInfo product : productInfos){
+                        try{
+                            if(product.getArtisanName().toLowerCase().contains(query.trim().toLowerCase()))
+                                searchResults.add(product);
+                        }catch (NullPointerException e){
+                            e.printStackTrace();
+                        }
+                    }
+                    searchRecyclerViewAdapter = new CategoryRecyclerViewAdapter(getBaseContext(), searchResults);
+                    searchRecyclerView.setAdapter(searchRecyclerViewAdapter);
                 }
-                searchRecyclerViewAdapter = new CategoryRecyclerViewAdapter(getBaseContext(), searchResults);
-                searchRecyclerView.setAdapter(searchRecyclerViewAdapter);
-
+                else{
+                    for(ProductInfo product: productInfos){
+                        if(product.getProductName().toLowerCase().contains(query.trim().toLowerCase()))
+                            searchResults.add(product);
+                    }
+                    searchRecyclerViewAdapter = new CategoryRecyclerViewAdapter(getBaseContext(), searchResults);
+                    searchRecyclerView.setAdapter(searchRecyclerViewAdapter);
+                }
                 return false;
             }
 
@@ -193,15 +206,28 @@ public class UserHomePage1Activity extends AppCompatActivity {
                     searchLayout.setVisibility(View.VISIBLE);
                 }
                 searchResults.clear();
+                String searchFilter = searchOption.getSelectedItem().toString();
 
-                for(ProductInfo product: productInfos){
-                    if(product.getProductName().toLowerCase().contains(newText.trim().toLowerCase())
-                            || product.getArtisanName().toLowerCase().contains(newText.trim().toLowerCase()))
-                        searchResults.add(product);
+                if(searchFilter.equals("Artisan")){
+                    for(ProductInfo product : productInfos){
+                        try{
+                            if(product.getArtisanName().toLowerCase().contains(newText))
+                                searchResults.add(product);
+                        }catch (NullPointerException e){
+                            e.printStackTrace();
+                        }
+                    }
+                    searchRecyclerViewAdapter = new CategoryRecyclerViewAdapter(getBaseContext(), searchResults);
+                    searchRecyclerView.setAdapter(searchRecyclerViewAdapter);
                 }
-                searchRecyclerViewAdapter = new CategoryRecyclerViewAdapter(getBaseContext(), searchResults);
-                searchRecyclerView.setAdapter(searchRecyclerViewAdapter);
-
+                else{
+                    for(ProductInfo product: productInfos){
+                        if(product.getProductName().toLowerCase().contains(newText))
+                            searchResults.add(product);
+                    }
+                    searchRecyclerViewAdapter = new CategoryRecyclerViewAdapter(getBaseContext(), searchResults);
+                    searchRecyclerView.setAdapter(searchRecyclerViewAdapter);
+                }
                 return false;
             }
         });

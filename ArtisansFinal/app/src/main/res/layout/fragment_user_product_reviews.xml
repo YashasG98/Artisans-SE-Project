@@ -3,7 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".UserProductReviewsFragment">
+    tools:context=".UserProductReviewsFragment"
+    android:background="@color/backgroundDefault">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -15,7 +16,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/entire_thing">
+                android:id="@+id/entire_thing"
+                android:background="@color/backgroundDefault">
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -145,7 +147,8 @@
 
             <android.support.constraint.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:background="@color/backgroundDefault">
 
                 <TextView
                     android:id="@+id/review_layout_tv_name_mine"
@@ -208,7 +211,8 @@
         <android.support.v7.widget.RecyclerView
             android:id="@+id/user_product_review_rv"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:background="@color/backgroundDefault">
 
         </android.support.v7.widget.RecyclerView>
 
@@ -216,13 +220,15 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end|bottom"
-            android:layout_margin="10dp">
+            android:layout_margin="10dp"
+            android:background="@color/backgroundDefault">
             <android.support.design.widget.FloatingActionButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/user_product_reviews_fab"
                 style="@style/Widget.MaterialComponents.FloatingActionButton"
                 android:backgroundTint="#039be5"
+                android:background="@color/backgroundDefault"
                 android:src="@drawable/vd_vector" />
         </android.support.design.widget.CoordinatorLayout>
     </LinearLayout>

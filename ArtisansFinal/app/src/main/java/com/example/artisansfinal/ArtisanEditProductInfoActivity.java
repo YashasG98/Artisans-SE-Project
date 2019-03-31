@@ -79,11 +79,13 @@ public class ArtisanEditProductInfoActivity extends AppCompatActivity {
         final FloatingActionButton imageFab = findViewById(R.id.artisan_edit_product_info_fab_image);
 
         if(!runInOnePage){
-            Tutorial tutorial = new Tutorial(this);
-            tutorial.checkIfFirstRun();
-            tutorial.requestFocusForView(saveFab,"Click here to edit product","");
-            tutorial.finishedTutorial();
-            runInOnePage=true;
+            if(saveFab.getVisibility() == View.VISIBLE){
+                Tutorial tutorial = new Tutorial(this);
+                tutorial.checkIfFirstRun();
+                tutorial.requestFocusForView(saveFab,"Click here to edit product","");
+                tutorial.finishedTutorial();
+                runInOnePage=true;
+            }
         }
         StorageReference sr = storageReference.child("ProductImages/HighRes/" + productID);
 

@@ -93,7 +93,7 @@ public class ProductRegistrationActivity extends AppCompatActivity {
         artisanContactNumber = intent.getStringExtra("phoneNumber");
         /*Log.d(TAG, "onClick: "+artisanName+" "+artisanContactNumber);*/
 
-/*        if(!runInOnePage){
+        if(!runInOnePage){
             if(browse.getVisibility() == View.VISIBLE){
                 Tutorial tutorial = new Tutorial(this);
                 tutorial.checkIfFirstRun();
@@ -101,7 +101,7 @@ public class ProductRegistrationActivity extends AppCompatActivity {
                 tutorial.finishedTutorial();
                 runInOnePage=false;
             }
-        }*/
+        }
 
         browse.setOnClickListener(new View.OnClickListener() {
             @Override

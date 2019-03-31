@@ -6,7 +6,7 @@
     android:id="@+id/nestedScrollView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#bbdefb"
+    android:background="#fff"
     android:fillViewport="true">
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
@@ -15,7 +15,7 @@
 
         android:textAlignment="center"
         android:id="@+id/user_login_cl"
-        android:background="#bbdefb">
+        android:background="#fff">
 
 
         <android.support.design.widget.TextInputLayout
