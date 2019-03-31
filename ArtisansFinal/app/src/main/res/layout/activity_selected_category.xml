@@ -73,11 +73,11 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="#66ceff"
-            android:gravity="center"
             android:text="No Products Found"
-            android:textColor="#ffffff"
-            android:textSize="50sp" />
+            android:gravity="center"
+            android:textColor="#000"
+            android:textSize="50sp"
+            android:background="@color/backgroundDefault"/>
     </RelativeLayout>
 
     <RelativeLayout
