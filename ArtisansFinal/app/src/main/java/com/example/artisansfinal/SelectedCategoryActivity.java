@@ -25,6 +25,7 @@ import android.widget.RelativeLayout;
 import android.widget.SearchView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.firebase.database.ChildEventListener;
@@ -36,6 +37,11 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.database.annotations.Nullable;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.wangjie.rapidfloatingactionbutton.RapidFloatingActionButton;
+import com.wangjie.rapidfloatingactionbutton.RapidFloatingActionHelper;
+import com.wangjie.rapidfloatingactionbutton.RapidFloatingActionLayout;
+import com.wangjie.rapidfloatingactionbutton.contentimpl.labellist.RFACLabelItem;
+import com.wangjie.rapidfloatingactionbutton.contentimpl.labellist.RapidFloatingActionContentLabelList;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -63,6 +69,10 @@ public class SelectedCategoryActivity extends AppCompatActivity {
     private ImageView loading;
     private static Bundle recyclerViewState;
     private static Parcelable recyclerViewStateParcel;
+    private RapidFloatingActionContentLabelList sortFAB;
+    private RapidFloatingActionButton sortFAButton;
+    private RapidFloatingActionHelper rfabHelper;
+    private RapidFloatingActionLayout rfaLayout;
 
     //Tutorials (done by shashwatha)
     private static boolean runInOnePage = false;
@@ -161,6 +171,36 @@ public class SelectedCategoryActivity extends AppCompatActivity {
 //                .load(R.mipmap.loading2)
 //                .into(imageView);
         Log.d(TAG,"entered this activity");
+
+        //FAB for sorting
+
+        sortFAB = new RapidFloatingActionContentLabelList(getApplicationContext());
+
+        sortFAButton = findViewById(R.id.activity_main_rfab);
+        rfaLayout = findViewById(R.id.FAB_layout);
+
+        final ArrayList<RFACLabelItem> sortOptions = new ArrayList<>();
+        sortOptions.add(new RFACLabelItem<Integer>().
+                setLabel("Price: Low to High"));
+
+        sortOptions.add(new RFACLabelItem<Integer>().
+                setLabel("Price: High to Low"));
+
+        sortOptions.add(new RFACLabelItem<Integer>().
+                setLabel("Rating: Low to High"));
+
+        sortOptions.add(new RFACLabelItem<Integer>().
+                setLabel("Rating: High to Low"));
+
+
+        sortFAB.setItems(sortOptions);
+
+        rfabHelper = new RapidFloatingActionHelper(
+                this,
+                rfaLayout,
+                sortFAButton,
+                sortFAB
+        ).build();
 
         Intent intent = getIntent();
         final String category = intent.getStringExtra("category");
@@ -268,6 +308,34 @@ public class SelectedCategoryActivity extends AppCompatActivity {
                     recyclerViewLayout.setVisibility(View.GONE);
                 }
                 return false;
+            }
+        });
+
+        sortFAB.setOnRapidFloatingActionContentLabelListListener(new RapidFloatingActionContentLabelList.OnRapidFloatingActionContentLabelListListener() {
+            @Override
+            public void onRFACItemLabelClick(int position, RFACLabelItem item) {
+
+                final String sorting_order = item.getLabel();
+                if (queryText == null) {
+                    sort(productInfos, sorting_order);
+                    categoryRecyclerViewAdapter = new CategoryRecyclerViewAdapter(SelectedCategoryActivity.this, productInfos);
+                    recyclerView.setAdapter(categoryRecyclerViewAdapter);
+                } else {
+                    sort(searchResults, sorting_order);
+                    categoryRecyclerViewAdapter = new CategoryRecyclerViewAdapter(SelectedCategoryActivity.this, searchResults);
+                    recyclerView.setAdapter(categoryRecyclerViewAdapter);
+                }
+
+                rfabHelper.toggleContent();
+
+            }
+
+            @Override
+            public void onRFACItemIconClick(int position, RFACLabelItem item) {
+
+                rfabHelper.toggleContent();
+
+
             }
         });
 

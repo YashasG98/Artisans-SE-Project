@@ -16,7 +16,7 @@ import android.widget.SearchView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.cooltechworks.views.shimmer.ShimmerRecyclerView;
+//import com.cooltechworks.views.shimmer.ShimmerRecyclerView;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -151,7 +151,6 @@ public class UserHomePage1Activity extends AppCompatActivity {
 
 
 
-        final Spinner searchOption = findViewById(R.id.user_home_page1_spinner_search_choice);
         final SearchView searchView = findViewById(R.id.user_home_page1_sv_search);
         searchRecyclerView = findViewById(R.id.user_home_page1_srv_search);
         searchRecyclerView.setLayoutManager(new LinearLayoutManager(this));
