@@ -171,22 +171,22 @@ public class UserProductDetailsFragment extends Fragment {
                 LayoutInflater layoutInflater = inflater.from(v.getContext());
                 final View userConfirmationView = layoutInflater.inflate(R.layout.user_confirmation, null);
                 builder.setView(userConfirmationView);
-                final CalendarView calendarView = userConfirmationView.findViewById(R.id.calendarView);
-                calendarView.setMinDate(Calendar.getInstance().getTimeInMillis());
-
-                final String months[] = { "Jan", "Feb", "Mar", "Apr",
-                        "May", "Jun", "Jul", "Aug",
-                        "Sep", "Oct", "Nov", "Dec" };
-
-                calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
-                    @Override
-                    public void onSelectedDayChange(CalendarView view, int year, int month, int dayOfMonth)
-                    {
-                        calendar = new GregorianCalendar(year, month, dayOfMonth);
-                        formattedDate = calendar.get(Calendar.DATE) + "-" +months[calendar.get(Calendar.MONTH)] + "-" + calendar.get(Calendar.YEAR);
-
-                    }
-                });
+//                final CalendarView calendarView = userConfirmationView.findViewById(R.id.calendarView);
+//                calendarView.setMinDate(Calendar.getInstance().getTimeInMillis());
+//
+//                final String months[] = { "Jan", "Feb", "Mar", "Apr",
+//                        "May", "Jun", "Jul", "Aug",
+//                        "Sep", "Oct", "Nov", "Dec" };
+//
+//                calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
+//                    @Override
+//                    public void onSelectedDayChange(CalendarView view, int year, int month, int dayOfMonth)
+//                    {
+//                        calendar = new GregorianCalendar(year, month, dayOfMonth);
+//                        formattedDate = calendar.get(Calendar.DATE) + "-" +months[calendar.get(Calendar.MONTH)] + "-" + calendar.get(Calendar.YEAR);
+//
+//                    }
+//                });
 
                         builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
                             @Override

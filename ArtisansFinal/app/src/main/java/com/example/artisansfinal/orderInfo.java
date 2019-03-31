@@ -6,6 +6,15 @@ public class orderInfo {
     //added for userOrderHistory
     String productCategory, productID;
     String reviewExists,userEmail,fcmToken;
+    String quantity;
+
+    public String getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(String quantity) {
+        this.quantity = quantity;
+    }
 
     public orderInfo(String name, String price, String date, String userUID) {
         this.date = date;

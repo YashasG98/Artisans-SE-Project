@@ -320,6 +320,11 @@ public class UserProductReviewsFragment extends Fragment {
                         artisanProductReference.child("totalRating").setValue(String.valueOf(totalRating));
                         artisanProductReference.child("numberOfPeopleWhoHaveRated").setValue(String.valueOf(n));
 
+                        DatabaseReference productreference = FirebaseDatabase.getInstance().getReference("Products/" + productID + "/");
+                        productreference.child("totalRating").setValue(String.valueOf(totalRating));
+                        productreference.child("numberOfPeopleWhoHaveRated").setValue(String.valueOf(n));
+
+
                         rbMine.setRating(ratingBar.getRating());
                         reviewMine.setText(ReviewInput.getText());
                     }

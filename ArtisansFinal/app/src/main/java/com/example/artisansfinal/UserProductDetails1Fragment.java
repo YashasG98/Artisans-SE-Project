@@ -41,6 +41,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.NumberPicker;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -100,6 +101,7 @@ public class UserProductDetails1Fragment extends Fragment {
     private ArtisanInfo artisanInfo;
     private String pincode;
     private boolean confirmationFlag = false;
+    private int quantity;
 
     //Lcation based done by shrinidhi anil varna
     AddressResultReceiver mResultReceiver, mResultReceiver2;
@@ -364,7 +366,6 @@ public class UserProductDetails1Fragment extends Fragment {
 
                 pprice.setText("Product price: Rs."+pp);
                 dprice.setText("Shipping price: Rs."+ch);
-                tprice.setText("Total amount: Rs."+(pp+ch));
 
                 final EditText selectDeliveryDate = userConfirmationView.findViewById(R.id.delivery_date_et);
                 final Calendar currentDate = Calendar.getInstance();
@@ -398,6 +399,22 @@ public class UserProductDetails1Fragment extends Fragment {
 
                     }
                 });
+
+                final NumberPicker quantityPicker= userConfirmationView.findViewById(R.id.user_confirmation_quantity);
+                quantityPicker.setMinValue(1);
+                quantityPicker.setMaxValue(10);
+
+
+                quantity = 1;
+                tprice.setText("Total amount: Rs."+(pp*quantity + ch));
+                quantityPicker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
+                    @Override
+                    public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
+                        quantity = newVal;
+                        tprice.setText("Total amount: Rs."+(pp*quantity + ch));
+                    }
+                });
+
 
 
 
@@ -434,6 +451,7 @@ public class UserProductDetails1Fragment extends Fragment {
                                             token = data.child("FCMToken").getValue().toString();
 
                                             orderInfo order = new orderInfo(opname, oprice, formattedDate, userX.getUid(), productCategory, productID, userX.getEmail(), token);
+                                            order.setQuantity(String.valueOf(quantity));
                                             String orderID = ordHis.push().getKey();
                                             //ordHis.child(userX.getEmail().substring(0,userX.getEmail().indexOf('@'))).child(orderID).setValue(order);
                                             ordHis.child("Users").child(userX.getUid()).child("Orders Requested").child(orderID).setValue(order);
