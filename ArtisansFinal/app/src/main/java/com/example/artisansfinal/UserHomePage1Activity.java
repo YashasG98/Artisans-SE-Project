@@ -1,5 +1,6 @@
 package com.example.artisansfinal;
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -21,6 +22,8 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -236,7 +239,44 @@ public class UserHomePage1Activity extends AppCompatActivity {
                 return false;
             }
         });
+
+
+
+
+        final TextView more1 = findViewById(R.id.user_home_page1_tv_most_sold_more);
+        final TextView more2 = findViewById(R.id.user_home_page1_tv_best_rated_more);
+        final TextView more3 = findViewById(R.id.user_home_page1_tv_recently_added_more);
+
+        more1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent newIntent = new Intent(UserHomePage1Activity.this, DisplayProductsActivity.class);
+                newIntent.putExtra("choice","sold");
+                startActivity(newIntent);
+            }
+        });
+
+        more2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent newIntent = new Intent(UserHomePage1Activity.this, DisplayProductsActivity.class);
+                newIntent.putExtra("choice","rated");
+                startActivity(newIntent);
+            }
+        });
+
+        more3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent newIntent = new Intent(UserHomePage1Activity.this, DisplayProductsActivity.class);
+                newIntent.putExtra("choice","added");
+                startActivity(newIntent);
+            }
+        });
     }
+
+
+
 
     class SortingByRating implements Comparator<ProductInfo>
     {
