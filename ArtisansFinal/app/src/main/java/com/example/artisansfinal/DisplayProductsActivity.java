@@ -83,7 +83,8 @@ public class DisplayProductsActivity extends AppCompatActivity {
                 recyclerViewLayout.setVisibility(View.VISIBLE);
 
                 for(ProductInfo product: productInfos){
-                    if(product.getProductName().toLowerCase().contains(query.trim().toLowerCase()))
+                    if(product.getProductName().toLowerCase().contains(query.trim().toLowerCase())
+                        || product.getArtisanName().toLowerCase().contains(query.trim().toLowerCase()))
                         searchResults.add(product);
                 }
                 categoryRecyclerViewAdapter = new CategoryRecyclerViewAdapter(getBaseContext(), searchResults);
@@ -109,7 +110,8 @@ public class DisplayProductsActivity extends AppCompatActivity {
                 recyclerViewLayout.setVisibility(View.VISIBLE);
 
                 for(ProductInfo product: productInfos){
-                    if(product.getProductName().toLowerCase().contains(newText.trim().toLowerCase()))
+                    if(product.getProductName().toLowerCase().contains(newText.trim().toLowerCase())
+                            || product.getArtisanName().toLowerCase().contains(newText.trim().toLowerCase()))
                         searchResults.add(product);
                 }
                 categoryRecyclerViewAdapter = new CategoryRecyclerViewAdapter(getBaseContext(), searchResults);
