@@ -63,14 +63,6 @@ public class UserHomePage1Activity extends AppCompatActivity {
         final LinearLayout searchLayout = findViewById(R.id.user_home_page1_ll_search);
         searchLayout.setVisibility(View.GONE);
 
-        final TextView forr = findViewById(R.id.forr);
-        forr.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                forr.setText("FORRRRRR");
-            }
-        });
-
         bestRatedRecyclerView = findViewById(R.id.user_home_page1_srv_best_rated);
         bestRatedRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         bestRatedRecyclerViewAdapter = new UserHomePage1RecyclerViewAdapter(this, bestRatedProducts);
