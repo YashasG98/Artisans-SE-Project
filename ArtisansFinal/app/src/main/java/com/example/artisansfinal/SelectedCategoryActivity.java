@@ -3,6 +3,9 @@ package com.example.artisansfinal;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
+import android.os.Handler;
+import android.os.Parcelable;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -56,10 +59,49 @@ public class SelectedCategoryActivity extends AppCompatActivity {
     private RelativeLayout notFoundLayout;
     private RelativeLayout noMatchLayout;
     private RelativeLayout recyclerViewLayout;
+    private RecyclerView recyclerView;
     private ImageView loading;
+    private static Bundle recyclerViewState;
+    private static Parcelable recyclerViewStateParcel;
 
     //Tutorials (done by shashwatha)
     private static boolean runInOnePage = false;
+
+//    @Override
+//    protected void onSaveInstanceState(Bundle outState) {
+//        try{
+//            recyclerViewStateParcel = recyclerView.getLayoutManager().onSaveInstanceState();
+//            recyclerViewState.putParcelable("KEY",recyclerViewStateParcel);
+//        } catch (NullPointerException e) {
+//            e.printStackTrace();
+//            Log.d(TAG, "onSaveInstanceState: "+(recyclerViewStateParcel==null));
+//        }
+//        super.onSaveInstanceState(outState);
+//    }
+//
+//
+//    @Override
+//    public void onConfigurationChanged(Configuration newConfig) {
+//        try{
+//            if (recyclerViewState != null) {
+//                new Handler().postDelayed(new Runnable() {
+//
+//                    @Override
+//                    public void run() {
+//                        recyclerViewState = recyclerViewState.getParcelable("KEY");
+//                        recyclerView.getLayoutManager().onRestoreInstanceState(recyclerViewStateParcel);
+//
+//                    }
+//                }, 30);
+//
+//            }
+//            recyclerView.setLayoutManager(new LinearLayoutManager(this));
+//        } catch (NullPointerException e) {
+//            e.printStackTrace();
+//            Log.d(TAG, "onSaveInstanceState: "+e.toString());
+//        }
+//        super.onConfigurationChanged(newConfig);
+//    }
 
     class sorting implements Comparator<ProductInfo>
     {
@@ -132,7 +174,7 @@ public class SelectedCategoryActivity extends AppCompatActivity {
 //        final EditText searchQuery = findViewById(R.id.selected_category_et_search_query);
         final Spinner searchOption = findViewById(R.id.selected_category_spinner_search_choice);
         final SearchView searchView = findViewById(R.id.selected_category_sv_search);
-        final RecyclerView recyclerView  = findViewById(R.id.selected_category_rv);
+        recyclerView  = findViewById(R.id.selected_category_rv);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         categoryRecyclerViewAdapter = new CategoryRecyclerViewAdapter(this, productInfos);
@@ -164,7 +206,7 @@ public class SelectedCategoryActivity extends AppCompatActivity {
                 if(searchFilter.equals("Artisan")){
                     for(ProductInfo product : productInfos){
                         try{
-                            if(product.getArtisanName().toLowerCase().contains(query))
+                            if(product.getArtisanName().toLowerCase().contains(query.trim().toLowerCase()))
                                 searchResults.add(product);
                         }catch (NullPointerException e){
                             e.printStackTrace();
@@ -175,7 +217,7 @@ public class SelectedCategoryActivity extends AppCompatActivity {
                 }
                 else{
                     for(ProductInfo product: productInfos){
-                        if(product.getProductName().toLowerCase().contains(query))
+                        if(product.getProductName().toLowerCase().contains(query.trim().toLowerCase()))
                             searchResults.add(product);
                     }
                     categoryRecyclerViewAdapter = new CategoryRecyclerViewAdapter(getBaseContext(), searchResults);
@@ -204,7 +246,7 @@ public class SelectedCategoryActivity extends AppCompatActivity {
                 if(searchFilter.equals("Artisan")){
                     for(ProductInfo product : productInfos){
                         try{
-                            if(product.getArtisanName().toLowerCase().contains(newText))
+                            if(product.getArtisanName().toLowerCase().contains(newText.trim().toLowerCase()))
                                 searchResults.add(product);
                         }catch (NullPointerException e){
                             e.printStackTrace();
@@ -215,7 +257,7 @@ public class SelectedCategoryActivity extends AppCompatActivity {
                 }
                 else{
                     for(ProductInfo product: productInfos){
-                        if(product.getProductName().toLowerCase().contains(newText))
+                        if(product.getProductName().toLowerCase().contains(newText.trim().toLowerCase()))
                             searchResults.add(product);
                     }
                     categoryRecyclerViewAdapter = new CategoryRecyclerViewAdapter(getBaseContext(), searchResults);

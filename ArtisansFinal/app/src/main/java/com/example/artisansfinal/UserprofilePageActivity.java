@@ -22,7 +22,7 @@ public class UserprofilePageActivity extends AppCompatActivity {
 
     DatabaseReference databaseUsers;
     Button buttonUpdateUser;
-    private String nametp,pctp;
+    private String nametp,pctp,phnotp;
     FirebaseAuth firebaseAuth= FirebaseAuth.getInstance();
 
     FirebaseUser userX = firebaseAuth.getCurrentUser();
@@ -44,9 +44,9 @@ public class UserprofilePageActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(UserprofilePageActivity.this,UserProfileUpdateActivity.class);
-                startActivity(i);
                 i.putExtra("Name",nametp);
                 i.putExtra("PC",pctp);
+                i.putExtra("Phone",phnotp);
                 startActivity(i);
                 finish();
             }
@@ -66,6 +66,7 @@ public class UserprofilePageActivity extends AppCompatActivity {
 
                         name.setText(user.userName);
                         phno.setText(user.userPnumber);
+                        phnotp=user.userPnumber;
                         pc.setText(user.userPcode);
 
                         nametp=user.userName;

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="5dp">
+
+        <ImageView
+            android:id="@+id/home_page_display_products_iv_product_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:srcCompat="@tools:sample/avatars[2]" />
+
+        <TextView
+            android:layout_marginTop="2dp"
+            android:id="@+id/home_page_display_products_tv_product_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Product Name"
+            android:textColor="#000"
+            android:layout_below="@+id/home_page_display_products_iv_product_image"/>
+
+        <TextView
+            android:id="@+id/home_page_display_products_tv_rupee"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#000"
+            android:text="@string/rupee"
+            android:gravity="center"
+            android:layout_below="@+id/home_page_display_products_tv_product_name"/>
+
+        <TextView
+            android:id="@+id/home_page_display_products_tv_product_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Price"
+            android:textColor="#000"
+            android:layout_below="@+id/home_page_display_products_tv_product_name"
+            android:layout_toEndOf="@+id/home_page_display_products_tv_rupee"/>
+
+    </RelativeLayout>
+</android.support.v7.widget.CardView>

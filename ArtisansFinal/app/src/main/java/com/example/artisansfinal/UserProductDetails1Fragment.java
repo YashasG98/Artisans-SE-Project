@@ -97,7 +97,7 @@ public class UserProductDetails1Fragment extends Fragment {
     private String pincode;
     private boolean confirmationFlag = false;
 
-    //Lcation based
+    //Lcation based done by shrinidhi anil varna
     AddressResultReceiver mResultReceiver;
     double latid = 0,longit = 0;
     EditText latitudeEdit, longitudeEdit, addressEdit;
@@ -105,9 +105,11 @@ public class UserProductDetails1Fragment extends Fragment {
     TextView infoText;
     TextView locText;
     ProgressBar locProg;
+    ProgressBar calProg;
     TextView current_location;
     CheckBox checkBox;
-    int ch;
+    TextView pprice, dprice, tprice;
+    int ch,pp;
     public String name;
     //private static final String TAG = "MainActivity";
     private int STORAGE_PERMISSION_CODE = 1;
@@ -153,20 +155,24 @@ public class UserProductDetails1Fragment extends Fragment {
         final AppCompatRatingBar ratingBar = view.findViewById(R.id.user_product_details1_rb_rating);
         final TextView numberRated = view.findViewById(R.id.user_product_details1_tv_number_of_ratings);
 
+        // added by Shrinidhi Anil Varna
         final ImageButton toggleDescription = view.findViewById(R.id.user_product_details1_bt_toggle_description);
         final ImageButton toggleReviewTab = view.findViewById(R.id.user_product_details1_bt_tab_reviews);
         final LinearLayout expandDescription = view.findViewById(R.id.user_product_details1_ll_expand_description);
 
-        final ImageButton toggleLocation = view.findViewById(R.id.user_product_details1_bt_toggle_description_location);
+        final ImageButton toggleLocation = view.findViewById(R.id.buttonaddress);
         final LinearLayout expandLocation = view.findViewById(R.id.user_product_details1_ll_expand_description_location);
-        final TextView locText = view.findViewById(R.id.user_product_details1_tv_product_description_location);
-        final ProgressBar locProg = view.findViewById(R.id.locProg);
+        locText = (TextView) view.findViewById(R.id.LocText);
+        locProg = (ProgressBar) view.findViewById(R.id.locProg);
+        //calProg = (ProgressBar) CalendarView.findViewById(R.id.CalProg);
 
-        addressEdit = (EditText) view.findViewById(R.id.addressEdit);
-        progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
-        infoText = (TextView) view.findViewById(R.id.infoText);
+
+
+        //addressEdit = (EditText) view.findViewById(R.id.addressEdit);
+        //progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
+        //infoText = (TextView) view.findViewById(R.id.infoText2);
         checkBox = (CheckBox) view.findViewById(R.id.checkbox);
-        final Button buttonaddress = view.findViewById(R.id.buttonaddress);
+        //final Button buttonaddress2 = view.findViewById(R.id.buttonaddress2);
         locationManager = (LocationManager) getContext().getSystemService(Context.LOCATION_SERVICE);
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(getActivity());
 
@@ -174,13 +180,13 @@ public class UserProductDetails1Fragment extends Fragment {
         if (isServicesOK()) {
             fetchLocation();
         }
-        buttonaddress.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                artisanfetch(v);
-
-            }
-        });
+//        buttonaddress2.setOnClickListener(new OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                artisanfetch(v);
+//
+//            }
+//        });
         toggleDescription.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -201,12 +207,15 @@ public class UserProductDetails1Fragment extends Fragment {
             }
         });
 
+        // added by Shrinidhi Anil Varna
         toggleLocation.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 toggleArrow(toggleLocation);
                 if(expandLocation.getVisibility()==View.GONE){
                     expandLocation.setVisibility(View.VISIBLE);
+                    artisanfetch(v);
+                    //locText.setText("Rs."+ch);
                 }
                 else{
                     expandLocation.setVisibility(View.GONE);
@@ -232,11 +241,13 @@ public class UserProductDetails1Fragment extends Fragment {
                 aname.setText(map.get("artisanName"));
                 temp_productprice=map.get("productPrice");
                 price.setText(map.get("productPrice"));
+                pp = Integer.parseInt(map.get("productPrice"));
                 desc.setText(map.get("productDescription"));
-                locText.setText("Rs."+(int)(0.1*Float.parseFloat(map.get("productPrice"))));
+                //locText.setText("Rs."+(int)(0.1*Float.parseFloat(map.get("productPrice"))));
                 ratingBar.setRating(Float.parseFloat(map.get("totalRating")));
-               
+
                numberRated.setText(map.get("numberOfPeopleWhoHaveRated")); 
+
                 artisanContactNumber = map.get("artisanContactNumber");
                 artisanPin = map.get("pincode");
                 try {
@@ -329,12 +340,23 @@ public class UserProductDetails1Fragment extends Fragment {
                 LayoutInflater layoutInflater = inflater.from(v.getContext());
                 final View userConfirmationView = layoutInflater.inflate(R.layout.user_confirmation, null);
                 builder.setView(userConfirmationView);
+                pprice = (TextView) userConfirmationView.findViewById(R.id.user_confirmation_product_price);
+                dprice = (TextView) userConfirmationView.findViewById(R.id.user_confirmation_delivery_charge);
+                tprice = (TextView) userConfirmationView.findViewById(R.id.user_confirmation_total_charge);
+                calProg = (ProgressBar) userConfirmationView.findViewById(R.id.CalProg);
                 final CalendarView calendarView = userConfirmationView.findViewById(R.id.calendarView);
                 calendarView.setMinDate(Calendar.getInstance().getTimeInMillis());
 
                 final String months[] = { "Jan", "Feb", "Mar", "Apr",
                         "May", "Jun", "Jul", "Aug",
                         "Sep", "Oct", "Nov", "Dec" };
+                if(ch == 0)
+                {
+                    artisanfetch(v);
+                }
+                pprice.setText("Product price: Rs."+pp);
+                dprice.setText("Shipping price: Rs."+ch);
+                tprice.setText("Total amount: Rs."+(pp+ch));
 
                 calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
                     @Override
@@ -358,7 +380,7 @@ public class UserProductDetails1Fragment extends Fragment {
                             confirmationFlag = true;
                             //Log.d("HERE",opname);
                             Log.d("token", artisanToken);
-                            final String oprice = price.getText().toString();
+                            final String oprice = (tprice.getText().toString()).substring(17);
                             final DatabaseReference database = FirebaseDatabase.getInstance().getReference("User/");
                             database.addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
@@ -584,9 +606,9 @@ public class UserProductDetails1Fragment extends Fragment {
             intent.putExtra(Constants.LOCATION_LONGITUDE_DATA_EXTRA,
                     longit);
         }
-        infoText.setVisibility(View.INVISIBLE);
+        //infoText.setVisibility(View.INVISIBLE);
 //        locText.setVisibility(View.INVISIBLE);
-      progressBar.setVisibility(View.VISIBLE);
+      //progressBar.setVisibility(View.VISIBLE);
 //        locProg.setVisibility(View.VISIBLE);
         Log.e(TAG, "Starting Service");
         getContext().startService(intent);
@@ -608,7 +630,7 @@ public class UserProductDetails1Fragment extends Fragment {
                         double charges = Math.sqrt((latid-address.getLatitude())*(latid-address.getLatitude()) + (longit-address.getLongitude())*(longit-address.getLongitude()));
                         charges = charges*R*0.01;
                         if(charges > 100)
-                            charges = 0.1*charges;
+                            charges = 0.01*charges;
                         else
                             charges = 10;
                          ch = (int)charges;
@@ -626,9 +648,16 @@ public class UserProductDetails1Fragment extends Fragment {
 
                                     }
                                 });
-                        progressBar.setVisibility(View.GONE);
-                        infoText.setVisibility(View.VISIBLE);
-                        infoText.setText("Rs. " + ch);
+                        //progressBar.setVisibility(View.GONE);
+                        locProg.setVisibility(View.GONE);
+                        calProg.setVisibility(View.GONE);
+                        //infoText.setVisibility(View.VISIBLE);
+                        locText.setVisibility(View.VISIBLE);
+                        dprice.setVisibility(View.VISIBLE);
+                        //infoText.setText("Rs. " + ch);
+                        locText.setText("Rs. "+ch);
+                        dprice.setText("Shipping price: Rs."+ch);
+                        tprice.setText("Total amount: Rs."+(pp+ch));
 //                        databaseReference.addValueEventListener(new ValueEventListener() {
 //                            @Override
 //                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -686,9 +715,15 @@ public class UserProductDetails1Fragment extends Fragment {
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        progressBar.setVisibility(View.GONE);
-                        infoText.setVisibility(View.VISIBLE);
-                        infoText.setText(resultData.getString(Constants.RESULT_DATA_KEY));
+                        //progressBar.setVisibility(View.GONE);
+                        locProg.setVisibility(View.GONE);
+                        dprice.setVisibility(CalendarView.GONE);
+                        //infoText.setVisibility(View.VISIBLE);
+                        locText.setVisibility(View.VISIBLE);
+                        dprice.setVisibility(View.VISIBLE);
+                        //infoText.setText(resultData.getString(Constants.RESULT_DATA_KEY));
+                        locText.setText(resultData.getString(Constants.RESULT_DATA_KEY));
+                        dprice.setText(resultData.getString(Constants.RESULT_DATA_KEY));
                     }
                 });
             }
