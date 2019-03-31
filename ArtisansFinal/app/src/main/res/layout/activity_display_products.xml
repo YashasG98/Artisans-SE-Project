@@ -62,7 +62,8 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/display_products_not_found_outer_rl">
+        android:id="@+id/display_products_not_found_outer_rl"
+        android:background="@color/backgroundDefault">
 
         <TextView
             android:layout_width="match_parent"
@@ -70,8 +71,7 @@
             android:text="No Products Found"
             android:gravity="center"
             android:textColor="#ffffff"
-            android:textSize="50sp"
-            android:background="#66ceff"/>
+            android:textSize="50sp"/>
     </RelativeLayout>
 
     <RelativeLayout
@@ -94,7 +94,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="0.85"
-                android:id="@+id/display_products_rl">
+                android:id="@+id/display_products_rl"
+                android:background="@color/backgroundDefault">
 
                 <android.support.v7.widget.RecyclerView
                     android:layout_width="match_parent"
@@ -117,7 +118,8 @@
                     android:text="No Matching Products Found"
                     android:gravity="center"
                     android:textSize="50sp"
-                    android:background="@color/common"/>
+                    android:textColor="#000"
+                    android:background="@color/backgroundDefault"/>
             </RelativeLayout>
 
         </LinearLayout>
