@@ -265,6 +265,81 @@ public class UserHomePage1Activity extends AppCompatActivity {
                 startActivity(newIntent);
             }
         });
+
+
+        final LinearLayout saree = findViewById(R.id.user_home_page1_ll_saree_category);
+        final LinearLayout shawl = findViewById(R.id.user_home_page1_ll_shawl_category);
+        final LinearLayout shirt = findViewById(R.id.user_home_page1_ll_shirt_category);
+        final LinearLayout bracelet = findViewById(R.id.user_home_page1_ll_bracelet_category);
+        final LinearLayout garland = findViewById(R.id.user_home_page1_ll_garland_category);
+        final LinearLayout pottery = findViewById(R.id.user_home_page1_ll_pottery_category);
+        final LinearLayout glassPainting = findViewById(R.id.user_home_page1_ll_glass_painting_category);
+        final LinearLayout toys = findViewById(R.id.user_home_page1_ll_toys_category);
+
+        saree.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(UserHomePage1Activity.this, SelectedCategoryActivity.class);
+                i.putExtra("category", "Saree");
+                startActivity(i);
+            }
+        });
+        shawl.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(UserHomePage1Activity.this, SelectedCategoryActivity.class);
+                i.putExtra("category", "Shawl");
+                startActivity(i);
+            }
+        });
+        shirt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(UserHomePage1Activity.this, SelectedCategoryActivity.class);
+                i.putExtra("category", "Shirt");
+                startActivity(i);
+            }
+        });
+        bracelet.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(UserHomePage1Activity.this, SelectedCategoryActivity.class);
+                i.putExtra("category", "Bracelet");
+                startActivity(i);
+            }
+        });
+        garland.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(UserHomePage1Activity.this, SelectedCategoryActivity.class);
+                i.putExtra("category", "Garland");
+                startActivity(i);
+            }
+        });
+        pottery.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(UserHomePage1Activity.this, SelectedCategoryActivity.class);
+                i.putExtra("category", "Pottery");
+                startActivity(i);
+            }
+        });
+        glassPainting.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(UserHomePage1Activity.this, SelectedCategoryActivity.class);
+                i.putExtra("category", "Glass Painting");
+                startActivity(i);
+            }
+        });
+        toys.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(UserHomePage1Activity.this, SelectedCategoryActivity.class);
+                i.putExtra("category", "Toys");
+                startActivity(i);
+            }
+        });
     }
 
 
