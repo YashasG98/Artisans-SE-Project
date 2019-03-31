@@ -92,8 +92,10 @@ public class UserWalletActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String handle = amt_entered.getText().toString();
-                if(handle.equals(""))
+                if(handle.equals("")) {
                     temp = 0;
+                    Toast.makeText(UserWalletActivity.this,"Enter some amount!",Toast.LENGTH_SHORT).show();
+                }
                 else
                     temp = Float.parseFloat(handle);
                 float f=Float.parseFloat(temp_ballance);
@@ -111,8 +113,10 @@ public class UserWalletActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String handle = amt_entered.getText().toString();
-                if(handle.equals(""))
+                if(handle.equals("")) {
                     temp = 0;
+                    Toast.makeText(UserWalletActivity.this,"Enter some amount!",Toast.LENGTH_SHORT).show();
+                }
                 else
                     temp = Float.parseFloat(amt_entered.getText().toString());
                 float f=Float.parseFloat(temp_ballance);
