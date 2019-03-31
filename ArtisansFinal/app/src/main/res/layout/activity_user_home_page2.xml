@@ -129,7 +129,8 @@
                                         android:id="@+id/user_home_page2_iv_saree_image"
                                         android:layout_width="35dp"
                                         android:layout_height="35dp"
-                                        android:layout_gravity="center"/>
+                                        android:layout_gravity="center"
+                                        android:src="@mipmap/sareeimage"/>
 
                                     <TextView
                                         android:id="@+id/user_home_page2_tv_saree_text"
@@ -154,7 +155,8 @@
                                         android:id="@+id/user_home_page2_iv_bracelet_image"
                                         android:layout_width="35dp"
                                         android:layout_height="35dp"
-                                        android:layout_gravity="center"/>
+                                        android:layout_gravity="center"
+                                        android:src="@mipmap/bracelets"/>
 
                                     <TextView
                                         android:id="@+id/user_home_page2_tv_bracelet_text"
@@ -179,7 +181,8 @@
                                         android:id="@+id/user_home_page2_iv_shawl_image"
                                         android:layout_width="35dp"
                                         android:layout_height="35dp"
-                                        android:layout_gravity="center"/>
+                                        android:layout_gravity="center"
+                                        android:src="@mipmap/shawls2"/>
 
                                     <TextView
                                         android:id="@+id/user_home_page2_tv_shawl_text"
@@ -204,7 +207,8 @@
                                         android:id="@+id/user_home_page2_iv_garland_image"
                                         android:layout_width="35dp"
                                         android:layout_height="35dp"
-                                        android:layout_gravity="center"/>
+                                        android:layout_gravity="center"
+                                        android:src="@mipmap/ic_launcher_garlands"/>
 
                                     <TextView
                                         android:id="@+id/user_home_page2_tv_garland_text"
@@ -229,7 +233,8 @@
                                         android:id="@+id/user_home_page2_iv_pottery_image"
                                         android:layout_width="35dp"
                                         android:layout_height="35dp"
-                                        android:layout_gravity="center"/>
+                                        android:layout_gravity="center"
+                                        android:src="@mipmap/ic_launcher_pottery"/>
 
                                     <TextView
                                         android:id="@+id/user_home_page2_tv_pottery_text"
@@ -254,7 +259,8 @@
                                         android:id="@+id/user_home_page2_iv_glass_painting_image"
                                         android:layout_width="35dp"
                                         android:layout_height="35dp"
-                                        android:layout_gravity="center"/>
+                                        android:layout_gravity="center"
+                                        android:src="@mipmap/ic_launcher_glass_painting"/>
 
                                     <TextView
                                         android:id="@+id/user_home_page2_tv_glass_painting_text"
@@ -279,7 +285,8 @@
                                         android:id="@+id/user_home_page2_iv_shirt_image"
                                         android:layout_width="35dp"
                                         android:layout_height="35dp"
-                                        android:layout_gravity="center"/>
+                                        android:layout_gravity="center"
+                                        android:src="@mipmap/ic_launcher_shirts"/>
 
                                     <TextView
                                         android:id="@+id/user_home_page2_tv_shirt_text"
@@ -304,7 +311,8 @@
                                         android:id="@+id/user_home_page2_iv_toys_image"
                                         android:layout_width="35dp"
                                         android:layout_height="35dp"
-                                        android:layout_gravity="center"/>
+                                        android:layout_gravity="center"
+                                        android:src="@mipmap/ic_launcher_toy"/>
 
                                     <TextView
                                         android:id="@+id/user_home_page2_tv_toys_text"
