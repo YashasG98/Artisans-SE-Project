@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#819ca9"
+    android:id="@+id/artisan_tutorial_slide_2">
+
+    <LinearLayout
+        android:id="@+id/artisan_tutorial_slide_2_ll_1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="4dp"
+        android:layout_marginBottom="4dp"
+        android:orientation="horizontal"
+        android:padding="10dp"
+        android:weightSum="1"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.021">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:layout_width="140dp"
+            android:layout_height="140dp"
+            android:padding="5dp"
+            android:src="@mipmap/productregistration" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginStart="10dp"
+            android:padding="5dp"
+            android:text="Register your product"
+            android:textColor="#000"
+            android:textSize="25sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/artisan_tutorial_slide_2_ll_2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="4dp"
+        android:layout_marginBottom="4dp"
+        android:orientation="horizontal"
+        android:padding="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/artisan_tutorial_slide_2_ll_1"
+        app:layout_constraintVertical_bias="0.038">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"
+            android:layout_weight="0.99"
+            android:text="Get notifications whenever an order is placed"
+            android:textColor="#000"
+            android:textSize="25sp" />
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:layout_width="140dp"
+            android:layout_height="140dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="10dp"
+            android:src="@mipmap/notification" />
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/artisan_tutorial_slide_2_ll_3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:orientation="horizontal"
+        android:padding="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/artisan_tutorial_slide_2_ll_2"
+        app:layout_constraintVertical_bias="0.053">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:layout_width="140dp"
+            android:layout_height="140dp"
+            android:layout_marginEnd="5dp"
+            android:src="@mipmap/orderrequest" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginStart="5dp"
+            android:padding="5dp"
+            android:text="Recieve order requests directly from buyers"
+            android:textColor="#000"
+            android:textSize="25sp" />
+
+
+    </LinearLayout>
+
+</android.support.constraint.ConstraintLayout>

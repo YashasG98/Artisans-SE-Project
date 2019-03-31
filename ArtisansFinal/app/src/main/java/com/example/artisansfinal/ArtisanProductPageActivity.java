@@ -86,7 +86,7 @@ public class ArtisanProductPageActivity extends AppCompatActivity {
         final String productID = intent.getStringExtra("productID");
         final String productCategory = intent.getStringExtra("productCategory");
 
-        databaseReference = FirebaseDatabase.getInstance().getReference("ArtisanProducts/"+artisanPhoneNumber+"/"+productName);
+        databaseReference = FirebaseDatabase.getInstance().getReference("ArtisanProducts/"+artisanPhoneNumber+"/"+productID);
         storageReference = FirebaseStorage.getInstance().getReference("ProductImages/HighRes/" + productID);
 
         final String key = databaseReference.getKey();
@@ -197,16 +197,19 @@ public class ArtisanProductPageActivity extends AppCompatActivity {
                     builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
+                            boolean flag = true;
                             updateDescription = editDescription.getText().toString();
                             updatePrice = editPrice.getText().toString();
-                            Log.d("UPDATE", updateDescription);
-                            Log.d("UPDATE", editDescription.toString());
-                            databaseReference.child("productDescription").setValue(updateDescription);
-                            databaseReference.child("productPrice").setValue(updatePrice);
-                            dr = FirebaseDatabase.getInstance().getReference("Categories/"+productCategory+"/"+productName);
-                            dr.child("productDescription").setValue(updateDescription);
-                            dr.child("productPrice").setValue(updatePrice);
-                            Toast.makeText(getApplicationContext(), "done", Toast.LENGTH_SHORT).show();
+                            if (updatePrice.length() == 0) {
+                                editPrice.setError("Enter Product Price");
+                                editPrice.requestFocus();
+                                flag = false;
+                            }
+                            if(flag) {
+                                databaseReference.child("productDescription").setValue(updateDescription);
+                                databaseReference.child("productPrice").setValue(updatePrice);
+                                Toast.makeText(getApplicationContext(), "done", Toast.LENGTH_SHORT).show();
+                            }
                         }
                     });
                     builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {

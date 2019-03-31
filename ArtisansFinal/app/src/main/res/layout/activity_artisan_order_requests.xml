@@ -9,6 +9,28 @@
     android:background="#bbdefb"
     android:id="@+id/artisanOrderRequest">
 
+    <TextView
+        android:paddingTop="40dp"
+        android:id="@+id/noMatchArtisanOrderRequest1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Patience is the key."
+        android:gravity="center"
+        android:layout_gravity="center"
+        android:textSize="40sp"
+        />
+
+    <TextView
+        android:paddingTop="40dp"
+        android:id="@+id/noMatchArtisanOrderRequest2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="No order requests at the moment."
+        android:gravity="center"
+        android:layout_gravity="center"
+        android:textSize="40sp"
+        />
+
     <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="match_parent"

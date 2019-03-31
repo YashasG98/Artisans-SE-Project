@@ -2,6 +2,7 @@ package com.example.artisansfinal;
 
 import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -24,6 +25,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,7 +57,9 @@ public class ArtisanRegistrationActivity extends AppCompatActivity {
     private String ContactNo;
     private String OTP;
     private String id;
+    private String wallet="0";
     private String userType;
+    private String token;
 
     private EditText emailEdit;
     private EditText contactEdit;
@@ -78,6 +83,8 @@ public class ArtisanRegistrationActivity extends AppCompatActivity {
         Intent intent = getIntent();
         userType = intent.getStringExtra("userType");
 
+
+
         setContentView(R.layout.activity_artisan_registration);
 
         firebaseDatabase = FirebaseDatabase.getInstance();
@@ -99,7 +106,7 @@ public class ArtisanRegistrationActivity extends AppCompatActivity {
         activityArtisanRegistrationVerifyButton = findViewById(R.id.products_id);
 
 
-       // email = emailEdit.getEditableText().toString().trim();
+        // email = emailEdit.getEditableText().toString().trim();
         pincode = pincodeEdit.getText().toString();
         username = usernameEdit.getText().toString();
         //password = passwordEdit.getText().toString();
@@ -114,11 +121,21 @@ public class ArtisanRegistrationActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 ContactNo = "+91" + contactEdit.getText().toString();
-                if (ContactNo.length() != 0)
+                if (ContactNo.length() == 13 && !contactsList.contains(ContactNo))
                     SendCode();
 
+                else if(contactsList.contains(ContactNo))
+                {
+                    contactEdit.requestFocus();
+                    contactEdit.setError("Contact number already exists");
+                }
+
                 else {
-                    contactEdit.setError("Enter Contact Number");
+
+                    if(ContactNo.equals("+91"))
+                        contactEdit.setError("Enter Contact Number");
+                    else
+                        contactEdit.setError("Enter a valid Contact Number");
                     contactEdit.requestFocus();
                 }
             }
@@ -167,7 +184,18 @@ public class ArtisanRegistrationActivity extends AppCompatActivity {
 //                passwordFlag = true;
 //            }
 //        } else
-            passwordFlag = true;
+        passwordFlag = true;
+
+
+
+        if(OTP.length() == 0)
+        {
+            OTPEdit.setError("Enter OTP");
+            OTPEdit.requestFocus();
+            OTPFlag = false;
+        }
+        else
+            OTPFlag = true;
 
         if (username.length() == 0) {
             usernameEdit.setError("Enter Username");
@@ -176,7 +204,6 @@ public class ArtisanRegistrationActivity extends AppCompatActivity {
         } else
             usernameFlag = true;
 
-
         if (pincode.length() == 0) {
             pincodeEdit.setError("Enter Pincode");
             pincodeEdit.requestFocus();
@@ -184,8 +211,8 @@ public class ArtisanRegistrationActivity extends AppCompatActivity {
         } else
             pincodeFlag = true;
 
-        if (ContactNo.length() == 0 || contactsList.contains(ContactNo)) {
-            if (ContactNo.length() == 0)
+        if (ContactNo.equals("+91") || contactsList.contains(ContactNo)) {
+            if (ContactNo.equals("+91"))
                 contactEdit.setError("Enter Contact Number");
             else
                 contactEdit.setError("Contact Number Already Exists");
@@ -205,30 +232,32 @@ public class ArtisanRegistrationActivity extends AppCompatActivity {
 //                emailFlag = false;
 //            }
 //        } else
-            emailFlag = true;
+        emailFlag = true;
 
 
         if (emailFlag && pincodeFlag && usernameFlag && passwordFlag && contactNoFlag && OTPFlag) {
 
 
-            ArtisanInfo artisan = new ArtisanInfo(id, email, ContactNo, pincode, username);
+            ArtisanInfo artisan = new ArtisanInfo(id, email, ContactNo,wallet, pincode, username, token);
 
             databaseReference.child(ContactNo).setValue(artisan);
 
 
 
-                    Toast.makeText(getApplicationContext(), "Registered", Toast.LENGTH_LONG).show();
+            //Toast.makeText(getApplicationContext(), "Registered", Toast.LENGTH_LONG).show();
+            Snackbar.make(view, "Registered", Snackbar.LENGTH_SHORT);
 
-                    Intent intent = new Intent(ArtisanRegistrationActivity.this, ArtisanHomePageActivity.class);
-                    intent.putExtra("userType", userType);
-                    intent.putExtra("phoneNumber", ContactNo);
-                    intent.putExtra("name", username);
-                    startActivity(intent);
+            Intent intent = new Intent(ArtisanRegistrationActivity.this, ArtisanHomePageActivity.class);
+//                    intent.putExtra("userType", userType);
+            intent.putExtra("phoneNumber", ContactNo);
+            intent.putExtra("name", username);
+            startActivity(intent);
 
-                    finish();
+            finish();
 
         } else {
-            Toast.makeText(getApplicationContext(), "Registration Failed", Toast.LENGTH_LONG).show();
+            //Toast.makeText(getApplicationContext(), "Registration Failed", Toast.LENGTH_LONG).show();
+            Snackbar.make(view, "Registration Failed", Snackbar.LENGTH_SHORT).show();
         }
 
     }
@@ -241,6 +270,14 @@ public class ArtisanRegistrationActivity extends AppCompatActivity {
                 if (task.isSuccessful()) {
 
                     Toast.makeText(getApplicationContext(), "Verification successful", Toast.LENGTH_LONG).show();
+
+                    FirebaseInstanceId.getInstance().getInstanceId().addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<InstanceIdResult> task) {
+
+                            token = task.getResult().getToken();
+                        }
+                    });
 
                     OTPFlag = true;
                 } else {
@@ -313,8 +350,10 @@ public class ArtisanRegistrationActivity extends AppCompatActivity {
                 OTPEdit.requestFocus();
             }
 
-            PhoneAuthCredential credential = PhoneAuthProvider.getCredential(codeSent, OTP);
-            signInWithPhoneAuthCredential(credential);
+            else {
+                PhoneAuthCredential credential = PhoneAuthProvider.getCredential(codeSent, OTP);
+                signInWithPhoneAuthCredential(credential);
+            }
         } else {
             OTPEdit = findViewById(R.id.activity_main_EditText_OTP);
             OTPEdit.setError("Ask For OTP");

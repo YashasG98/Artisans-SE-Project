@@ -4,9 +4,9 @@
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
         <!--<item name="colorPrimary">@color/colorPrimary</item>-->
-        <item name="colorPrimary">#039be5</item>
+        <item name="colorPrimary">@color/common</item>
         <!--<item name="colorPrimaryDark">@color/colorPrimaryDark</item>-->
-        <item name="colorPrimaryDark">#0277bd</item>
+        <item name="colorPrimaryDark">@color/common_dark</item>
         <item name="colorAccent">#000000</item>
     </style>
 
@@ -31,9 +31,37 @@
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+        <item name="colorPrimary">@color/common</item>
+        <!--<item name="colorPrimaryDark">@color/colorPrimaryDark</item>-->
+        <item name="colorPrimaryDark">@color/common_dark</item>
+        <item name="colorAccent">#000000</item>
     </style>
-    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
+        <item name="colorPrimary">@color/common</item>
+        <!--<item name="colorPrimaryDark">@color/colorPrimaryDark</item>-->
+        <item name="colorPrimaryDark">@color/common_dark</item>
+        <item name="colorAccent">#000000</item>
+    </style>
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="splashScreenTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowBackground">@mipmap/custom_splash_screen5</item>
+        <item name="colorPrimary">@color/common</item>
+        <!--<item name="colorPrimaryDark">@color/colorPrimaryDark</item>-->
+        <item name="colorPrimaryDark">@color/common_dark</item>
+        <item name="colorAccent">#000000</item>
+
+    </style>
+
+    <style name="Yellow.Small.AppCompatRatingBar.White" parent="@style/Base.Widget.AppCompat.RatingBar.Small">
+        <item name="colorControlActivated">@color/yellow_600</item>
+        <item name="colorControlNormal">@color/grey_20</item>
+    </style>
+
+    <style name="alertDialogTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="android:background">@color/common</item>
+    </style>
 
 </resources>

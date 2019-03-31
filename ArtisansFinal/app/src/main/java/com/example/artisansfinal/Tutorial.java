@@ -45,7 +45,7 @@ public class Tutorial {
 
     public void requestFocusForView(View view, String title, String content) {
 
-        if (!isViewedOncePage/* && isFirstRun*/) {
+        if (!isViewedOncePage && isFirstRun) {
 
             GuideView.Builder builder = new GuideView.Builder(context)
                     .setTitle(title)
@@ -53,14 +53,14 @@ public class Tutorial {
                     .setGravity(Gravity.auto)
                     .setDismissType(DismissType.anywhere)
                     .setTargetView(view)
-                    .setContentTextSize(12)
-                    .setTitleTextSize(14);
+                    .setContentTextSize(14)
+                    .setTitleTextSize(18);
 
             guideView = builder.build();
             guideView.show();
-//            SharedPreferences.Editor editor = sharedPreferences.edit();
-//            editor.putBoolean("FirstRun", false);
-//            editor.apply();
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putBoolean("FirstRun", false);
+            editor.apply();
 
         }
     }
@@ -70,7 +70,7 @@ public class Tutorial {
         final GuideView.Builder builder;
         final int i = 0;
 
-        if (!isViewedOncePage/* && isFirstRun*/) {
+        if (!isViewedOncePage && isFirstRun) {
 
                 builder = new GuideView.Builder(context)
                         .setTitle(title.get(views.get(i)))
@@ -101,10 +101,10 @@ public class Tutorial {
             guideView = builder.build();
             guideView.show();
 
-//            SharedPreferences.Editor editor = sharedPreferences.edit();
-//            editor.putBoolean("FirstRun", false);
-//            editor.apply();
-//
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putBoolean("FirstRun", false);
+            editor.apply();
+
         }
     }
 
@@ -113,7 +113,7 @@ public class Tutorial {
         final GuideView.Builder builder;
         final int i = 0;
 
-        if (!isViewedOncePage/* && isFirstRun*/) {
+        if (!isViewedOncePage && isFirstRun) {
 
             builder = new GuideView.Builder(context)
                     .setTitle(title.get(views.get(i)))
@@ -140,10 +140,10 @@ public class Tutorial {
             guideView = builder.build();
             guideView.show();
 
-//            SharedPreferences.Editor editor = sharedPreferences.edit();
-//            editor.putBoolean("FirstRun", false);
-//            editor.apply();
-//
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putBoolean("FirstRun", false);
+            editor.apply();
+
         }
     }
 

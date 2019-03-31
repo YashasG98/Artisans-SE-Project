@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.AppCompatRatingBar;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -59,6 +60,8 @@ public class CategoryRecyclerViewAdapter extends RecyclerView.Adapter<CategoryRe
         TextView productPrice;
         TextView artisanName;
         RelativeLayout layout;
+        AppCompatRatingBar rb;
+        TextView numberRated;
 //        ProgressBar progressBar;
 
         public ViewHolder(@NonNull View itemView) {
@@ -68,6 +71,8 @@ public class CategoryRecyclerViewAdapter extends RecyclerView.Adapter<CategoryRe
             productPrice = itemView.findViewById(R.id.category_layout_tv_product_price);
             artisanName = itemView.findViewById(R.id.category_layout_tv_artisan_name);
             layout = itemView.findViewById(R.id.category_layout_rl);
+            rb = itemView.findViewById(R.id.category_layout_rb);
+            numberRated = itemView.findViewById(R.id.category_layout_tv_number_rated);
 //            progressBar = itemView.findViewById(R.id.category_layout_pb_progress);
         }
     }
@@ -96,6 +101,8 @@ public class CategoryRecyclerViewAdapter extends RecyclerView.Adapter<CategoryRe
         viewHolder.artisanName.setText(productInfo.getArtisanName());
         viewHolder.productPrice.setText(productInfo.getProductPrice());
         viewHolder.productName.setText(productInfo.getProductName());
+        viewHolder.rb.setRating(Float.parseFloat(productInfo.getTotalRating()));
+        viewHolder.numberRated.setText("(" + productInfo.getNumberOfPeopleWhoHaveRated() + ")");
 
         Glide.with(context)
                 .asGif()
@@ -104,7 +111,7 @@ public class CategoryRecyclerViewAdapter extends RecyclerView.Adapter<CategoryRe
 
 //        storageReference.getBytes(ONE_MB).addOnSuccessListener(new OnSuccessListener<byte[]>() {
 //            @Override
-//            public void onSuccess(byte[] bytes) {
+//            public void onSuccess(byte[] bytes) {cd
 //                Glide.with(context)
 //                        .load(bytes)
 //                        .listener(new RequestListener<Drawable>() {
@@ -146,7 +153,7 @@ public class CategoryRecyclerViewAdapter extends RecyclerView.Adapter<CategoryRe
         viewHolder.layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(context, productInfo.getProductName(), Toast.LENGTH_LONG).show();
+//                Toast.makeText(context, productInfo.getProductName(), Toast.LENGTH_LONG).show();
 //                if(imageLoaded) {
                     Log.d("SELECTION", v.toString());
                     Log.d("SELECTION", productInfo.toString());

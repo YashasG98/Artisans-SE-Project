@@ -9,6 +9,28 @@
     android:background="#bbdefb"
     android:id="@+id/artisanOrderHistory">
 
+    <TextView
+        android:paddingTop="40dp"
+        android:id="@+id/noMatchArtisanOrderHistory1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="All empty here."
+        android:gravity="center"
+        android:layout_gravity="center"
+        android:textSize="40sp"
+        />
+
+    <TextView
+        android:paddingTop="40dp"
+        android:id="@+id/noMatchArtisanOrderHistory2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Go make some products!"
+        android:gravity="center"
+        android:layout_gravity="center"
+        android:textSize="40sp"
+        />
+
     <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="match_parent"

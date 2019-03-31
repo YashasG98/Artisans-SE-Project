@@ -33,13 +33,15 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="10sp"
                     android:text="Product Name"
-                    android:textSize="28sp" />
+                    android:textSize="28sp"
+                    android:textColor="#000000"/>
                 <TextView
                     android:id="@+id/artisan_product_page_display_tv_product_description"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="10sp"
-                    android:text="Product Description" />
+                    android:text="Product Description"
+                    android:textColor="#000000"/>
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -61,7 +63,9 @@
                         android:background="@drawable/border_login"
                         android:drawableLeft="@mipmap/rupee_icon2"
                         android:text="Product Price"
-                        android:textSize="18sp" />
+                        android:textSize="18sp"
+                        android:enabled="false"
+                        android:textColor="#000000"/>
                 </LinearLayout>
 
             </LinearLayout>
@@ -99,7 +103,8 @@
                 <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    style="@style/ThemeOverlay.MaterialComponents.TextInputEditText.OutlinedBox"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    app:boxStrokeColor="@color/common_dark"
                     android:hint="Description">
                     <android.support.design.widget.TextInputEditText
                         android:id="@+id/artisan_product_page_edit_et_product_description"
@@ -126,16 +131,16 @@
                     <android.support.design.widget.TextInputLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        style="@style/ThemeOverlay.MaterialComponents.TextInputEditText.OutlinedBox">
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        app:boxStrokeColor="@color/common_dark"
+                        android:hint="Price">
+
                         <android.support.design.widget.TextInputEditText
                             android:id="@+id/artisan_product_page_edit_et_product_price"
-                            android:layout_width="wrap_content"
+                            android:layout_width="128dp"
                             android:layout_height="wrap_content"
                             android:layout_margin="10sp"
-                            android:padding="10sp"
-                            android:hint="Price"
-                            android:textSize="18sp"
-                            android:inputType="number"/>
+                            android:inputType="number" />
                     </android.support.design.widget.TextInputLayout>
 
                 </LinearLayout>

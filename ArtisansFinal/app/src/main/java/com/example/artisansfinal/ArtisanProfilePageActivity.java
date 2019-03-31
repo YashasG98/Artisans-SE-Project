@@ -1,5 +1,6 @@
 package com.example.artisansfinal;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -21,6 +22,7 @@ public class ArtisanProfilePageActivity extends AppCompatActivity{
 
         DatabaseReference databaseArtisans;
         Button buttonUpdateArtisan;
+        private String nametp,pctp;
 
         FirebaseAuth firebaseAuth= FirebaseAuth.getInstance();
 
@@ -30,7 +32,11 @@ public class ArtisanProfilePageActivity extends AppCompatActivity{
         protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_artisan_profile_page);
-
+            final ProgressDialog progress = new ProgressDialog(this);
+            progress.setTitle("Loading");
+            progress.setMessage("Loading your profile...");
+            progress.setCancelable(false); // disable dismiss by tapping outside of the dialog
+            progress.show();
             databaseArtisans= FirebaseDatabase.getInstance().getReference("Artisans");
 
             buttonUpdateArtisan=(Button)findViewById(R.id.editArtisanInfoButton);
@@ -38,7 +44,10 @@ public class ArtisanProfilePageActivity extends AppCompatActivity{
                 @Override
                 public void onClick(View v) {
                     Intent i = new Intent(ArtisanProfilePageActivity.this, ArtisanProfileUpdateActivity.class);
+                    i.putExtra("Name",nametp);
+                    i.putExtra("PC",pctp);
                     startActivity(i);
+                    finish();
                 }
             });
 
@@ -59,6 +68,10 @@ public class ArtisanProfilePageActivity extends AppCompatActivity{
                                 phno.setText(Artisan.contact_no);
                                 pc.setText(Artisan.postal_address);
 
+                                nametp=Artisan.username;
+                                pctp=Artisan.postal_address;
+
+                                progress.dismiss();
                                 break;
                             }
                         } catch (NullPointerException e) {

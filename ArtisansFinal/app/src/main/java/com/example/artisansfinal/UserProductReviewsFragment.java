@@ -1,6 +1,8 @@
 package com.example.artisansfinal;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -9,14 +11,23 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AlertDialog;
+import android.support.v4.media.MediaMetadataCompat;
+import android.support.v7.widget.AppCompatRatingBar;
+import android.support.v7.widget.CardView;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.RatingBar;
+import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,6 +42,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -39,28 +51,49 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import org.w3c.dom.Text;
+
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
+
+import static android.view.View.VISIBLE;
 
 
 public class UserProductReviewsFragment extends Fragment {
 
-
+    private ReviewRecyclerViewAdapter reviewRecyclerViewAdapter;
+    private ArrayList<ProductReview> productReviews = new ArrayList<>();
     private DatabaseReference databaseReference;
-    private DatabaseReference users;
-    private StorageReference storageReference;
-    final long ONE_MB = 1024*1024;
-    private DatabaseReference ordHis;
-    private String userPhoneNumber;
-    private String artisanContactNumber;
-    FirebaseAuth firebaseAuth= FirebaseAuth.getInstance();
+    private int five=0;
+    private int four=0;
+    private int three=0;
+    private int two=0;
+    private int one=0;
+    private int total=0;
 
+    private String artisanContactNumber;
+    private String userPhoneNumber;
+    private String userName;
+    private DatabaseReference users;
+    FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
     FirebaseUser userX = firebaseAuth.getCurrentUser();
 
     public UserProductReviewsFragment() {
         // Required empty public constructor
+    }
+
+    public boolean toggleArrow(View view) {
+        if (view.getRotation() == 0.0f) {
+            view.animate().setDuration(400).rotation(180.0f);
+            return true;
+        }
+        view.animate().setDuration(400).rotation(0.0f);
+        return false;
     }
 
     @Override
@@ -69,137 +102,243 @@ public class UserProductReviewsFragment extends Fragment {
         // Inflate the layout for this fragment
 //        return inflater.inflate(R.layout.fragment_user_product_reviews, container, false);
 
-        final View view = inflater.inflate(R.layout.fragment_user_product_details, container, false);
-
-        final TextView pname = view.findViewById(R.id.user_product_details_tv_product_name);
-        final TextView aname = view.findViewById(R.id.user_product_details_tv_artisan_name);
-        final Button price = view.findViewById(R.id.user_product_details_button_product_price);
-        final TextView desc = view.findViewById(R.id.user_product_details_tv_product_description);
-        final ImageView image = view.findViewById((R.id.user_product_details_iv_product_image));
-
-        final Intent intent = getActivity().getIntent();
-        String productCategory = intent.getStringExtra("productCategory");
-        final String productName = intent.getStringExtra("productName");
-        final String productID = intent.getStringExtra("productID");
-
-        databaseReference = FirebaseDatabase.getInstance().getReference("Categories/"+productCategory+"/"+productName);
-        storageReference = FirebaseStorage.getInstance().getReference("ProductImages/HighRes/" + productID);
         users = FirebaseDatabase.getInstance().getReference("User");
-
-
-        databaseReference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
-                HashMap<String, String> map = (HashMap<String, String>) dataSnapshot.getValue();
-                pname.setText(map.get("productName"));
-                aname.setText(map.get("artisanName"));
-                price.setText(map.get("productPrice"));
-                desc.setText(map.get("productDescription"));
-                artisanContactNumber = map.get("artisanContactNumber");
-                Log.d("STORAGE", storageReference.child(map.get("productID")).toString());
-//                storageReference.getBytes(ONE_MB).addOnSuccessListener(new OnSuccessListener<byte[]>() {
-//                    @Override
-//                    public void onSuccess(byte[] bytes) {
-//                        Glide.with(getContext())
-//                                .load(bytes)
-//                                .listener(new RequestListener<Drawable>() {
-//                                    @Override
-//                                    public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
-//                                        Toast.makeText(getContext(), "Glide load failed", Toast.LENGTH_SHORT).show();
-//                                        return false;
-//                                    }
-//
-//                                    @Override
-//                                    public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
-//                                        return false;
-//                                    }
-//                                })
-//                                .into(image);
-//                    }
-//                }).addOnFailureListener(new OnFailureListener() {
-//                    @Override
-//                    public void onFailure(@NonNull Exception e) {
-////                        Toast.makeText(getApplicationContext(), "Image Load Failed", Toast.LENGTH_SHORT).show();
-//                        Glide.with(getContext())
-//                                .load(R.mipmap.image_not_provided)
-//                                .into(image);
-//                    }
-//                });
-                RequestOptions options = new RequestOptions().error(R.mipmap.image_not_provided);
-                GlideApp.with(getActivity().getApplicationContext())
-                        .load(storageReference)
-                        .apply(options)
-                        .diskCacheStrategy(DiskCacheStrategy.DATA)
-                        .into(image);
-            }
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {}
-        });
-
         users.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for(DataSnapshot userSnapshot : dataSnapshot.getChildren())
-                {
+                for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
                     UserInfo userInfo = userSnapshot.getValue(UserInfo.class);
-                    if(userInfo.userEmail.equals(userX.getEmail()))
-                    {
+                    if (userInfo.userEmail.equals(userX.getEmail())) {
                         userPhoneNumber = userInfo.userPnumber;
+                        userName = userInfo.userName;
                         break;
                     }
                 }
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {}
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
         });
 
-        ordHis = FirebaseDatabase.getInstance().getReference("Orders");
+        final View view = inflater.inflate(R.layout.fragment_user_product_reviews, container, false);
+        final RecyclerView recyclerView = view.findViewById(R.id.user_product_review_rv);
+        final TextView averageRating = view.findViewById(R.id.user_product_reviews_average_rating);
+        final TextView totalRated = view.findViewById(R.id.user_product_reviews_total);
+        final SeekBar fiveStar = view.findViewById(R.id.fiveStar); fiveStar.setEnabled(false);
+        final SeekBar fourStar = view.findViewById(R.id.fourStar); fourStar.setEnabled(false);
+        final SeekBar threeStar = view.findViewById(R.id.threeStar); threeStar.setEnabled(false);
+        final SeekBar twoStar = view.findViewById(R.id.twoStar); twoStar.setEnabled(false);
+        final SeekBar oneStar = view.findViewById(R.id.oneStar); oneStar.setEnabled(false);
+        final FloatingActionButton fab = view.findViewById(R.id.user_product_reviews_fab);
 
-        price.setOnClickListener(new View.OnClickListener() {
+        final CardView cardViewMine = view.findViewById(R.id.review_layout_cv_mine);
+        final AppCompatRatingBar rbMine = view.findViewById(R.id.review_layout_rb_mine);
+        final TextView nameMine = view.findViewById(R.id.review_layout_tv_name_mine);
+        final TextView reviewMine = view.findViewById(R.id.review_layout_tv_review_mine);
+        cardViewMine.setVisibility(View.GONE);
+
+        reviewRecyclerViewAdapter = new ReviewRecyclerViewAdapter(getContext(), productReviews);
+        recyclerView.setAdapter(reviewRecyclerViewAdapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
+
+        Intent intent = getActivity().getIntent();
+        final String productID = intent.getStringExtra("productID");
+        final String productCategory = intent.getStringExtra("productCategory");
+        databaseReference = FirebaseDatabase.getInstance().getReference("Categories/"+productCategory+"/"+productID);
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                HashMap<String, String> map = (HashMap<String, String>) dataSnapshot.getValue();
+                totalRated.setText(map.get("numberOfPeopleWhoHaveRated"));
+                averageRating.setText(map.get("totalRating"));
+                artisanContactNumber = map.get("artisanContactNumber");
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+        databaseReference = FirebaseDatabase.getInstance().getReference("Reviews/" + productID);
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.getValue() != null) {
+                    databaseReference.addChildEventListener(new ChildEventListener() {
+                        @Override
+                        public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                            ProductReview productReview;
+                            HashMap<String, String> map = (HashMap<String, String>) dataSnapshot.getValue();
+                            if(dataSnapshot.getKey().equalsIgnoreCase(userPhoneNumber)){
+                                cardViewMine.setVisibility(View.VISIBLE);
+                                rbMine.setRating(Float.parseFloat(map.get("rating")));
+                                nameMine.setText(map.get("userName")+" :");
+                                reviewMine.setText(map.get("review"));
+                            }
+                            else{
+                                productReview = new ProductReview();
+                                productReview.setRating(map.get("rating"));
+                                productReview.setReview(map.get("review"));
+                                productReview.setUserName(map.get("userName")+" :");
+                                reviewRecyclerViewAdapter = new ReviewRecyclerViewAdapter(getContext(), productReviews);
+                                recyclerView.setAdapter(reviewRecyclerViewAdapter);
+                                reviewRecyclerViewAdapter.added(productReview);
+                            }
+                            int rating = Integer.valueOf(map.get("rating"));
+                            if(rating==5){
+                                five+=1;
+                                total++;
+                            }
+                            else if(rating==4){
+                                four+=1;
+                                total++;
+                            }
+                            else if(rating==3){
+                                three+=1;
+                                total++;
+                            }
+                            else if(rating==2){
+                                two+=1;
+                                total++;
+                            }
+                            else{
+                                one+=1;
+                                total++;
+                            }
+
+                            fiveStar.setProgress(five*100/total);
+                            fourStar.setProgress(four*100/total);
+                            threeStar.setProgress(three*100/total);
+                            twoStar.setProgress(two*100/total);
+                            oneStar.setProgress(one*100/total);
+                        }
+
+                        @Override
+                        public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                        }
+
+                        @Override
+                        public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+                        }
+
+                        @Override
+                        public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+        class sorting implements Comparator<ProductReview>
+        {
+
+
+            @Override
+            public int compare(ProductReview o1, ProductReview o2) {
+
+                if(Integer.parseInt(o1.getRating()) > Integer.parseInt(o2.getRating()))
+                    return 1;
+                else if(Integer.parseInt(o1.getRating()) < Integer.parseInt(o2.getRating()))
+                    return -1;
+                else
+                    return 0;
+            }
+        }
+
+        Collections.sort(productReviews, new sorting());
+        reviewRecyclerViewAdapter = new ReviewRecyclerViewAdapter(getContext(), productReviews);
+        recyclerView.setAdapter(reviewRecyclerViewAdapter);
+
+        fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                final AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
-                builder.setTitle("Choose");
-                builder.setMessage("Want to buy this?");
-
-                builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-
-                        String opname=pname.getText().toString();
-                        //Log.d("HERE",opname);
-                        String oprice=price.getText().toString();
-                        Date c = Calendar.getInstance().getTime();
-                        SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
-                        String formattedDate = df.format(c);
-                        orderInfo order=new orderInfo(opname,oprice,formattedDate,userX.getUid());
-                        String orderID = ordHis.push().getKey();
-                        //ordHis.child(userX.getEmail().substring(0,userX.getEmail().indexOf('@'))).child(orderID).setValue(order);
-                        ordHis.child("Users").child(userX.getUid()).child("Orders Requested").child(orderID).setValue(order);
-                        orderID = ordHis.push().getKey();
-                        ordHis.child("Artisans").child(artisanContactNumber).child("Order Requests").child(orderID).setValue(order);
-
-
-                    }
-                });
-
-                builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                });
-
-                Dialog dialog = builder.create();
-                builder.show();
+                toggleArrow(fab);
+                Collections.reverse(productReviews);
+                reviewRecyclerViewAdapter = new ReviewRecyclerViewAdapter(getContext(), productReviews);
+                recyclerView.setAdapter(reviewRecyclerViewAdapter);
             }
+        });
 
+        cardViewMine.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                android.app.AlertDialog.Builder builder = new AlertDialog.Builder(getContext(), R.style.alertDialogTheme);
+                LayoutInflater inflater = LayoutInflater.from(getContext());
+                View view = inflater.inflate(R.layout.review_ratings, null);
+                builder.setView(view);
+
+                final EditText ReviewInput = view.findViewById(R.id.review);
+                final RatingBar ratingBar = view.findViewById(R.id.ratingBar);
+                final ProgressDialog progressDialog = new ProgressDialog(getContext());
+                final ProgressBar progressBar = view.findViewById(R.id.review_progress_bar);
+
+                progressBar.setVisibility(VISIBLE);
+
+                ReviewInput.setText(reviewMine.getText());
+                ratingBar.setRating(rbMine.getRating());
+
+                builder.setPositiveButton("Edit", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        int n = Integer.parseInt(totalRated.getText().toString());
+                        float oldRating =  Float.parseFloat(averageRating.getText().toString());
+                        int newRating = (int)ratingBar.getRating();
+                        float finalRating;
+
+                        finalRating = (float) (n * oldRating - rbMine.getRating() + newRating) / (n);
+                        String totalRating = String.format("%.1f", finalRating);
+
+                        DatabaseReference reviewUpdateReference = FirebaseDatabase.getInstance().
+                                getReference("Categories/" + productCategory + "/" + productID);
+                        reviewUpdateReference.child("totalRating").setValue(String.valueOf(totalRating));
+                        reviewUpdateReference.child("numberOfPeopleWhoHaveRated").setValue(String.valueOf(n));
+
+
+                        ProductReview productReview = new ProductReview(userName, String.valueOf(newRating), ReviewInput.getText().toString());
+
+                        DatabaseReference reviewsReference = FirebaseDatabase.getInstance().getReference("Reviews/" + productID + "/" + userPhoneNumber + "/");
+                        reviewsReference.setValue(productReview);
+
+                        DatabaseReference artisanProductReference = FirebaseDatabase.getInstance().getReference("ArtisanProducts/"+artisanContactNumber+"/"+productID);
+                        artisanProductReference.child("totalRating").setValue(String.valueOf(totalRating));
+                        artisanProductReference.child("numberOfPeopleWhoHaveRated").setValue(String.valueOf(n));
+
+                        rbMine.setRating(ratingBar.getRating());
+                        reviewMine.setText(ReviewInput.getText());
+                    }
+                });
+
+                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                }).show().getWindow().setLayout(1000, 1100);
+            }
         });
 
         return view;
     }
+
+
+
 
 }

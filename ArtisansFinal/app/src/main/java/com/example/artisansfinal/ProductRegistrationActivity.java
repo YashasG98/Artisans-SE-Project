@@ -15,6 +15,7 @@ import android.provider.MediaStore;
 import android.renderscript.ScriptGroup;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -46,6 +47,9 @@ import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.UUID;
 
 import smartdevelop.ir.eram.showcaseviewlib.GuideView;
@@ -61,11 +65,15 @@ public class ProductRegistrationActivity extends AppCompatActivity {
     private ImageView imageView;
     private FirebaseStorage firebaseStorage;
     private StorageReference storageReference;
-    private Uri mainImageURI;
+    private Uri mainImageURI,firebaseUri;
     private ProductInfo product;
-    private static boolean viewedOnce = false;
-    //private double resizeFactorForHighRes[] = {1,0.8,0.7,0.6,0.5};
+    private static final String TAG = "productRegistration";
+    private static boolean runInOnePage = false;
+    private static String artisanName = null;
+    private static String artisanContactNumber = null;
+    private static final DateFormat DATE_FORMAT = new SimpleDateFormat("yyyy/MM/dd hh:mm:ss");
 
+    //private double resizeFactorForHighRes[] = {1,0.8,0.7,0.6,0.5};
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,10 +84,24 @@ public class ProductRegistrationActivity extends AppCompatActivity {
         firebaseStorage = FirebaseStorage.getInstance();
         storageReference = firebaseStorage.getReference();
 
-        final Button browse = findViewById(R.id.product_registration_button_browse_image);
-        imageView = findViewById(R.id.product_registration_iv_product_image);
+        final FloatingActionButton browse = findViewById(R.id.product_page_fab_insert_image);
+        imageView = findViewById(R.id.product_page_iv_product_image);
         Button register = findViewById(R.id.product_registration_button_register);
 
+        Intent intent = getIntent();
+        artisanName = intent.getStringExtra("name");
+        artisanContactNumber = intent.getStringExtra("phoneNumber");
+        /*Log.d(TAG, "onClick: "+artisanName+" "+artisanContactNumber);*/
+
+/*        if(!runInOnePage){
+            if(browse.getVisibility() == View.VISIBLE){
+                Tutorial tutorial = new Tutorial(this);
+                tutorial.checkIfFirstRun();
+                tutorial.requestFocusForView(browse, "Click here to browse for image","");
+                tutorial.finishedTutorial();
+                runInOnePage=false;
+            }
+        }*/
 
         browse.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -113,10 +135,6 @@ public class ProductRegistrationActivity extends AppCompatActivity {
                 String productPrice = price_of_product.getText().toString();
                 String productID = databaseReference.push().getKey();
 
-                Intent intent = getIntent();
-                String artisanName = intent.getStringExtra("name");
-                String artisanContactNumber = intent.getStringExtra("phoneNumber");
-
                 boolean productNameflag = true, productPriceflag = true;
 
                 if (productName.length() == 0) {
@@ -132,10 +150,15 @@ public class ProductRegistrationActivity extends AppCompatActivity {
                 }
 
                 if (productPriceflag && productNameflag) {
+
                     product = new ProductInfo(productID, productName, productDescription, productCategory, productPrice, artisanName, artisanContactNumber);
-                    databaseReference.child("Categories").child(productCategory).child(productName).setValue(product);
-                    databaseReference.child("ArtisanProducts").child(artisanContactNumber).child(productName).setValue(product);
-//                    databaseReference.child("Products").child(productName).setValue(product);
+                    product.setTotalRating("0");
+                    product.setNumberOfPeopleWhoHaveRated("0");
+                    product.setNumberOfSales("0");
+                    product.setDateOfRegistration(DATE_FORMAT.format(new Date()));
+                    databaseReference.child("Categories").child(productCategory).child(productID).setValue(product);
+                    databaseReference.child("ArtisanProducts").child(artisanContactNumber).child(productID).setValue(product);
+                    databaseReference.child("Products").child(productID).setValue(product);
 
                     if (mainImageURI != null) {
                         Log.d("IMAGEURI", mainImageURI.toString());
@@ -144,7 +167,8 @@ public class ProductRegistrationActivity extends AppCompatActivity {
 
                     Toast.makeText(getApplicationContext(), "Product Registered", Toast.LENGTH_SHORT).show();
                     Intent intent1 = new Intent(ProductRegistrationActivity.this, ArtisanHomePageActivity.class);
-//                    intent1.putExtra("param", "");
+                    intent1.putExtra("phoneNumber", artisanContactNumber);
+                    intent1.putExtra("name", artisanName);
                     startActivity(intent1);
                     finish();
                 }

@@ -3,6 +3,9 @@ package com.example.artisansfinal;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
+import android.os.Handler;
+import android.os.Parcelable;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -12,12 +15,14 @@ import android.support.v7.widget.RecyclerView;
 import android.text.Layout;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+import android.widget.SearchView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -48,17 +53,55 @@ public class SelectedCategoryActivity extends AppCompatActivity {
     private static final String TAG = "SelectedCategoryAct";
     private ArrayList<ProductInfo> searchResults = new ArrayList<>();
     private ProgressDialog progressDialog;
-
+    private String queryText = null;
     private RelativeLayout contentLayout;
     private RelativeLayout loadingLayout;
     private RelativeLayout notFoundLayout;
     private RelativeLayout noMatchLayout;
     private RelativeLayout recyclerViewLayout;
+    private RecyclerView recyclerView;
     private ImageView loading;
+    private static Bundle recyclerViewState;
+    private static Parcelable recyclerViewStateParcel;
 
     //Tutorials (done by shashwatha)
-    private boolean isCompleteTutorial = false;
-    private boolean isDismissed = false;
+    private static boolean runInOnePage = false;
+
+//    @Override
+//    protected void onSaveInstanceState(Bundle outState) {
+//        try{
+//            recyclerViewStateParcel = recyclerView.getLayoutManager().onSaveInstanceState();
+//            recyclerViewState.putParcelable("KEY",recyclerViewStateParcel);
+//        } catch (NullPointerException e) {
+//            e.printStackTrace();
+//            Log.d(TAG, "onSaveInstanceState: "+(recyclerViewStateParcel==null));
+//        }
+//        super.onSaveInstanceState(outState);
+//    }
+//
+//
+//    @Override
+//    public void onConfigurationChanged(Configuration newConfig) {
+//        try{
+//            if (recyclerViewState != null) {
+//                new Handler().postDelayed(new Runnable() {
+//
+//                    @Override
+//                    public void run() {
+//                        recyclerViewState = recyclerViewState.getParcelable("KEY");
+//                        recyclerView.getLayoutManager().onRestoreInstanceState(recyclerViewStateParcel);
+//
+//                    }
+//                }, 30);
+//
+//            }
+//            recyclerView.setLayoutManager(new LinearLayoutManager(this));
+//        } catch (NullPointerException e) {
+//            e.printStackTrace();
+//            Log.d(TAG, "onSaveInstanceState: "+e.toString());
+//        }
+//        super.onConfigurationChanged(newConfig);
+//    }
 
     class sorting implements Comparator<ProductInfo>
     {
@@ -71,6 +114,22 @@ public class SelectedCategoryActivity extends AppCompatActivity {
                 return 1;
             else
                 return -1;
+        }
+    }
+
+    class sortingByRating implements Comparator<ProductInfo>
+    {
+
+        @Override
+        public int compare(ProductInfo o1, ProductInfo o2) {
+
+            Log.d("rating", o1.getNumberOfPeopleWhoHaveRated() + " !" + o2.getTotalRating() +" =" +o1.toString());
+            if(Float.parseFloat(o1.getTotalRating()) > Float.parseFloat(o2.getTotalRating()))
+                return 1;
+            else if(Float.parseFloat(o1.getTotalRating()) < Float.parseFloat(o2.getTotalRating()))
+                return -1;
+            else
+                return 0;
         }
     }
 
@@ -110,83 +169,122 @@ public class SelectedCategoryActivity extends AppCompatActivity {
         //String str = databaseReference.child(category).getKey();
         //Log.d(TAG, str);
 
-        ImageButton searchButton = findViewById(R.id.selected_category_iButton_search);
+//        ImageButton searchButton = findViewById(R.id.selected_category_iButton_search);
         final Spinner sortChoice = findViewById(R.id.selected_category_spinner_sort_choice);
-        final EditText searchQuery = findViewById(R.id.selected_category_et_search_query);
+//        final EditText searchQuery = findViewById(R.id.selected_category_et_search_query);
         final Spinner searchOption = findViewById(R.id.selected_category_spinner_search_choice);
-        final RecyclerView recyclerView  = findViewById(R.id.selected_category_rv);
+        final SearchView searchView = findViewById(R.id.selected_category_sv_search);
+        recyclerView  = findViewById(R.id.selected_category_rv);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         categoryRecyclerViewAdapter = new CategoryRecyclerViewAdapter(this, productInfos);
         recyclerView.setAdapter(categoryRecyclerViewAdapter);
-
         ArrayList<View> views = new ArrayList<>();
         views.add(searchOption);
-        views.add(searchQuery);
+        views.add(searchView);
         views.add(sortChoice);
 
         final HashMap<View, String> title = new HashMap<>();
         title.put(searchOption,"Search for products\n with these options");
-        title.put(searchQuery,"Search for your product here");
+        title.put(searchView,"Search for your product here");
         title.put(sortChoice,"Filtering choices");
 
         final Tutorial tutorial = new Tutorial(this,views);
         tutorial.checkIfFirstRun();
 
-        searchButton.setOnClickListener(new View.OnClickListener() {
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
-            public void onClick(View v) {
+            public boolean onQueryTextSubmit(String query) {
+
+                searchResults.clear();
+                queryText = query;
+                String searchFilter = searchOption.getSelectedItem().toString();
 
                 noMatchLayout.setVisibility(View.GONE);
                 recyclerViewLayout.setVisibility(View.VISIBLE);
 
-                String searchItem = searchQuery.getText().toString().toLowerCase();
-                String searchFilter = searchOption.getSelectedItem().toString();
-
-                searchResults.clear();
-
                 if(searchFilter.equals("Artisan")){
                     for(ProductInfo product : productInfos){
                         try{
-                            if(product.getArtisanName().toLowerCase().contains(searchItem))
+                            if(product.getArtisanName().toLowerCase().contains(query.trim().toLowerCase()))
                                 searchResults.add(product);
                         }catch (NullPointerException e){
                             e.printStackTrace();
                         }
                     }
-                    categoryRecyclerViewAdapter = new CategoryRecyclerViewAdapter(v.getContext(), searchResults);
+                    categoryRecyclerViewAdapter = new CategoryRecyclerViewAdapter(getBaseContext(), searchResults);
                     recyclerView.setAdapter(categoryRecyclerViewAdapter);
                 }
                 else{
                     for(ProductInfo product: productInfos){
-                        if(product.getProductName().toLowerCase().contains(searchItem))
+                        if(product.getProductName().toLowerCase().contains(query.trim().toLowerCase()))
                             searchResults.add(product);
                     }
-                    categoryRecyclerViewAdapter = new CategoryRecyclerViewAdapter(v.getContext(), searchResults);
+                    categoryRecyclerViewAdapter = new CategoryRecyclerViewAdapter(getBaseContext(), searchResults);
                     recyclerView.setAdapter(categoryRecyclerViewAdapter);
                 }
                 if(searchResults.isEmpty()){
                     noMatchLayout.setVisibility(View.VISIBLE);
                     recyclerViewLayout.setVisibility(View.GONE);
                 }
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                if(newText.equals("")){
+                    categoryRecyclerViewAdapter = new CategoryRecyclerViewAdapter(getBaseContext(),productInfos);
+                    recyclerView.setAdapter(categoryRecyclerViewAdapter);
+                }
+
+                searchResults.clear();
+                String searchFilter = searchOption.getSelectedItem().toString();
+
+                noMatchLayout.setVisibility(View.GONE);
+                recyclerViewLayout.setVisibility(View.VISIBLE);
+
+                if(searchFilter.equals("Artisan")){
+                    for(ProductInfo product : productInfos){
+                        try{
+                            if(product.getArtisanName().toLowerCase().contains(newText.trim().toLowerCase()))
+                                searchResults.add(product);
+                        }catch (NullPointerException e){
+                            e.printStackTrace();
+                        }
+                    }
+                    categoryRecyclerViewAdapter = new CategoryRecyclerViewAdapter(getBaseContext(), searchResults);
+                    recyclerView.setAdapter(categoryRecyclerViewAdapter);
+                }
+                else{
+                    for(ProductInfo product: productInfos){
+                        if(product.getProductName().toLowerCase().contains(newText.trim().toLowerCase()))
+                            searchResults.add(product);
+                    }
+                    categoryRecyclerViewAdapter = new CategoryRecyclerViewAdapter(getBaseContext(), searchResults);
+                    recyclerView.setAdapter(categoryRecyclerViewAdapter);
+                }
+                if(searchResults.isEmpty()){
+                    noMatchLayout.setVisibility(View.VISIBLE);
+                    recyclerViewLayout.setVisibility(View.GONE);
+                }
+                return false;
             }
         });
+
 
         sortChoice.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 final String sorting_order = sortChoice.getSelectedItem().toString();
-                if(searchQuery.getText().toString().length()==0) {
+                if(queryText == null) {
                     sort(productInfos, sorting_order);
                     categoryRecyclerViewAdapter = new CategoryRecyclerViewAdapter(SelectedCategoryActivity.this, productInfos);
                     recyclerView.setAdapter(categoryRecyclerViewAdapter);
-                } else{
+                } else {
                     sort(searchResults, sorting_order);
                     categoryRecyclerViewAdapter = new CategoryRecyclerViewAdapter(SelectedCategoryActivity.this, searchResults);
                     recyclerView.setAdapter(categoryRecyclerViewAdapter);
                 }
-
-
             }
 
             @Override
@@ -216,12 +314,13 @@ public class SelectedCategoryActivity extends AppCompatActivity {
                                 recyclerViewLayout.setVisibility(View.VISIBLE);
                                 noMatchLayout.setVisibility(View.GONE);
 
-                                if(contentLayout.getVisibility() == View.VISIBLE){
-
-                                    tutorial.requestFocusForViews(title);
-                                    tutorial.finishedTutorial();
-
-                                }
+//                                if(contentLayout.getVisibility() == View.VISIBLE && !runInOnePage){
+//
+//                                    tutorial.requestFocusForViews(title);
+//                                    tutorial.finishedTutorial();
+//                                    runInOnePage = true;
+//
+//                                }
 
                             }
                             ProductInfo productInfo;
@@ -231,6 +330,8 @@ public class SelectedCategoryActivity extends AppCompatActivity {
                             HashMap<String, String> map = (HashMap<String, String>) dataSnapshot.getValue();
                             Log.d("HASHMAP", map.toString());
                             productInfo = new ProductInfo(map.get("productID"), map.get("productName"), map.get("productDescription"), map.get("productCategory"), map.get("productPrice"), map.get("artisanName"), map.get("artisanContactNumber"));
+                            productInfo.setTotalRating(map.get("totalRating"));
+                            productInfo.setNumberOfPeopleWhoHaveRated(map.get("numberOfPeopleWhoHaveRated"));
                             Log.d("MAP", map.get("productDescription"));
                             categoryRecyclerViewAdapter.added(productInfo);
                             //categoryRecyclerViewAdapter.addedImage(storageReference.child("ProductImage/"+(map.get("productID"))));
@@ -320,9 +421,24 @@ public class SelectedCategoryActivity extends AppCompatActivity {
 
     public void sort(ArrayList<ProductInfo> product_list, String sorting_order) {
 
-        Collections.sort(product_list, new sorting());
 
-        if(sorting_order.equals("Price: High to Low"))
-            Collections.reverse(product_list);
+        if(sorting_order.equals("Price: Low to High") || sorting_order.equals("Price: High to Low")) {
+            Collections.sort(product_list, new sorting());
+
+            if(sorting_order.equals("Price: High to Low"))
+                Collections.reverse(product_list);
+
+        }
+
+
+
+        if(sorting_order.equals("Rating: Low to High") || sorting_order.equals("Rating: High to Low")) {
+            Collections.sort(product_list, new sortingByRating());
+
+            if(sorting_order.equals("Rating: High to Low"))
+                Collections.reverse(product_list);
+        }
+
+
     }
 }

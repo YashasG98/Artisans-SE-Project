@@ -1,7 +1,10 @@
 package com.example.artisansfinal;
 
+import android.net.Uri;
 import android.os.Parcel;
 import android.os.Parcelable;
+
+import java.util.Date;
 
 public class ProductInfo implements Parcelable {
 
@@ -12,6 +15,18 @@ public class ProductInfo implements Parcelable {
     private String productPrice;
     private String artisanName;
     private String artisanContactNumber;
+    private String totalRating;
+    private String numberOfPeopleWhoHaveRated;
+    private String numberOfSales;
+    private String dateOfRegistration;
+
+    public void setDateOfRegistration(String dateOfRegistration) {
+        this.dateOfRegistration = dateOfRegistration;
+    }
+
+    public void setNumberOfSales(String numberOfSales) {
+        this.numberOfSales = numberOfSales;
+    }
 
     public ProductInfo(String productID, String productName, String productDescription, String productCategory, String productPrice, String artisanName, String artisanContactNumber) {
         this.productID = productID;
@@ -21,6 +36,29 @@ public class ProductInfo implements Parcelable {
         this.productPrice = productPrice;
         this.artisanName = artisanName;
         this.artisanContactNumber = artisanContactNumber;
+    }
+
+    public ProductInfo(String productID, String productName, String productDescription, String productCategory, String productPrice, String artisanName, String artisanContactNumber, String totalRating, String numberOfPeopleWhoHaveRated) {
+        this.productID = productID;
+        this.productName = productName;
+        this.productDescription = productDescription;
+        this.productCategory = productCategory;
+        this.productPrice = productPrice;
+        this.artisanName = artisanName;
+        this.artisanContactNumber = artisanContactNumber;
+        this.totalRating = totalRating;
+        this.numberOfPeopleWhoHaveRated = numberOfPeopleWhoHaveRated;
+    }
+
+    public ProductInfo() {
+    }
+
+    public void setTotalRating(String totalRating) {
+        this.totalRating = totalRating;
+    }
+
+    public void setNumberOfPeopleWhoHaveRated(String numberOfPeopleWhoHaveRated) {
+        this.numberOfPeopleWhoHaveRated = numberOfPeopleWhoHaveRated;
     }
 
     public ProductInfo(Parcel in) {
@@ -81,6 +119,14 @@ public class ProductInfo implements Parcelable {
 
     public void setArtisanContactNumber(String artisanContactNumber) {
         this.artisanContactNumber = artisanContactNumber;
+    }
+
+    public String getTotalRating() {
+        return totalRating;
+    }
+
+    public String getNumberOfPeopleWhoHaveRated() {
+        return numberOfPeopleWhoHaveRated;
     }
 
     @Override

@@ -1,13 +1,17 @@
 package com.example.artisansfinal;
 
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MenuItem;
@@ -30,20 +34,28 @@ public class UserHomePageActivity extends AppCompatActivity {
     private String userType;
     private FirebaseAuth firebaseAuth;
     private String emailID;
+    private static boolean runInOnePage=false;
     int counter = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.user_home_page_activity);
         firebaseAuth = FirebaseAuth.getInstance();
-        DrawerLayout drawerLayout = findViewById(R.id.user_home_page_dl);
+
         Intent intent = getIntent();
 
         FirebaseUser user = firebaseAuth.getCurrentUser();
+
+
+
+
+
+
         if(user != null)
         {
-        userType = user.getDisplayName();
-        emailID = user.getEmail();
+            userType = user.getDisplayName();
+            emailID = user.getEmail();
         }
         user_home_page_dl = (DrawerLayout) findViewById(R.id.user_home_page_dl);
         abdt = new ActionBarDrawerToggle(this, user_home_page_dl, R.string.Open, R.string.Close);
@@ -54,12 +66,14 @@ public class UserHomePageActivity extends AppCompatActivity {
         final NavigationView nav_view = (NavigationView) findViewById(R.id.user_home_page_navigation_view);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        Tutorial tutorial = new Tutorial(this);
-        tutorial.checkIfFirstRun();
-        tutorial.requestFocusForView(findViewById(R.id.user_home_page_cv_bracelet),
-                "Category", "Click to search products of this category");
-        tutorial.finishedTutorial();
-
+        if(!runInOnePage){
+            Tutorial tutorial = new Tutorial(this);
+            tutorial.checkIfFirstRun();
+            tutorial.requestFocusForView(findViewById(R.id.user_home_page_cv_bracelet),
+                    "Category", "Click to search products of this category");
+            tutorial.finishedTutorial();
+            runInOnePage = true;
+        }
         nav_view.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
@@ -113,10 +127,9 @@ public class UserHomePageActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-        if (abdt.onOptionsItemSelected(item)) {
-
+        if (abdt.onOptionsItemSelected(item))
             return true;
-        }
+
         return super.onOptionsItemSelected(item);
     }
 
@@ -147,16 +160,42 @@ public class UserHomePageActivity extends AppCompatActivity {
     }
 
     public void tutorial_button(MenuItem item) {
-        Intent i = new Intent(this, UserHomePageActivity.class);
+        Intent i = new Intent(this, UserTutorialActivity.class);
         startActivity(i);
         Toast.makeText(this, "Tutorial", Toast.LENGTH_SHORT).show();
     }
 
+    public void wallet_button(MenuItem item) {
+        Intent i = new Intent(this, UserWalletActivity.class);
+        startActivity(i);
+
+    }
     public void Logout(MenuItem item) {
-        firebaseAuth.signOut();
-        finish();
-        startActivity(new Intent(UserHomePageActivity.this, CommonLoginActivityTabbed.class));
-        Toast.makeText(this, "Logged out", Toast.LENGTH_SHORT).show();
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Logout Confirmation");
+        builder.setMessage("Are you sure you want to logout?");
+
+        builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                firebaseAuth.signOut();
+                finish();
+                startActivity(new Intent(UserHomePageActivity.this, CommonLoginActivityTabbed.class));
+                Toast.makeText(UserHomePageActivity.this, "Logged out", Toast.LENGTH_SHORT).show();
+
+            }
+        });
+
+        builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+
+        Dialog dialog = builder.create();
+        builder.show();
     }
 
     public void Toys(View view) {
@@ -196,7 +235,7 @@ public class UserHomePageActivity extends AppCompatActivity {
 
     public void Glass_painting(View view) {
         Intent i = new Intent(this, SelectedCategoryActivity.class);
-        i.putExtra("category", "Glass painting");
+        i.putExtra("category", "Glass Painting");
         startActivity(i);
         Toast.makeText(this, "Glass paintings", Toast.LENGTH_SHORT).show();
     }

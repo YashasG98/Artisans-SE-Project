@@ -1,14 +1,19 @@
 package com.example.artisansfinal;
 
 
+import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
+import android.os.Message;
+import android.os.PersistableBundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MenuItem;
@@ -16,12 +21,21 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.messaging.FirebaseMessaging;
+
+import java.io.IOException;
+
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 //import e.shrinidhiav.artisanhomepageactivity.R;
 
@@ -35,29 +49,51 @@ public class ArtisanHomePageActivity extends AppCompatActivity {
     private String name;
     int counter;
     //private String name2; // added by shrinidhi
+    private static final String TAG = "artisanHomePageActivity";
+
+//    @Override
+//    public void onSaveInstanceState(Bundle savedInstanceState) {
+//        if(artisanPhoneNumber!=null && !artisanPhoneNumber.isEmpty()){
+//            savedInstanceState.putString("phoneNumber",artisanPhoneNumber);
+//        }
+//        if(name!=null && !name.isEmpty()){
+//            savedInstanceState.putString("name",name);
+//        }
+//        Log.d(TAG, "onSaveInstanceState: "+name+" "+artisanPhoneNumber);
+//        super.onSaveInstanceState(savedInstanceState);
+//    }
+//
+//    @Override
+//    public void onRestoreInstanceState(Bundle savedInstanceState){
+//        artisanPhoneNumber = savedInstanceState.getString("phoneNumber");
+//        name = savedInstanceState.getString("name");
+//        Log.d(TAG, "onRestoreInstanceState: "+name+" "+artisanPhoneNumber);
+//        super.onRestoreInstanceState(savedInstanceState);
+//    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.artisan_home_page_activity);
-        DrawerLayout drawerLayout = findViewById(R.id.artisan_home_page_dl);
-
+        //DrawerLayout drawerLayout = findViewById(R.id.artisan_home_page_dl);
 
         Intent intent = getIntent();
         //userType = intent.getStringExtra("userType");
-        artisanPhoneNumber = FirebaseAuth.getInstance().getCurrentUser().getPhoneNumber();
+//        artisanPhoneNumber = FirebaseAuth.getInstance().getCurrentUser().getPhoneNumber();
         //Log.d("artisanPhoneNumber", artisanPhoneNumber);
+        artisanPhoneNumber = intent.getStringExtra("phoneNumber");
+        name = intent.getStringExtra("name");
 
+        Log.d(TAG, "onCreate: "+name+" "+artisanPhoneNumber);
         //Added by Dhanasekhar
 
         DatabaseReference nameRef = FirebaseDatabase.getInstance().getReference("Artisans/" + artisanPhoneNumber + "/username");
         final ProgressDialog progressDialog = new ProgressDialog(this);
-        progressDialog.setMessage("wait");
-        progressDialog.show();
+
         nameRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 name = dataSnapshot.getValue(String.class);
-                progressDialog.dismiss();
             }
 
             @Override
@@ -103,25 +139,6 @@ public class ArtisanHomePageActivity extends AppCompatActivity {
         counter++;
     }
 
-    // added by Shrinidhi
-    @Override
-    public void onSaveInstanceState(Bundle savedInstanceState)
-    {
-        savedInstanceState.putString("Phone number",artisanPhoneNumber);
-        savedInstanceState.putString("Artisan name",name);
-        super.onSaveInstanceState(savedInstanceState);
-    }
-    // added by Shrinidhi
-    @Override
-    public void onRestoreInstanceState(Bundle savedInstanceState) {
-        if(savedInstanceState != null)
-        {
-            String restoreArtisanPhNo = savedInstanceState.getString("Phone number");
-            String restoreName = savedInstanceState.getString("Artisan name");
-        }
-        super.onRestoreInstanceState(savedInstanceState);
-    }
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
@@ -131,10 +148,10 @@ public class ArtisanHomePageActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void bracelets(View view) {
-        Toast.makeText(this, "Bracelets", Toast.LENGTH_SHORT).show();
-
-    }
+//    public void bracelets(View view) {
+//        Toast.makeText(this, "Bracelets", Toast.LENGTH_SHORT).show();
+//
+//    }
 
     public void my_profile_button(MenuItem item) {
         Intent i = new Intent(this, ArtisanProfilePageActivity.class);
@@ -152,14 +169,41 @@ public class ArtisanHomePageActivity extends AppCompatActivity {
     }
 
     public void tutorial_button(MenuItem item) {
-        Toast.makeText(this, "Tutorial", Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(this,ArtisanTutorialActivity.class);
+        startActivity(intent);
     }
 
     public void Logout(MenuItem item) {
-        firebaseAuth.signOut();
-        finish();
-        startActivity(new Intent(ArtisanHomePageActivity.this, CommonLoginActivityTabbed.class));
-        Toast.makeText(this, "Logged out", Toast.LENGTH_SHORT).show();
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Logout Confirmation");
+        builder.setMessage("Are you sure you want to logout?");
+
+        builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                firebaseAuth.signOut();
+                finish();
+                startActivity(new Intent(ArtisanHomePageActivity.this, CommonLoginActivityTabbed.class));
+                Toast.makeText(ArtisanHomePageActivity.this, "Logged out", Toast.LENGTH_SHORT).show();
+
+            }
+        });
+
+        builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+
+        Dialog dialog = builder.create();
+        builder.show();
+
+
+
+
+
     }
 
 
@@ -175,12 +219,8 @@ public class ArtisanHomePageActivity extends AppCompatActivity {
 
     public void upload_product(MenuItem item) {
         Toast.makeText(this, "Upload a product", Toast.LENGTH_SHORT).show();
-        Intent intentArtisanInfo = getIntent();
-//        String artisanName = intentArtisanInfo.getStringExtra("name");
-        String artisanContactNumber = intentArtisanInfo.getStringExtra("phoneNumber");
-        Log.d("Here", artisanContactNumber+" "+name);
         Intent intent = new Intent(this, ProductRegistrationActivity.class);
-        intent.putExtra("phoneNumber", artisanContactNumber);
+        intent.putExtra("phoneNumber", artisanPhoneNumber);
         intent.putExtra("name", name);
         //Log.d("nam", artisanName);
         startActivity(intent);
@@ -196,10 +236,37 @@ public class ArtisanHomePageActivity extends AppCompatActivity {
         Intent newIntent = new Intent(this, ArtisanPendingOrderActivity.class);
         startActivity(newIntent);
     }
-
+    public void wallet(MenuItem item) {
+        Intent i = new Intent(this, ArtisanWalletActivity.class);
+        startActivity(i);
+    }
     public void my_products(View view) {
         Intent newIntent = new Intent(this, ArtisanProductsActivity.class);
         newIntent.putExtra("phoneNumber", artisanPhoneNumber);
         startActivity(newIntent);
     }
+
+    public void Pending_orders(View view) {
+        Intent newIntent = new Intent(this, ArtisanPendingOrderActivity.class);
+        startActivity(newIntent);
+    }
+
+    public void My_products(View view) {
+        Intent newIntent = new Intent(this, ArtisanProductsActivity.class);
+        newIntent.putExtra("phoneNumber", artisanPhoneNumber);
+        startActivity(newIntent);
+    }
+
+    public void wallet(View view) {
+        Intent i = new Intent(this, ArtisanWalletActivity.class);
+        startActivity(i);
+    }
+
+    public void My_Profile(View view) {
+        Intent i = new Intent(this, ArtisanProfilePageActivity.class);
+        startActivity(i);
+        Toast.makeText(this, "Your profile", Toast.LENGTH_SHORT).show();
+    }
+
+
 }

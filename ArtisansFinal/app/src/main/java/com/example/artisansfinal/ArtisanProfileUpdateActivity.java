@@ -1,12 +1,15 @@
 package com.example.artisansfinal;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -29,12 +32,19 @@ public class ArtisanProfileUpdateActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.edit_artisan_info);
+        setContentView(R.layout.activity_edit_artisan_info);
+        Intent i=getIntent();
+        String name=i.getStringExtra("Name");
+        String pc=i.getStringExtra("PC");
 
-        databaseArtisans= FirebaseDatabase.getInstance().getReference("Artisans");
+        databaseArtisans= FirebaseDatabase.getInstance().getReference("Artisans/"+ userX.getPhoneNumber());
+        final DatabaseReference dbrefArtisanProducts = FirebaseDatabase.getInstance().getReference("ArtisanProducts/"+userX.getPhoneNumber());
+
         updateArtisanName = (EditText) findViewById(R.id.updateArtisanName);
         updateArtisanPin = (EditText) findViewById(R.id.updateArtisanPin);
         buttonUpdateArtisan = (Button) findViewById(R.id.buttonUpdateArtisan);
+        updateArtisanName.setText(name);
+        updateArtisanPin.setText(pc);
 
         buttonUpdateArtisan.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -55,15 +65,13 @@ public class ArtisanProfileUpdateActivity extends AppCompatActivity {
                     pf=false;
                 }
                 if(nf && pf) {
-                    databaseArtisans.addValueEventListener(new ValueEventListener() {
+
+                    dbrefArtisanProducts.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            for (DataSnapshot data : dataSnapshot.getChildren()) {
-                                if (data.child("email").getValue().toString().equals(userX.getEmail())) {
-                                    String uid = data.getKey();
-                                    databaseArtisans.child(uid).child("userName").setValue(newName);
-                                    databaseArtisans.child(uid).child("userPC").setValue(newPin);
-                                }
+                            for(DataSnapshot data: dataSnapshot.getChildren()){
+                                DatabaseReference tempref= FirebaseDatabase.getInstance().getReference("ArtisanProducts/"+userX.getPhoneNumber()+"/"+data.getKey());
+                                tempref.child("artisanName").setValue(newName);
                             }
                         }
 
@@ -72,6 +80,41 @@ public class ArtisanProfileUpdateActivity extends AppCompatActivity {
 
                         }
                     });
+
+                    FirebaseDatabase.getInstance().getReference("Categories").addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            for(final DataSnapshot data: dataSnapshot.getChildren()){
+                                FirebaseDatabase.getInstance().getReference("Categories/"+data.getKey()).addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot dataSnapshot2) {
+                                        for(DataSnapshot data2:dataSnapshot2.getChildren()){
+                                            if(data2.child("artisanContactNumber").getValue().toString().equals(userX.getPhoneNumber())){
+                                                FirebaseDatabase.getInstance().getReference("Categories/"+data.getKey()+"/"+data2.getKey()).child("artisanName").setValue(newName);
+                                            }
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                    }
+                                });
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
+
+                    databaseArtisans.child("username").setValue(newName);
+                    databaseArtisans.child("postal_address").setValue(newPin);
+                    Toast.makeText(ArtisanProfileUpdateActivity.this,"Profile Updated",Toast.LENGTH_LONG).show();
+                    Intent i= new Intent(getApplicationContext(), ArtisanProfilePageActivity.class);
+                    startActivity(i);
+                    finish();
                 }
             }
 
