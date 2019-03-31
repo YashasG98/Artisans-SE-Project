@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -39,6 +40,7 @@ public class UserProfileUpdateActivity extends AppCompatActivity {
         Intent in=getIntent();
         String name=in.getStringExtra("Name");
         String pc=in.getStringExtra("PC");
+        final String phno=in.getStringExtra("Phone");
 
         databaseUsers = FirebaseDatabase.getInstance().getReference("User");
         updateUserName = (EditText) findViewById(R.id.updateUserName);
@@ -66,6 +68,35 @@ public class UserProfileUpdateActivity extends AppCompatActivity {
                     pf = false;
                 }
                 if (nf && pf) {
+
+                    FirebaseDatabase.getInstance().getReference("Reviews").addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            for(final DataSnapshot data:dataSnapshot.getChildren()){
+                                FirebaseDatabase.getInstance().getReference("Reviews/"+data.getKey()).addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot dataSnapshot2) {
+                                        for(DataSnapshot data2:dataSnapshot2.getChildren()){
+                                            if(data2.getKey().equals(phno))
+                                                FirebaseDatabase.getInstance().getReference("Reviews/"+data.getKey()+"/"+data2.getKey()).child("userName").setValue(newName);
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                    }
+                                });
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
+
+
                     databaseUsers.addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -76,6 +107,9 @@ public class UserProfileUpdateActivity extends AppCompatActivity {
                                     databaseUsers.child(uid).child("userPcode").setValue(newPin);
                                     i=1;
                                     Toast.makeText(getApplicationContext(), "Profile Updated", Toast.LENGTH_LONG).show();
+                                    Intent i=new Intent(getApplicationContext(),UserprofilePageActivity.class);
+                                    startActivity(i);
+                                    finish();
                                 }
                             }
                         }

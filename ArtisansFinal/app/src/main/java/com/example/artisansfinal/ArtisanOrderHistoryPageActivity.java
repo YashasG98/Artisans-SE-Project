@@ -6,6 +6,8 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+import android.view.View;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -44,12 +46,15 @@ public class ArtisanOrderHistoryPageActivity extends AppCompatActivity {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 orderInfo order = new orderInfo();
-                //Log.d("tag", order.toString() + "!" + dataSnapshot.getValue()+"!"+dataSnapshot.getKey());
                 HashMap<String, String> map = (HashMap<String, String>) dataSnapshot.getValue();
 
                 //Log.d("HERE",map.toString());
                 order = new orderInfo(map.get("name"), map.get("price"), map.get("date"), map.get("userUID"));
                 AOHAdapter.added(order);
+                if(findViewById(R.id.noMatchArtisanOrderHistory1).getVisibility()==View.VISIBLE) {
+                    findViewById(R.id.noMatchArtisanOrderHistory1).setVisibility(View.GONE);
+                    findViewById(R.id.noMatchArtisanOrderHistory2).setVisibility(View.GONE);
+                }
             }
 
             @Override
