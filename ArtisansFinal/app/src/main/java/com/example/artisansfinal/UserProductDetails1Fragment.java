@@ -98,14 +98,14 @@ public class UserProductDetails1Fragment extends Fragment {
     private boolean confirmationFlag = false;
 
     //Lcation based done by shrinidhi anil varna
-    AddressResultReceiver mResultReceiver;
+    AddressResultReceiver mResultReceiver, mResultReceiver2;
     double latid = 0,longit = 0;
     EditText latitudeEdit, longitudeEdit, addressEdit;
     ProgressBar progressBar;
     TextView infoText;
     TextView locText;
     ProgressBar locProg;
-    ProgressBar calProg;
+    //ProgressBar calProg;
     TextView current_location;
     CheckBox checkBox;
     TextView pprice, dprice, tprice;
@@ -336,6 +336,12 @@ public class UserProductDetails1Fragment extends Fragment {
                 final AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
                 builder.setTitle("Choose a delivery date");
 
+                if(ch == 0)
+                {
+                    int i;
+                    for(i=0;i<99;i++);
+                    ch = (int)(0.1*pp);
+                }
                 //Added by dhanasekhar
                 LayoutInflater layoutInflater = inflater.from(v.getContext());
                 final View userConfirmationView = layoutInflater.inflate(R.layout.user_confirmation, null);
@@ -343,17 +349,14 @@ public class UserProductDetails1Fragment extends Fragment {
                 pprice = (TextView) userConfirmationView.findViewById(R.id.user_confirmation_product_price);
                 dprice = (TextView) userConfirmationView.findViewById(R.id.user_confirmation_delivery_charge);
                 tprice = (TextView) userConfirmationView.findViewById(R.id.user_confirmation_total_charge);
-                calProg = (ProgressBar) userConfirmationView.findViewById(R.id.CalProg);
+                //calProg = (ProgressBar) userConfirmationView.findViewById(R.id.CalProg);
                 final CalendarView calendarView = userConfirmationView.findViewById(R.id.calendarView);
                 calendarView.setMinDate(Calendar.getInstance().getTimeInMillis());
 
                 final String months[] = { "Jan", "Feb", "Mar", "Apr",
                         "May", "Jun", "Jul", "Aug",
                         "Sep", "Oct", "Nov", "Dec" };
-                if(ch == 0)
-                {
-                    artisanfetch(v);
-                }
+
                 pprice.setText("Product price: Rs."+pp);
                 dprice.setText("Shipping price: Rs."+ch);
                 tprice.setText("Total amount: Rs."+(pp+ch));
@@ -613,7 +616,79 @@ public class UserProductDetails1Fragment extends Fragment {
         Log.e(TAG, "Starting Service");
         getContext().startService(intent);
     }
-    class AddressResultReceiver extends ResultReceiver {
+    public void artisanfetch2(View view) {
+        fetchAddress = false;
+        fetchType = Constants.USE_ADDRESS_NAME;
+        //longitude.setEnabled(false);
+        //latitude.setEnabled(false);
+//        fetch.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                fetchLocation();
+//            }
+//        });
+
+//        addressEdit.setEnabled(true);
+//        addressEdit.requestFocus();
+        FirebaseDatabase.getInstance().getReference("Artisans").child(artisanContactNumber).child("postal_address").
+                addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                        pincode = dataSnapshot.getValue(String.class);
+                        name = dataSnapshot.getValue(String.class);
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+
+        final Intent intent = new Intent(getActivity(), GeocodeAddressIntentService.class);
+        intent.putExtra(Constants.RECEIVER, mResultReceiver);
+        intent.putExtra(Constants.FETCH_TYPE_EXTRA, fetchType);
+        if (fetchType == Constants.USE_ADDRESS_NAME) {
+//          if (addressEdit.getText().length() == 0) {
+//              Toast.makeText(this, "Please enter an address name", Toast.LENGTH_LONG).show();
+//              return;
+//            }
+            //FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+            //name = "Bangalore";
+            //intent.putExtra(Constants.LOCATION_NAME_DATA_EXTRA2, name);
+            intent.putExtra(Constants.LOCATION_NAME_DATA_EXTRA, name);
+
+        } else {
+            fetchAddress = true;
+            fetchType = Constants.USE_ADDRESS_LOCATION;
+            //latitudeEdit = latid;
+            //longitudeEdit = longit;
+            latitudeEdit.setEnabled(true);
+            latitudeEdit.requestFocus();
+            longitudeEdit.setEnabled(true);
+            addressEdit.setEnabled(false);
+
+            if (latitudeEdit.getText().length() == 0 || longitudeEdit.getText().length() == 0) {
+                Toast.makeText(getContext(),
+                        "Please enter both latitude and longitude",
+                        Toast.LENGTH_LONG).show();
+                return;
+            }
+            intent.putExtra(Constants.LOCATION_LATITUDE_DATA_EXTRA,
+                    (latid));
+            intent.putExtra(Constants.LOCATION_LONGITUDE_DATA_EXTRA,
+                    longit);
+        }
+        //infoText.setVisibility(View.INVISIBLE);
+//        locText.setVisibility(View.INVISIBLE);
+        //progressBar.setVisibility(View.VISIBLE);
+//        locProg.setVisibility(View.VISIBLE);
+        Log.e(TAG, "Starting Service");
+        getContext().startService(intent);
+    }
+    class AddressResultReceiver extends ResultReceiver
+    {
         public AddressResultReceiver(Handler handler) {
             super(handler);
         }
@@ -630,7 +705,7 @@ public class UserProductDetails1Fragment extends Fragment {
                         double charges = Math.sqrt((latid-address.getLatitude())*(latid-address.getLatitude()) + (longit-address.getLongitude())*(longit-address.getLongitude()));
                         charges = charges*R*0.01;
                         if(charges > 100)
-                            charges = 0.01*charges;
+                            charges = 0.1*pp;
                         else
                             charges = 10;
                          ch = (int)charges;
@@ -649,15 +724,16 @@ public class UserProductDetails1Fragment extends Fragment {
                                     }
                                 });
                         //progressBar.setVisibility(View.GONE);
+                        //calProg.setVisibility(View.GONE);
                         locProg.setVisibility(View.GONE);
-                        calProg.setVisibility(View.GONE);
+
                         //infoText.setVisibility(View.VISIBLE);
                         locText.setVisibility(View.VISIBLE);
-                        dprice.setVisibility(View.VISIBLE);
+                        //dprice.setVisibility(View.VISIBLE);
                         //infoText.setText("Rs. " + ch);
                         locText.setText("Rs. "+ch);
-                        dprice.setText("Shipping price: Rs."+ch);
-                        tprice.setText("Total amount: Rs."+(pp+ch));
+                        //dprice.setText("Shipping price: Rs."+ch);
+                        //tprice.setText("Total amount: Rs."+(pp+ch));
 //                        databaseReference.addValueEventListener(new ValueEventListener() {
 //                            @Override
 //                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -717,13 +793,13 @@ public class UserProductDetails1Fragment extends Fragment {
                     public void run() {
                         //progressBar.setVisibility(View.GONE);
                         locProg.setVisibility(View.GONE);
-                        dprice.setVisibility(CalendarView.GONE);
+                        //dprice.setVisibility(CalendarView.GONE);
                         //infoText.setVisibility(View.VISIBLE);
                         locText.setVisibility(View.VISIBLE);
-                        dprice.setVisibility(View.VISIBLE);
+                        //dprice.setVisibility(View.VISIBLE);
                         //infoText.setText(resultData.getString(Constants.RESULT_DATA_KEY));
                         locText.setText(resultData.getString(Constants.RESULT_DATA_KEY));
-                        dprice.setText(resultData.getString(Constants.RESULT_DATA_KEY));
+                        //dprice.setText(resultData.getString(Constants.RESULT_DATA_KEY));
                     }
                 });
             }
