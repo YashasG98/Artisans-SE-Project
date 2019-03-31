@@ -11,7 +11,6 @@
     android:layout_marginBottom="5sp"
     android:orientation="vertical"
     app:cardCornerRadius="8sp"
-    app:strokeColor="@color/common_dark"
     app:strokeWidth="1dp">
 
 
