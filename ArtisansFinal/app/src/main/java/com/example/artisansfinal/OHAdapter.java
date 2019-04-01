@@ -67,6 +67,7 @@ public class OHAdapter extends RecyclerView.Adapter<OHAdapter.OHViewHolder> {
         TextView date;
         RelativeLayout layout;
         TextView reviewTextView;
+        TextView quantityTextView;
         RatingBar ratingBar;
         CardView cardView;
         View divider;
@@ -81,6 +82,7 @@ public class OHAdapter extends RecyclerView.Adapter<OHAdapter.OHViewHolder> {
             layout = itemView.findViewById(R.id.orderHistoryRL);
             cardView = itemView.findViewById(R.id.orderHistoryCv);
             divider = itemView.findViewById(R.id.divider_line);
+            quantityTextView = itemView.findViewById(R.id.order_history_layout_quantity);
 
 
         }
@@ -110,6 +112,7 @@ public class OHAdapter extends RecyclerView.Adapter<OHAdapter.OHViewHolder> {
         viewHolder.date.setText(orderX.getDate());
         viewHolder.productPrice.setText(orderX.getPrice());
         viewHolder.image.setClipToOutline(true);
+        viewHolder.quantityTextView.setText(orderX.getQuantity());
         storageReference = FirebaseStorage.getInstance().getReference("ProductImages/LowRes/" + orderX.getProductID());
         Glide.with(context).asGif().load(R.mipmap.loading3).into(viewHolder.image);
 
@@ -312,6 +315,8 @@ public class OHAdapter extends RecyclerView.Adapter<OHAdapter.OHViewHolder> {
                             reviewUpdateReference.child("numberOfPeopleWhoHaveRated").setValue(String.valueOf(n));
 
 
+
+
                             ProductReview productReview = new ProductReview(userName, rating, review);
 
                             DatabaseReference reviewsReference = FirebaseDatabase.getInstance().getReference("Reviews/" + orderX.getProductID() + "/" + userPhoneNumber + "/");
@@ -320,6 +325,10 @@ public class OHAdapter extends RecyclerView.Adapter<OHAdapter.OHViewHolder> {
                             DatabaseReference artisanProductReference = FirebaseDatabase.getInstance().getReference("ArtisanProducts/"+artisanContactNumber+"/"+orderX.getProductID());
                             artisanProductReference.child("totalRating").setValue(String.valueOf(totalRating));
                             artisanProductReference.child("numberOfPeopleWhoHaveRated").setValue(String.valueOf(n));
+
+                            DatabaseReference productreference = FirebaseDatabase.getInstance().getReference("Products/" + orderX.getProductID() + "/");
+                            productreference.child("totalRating").setValue(String.valueOf(totalRating));
+                            productreference.child("numberOfPeopleWhoHaveRated").setValue(String.valueOf(n));
 
 
                         }
