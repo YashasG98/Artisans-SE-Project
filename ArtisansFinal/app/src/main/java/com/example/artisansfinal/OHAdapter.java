@@ -334,7 +334,7 @@ public class OHAdapter extends RecyclerView.Adapter<OHAdapter.OHViewHolder> {
                         }
                     });
 
-                    builder.setNegativeButton("Later!", new DialogInterface.OnClickListener() {
+                    builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
 

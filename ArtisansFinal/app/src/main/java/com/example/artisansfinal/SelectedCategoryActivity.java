@@ -2,30 +2,17 @@ package com.example.artisansfinal;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.content.res.Configuration;
-import android.os.Handler;
 import android.os.Parcelable;
-import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.Layout;
 import android.util.Log;
 import android.view.View;
-import android.view.Window;
-import android.widget.AdapterView;
-import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.SearchView;
-import android.widget.Spinner;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.firebase.database.ChildEventListener;
@@ -35,8 +22,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.database.annotations.Nullable;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
 import com.wangjie.rapidfloatingactionbutton.RapidFloatingActionButton;
 import com.wangjie.rapidfloatingactionbutton.RapidFloatingActionHelper;
 import com.wangjie.rapidfloatingactionbutton.RapidFloatingActionLayout;
@@ -47,9 +32,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
-import java.util.List;
-
-import static android.view.View.GONE;
 
 public class SelectedCategoryActivity extends AppCompatActivity {
 
@@ -176,8 +158,8 @@ public class SelectedCategoryActivity extends AppCompatActivity {
 
         sortFAB = new RapidFloatingActionContentLabelList(getApplicationContext());
 
-        sortFAButton = findViewById(R.id.activity_main_rfab);
-        rfaLayout = findViewById(R.id.FAB_layout);
+        sortFAButton = findViewById(R.id.artisan_rfab);
+        rfaLayout = findViewById(R.id.artisan_FAB_layout);
 
         final ArrayList<RFACLabelItem> sortOptions = new ArrayList<>();
         sortOptions.add(new RFACLabelItem<Integer>().

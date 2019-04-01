@@ -3,6 +3,10 @@ package com.example.artisansfinal;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Resources;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -22,6 +26,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.animation.AccelerateDecelerateInterpolator;
+import android.view.animation.Interpolator;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.SearchView;
 import android.widget.TextView;
@@ -104,6 +111,9 @@ public class UserHomePage2Activity extends AppCompatActivity
         navigationView.getMenu().getItem(0).setChecked(true);
         navigationView.setNavigationItemSelectedListener(this);
 
+        final TextView displayName = findViewById(R.id.nav_header_user_home_page2_user_name);
+        final TextView displayEmail = findViewById(R.id.nav_header_user_home_page2_user_email);
+
         firebaseAuth = FirebaseAuth.getInstance();
         FirebaseUser user = firebaseAuth.getCurrentUser();
         if(user != null)
@@ -154,9 +164,11 @@ public class UserHomePage2Activity extends AppCompatActivity
         SnapHelper snapHelper1 = new PagerSnapHelper();
         snapHelper1.attachToRecyclerView(slideshowRecyclerView);
         slideshowRecyclerView.setAdapter(slideshowRecyclerViewAdapter);
+        slideshowRecyclerView.addItemDecoration(new CirclePagerIndicatorDecoration());
 
         //selectedCategory = "Saree";
         databaseReference = FirebaseDatabase.getInstance().getReference("Products/");
+        selectedCategory = "Products";
         displayHomePage();
 
         final LinearLayout saree = findViewById(R.id.user_home_page2_ll_saree_category);
@@ -175,6 +187,7 @@ public class UserHomePage2Activity extends AppCompatActivity
             public void onClick(View v) {
 
                 databaseReference = FirebaseDatabase.getInstance().getReference("Products/");
+                selectedCategory = "Products";
                 displayHomePage();
 
             }
@@ -319,6 +332,13 @@ public class UserHomePage2Activity extends AppCompatActivity
        final LinearLayout searchLayout = findViewById(R.id.user_home_page2_ll_search);
        searchLayout.setVisibility(View.GONE);
 
+       Button seeAllButton = findViewById(R.id.user_homepage2_bt_see_all);
+
+       if(selectedCategory.equals("Products"))
+           seeAllButton.setVisibility(View.GONE);
+       else
+           seeAllButton.setVisibility(View.VISIBLE);
+
 
        bestRatedRecyclerView = findViewById(R.id.user_home_page2_srv_best_rated);
        bestRatedRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
@@ -457,6 +477,16 @@ public class UserHomePage2Activity extends AppCompatActivity
 
                return false;
            }
+
+       });
+
+       seeAllButton.setOnClickListener(new View.OnClickListener() {
+           @Override
+           public void onClick(View v) {
+               Intent intent = new Intent(UserHomePage2Activity.this, SelectedCategoryActivity.class);
+               intent.putExtra("category", selectedCategory);
+               startActivity(intent);
+           }
        });
    }
 
@@ -557,4 +587,124 @@ public class UserHomePage2Activity extends AppCompatActivity
         }
     }
 
+}
+
+class CirclePagerIndicatorDecoration extends RecyclerView.ItemDecoration {
+    private int colorActive = 0xDE000000;
+    private int colorInactive = 0x33000000;
+
+    private static final float DP = Resources.getSystem().getDisplayMetrics().density;
+
+    /**
+     * Height of the space the indicator takes up at the bottom of the view.
+     */
+    private final int mIndicatorHeight = (int) (DP * 8  );
+
+    /**
+     * Indicator stroke width.
+     */
+    private final float mIndicatorStrokeWidth = DP * 4;
+
+    /**
+     * Indicator width.
+     */
+    private final float mIndicatorItemLength = DP * 4;
+    /**
+     * Padding between indicators.
+     */
+    private final float mIndicatorItemPadding = DP * 8;
+
+    /**
+     * Some more natural animation interpolation
+     */
+    private final Interpolator mInterpolator = new AccelerateDecelerateInterpolator();
+
+    private final Paint mPaint = new Paint();
+
+    public CirclePagerIndicatorDecoration() {
+
+        mPaint.setStrokeWidth(mIndicatorStrokeWidth);
+        mPaint.setStyle(Paint.Style.STROKE);
+        mPaint.setAntiAlias(true);
+    }
+
+    @Override
+    public void onDrawOver(Canvas c, RecyclerView parent, RecyclerView.State state) {
+        super.onDrawOver(c, parent, state);
+
+        int itemCount = parent.getAdapter().getItemCount();
+
+        // center horizontally, calculate width and subtract half from center
+        float totalLength = mIndicatorItemLength * itemCount;
+        float paddingBetweenItems = Math.max(0, itemCount - 1) * mIndicatorItemPadding;
+        float indicatorTotalWidth = totalLength + paddingBetweenItems;
+        float indicatorStartX = (parent.getWidth() - indicatorTotalWidth) / 2F;
+
+        // center vertically in the allotted space
+        float indicatorPosY = parent.getHeight() - mIndicatorHeight / 2F;
+
+        drawInactiveIndicators(c, indicatorStartX, indicatorPosY, itemCount);
+
+        // find active page (which should be highlighted)
+        LinearLayoutManager layoutManager = (LinearLayoutManager) parent.getLayoutManager();
+        int activePosition = layoutManager.findFirstVisibleItemPosition();
+        if (activePosition == RecyclerView.NO_POSITION) {
+            return;
+        }
+
+        // find offset of active page (if the user is scrolling)
+        final View activeChild = layoutManager.findViewByPosition(activePosition);
+        int left = activeChild.getLeft();
+        int width = activeChild.getWidth();
+        int right = activeChild.getRight();
+
+        // on swipe the active item will be positioned from [-width, 0]
+        // interpolate offset for smooth animation
+        float progress = mInterpolator.getInterpolation(left * -1 / (float) width);
+
+        drawHighlights(c, indicatorStartX, indicatorPosY, activePosition, progress);
+    }
+
+    private void drawInactiveIndicators(Canvas c, float indicatorStartX, float indicatorPosY, int itemCount) {
+        mPaint.setColor(colorInactive);
+
+        // width of item indicator including padding
+        final float itemWidth = mIndicatorItemLength + mIndicatorItemPadding;
+
+        float start = indicatorStartX;
+        for (int i = 0; i < itemCount; i++) {
+
+            c.drawCircle(start, indicatorPosY, mIndicatorItemLength / 2F, mPaint);
+
+            start += itemWidth;
+        }
+    }
+
+    private void drawHighlights(Canvas c, float indicatorStartX, float indicatorPosY,
+                                int highlightPosition, float progress) {
+        mPaint.setColor(colorActive);
+
+        // width of item indicator including padding
+        final float itemWidth = mIndicatorItemLength + mIndicatorItemPadding;
+
+        if (progress == 0F) {
+            // no swipe, draw a normal indicator
+            float highlightStart = indicatorStartX + itemWidth * highlightPosition;
+
+            c.drawCircle(highlightStart, indicatorPosY, mIndicatorItemLength / 2F, mPaint);
+
+        } else {
+            float highlightStart = indicatorStartX + itemWidth * highlightPosition;
+            // calculate partial highlight
+            float partialLength = mIndicatorItemLength * progress + mIndicatorItemPadding*progress;
+
+            c.drawCircle(highlightStart + partialLength, indicatorPosY, mIndicatorItemLength / 2F, mPaint);
+        }
+    }
+
+    @Override
+    public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
+        super.getItemOffsets(outRect, view, parent, state);
+        outRect.bottom = mIndicatorHeight;
+    }
 }

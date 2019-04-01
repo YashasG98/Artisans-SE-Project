@@ -199,9 +199,9 @@ public class UserLoginFragment extends Fragment {
                     });
 
 
+            startActivity(new Intent(new Intent(getContext(), UserHomePage2Activity.class)));
 
             getActivity().finish();
-            startActivity(new Intent(getContext(), UserHomePageActivity.class));
         }else{
             Toast.makeText(getContext(), "Verify your email", Toast.LENGTH_SHORT).show();
             firebaseAuth.signOut();
