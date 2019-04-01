@@ -2,6 +2,7 @@ package com.example.artisansfinal;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -163,16 +164,16 @@ public class SelectedCategoryActivity extends AppCompatActivity {
 
         final ArrayList<RFACLabelItem> sortOptions = new ArrayList<>();
         sortOptions.add(new RFACLabelItem<Integer>().
-                setLabel("Price: Low to High"));
+                setLabel("Price: Low to High").setLabelColor(Color.BLACK));
 
         sortOptions.add(new RFACLabelItem<Integer>().
-                setLabel("Price: High to Low"));
+                setLabel("Price: High to Low").setLabelColor(Color.BLACK));
 
         sortOptions.add(new RFACLabelItem<Integer>().
-                setLabel("Rating: Low to High"));
+                setLabel("Rating: Low to High").setLabelColor(Color.BLACK));
 
         sortOptions.add(new RFACLabelItem<Integer>().
-                setLabel("Rating: High to Low"));
+                setLabel("Rating: High to Low").setLabelColor(Color.BLACK));
 
 
         sortFAB.setItems(sortOptions);
