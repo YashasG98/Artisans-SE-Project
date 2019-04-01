@@ -1,6 +1,7 @@
 package com.example.artisansfinal;
 
 
+import android.Manifest;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
@@ -11,6 +12,7 @@ import android.os.Message;
 import android.os.PersistableBundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
@@ -75,6 +77,9 @@ public class ArtisanHomePageActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.artisan_home_page_activity);
+
+        ActivityCompat.requestPermissions(ArtisanHomePageActivity.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
+
         //DrawerLayout drawerLayout = findViewById(R.id.artisan_home_page_dl);
 
         Intent intent = getIntent();
@@ -84,7 +89,7 @@ public class ArtisanHomePageActivity extends AppCompatActivity {
         artisanPhoneNumber = intent.getStringExtra("phoneNumber");
         name = intent.getStringExtra("name");
 
-        Log.d(TAG, "onCreate: "+name+" "+artisanPhoneNumber);
+//        Log.d(TAG, "onCreate: "+name+" "+artisanPhoneNumber);
         //Added by Dhanasekhar
 
         DatabaseReference nameRef = FirebaseDatabase.getInstance().getReference("Artisans/" + artisanPhoneNumber + "/username");
@@ -122,9 +127,9 @@ public class ArtisanHomePageActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                 int id = menuItem.getItemId();
                 if (id == R.id.my_profile_button) {
-                    Toast.makeText(ArtisanHomePageActivity.this, "My profile", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(ArtisanHomePageActivity.this, "My profile", Toast.LENGTH_SHORT).show();
                 } else if (id == R.id.logout) {
-                    Toast.makeText(ArtisanHomePageActivity.this, "Log out", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(ArtisanHomePageActivity.this, "Log out", Toast.LENGTH_SHORT).show();
                 }
 
                 return true;
@@ -156,11 +161,9 @@ public class ArtisanHomePageActivity extends AppCompatActivity {
     public void my_profile_button(MenuItem item) {
         Intent i = new Intent(this, ArtisanProfilePageActivity.class);
         startActivity(i);
-        Toast.makeText(this, "Your profile", Toast.LENGTH_SHORT).show();
     }
 
     public void home_button(MenuItem item) {
-        Toast.makeText(this, "Home", Toast.LENGTH_SHORT).show();
     }
 
     public void order_history_button(MenuItem item) {
@@ -185,7 +188,7 @@ public class ArtisanHomePageActivity extends AppCompatActivity {
                 firebaseAuth.signOut();
                 finish();
                 startActivity(new Intent(ArtisanHomePageActivity.this, CommonLoginActivityTabbed.class));
-                Toast.makeText(ArtisanHomePageActivity.this, "Logged out", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(ArtisanHomePageActivity.this, "Logged out", Toast.LENGTH_SHORT).show();
 
             }
         });
@@ -218,7 +221,6 @@ public class ArtisanHomePageActivity extends AppCompatActivity {
     }
 
     public void upload_product(MenuItem item) {
-        Toast.makeText(this, "Upload a product", Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(this, ProductRegistrationActivity.class);
         intent.putExtra("phoneNumber", artisanPhoneNumber);
         intent.putExtra("name", name);
@@ -265,7 +267,7 @@ public class ArtisanHomePageActivity extends AppCompatActivity {
     public void My_Profile(View view) {
         Intent i = new Intent(this, ArtisanProfilePageActivity.class);
         startActivity(i);
-        Toast.makeText(this, "Your profile", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this, "Your profile", Toast.LENGTH_SHORT).show();
     }
 
 

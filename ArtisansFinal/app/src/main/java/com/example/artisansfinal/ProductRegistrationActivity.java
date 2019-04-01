@@ -108,7 +108,7 @@ public class ProductRegistrationActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                     if (ContextCompat.checkSelfPermission(ProductRegistrationActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                        Toast.makeText(ProductRegistrationActivity.this, "Permission Denied", Toast.LENGTH_LONG).show();
+//                        Toast.makeText(ProductRegistrationActivity.this, "Permission Denied", Toast.LENGTH_LONG).show();
                         ActivityCompat.requestPermissions(ProductRegistrationActivity.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
                     } else {
                         BringImagePicker();
@@ -135,7 +135,13 @@ public class ProductRegistrationActivity extends AppCompatActivity {
                 String productPrice = price_of_product.getText().toString();
                 String productID = databaseReference.push().getKey();
 
-                boolean productNameflag = true, productPriceflag = true;
+                boolean productNameflag = true, productPriceflag = true, properCategory = true;
+
+                if(productCategory.equals("None")){
+                    Toast.makeText(getBaseContext(), "Choose a category", Toast.LENGTH_LONG).show();
+                    category.requestFocus();
+                    properCategory = false;
+                }
 
                 if (productName.length() == 0) {
                     name_of_product.setError("Enter Product Name");
@@ -149,7 +155,7 @@ public class ProductRegistrationActivity extends AppCompatActivity {
                     productPriceflag = false;
                 }
 
-                if (productPriceflag && productNameflag) {
+                if (productPriceflag && productNameflag && properCategory) {
 
                     product = new ProductInfo(productID, productName, productDescription, productCategory, productPrice, artisanName, artisanContactNumber);
                     product.setTotalRating("0");
