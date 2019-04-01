@@ -49,6 +49,7 @@ public class ArtisanProductsActivity extends AppCompatActivity {
     private RapidFloatingActionHelper rfabHelper;
     private RapidFloatingActionLayout rfaLayout;
     private String queryText;
+    private static boolean runInOnePage =  false;
 
 
     class sorting implements Comparator<ProductInfo>
@@ -138,6 +139,19 @@ public class ArtisanProductsActivity extends AppCompatActivity {
         recyclerView.setAdapter(artisanProductsRecyclerViewAdapter);
 
 
+        ArrayList<View> views = new ArrayList<>();
+//        views.add(searchOption);
+        views.add(searchView);
+        views.add(sortFAButton);
+
+        final HashMap<View, String> title = new HashMap<>();
+//        title.put(searchOption,"Search for products\n with these options");
+        title.put(searchView,"Search for your product here");
+        title.put(sortFAButton,"Filtering choices");
+
+        final Tutorial tutorial = new Tutorial(this,views);
+        tutorial.checkIfFirstRun();
+
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -207,6 +221,13 @@ public class ArtisanProductsActivity extends AppCompatActivity {
                             if(contentLayout.getVisibility()==View.GONE){
                                 contentLayout.setVisibility(View.VISIBLE);
                                 loadingLayout.setVisibility(View.GONE);
+                                if(contentLayout.getVisibility() == View.VISIBLE && !runInOnePage){
+
+                                    tutorial.requestFocusForViews(title);
+                                    tutorial.finishedTutorial();
+                                    runInOnePage = true;
+
+                                }
                             }
                             ProductInfo productInfo;
                             HashMap<String, String> map = (HashMap<String, String>) dataSnapshot.getValue();
@@ -217,6 +238,8 @@ public class ArtisanProductsActivity extends AppCompatActivity {
                             productInfo.setNumberOfPeopleWhoHaveRated(map.get("numberOfPeopleWhoHaveRated"));
                             productInfo.setTotalRating(map.get("totalRating"));
                             artisanProductsRecyclerViewAdapter.added(productInfo);
+
+
                         }
 
                         @Override

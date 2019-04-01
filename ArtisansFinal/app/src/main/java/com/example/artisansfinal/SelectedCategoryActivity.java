@@ -205,12 +205,12 @@ public class SelectedCategoryActivity extends AppCompatActivity {
         ArrayList<View> views = new ArrayList<>();
 //        views.add(searchOption);
         views.add(searchView);
-//        views.add(sortChoice);
+        views.add(sortFAButton);
 
         final HashMap<View, String> title = new HashMap<>();
 //        title.put(searchOption,"Search for products\n with these options");
         title.put(searchView,"Search for your product here");
-//        title.put(sortChoice,"Filtering choices");
+        title.put(sortFAButton,"Filtering choices");
 
         final Tutorial tutorial = new Tutorial(this,views);
         tutorial.checkIfFirstRun();
@@ -367,13 +367,13 @@ public class SelectedCategoryActivity extends AppCompatActivity {
                                 recyclerViewLayout.setVisibility(View.VISIBLE);
                                 noMatchLayout.setVisibility(View.GONE);
 
-//                                if(contentLayout.getVisibility() == View.VISIBLE && !runInOnePage){
-//
-//                                    tutorial.requestFocusForViews(title);
-//                                    tutorial.finishedTutorial();
-//                                    runInOnePage = true;
-//
-//                                }
+                                if(contentLayout.getVisibility() == View.VISIBLE && !runInOnePage){
+
+                                    tutorial.requestFocusForViews(title);
+                                    tutorial.finishedTutorial();
+                                    runInOnePage = true;
+
+                                }
 
                             }
                             ProductInfo productInfo;
