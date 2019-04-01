@@ -457,9 +457,16 @@ public class UserHomePage2Activity extends AppCompatActivity
                queryText = query;
 
                for(ProductInfo product: productInfos){
-                   if(product.getProductName().toLowerCase().contains(query.trim().toLowerCase())
-                           || product.getArtisanName().toLowerCase().contains(query.trim().toLowerCase()))
-                       searchResults.add(product);
+
+                   try {
+                       if (product.getProductName().toLowerCase().contains(query.trim().toLowerCase())
+                               || product.getArtisanName().toLowerCase().contains(query.trim().toLowerCase()))
+                           searchResults.add(product);
+                   }
+                   catch (Exception  e)
+                   {
+
+                   }
                }
                searchRecyclerViewAdapter = new CategoryRecyclerViewAdapter(getBaseContext(), searchResults);
                searchRecyclerView.setAdapter(searchRecyclerViewAdapter);
@@ -483,9 +490,16 @@ public class UserHomePage2Activity extends AppCompatActivity
                searchResults.clear();
 
                for(ProductInfo product: productInfos){
-                   if(product.getProductName().toLowerCase().contains(newText.trim().toLowerCase())
-                           || product.getArtisanName().toLowerCase().contains(newText.trim().toLowerCase()))
-                       searchResults.add(product);
+
+                   try {
+                       if (product.getProductName().toLowerCase().contains(newText.trim().toLowerCase())
+                               || product.getArtisanName().toLowerCase().contains(newText.trim().toLowerCase()))
+                           searchResults.add(product);
+                   }
+                   catch (Exception e)
+                   {
+
+                   }
                }
                searchRecyclerViewAdapter = new CategoryRecyclerViewAdapter(getBaseContext(), searchResults);
                searchRecyclerView.setAdapter(searchRecyclerViewAdapter);

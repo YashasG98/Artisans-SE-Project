@@ -240,9 +240,16 @@ public class SelectedCategoryActivity extends AppCompatActivity {
 //                }
 //                else{
                     for(ProductInfo product: productInfos){
-                        if(product.getProductName().toLowerCase().contains(query.trim().toLowerCase())
-                            || product.getArtisanName().toLowerCase().contains(query.trim().toLowerCase()))
-                            searchResults.add(product);
+
+                        try {
+                            if (product.getProductName().toLowerCase().contains(query.trim().toLowerCase())
+                                    || product.getArtisanName().toLowerCase().contains(query.trim().toLowerCase()))
+                                searchResults.add(product);
+                        }
+                        catch (Exception e)
+                        {
+
+                        }
                     }
                     categoryRecyclerViewAdapter = new CategoryRecyclerViewAdapter(getBaseContext(), searchResults);
                     recyclerView.setAdapter(categoryRecyclerViewAdapter);
@@ -281,9 +288,16 @@ public class SelectedCategoryActivity extends AppCompatActivity {
 //                }
 //                else{
                     for(ProductInfo product: productInfos){
-                        if(product.getProductName().toLowerCase().contains(newText.trim().toLowerCase())
-                            || product.getArtisanName().toLowerCase().contains(newText.trim().toLowerCase()))
-                            searchResults.add(product);
+
+                        try {
+                            if (product.getProductName().toLowerCase().contains(newText.trim().toLowerCase())
+                                    || product.getArtisanName().toLowerCase().contains(newText.trim().toLowerCase()))
+                                searchResults.add(product);
+                        }
+                        catch (Exception e)
+                        {
+
+                        }
                     }
                     categoryRecyclerViewAdapter = new CategoryRecyclerViewAdapter(getBaseContext(), searchResults);
                     recyclerView.setAdapter(categoryRecyclerViewAdapter);
