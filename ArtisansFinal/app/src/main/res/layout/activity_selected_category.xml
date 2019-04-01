@@ -103,14 +103,14 @@
                 </android.support.v7.widget.RecyclerView>
 
                 <com.wangjie.rapidfloatingactionbutton.RapidFloatingActionLayout
-                    android:id="@+id/FAB_layout"
+                    android:id="@+id/artisan_FAB_layout"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginRight="0dp"
                     android:layout_marginBottom="0dp">
 
                     <com.wangjie.rapidfloatingactionbutton.RapidFloatingActionButton xmlns:rfab="http://schemas.android.com/apk/res-auto"
-                        android:id="@+id/activity_main_rfab"
+                        android:id="@+id/artisan_rfab"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
