@@ -151,12 +151,14 @@
         android:id="@+id/artisan_edit_product_info_nsv"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        android:background="@color/backgroundDefault">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:layout_marginTop="@dimen/spacing_large">
 
             <android.support.design.widget.TextInputLayout
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -191,35 +193,48 @@
             </android.support.design.widget.TextInputLayout>
 
 
-            <LinearLayout
+            <android.support.design.widget.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center">
-                <!--<TextView
-        android:id="@+id/product_page_edit_et_product_price_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"1
-        android:layout_margin="20sp"
-        android:text="Price: "
-        android:textSize="18sp" />-->
+                android:hint="Price"
+                android:layout_margin="10dp"
+                app:boxStrokeColor="@color/common_dark">
 
-                <android.support.design.widget.TextInputLayout
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/artisan_edit_product_info_et_product_price"
+                    android:layout_width="128dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10sp"
+                    android:inputType="number" />
+            </android.support.design.widget.TextInputLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <Button
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:hint="Price"
-                    app:boxStrokeColor="@color/common_dark">
-
-                    <android.support.design.widget.TextInputEditText
-                        android:id="@+id/artisan_edit_product_info_et_product_price"
-                        android:layout_width="128dp"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="10sp"
-                        android:inputType="number" />
-                </android.support.design.widget.TextInputLayout>
-
+                    android:layout_weight="1"
+                    android:layout_margin="2dp"
+                    android:text="CANCEL"
+                    android:elevation="0dp"
+                    android:background="@drawable/border_cancel"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:id="@+id/artisan_edit_product_info_button_cancel"/>
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_margin="2dp"
+                    android:text="SAVE"
+                    android:elevation="0dp"
+                    android:background="@drawable/border_login"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:id="@+id/artisan_edit_product_info_button_save"/>
             </LinearLayout>
-
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>
 
@@ -237,17 +252,17 @@
         app:rippleColor="@android:color/white"
         app:srcCompat="@drawable/baseline_camera_alt_white_24" />
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/artisan_edit_product_info_fab_save"
-        android:clickable="true"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/spacing_large"
-        android:tint="@android:color/white"
-        app:backgroundTint="@color/deep_orange_500"
-        app:fabSize="normal"
-        app:rippleColor="@android:color/white"
-        app:srcCompat="@drawable/avd_anim_reverse"
-        android:layout_gravity="end|bottom"/>
+    <!--<android.support.design.widget.FloatingActionButton-->
+        <!--android:id="@+id/artisan_edit_product_info_fab_save"-->
+        <!--android:clickable="true"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_margin="@dimen/spacing_large"-->
+        <!--android:tint="@android:color/white"-->
+        <!--app:backgroundTint="@color/deep_orange_500"-->
+        <!--app:fabSize="normal"-->
+        <!--app:rippleColor="@android:color/white"-->
+        <!--app:srcCompat="@drawable/avd_anim_reverse"-->
+        <!--android:layout_gravity="end|bottom"/>-->
 
 </android.support.design.widget.CoordinatorLayout>

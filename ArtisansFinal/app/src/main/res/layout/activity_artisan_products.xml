@@ -38,12 +38,35 @@
         android:id="@+id/artisan_products_content_rl"
         android:paddingTop="3dp"
         android:layout_below="@+id/appBar"
-        android:background="@color/common">
+        android:background="@color/backgroundDefault">
         <android.support.v7.widget.RecyclerView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/artisan_products_content_rv">
         </android.support.v7.widget.RecyclerView>
+
+        <com.wangjie.rapidfloatingactionbutton.RapidFloatingActionLayout
+            android:id="@+id/artisan_FAB_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginRight="0dp"
+            android:layout_marginBottom="0dp">
+
+            <com.wangjie.rapidfloatingactionbutton.RapidFloatingActionButton xmlns:rfab="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/artisan_rfab"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginRight="20dp"
+                android:layout_marginBottom="9dp"
+                android:clipToPadding="false"
+                rfab:rfab_color_normal="@color/common"
+                rfab:rfab_color_pressed="#263238"
+                rfab:rfab_drawable="@drawable/filter48"
+                rfab:rfab_size="normal" />
+
+        </com.wangjie.rapidfloatingactionbutton.RapidFloatingActionLayout>
 
     </RelativeLayout>
 
@@ -61,15 +84,15 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/artisan_products_not_found_rl">
+        android:id="@+id/artisan_products_not_found_rl"
+        android:background="@color/backgroundDefault">
         <TextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:text="No Products Found"
             android:gravity="center"
-            android:textColor="#ffffff"
-            android:textSize="50sp"
-            android:background="#66ceff"/>
+            android:textColor="#000"
+            android:textSize="50sp" />
     </RelativeLayout>
 
 </RelativeLayout>

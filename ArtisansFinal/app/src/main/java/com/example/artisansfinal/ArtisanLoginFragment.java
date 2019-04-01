@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Paint;
 import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.util.Log;
@@ -159,6 +160,7 @@ public class ArtisanLoginFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(getContext(), ArtisanRegistrationActivity.class));
+                getActivity().finish();
             }
         });
 
@@ -192,8 +194,11 @@ public class ArtisanLoginFragment extends Fragment {
 //                    }
 //                });
 
-                if(ContactNo.length() !=0 && contactsList.contains(ContactNo))
+                if(ContactNo.length() !=0 && contactsList.contains(ContactNo)) {
+                    progressDialog.setMessage("Sending OTP..");
+                    progressDialog.show();
                     SendCode(view);
+                }
                 else {
                     if(ContactNo.equals("+91")) {
 
@@ -213,7 +218,20 @@ public class ArtisanLoginFragment extends Fragment {
                 //OTPEdit = (EditText) view.findViewById(R.id.edit_artisan_login_activity_OTP);
                 OTP = OTPEdit.getText().toString();
 //                if(OTP.length() != 0 && OTPFlag)
-                verify(view);
+
+                if(contactNoEdit.getText().toString().equals(""))
+                {
+                    contactNoEdit.setError("Enter Contact number");
+                    contactNoEdit.requestFocus();
+                }
+
+                if(OTP.equals(""))
+                {
+                    OTPEdit.setError("Enter OTP");
+                    OTPEdit.requestFocus();
+                }
+                else
+                    verify(view);
 //                else
 //                {
 //                    OTPEdit.setError("Enter OTP");
@@ -265,7 +283,6 @@ public class ArtisanLoginFragment extends Fragment {
 
                         }
                     });
-
                     progressDialog.dismiss();
                     Toast.makeText(getContext(),   "Verification successful", Toast.LENGTH_LONG).show();
 
@@ -319,6 +336,7 @@ public class ArtisanLoginFragment extends Fragment {
         @Override
         public void onVerificationCompleted(PhoneAuthCredential phoneAuthCredential) {
             OTPFlag = true;
+            progressDialog.dismiss();
             Toast.makeText(getContext(), "OTP Sent", Toast.LENGTH_LONG).show();
 
 
@@ -328,6 +346,7 @@ public class ArtisanLoginFragment extends Fragment {
         public void onVerificationFailed(FirebaseException e) {
 
             Toast.makeText(getContext(), "Login Unsuccessful", Toast.LENGTH_LONG).show();
+            progressDialog.dismiss();
 
             if (e instanceof FirebaseAuthInvalidCredentialsException) {
                 // Invalid request

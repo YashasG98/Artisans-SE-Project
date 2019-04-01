@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -44,6 +45,10 @@ public class ArtisanPendingOrderActivity extends AppCompatActivity {
         databaseReference.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                if(findViewById(R.id.noMatchArtisanOrderPending1).getVisibility()== View.VISIBLE){
+                    findViewById(R.id.noMatchArtisanOrderPending1).setVisibility(View.GONE);
+                    findViewById(R.id.noMatchArtisanOrderPending2).setVisibility(View.GONE);
+                }
                 //Log.d("HERE2",dataSnapshot.getValue().toString());
                 orderInfo order = new orderInfo();
                 Log.d("tag", order.toString() + "!" + dataSnapshot.getValue()+"!"+dataSnapshot.getKey());
@@ -51,7 +56,12 @@ public class ArtisanPendingOrderActivity extends AppCompatActivity {
 
                 //Log.d("HERE",map.toString());
                 order = new orderInfo(map.get("name"), map.get("price"), map.get("date"), map.get("userUID"),map.get("productCategory"),map.get("productID"),map.get("userEmail"),map.get("fcmToken"));
+                order.setQuantity(map.get("quantity"));
                 APOAdapter.added(order);
+                if(findViewById(R.id.noMatchArtisanOrderPending1).getVisibility()== View.VISIBLE){
+                    findViewById(R.id.noMatchArtisanOrderPending1).setVisibility(View.GONE);
+                    findViewById(R.id.noMatchArtisanOrderPending2).setVisibility(View.GONE);
+                }
             }
 
             @Override

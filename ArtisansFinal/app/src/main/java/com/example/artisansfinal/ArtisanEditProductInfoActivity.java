@@ -24,6 +24,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -62,7 +63,7 @@ public class ArtisanEditProductInfoActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_artisan_edit_product_info);
 
-        Intent intent = getIntent();
+        final Intent intent = getIntent();
         productID = intent.getStringExtra("productID");
         productCategory = intent.getStringExtra("productCategory");
         artisanContactNumber = intent.getStringExtra("artisanContactNumber");
@@ -71,7 +72,9 @@ public class ArtisanEditProductInfoActivity extends AppCompatActivity {
         //Added by shashwatha
         storageReference = FirebaseStorage.getInstance().getReference();
 
-        final FloatingActionButton saveFab = findViewById(R.id.artisan_edit_product_info_fab_save);
+        final Button cancel = findViewById(R.id.artisan_edit_product_info_button_cancel);
+        final Button save = findViewById(R.id.artisan_edit_product_info_button_save);
+//        final FloatingActionButton saveFab = findViewById(R.id.artisan_edit_product_info_fab_save);
         final TextInputEditText editName = findViewById(R.id.artisan_edit_product_info_et_product_name);
         final TextInputEditText editPrice = findViewById(R.id.artisan_edit_product_info_et_product_price);
         final TextInputEditText editDescription = findViewById(R.id.artisan_edit_product_info_et_product_description);
@@ -79,11 +82,13 @@ public class ArtisanEditProductInfoActivity extends AppCompatActivity {
         final FloatingActionButton imageFab = findViewById(R.id.artisan_edit_product_info_fab_image);
 
         if(!runInOnePage){
-            Tutorial tutorial = new Tutorial(this);
-            tutorial.checkIfFirstRun();
-            tutorial.requestFocusForView(saveFab,"Click here to edit product","");
-            tutorial.finishedTutorial();
-            runInOnePage=true;
+            if(save.getVisibility() == View.VISIBLE){
+                Tutorial tutorial = new Tutorial(this);
+                tutorial.checkIfFirstRun();
+                tutorial.requestFocusForView(save,"Click here to edit product","");
+                tutorial.finishedTutorial();
+                runInOnePage=true;
+            }
         }
         StorageReference sr = storageReference.child("ProductImages/HighRes/" + productID);
 
@@ -114,7 +119,16 @@ public class ArtisanEditProductInfoActivity extends AppCompatActivity {
             }
         });
 
-        saveFab.setOnClickListener(new View.OnClickListener() {
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                editName.setText(intent.getStringExtra("productName"));
+                editDescription.setText(intent.getStringExtra("productDescription"));
+                editPrice.setText(intent.getStringExtra("productPrice"));
+            }
+        });
+
+        save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 final AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
@@ -146,6 +160,11 @@ public class ArtisanEditProductInfoActivity extends AppCompatActivity {
                             db1.child("productDescription").setValue(updateDescription);
                             db1.child("productPrice").setValue(updatePrice);
                             db1.child("productName").setValue(updateName);
+
+                            DatabaseReference db2= FirebaseDatabase.getInstance().getReference("Products/"+productID);
+                            db2.child("productDescription").setValue(updateDescription);
+                            db2.child("productPrice").setValue(updatePrice);
+                            db2.child("productName").setValue(updateName);
 
                             // update image here
                             if(mainImageURI!=null)

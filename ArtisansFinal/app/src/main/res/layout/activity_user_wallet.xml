@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+    <!--added Sayan Biswas-->
     <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -6,7 +7,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:background="#bbdefb"
+    android:background="@color/backgroundDefault"
         >
     <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
@@ -28,14 +29,15 @@
         <android.support.v7.widget.CardView
             android:id="@+id/artisan_home_page_cv_order_history"
             android:layout_width="match_parent"
-            android:layout_height="160dp"
+            android:layout_height="200dp"
             android:layout_marginRight="4dp"
+            android:layout_marginLeft="4dp"
             android:background="@drawable/border"
             android:paddingStart="2dp"
             android:paddingEnd="2dp"
             android:layout_marginBottom="20dp"
             android:layout_marginTop="20dp"
-            app:cardBackgroundColor="#F5FFFA"
+            app:cardBackgroundColor="#8a2be2"
             app:cardCornerRadius="20sp">
 
             <RelativeLayout
@@ -48,16 +50,18 @@
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
                     android:layout_marginBottom="5dp"
+                    android:layout_marginTop="10dp"
                     android:id="@+id/user_wallet_page_iv_available_balance"
-                    android:src="@mipmap/ic_launcher_wallet_background_round"/>
+                    android:src="@mipmap/ic_launcher_bgwallet2_round"/>
                 <TextView
                     android:id="@+id/user_wallet_page_tv_available_balance"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
                     android:layout_below="@id/user_wallet_page_iv_available_balance"
-                    android:text="Available balance"
+                    android:text="      Available balance"
+                    android:textColor="@color/white"
                     android:textSize="20sp"
+                    android:textAlignment="center"
                     android:layout_marginTop="5dp"
                     android:layout_marginBottom="5dp"
                     android:textStyle="bold"/>
@@ -68,8 +72,10 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/user_wallet_page_tv_available_balance"
                     android:layout_marginTop="0dp"
-                    android:text="0.00"
-                    android:textSize="20sp"
+                    android:text="₹0.00"
+                    android:textSize="40sp"
+                    android:textAlignment="center"
+                    android:textColor="@color/white"
                     android:layout_marginBottom="1dp"
                     android:textStyle="bold"
                     android:layout_centerHorizontal="true"/>
@@ -78,77 +84,78 @@
 
 
         </android.support.v7.widget.CardView>
-        <EditText
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/user_wallet_page_et_amount_enter_input"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Enter amount"
-            android:textAlignment="center"
-            android:id="@+id/user_wallet_page_et_amount_enter"/>
-        <android.support.v7.widget.CardView
-            android:id="@+id/artisan_home_page_cv_order_requests"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="4dp"
-            android:padding="2dp"
+            android:layout_marginStart="8dp"
             android:layout_marginTop="20dp"
-            android:layout_marginBottom="20dp"
-            app:cardBackgroundColor="#F5FFFA"
-            app:cardCornerRadius="20sp">
+
+            android:layout_marginEnd="0dp"
+            android:layout_marginBottom="10dp"
+            android:textColorHint="#000306"
+            app:boxStrokeColor="@color/common"
+            app:helperTextEnabled="true"
+            app:hintEnabled="true"
+            app:hintTextAppearance="@style/TextLabel"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.062"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintVertical_bias="0.154">
+
+            <EditText
+                android:id="@+id/user_wallet_page_et_amount_enter"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/rupee_symbol"
+                android:drawablePadding="10dp"
+                android:inputType="numberDecimal"
+                android:ems="10"
+                android:hint="Enter amount  (₹)"
+                android:selectAllOnFocus="false"
+                android:singleLine="false"
+                android:textAlignment="center"
+                android:textColorLink="@color/black" />
+        </android.support.design.widget.TextInputLayout>
+
 
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center">
+                android:layout_gravity="center"
+                >
 
-                <TextView
-                    android:id="@+id/user_wallet_page_tv_credit"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/user_wallet_page_iv_credit"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginLeft="20dp"
-                    android:gravity="center"
-                    android:text="Add"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/user_wallet_page_tv_debit"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/user_wallet_page_iv_debit"
-                    android:layout_marginLeft="190dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_toRightOf="@id/user_wallet_page_tv_credit"
-                    android:gravity="center"
-                    android:text="Withdraw"
-                    android:layout_marginRight="20dp"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
-                <ImageButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                <Button
                     android:id="@+id/user_wallet_page_iv_credit"
-                    android:src="@mipmap/ic_launcher_wallet_credit_round"/>
-
-                <ImageButton
-                    android:id="@+id/user_wallet_page_iv_debit"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="145dp"
-                    android:layout_toRightOf="@id/user_wallet_page_iv_credit"
+                    android:text="ADD MONEY (₹)"
+                    android:background="@drawable/border_login"
+                    android:layout_marginTop="25dp"
+                    android:src="@mipmap/ic_launcher_wallet_credit_round" />
+
+                <Button
+                    android:id="@+id/user_wallet_page_iv_debit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="WITHDRAW MONEY (₹)"
+                    android:background="@drawable/border_login"
+                    android:layout_marginTop="25dp"
+                    android:layout_below="@id/user_wallet_page_iv_credit"
                     android:src="@mipmap/ic_launcher_wallet_debit_round" />
             </RelativeLayout>
 
-        </android.support.v7.widget.CardView>
 
-            <ImageView
-                android:layout_marginTop="20dp"
-                android:layout_width="match_parent"
-                android:layout_height="250dp"
-                android:id="@+id/Cardimage"
-                android:src="@mipmap/ic_launcher_wallet_visacards_round"/>
-
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="* linked to phone number: "
+        android:layout_marginTop="20dp"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        android:id="@+id/user_wallet_page_tv_linked_phno"/>
     </LinearLayout>
     </ScrollView>
     </LinearLayout>

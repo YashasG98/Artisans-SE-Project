@@ -47,6 +47,7 @@ public class ArtisanPendingOrderAdapter extends RecyclerView.Adapter<ArtisanPend
         TextView productPrice;
         TextView dueDate;
         TextView userUID;
+        TextView quantity;
         RelativeLayout layout;
         CardView card;
 
@@ -58,6 +59,7 @@ public class ArtisanPendingOrderAdapter extends RecyclerView.Adapter<ArtisanPend
             productPrice = itemView.findViewById(R.id.artisan_order_request_tv_product_price);
             dueDate = itemView.findViewById(R.id.artisan_order_request_tv_date);
             userUID = itemView.findViewById(R.id.artisan_order_request_tv_user_uid);
+            quantity=itemView.findViewById(R.id.artisan_order_request_tv_quantity);
             layout = itemView.findViewById(R.id.artisan_order_request_rl);
             card = itemView.findViewById(R.id.artisan_order_request_cv);
         }
@@ -95,6 +97,7 @@ public class ArtisanPendingOrderAdapter extends RecyclerView.Adapter<ArtisanPend
         viewHolder.productPrice.setText(orderX.getPrice());
         viewHolder.userUID.setText(orderX.getUserUID());
         viewHolder.userUID.setVisibility(View.GONE);
+        viewHolder.quantity.setText(orderX.getQuantity());
         Log.d("HEY", orderX.toString() + "!" + i);
 //        viewHolder.card.setOnClickListener(new View.OnClickListener() {
 //            @Override

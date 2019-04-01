@@ -12,6 +12,8 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import org.w3c.dom.Text;
+
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
@@ -19,8 +21,10 @@ import java.util.Locale;
 public class MainActivityWithAsyncTask extends AppCompatActivity {
 
     EditText latitudeEdit, longitudeEdit, addressEdit;
-    ProgressBar progressBar;
-    TextView infoText;
+    ProgressBar locProg;
+    TextView LocText;
+    TextView tprice;
+    ProgressBar calProg;
     CheckBox checkBox;
 
     public static final int USE_ADDRESS_NAME = 1;
@@ -35,12 +39,13 @@ public class MainActivityWithAsyncTask extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_user_product_details1);
 
-        // longitudeEdit = (EditText) findViewById(R.id.longitudeEdit);
+        //longitudeEdit = (EditText) findViewById(R.id.longitudeEdit);
         //latitudeEdit = (EditText) findViewById(R.id.latitudeEdit);
-        addressEdit = (EditText) findViewById(R.id.addressEdit);
-        progressBar = (ProgressBar) findViewById(R.id.progressBar);
-        infoText = (TextView) findViewById(R.id.infoText);
+        //addressEdit = (EditText) findViewById(R.id.addressEdit);
+        locProg = (ProgressBar) findViewById(R.id.locProg);
+        LocText = (TextView) findViewById(R.id.LocText);
         checkBox = (CheckBox) findViewById(R.id.checkbox);
+//        calProg = (ProgressBar) findViewById(R.id.);
     }
 
     /*public void onRadioButtonClicked(View view) {
@@ -87,8 +92,8 @@ public class MainActivityWithAsyncTask extends AppCompatActivity {
 
         @Override
         protected void onPreExecute() {
-            infoText.setVisibility(View.INVISIBLE);
-            progressBar.setVisibility(View.VISIBLE);
+            LocText.setVisibility(View.INVISIBLE);
+            locProg.setVisibility(View.VISIBLE);
         }
 
         @Override
@@ -135,18 +140,18 @@ public class MainActivityWithAsyncTask extends AppCompatActivity {
 
         protected void onPostExecute(Address address) {
             if(address == null) {
-                progressBar.setVisibility(View.INVISIBLE);
-                infoText.setVisibility(View.VISIBLE);
-                infoText.setText(errorMessage);
+                locProg.setVisibility(View.INVISIBLE);
+                LocText.setVisibility(View.VISIBLE);
+                LocText.setText(errorMessage);
             }
             else {
                 String addressName = "";
                 for(int i = 0; i < address.getMaxAddressLineIndex(); i++) {
                     addressName += " --- " + address.getAddressLine(i);
                 }
-                progressBar.setVisibility(View.INVISIBLE);
-                infoText.setVisibility(View.VISIBLE);
-                infoText.setText("Latitude: " + address.getLatitude() + "\n" +
+                locProg.setVisibility(View.INVISIBLE);
+                LocText.setVisibility(View.VISIBLE);
+                LocText.setText("Latitude: " + address.getLatitude() + "\n" +
                         "Longitude: " + address.getLongitude() + "\n" +
                         "Address: " + addressName);
             }

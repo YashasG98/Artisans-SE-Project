@@ -21,8 +21,15 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.wangjie.rapidfloatingactionbutton.RapidFloatingActionButton;
+import com.wangjie.rapidfloatingactionbutton.RapidFloatingActionHelper;
+import com.wangjie.rapidfloatingactionbutton.RapidFloatingActionLayout;
+import com.wangjie.rapidfloatingactionbutton.contentimpl.labellist.RFACLabelItem;
+import com.wangjie.rapidfloatingactionbutton.contentimpl.labellist.RapidFloatingActionContentLabelList;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 
 public class ArtisanProductsActivity extends AppCompatActivity {
@@ -37,6 +44,43 @@ public class ArtisanProductsActivity extends AppCompatActivity {
     private ImageView loading;
     private String artisanPhoneNumber;
     private SearchView searchView;
+    private RapidFloatingActionContentLabelList sortFAB;
+    private RapidFloatingActionButton sortFAButton;
+    private RapidFloatingActionHelper rfabHelper;
+    private RapidFloatingActionLayout rfaLayout;
+    private String queryText;
+    private static boolean runInOnePage =  false;
+
+
+    class sorting implements Comparator<ProductInfo>
+    {
+
+        @Override
+        public int compare(ProductInfo o1, ProductInfo o2) {
+            if(o1.getProductPrice() == o2.getProductPrice())
+                return 0;
+            else if(Integer.parseInt(o1.getProductPrice()) > Integer.parseInt(o2.getProductPrice()))
+                return 1;
+            else
+                return -1;
+        }
+    }
+
+    class sortingByRating implements Comparator<ProductInfo>
+    {
+
+        @Override
+        public int compare(ProductInfo o1, ProductInfo o2) {
+
+            Log.d("rating", o1.getNumberOfPeopleWhoHaveRated() + " !" + o2.getTotalRating() +" =" +o1.toString());
+            if(Float.parseFloat(o1.getTotalRating()) > Float.parseFloat(o2.getTotalRating()))
+                return 1;
+            else if(Float.parseFloat(o1.getTotalRating()) < Float.parseFloat(o2.getTotalRating()))
+                return -1;
+            else
+                return 0;
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +100,36 @@ public class ArtisanProductsActivity extends AppCompatActivity {
         notFoundLayout.setVisibility(View.GONE);
         searchView = findViewById(R.id.artisan_product_sv_search);
 
+        //FAB for sorting
+
+        sortFAB = new RapidFloatingActionContentLabelList(getApplicationContext());
+
+        sortFAButton = findViewById(R.id.artisan_rfab);
+        rfaLayout = findViewById(R.id.artisan_FAB_layout);
+
+        final ArrayList<RFACLabelItem> sortOptions = new ArrayList<>();
+        sortOptions.add(new RFACLabelItem<Integer>().
+                setLabel("Price: Low to High"));
+
+        sortOptions.add(new RFACLabelItem<Integer>().
+                setLabel("Price: High to Low"));
+
+        sortOptions.add(new RFACLabelItem<Integer>().
+                setLabel("Rating: Low to High"));
+
+        sortOptions.add(new RFACLabelItem<Integer>().
+                setLabel("Rating: High to Low"));
+
+
+        sortFAB.setItems(sortOptions);
+
+        rfabHelper = new RapidFloatingActionHelper(
+                this,
+                rfaLayout,
+                sortFAButton,
+                sortFAB
+        ).build();
+
         Intent i = getIntent();
         artisanPhoneNumber = i.getStringExtra("phoneNumber");
 
@@ -64,10 +138,26 @@ public class ArtisanProductsActivity extends AppCompatActivity {
         artisanProductsRecyclerViewAdapter = new ArtisanProductsRecyclerViewAdapter(this, productInfos);
         recyclerView.setAdapter(artisanProductsRecyclerViewAdapter);
 
+
+        ArrayList<View> views = new ArrayList<>();
+//        views.add(searchOption);
+        views.add(searchView);
+        views.add(sortFAButton);
+
+        final HashMap<View, String> title = new HashMap<>();
+//        title.put(searchOption,"Search for products\n with these options");
+        title.put(searchView,"Search for your product here");
+        title.put(sortFAButton,"Filtering choices");
+
+        final Tutorial tutorial = new Tutorial(this,views);
+        tutorial.checkIfFirstRun();
+
+
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 searchResults.clear();
+                queryText = query;
                 for(ProductInfo product : productInfos){
                     if(product.getProductName().toLowerCase().contains(query)){
                         searchResults.add(product);
@@ -92,6 +182,34 @@ public class ArtisanProductsActivity extends AppCompatActivity {
             }
         });
 
+        sortFAB.setOnRapidFloatingActionContentLabelListListener(new RapidFloatingActionContentLabelList.OnRapidFloatingActionContentLabelListListener() {
+            @Override
+            public void onRFACItemLabelClick(int position, RFACLabelItem item) {
+
+                final String sorting_order = item.getLabel();
+                if (queryText == null) {
+                    sort(productInfos, sorting_order);
+                    artisanProductsRecyclerViewAdapter = new ArtisanProductsRecyclerViewAdapter(ArtisanProductsActivity.this, productInfos);
+                    recyclerView.setAdapter(artisanProductsRecyclerViewAdapter);
+                } else {
+                    sort(searchResults, sorting_order);
+                    artisanProductsRecyclerViewAdapter = new ArtisanProductsRecyclerViewAdapter(ArtisanProductsActivity.this, searchResults);
+                    recyclerView.setAdapter(artisanProductsRecyclerViewAdapter);
+                }
+
+                rfabHelper.toggleContent();
+
+            }
+
+            @Override
+            public void onRFACItemIconClick(int position, RFACLabelItem item) {
+
+                rfabHelper.toggleContent();
+
+
+            }
+        });
+
         databaseReference = FirebaseDatabase.getInstance().getReference("ArtisanProducts/"+artisanPhoneNumber);
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -103,6 +221,13 @@ public class ArtisanProductsActivity extends AppCompatActivity {
                             if(contentLayout.getVisibility()==View.GONE){
                                 contentLayout.setVisibility(View.VISIBLE);
                                 loadingLayout.setVisibility(View.GONE);
+                                if(contentLayout.getVisibility() == View.VISIBLE && !runInOnePage){
+
+                                    tutorial.requestFocusForViews(title);
+                                    tutorial.finishedTutorial();
+                                    runInOnePage = true;
+
+                                }
                             }
                             ProductInfo productInfo;
                             HashMap<String, String> map = (HashMap<String, String>) dataSnapshot.getValue();
@@ -113,6 +238,8 @@ public class ArtisanProductsActivity extends AppCompatActivity {
                             productInfo.setNumberOfPeopleWhoHaveRated(map.get("numberOfPeopleWhoHaveRated"));
                             productInfo.setTotalRating(map.get("totalRating"));
                             artisanProductsRecyclerViewAdapter.added(productInfo);
+
+
                         }
 
                         @Override
@@ -147,5 +274,28 @@ public class ArtisanProductsActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    public void sort(ArrayList<ProductInfo> product_list, String sorting_order) {
+
+
+        if(sorting_order.equals("Price: Low to High") || sorting_order.equals("Price: High to Low")) {
+            Collections.sort(product_list, new sorting());
+
+            if(sorting_order.equals("Price: High to Low"))
+                Collections.reverse(product_list);
+
+        }
+
+
+
+        if(sorting_order.equals("Rating: Low to High") || sorting_order.equals("Rating: High to Low")) {
+            Collections.sort(product_list, new sortingByRating());
+
+            if(sorting_order.equals("Rating: High to Low"))
+                Collections.reverse(product_list);
+        }
+
+
     }
 }

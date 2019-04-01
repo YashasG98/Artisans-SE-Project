@@ -3,7 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".UserProductReviewsFragment">
+    tools:context=".UserProductReviewsFragment"
+    android:background="@color/backgroundDefault">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -15,7 +16,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/entire_thing">
+                android:id="@+id/entire_thing"
+                android:background="@color/backgroundDefault">
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -134,10 +136,83 @@
             </LinearLayout>
         </android.support.v7.widget.CardView>
 
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:layout_margin="4dp"
+            android:orientation="vertical"
+            app:cardCornerRadius="6dp"
+            android:id="@+id/review_layout_cv_mine">
+
+            <android.support.constraint.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/backgroundDefault">
+
+                <TextView
+                    android:id="@+id/review_layout_tv_name_mine"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:text="name"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:textSize="20dp"/>
+
+                <!--<RatingBar-->
+                <!--android:id="@+id/review_layout_rb"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="18dp"-->
+                <!--android:layout_marginTop="8dp"-->
+                <!--android:layout_marginEnd="8dp"-->
+                <!--android:isIndicator="true"-->
+                <!--android:progressDrawable="@drawable/custom_ratingbar_selector"-->
+                <!--app:layout_constraintEnd_toEndOf="parent"-->
+                <!--app:layout_constraintTop_toTopOf="parent" />-->
+                <android.support.v7.widget.AppCompatRatingBar
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:theme="@style/Yellow.Small.AppCompatRatingBar.White"
+                    android:clickable="false"
+                    android:numStars="5"
+                    android:stepSize="1.0"
+                    style="@style/Yellow.Small.AppCompatRatingBar.White"
+                    android:id="@+id/review_layout_rb_mine"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_marginEnd="8dp"
+                    />
+
+                <ImageView
+                    android:id="@+id/review_layout_iv_editable_mine"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@+id/review_layout_rb_mine"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:src="@drawable/baseline_edit_black_18dp_1x"/>
+
+                <TextView
+                    android:id="@+id/review_layout_tv_review_mine"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:text="review"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/review_layout_tv_name_mine"
+                    app:layout_constraintEnd_toEndOf="@+id/review_layout_iv_editable_mine"
+                    android:textSize="16dp"
+                    android:paddingBottom="@dimen/spacing_medium"/>
+
+            </android.support.constraint.ConstraintLayout>
+
+        </android.support.v7.widget.CardView>
+
         <android.support.v7.widget.RecyclerView
             android:id="@+id/user_product_review_rv"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:background="@color/backgroundDefault">
 
         </android.support.v7.widget.RecyclerView>
 
@@ -145,13 +220,15 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end|bottom"
-            android:layout_margin="10dp">
+            android:layout_margin="10dp"
+            android:background="@color/backgroundDefault">
             <android.support.design.widget.FloatingActionButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/user_product_reviews_fab"
                 style="@style/Widget.MaterialComponents.FloatingActionButton"
                 android:backgroundTint="#039be5"
+                android:background="@color/backgroundDefault"
                 android:src="@drawable/vd_vector" />
         </android.support.design.widget.CoordinatorLayout>
     </LinearLayout>

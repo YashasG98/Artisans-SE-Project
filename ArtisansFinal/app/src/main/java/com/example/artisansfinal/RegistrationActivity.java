@@ -23,7 +23,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
-
+//added by Sayan Biswas
 public class RegistrationActivity extends AppCompatActivity {
     private EditText userName,userPassword,userEmail,userPnumber,userPcode,userCpassword,userWallet;
     private Button regButton;
@@ -107,7 +107,7 @@ public class RegistrationActivity extends AppCompatActivity {
         userPassword=(EditText)findViewById(R.id.registration_page_et_user_password);
         userEmail=(EditText)findViewById(R.id.registration_page_et_user_email);
         regButton=(Button)findViewById(R.id.registration_page_button_user_registration);
-        userWallet=(EditText)findViewById(R.id.registration_page_et_user_wallet);
+       // userWallet=(EditText)findViewById(R.id.registration_page_et_user_wallet);
         userPcode=(EditText) findViewById(R.id.registration_page_et_user_pcode);
         userPnumber=(EditText) findViewById(R.id.registration_page_et_user_number);
         userCpassword=(EditText) findViewById(R.id.registration_page_et_user_cpassword);
@@ -117,7 +117,7 @@ public class RegistrationActivity extends AppCompatActivity {
         Boolean result=true;
         name=userName.getText().toString();
         email=userEmail.getText().toString();
-        wallet=userWallet.getText().toString();
+        wallet="2500";
         String password=userPassword.getText().toString();
         String cpassword=userCpassword.getText().toString();
         pcode=userPcode.getText().toString();
@@ -138,13 +138,13 @@ public class RegistrationActivity extends AppCompatActivity {
             userEmail.requestFocus();
             result=false;
         }
-        if(wallet.isEmpty())
-        {
-            //Toast.makeText(this,"Name is empty",Toast.LENGTH_SHORT).show();
-            userWallet.setError("Wallet is empty");
-            userWallet.requestFocus();
-            result=false;
-        }
+//        if(wallet.isEmpty())
+//        {
+//            //Toast.makeText(this,"Name is empty",Toast.LENGTH_SHORT).show();
+//            userWallet.setError("Wallet is empty");
+//            userWallet.requestFocus();
+//            result=false;
+//        }
 
          if(pnumber.isEmpty())
         {
@@ -214,9 +214,9 @@ public class RegistrationActivity extends AppCompatActivity {
         FirebaseDatabase firebaseDatabase=FirebaseDatabase.getInstance();
         FirebaseUser user=FirebaseAuth.getInstance().getCurrentUser();
         DatabaseReference myRef=firebaseDatabase.getReference();
-        UserInfo userinfo=new UserInfo(name,pcode,pnumber,email,user.getUid());
+        UserInfo userinfo=new UserInfo(name,pcode,pnumber,wallet,email,user.getUid());
         myRef.child("User").child(userinfo.userPnumber).setValue(userinfo);
 
-        myRef.child("Wallet").child("User").child(userinfo.userPnumber).setValue(wallet);
+
     }
 }

@@ -176,7 +176,8 @@
                         android:layout_below="@id/artisan_home_page_iv_order_history"
                         android:gravity="center"
                         android:text="Order history"
-                        android:textSize="25sp" />
+                        android:textSize="20sp"
+                        android:textStyle="bold"/>
 
                     <ImageView
                         android:id="@+id/artisan_home_page_iv_order_history"
@@ -212,7 +213,8 @@
                         android:layout_below="@id/artisan_home_page_iv_order_requests"
                         android:gravity="center"
                         android:text="Order requests"
-                        android:textSize="25sp" />
+                        android:textSize="20sp"
+                        android:textStyle="bold"/>
 
                     <ImageView
                         android:id="@+id/artisan_home_page_iv_order_requests"
@@ -262,7 +264,8 @@
                         android:layout_below="@id/artisan_home_page_iv_my_products"
                         android:gravity="center"
                         android:text="My products"
-                        android:textSize="25sp" />
+                        android:textSize="20sp"
+                        android:textStyle="bold"/>
 
                     <ImageView
                         android:id="@+id/artisan_home_page_iv_my_products"
@@ -298,7 +301,8 @@
                         android:layout_below="@id/artisan_home_page_iv_pending_orders"
                         android:gravity="center"
                         android:text="Pending orders"
-                        android:textSize="25sp" />
+                        android:textSize="20sp"
+                        android:textStyle="bold"/>
 
                     <ImageView
                         android:id="@+id/artisan_home_page_iv_pending_orders"
@@ -347,7 +351,8 @@
                         android:layout_below="@id/artisan_home_page_iv_my_profile"
                         android:gravity="center"
                         android:text="My profile"
-                        android:textSize="25sp" />
+                        android:textSize="20sp"
+                        android:textStyle="bold"/>
 
                     <ImageView
                         android:id="@+id/artisan_home_page_iv_my_profile"
@@ -383,7 +388,8 @@
                         android:layout_below="@id/artisan_home_page_iv_wallet"
                         android:gravity="center"
                         android:text="Wallet"
-                        android:textSize="25sp" />
+                        android:textSize="20sp"
+                        android:textStyle="bold"/>
 
                     <ImageView
                         android:id="@+id/artisan_home_page_iv_wallet"

@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+ <!--added by Shrinidhi Anil Varna-->
     <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -6,7 +7,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:background="#bbdefb">
+    android:background="@color/backgroundDefault">
 
     <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
@@ -14,7 +15,7 @@
         android:fillViewport="true">
 
     <LinearLayout
-            android:id="@+id/user_wallet_page_ll_inner"
+            android:id="@+id/artisan_wallet_page_ll_inner"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="6dp"
@@ -29,68 +30,71 @@
             <android.support.v7.widget.CardView
                 android:id="@+id/artisan_home_page_cv_order_history"
                 android:layout_width="match_parent"
-                android:layout_height="180dp"
-                android:layout_marginTop="80dp"
+                android:layout_height="250dp"
+                android:layout_marginTop="30dp"
                 android:layout_marginRight="4dp"
                 android:layout_marginBottom="20dp"
                 android:background="@drawable/border"
                 android:paddingStart="2dp"
                 android:paddingEnd="2dp"
-                app:cardBackgroundColor="#F5FFFA"
+                app:cardBackgroundColor="#8a2be2"
                 app:cardCornerRadius="20sp">
 
                 <RelativeLayout
-                    android:id="@+id/user_wallet_page_rl_avaiable_balance"
+                    android:id="@+id/artisan_wallet_page_rl_avaiable_balance"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center">
 
                     <ImageView
-                        android:id="@+id/user_wallet_page_iv_available_balance"
+                        android:id="@+id/artisan_wallet_page_iv_available_balance"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerHorizontal="true"
+                        android:layout_marginTop="10dp"
                         android:layout_marginBottom="5dp"
-                        android:src="@mipmap/ic_launcher_wallet_background_round" />
+                        android:src="@mipmap/ic_launcher_bgwallet2_round" />
 
                     <TextView
-                        android:id="@+id/user_wallet_page_tv_available_balance"
+                        android:id="@+id/artisan_wallet_page_tv_available_balance"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_below="@id/user_wallet_page_iv_available_balance"
+                        android:layout_below="@id/artisan_wallet_page_iv_available_balance"
                         android:layout_marginTop="5dp"
                         android:layout_marginBottom="5dp"
                         android:gravity="center"
-                        android:text="Available balance"
+                        android:textColor="@color/white"
+                        android:textAlignment="center"
+                        android:text="      Available balance"
                         android:textSize="20sp"
                         android:textStyle="bold" />
 
                     <TextView
-                        android:id="@+id/user_wallet_page_tv_display_balance"
+                        android:id="@+id/artisan_wallet_page_tv_display_balance"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_below="@id/user_wallet_page_tv_available_balance"
+                        android:layout_below="@id/artisan_wallet_page_tv_available_balance"
                         android:layout_centerHorizontal="true"
-                        android:layout_marginTop="0dp"
-                        android:layout_marginBottom="1dp"
-                        android:text="0.00"
-                        android:textSize="15sp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="10dp"
+                        android:text="₹ 0.00"
+                        android:textSize="50sp"
+                        android:textColor="@color/white"
                         android:textStyle="bold" />
 
                 </RelativeLayout>
 
 
             </android.support.v7.widget.CardView>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:id="@+id/artisan_wallet_page_tv_phno"
+            android:text="*amount will be transferred to bank acount linked to phone number: "
+            android:textColor="@color/black"
+            android:textAlignment="center"/>
 
-
-            <ImageView
-                android:id="@+id/Cardimage"
-                android:layout_width="match_parent"
-                android:layout_height="260dp"
-                android:layout_marginBottom="10dp"
-                android:layout_marginTop="20dp"
-                android:src="@mipmap/ic_launcher_wallet_cardpic_round" />
-
-        </LinearLayout>
+    </LinearLayout>
     </ScrollView>
     </LinearLayout>

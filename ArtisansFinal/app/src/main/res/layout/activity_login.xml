@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-
+<!--added by Sayan Biswas-->
 <android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nestedScrollView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#bbdefb"
+    android:background="#fff"
     android:fillViewport="true">
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
@@ -15,7 +15,7 @@
 
         android:textAlignment="center"
         android:id="@+id/user_login_cl"
-        android:background="#bbdefb">
+        android:background="#fff">
 
 
         <android.support.design.widget.TextInputLayout
@@ -29,30 +29,31 @@
             android:layout_marginEnd="24dp"
             android:layout_marginBottom="8dp"
             android:textColorHint="#000306"
-            app:boxStrokeColor="#73bbf7"
+            app:boxStrokeColor="@color/common"
             app:helperTextEnabled="true"
             app:hintAnimationEnabled="false"
             app:hintEnabled="true"
             app:hintTextAppearance="@style/TextLabel"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.44"
+            app:layout_constraintHorizontal_bias="0.47"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.141">
+            app:layout_constraintTop_toBottomOf="@+id/textView6"
+            app:layout_constraintVertical_bias="0.120000005">
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintVertical_bias="0.079">
-
 
 
             <EditText
                 android:id="@+id/login_page_et_user_name"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:textCursorDrawable="@drawable/cursor_color"
+                android:drawableLeft="@drawable/sayan_email"
                 android:ems="10"
-                android:hint="Email"
+                android:hint="Email*"
                 android:inputType="textPersonName"
+                android:textCursorDrawable="@drawable/cursor_color"
+                android:textSize="18sp"
                 app:layout_constraintBottom_toTopOf="@+id/login_page_et_user_password" />
 
         </android.support.design.widget.TextInputLayout>
@@ -69,18 +70,20 @@
             android:layout_marginEnd="24dp"
             android:layout_marginBottom="8dp"
             android:textColorHint="#000306"
-            app:boxStrokeColor="#73bbf7"
+            app:boxStrokeColor="@color/common"
             app:helperTextEnabled="true"
             app:hintAnimationEnabled="false"
             app:hintEnabled="true"
             app:hintTextAppearance="@style/TextLabel"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.43"
+            app:layout_constraintHorizontal_bias="0.48"
             app:layout_constraintStart_toStartOf="parent"
-            app:passwordToggleEnabled="true"
             app:layout_constraintTop_toBottomOf="@+id/TextInput_user_login_activity_email"
-            app:layout_constraintVertical_bias="0.141">
+            app:layout_constraintVertical_bias="0.141"
+            app:passwordToggleEnabled="true">
+
+
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintVertical_bias="0.079"
             >
@@ -90,17 +93,19 @@
                 android:id="@+id/login_page_et_user_password"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:textCursorDrawable="@drawable/cursor_color"
+                android:drawableStart="@drawable/sayan_password"
                 android:ems="10"
-                android:hint="Password"
-                android:inputType="textPassword" />
+                android:hint="Password*"
+                android:inputType="textPassword"
+
+                android:textCursorDrawable="@drawable/cursor_color" />
 
         </android.support.design.widget.TextInputLayout>
 
 
         <Button
             android:id="@+id/login_page_button_user_login"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
             android:layout_marginTop="8dp"
@@ -115,21 +120,39 @@
             app:layout_constraintVertical_bias="0.23000002" />
 
         <TextView
-            android:id="@+id/login_page_tv_user_forgotpassword"
+            android:id="@+id/login_page_tv_user_forgotpassword1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="24dp"
             android:layout_marginBottom="8dp"
-            android:text="Forgot Password?Click To Reset"
-            android:textColor="@color/black"
+            android:text="Forgot Password?"
+            android:textColor="@color/colorPrimaryText"
             android:textSize="16sp"
             android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.494"
+            app:layout_constraintHorizontal_bias="0.29"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/login_page_button_user_login"
+            app:layout_constraintVertical_bias="0.24000001" />
+
+        <TextView
+            android:id="@+id/login_page_tv_user_forgotpassword"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="24dp"
+            android:layout_marginBottom="8dp"
+            android:text="Click To Reset"
+            android:textColor="#FF0000"
+            android:textSize="16sp"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.12"
+            app:layout_constraintStart_toEndOf="@+id/login_page_tv_user_forgotpassword1"
             app:layout_constraintTop_toBottomOf="@+id/login_page_button_user_login"
             app:layout_constraintVertical_bias="0.24000001" />
 
@@ -151,36 +174,23 @@
             app:layout_constraintVertical_bias="0.29000002" />
 
 
-        <ImageView
-            android:id="@+id/sayan_env"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
+        <TextView
+            android:id="@+id/textView6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginBottom="8dp"
-            app:layout_constraintBottom_toBottomOf="@+id/TextInput_user_login_activity_email"
-            app:layout_constraintEnd_toStartOf="@+id/TextInput_user_login_activity_email"
-            app:layout_constraintHorizontal_bias="0.8"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="24dp"
+            android:text="User Log In"
+            android:textColor="@color/black"
+            android:textSize="50sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.47"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="1.0"
-            app:srcCompat="@drawable/new_env" />
-
-
-        <ImageView
-            android:id="@+id/sayan_pass"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginBottom="8dp"
-            app:layout_constraintBottom_toBottomOf="@+id/TextInput_user_login_activity_password"
-            app:layout_constraintEnd_toStartOf="@+id/TextInput_user_login_activity_password"
-            app:layout_constraintHorizontal_bias="0.8"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/TextInput_user_login_activity_email"
-            app:layout_constraintVertical_bias="1.0"
-            app:srcCompat="@drawable/sayan_pass" />
+            app:layout_constraintVertical_bias="0.07999998" />
 
     </android.support.constraint.ConstraintLayout>
 </android.support.v4.widget.NestedScrollView>

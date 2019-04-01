@@ -11,7 +11,7 @@
         android:id="@+id/user_home_page_dl"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#bbdefb"
+        android:background="@color/backgroundDefault"
         android:orientation="vertical">
 
         <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"

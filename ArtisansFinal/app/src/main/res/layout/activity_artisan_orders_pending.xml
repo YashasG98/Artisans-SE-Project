@@ -6,8 +6,33 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#bbdefb"
+    android:background="@color/backgroundDefault"
     android:id="@+id/artisanOrderPending">
+
+    <TextView
+        android:paddingTop="40dp"
+        android:id="@+id/noMatchArtisanOrderPending1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Nope. Nothing."
+        android:gravity="center"
+        android:layout_gravity="center"
+        android:textSize="40sp"
+        android:textColor="#000"
+        />
+
+    <TextView
+        android:paddingTop="40dp"
+        android:id="@+id/noMatchArtisanOrderPending2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Go accept some orders and see them magically appear here!"
+        android:gravity="center"
+        android:layout_gravity="center"
+        android:textSize="40sp"
+        android:textColor="#000"
+        />
+
 
     <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"

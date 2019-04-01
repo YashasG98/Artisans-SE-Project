@@ -4,6 +4,8 @@ import android.net.Uri;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.Date;
+
 public class ProductInfo implements Parcelable {
 
     private String productID;
@@ -15,7 +17,20 @@ public class ProductInfo implements Parcelable {
     private String artisanContactNumber;
     private String totalRating;
     private String numberOfPeopleWhoHaveRated;
+    private String numberOfSales;
+    private String dateOfRegistration;
 
+    public String getDateOfRegistration() {
+        return dateOfRegistration;
+    }
+
+    public void setDateOfRegistration(String dateOfRegistration) {
+        this.dateOfRegistration = dateOfRegistration;
+    }
+
+    public void setNumberOfSales(String numberOfSales) {
+        this.numberOfSales = numberOfSales;
+    }
 
     public ProductInfo(String productID, String productName, String productDescription, String productCategory, String productPrice, String artisanName, String artisanContactNumber) {
         this.productID = productID;
@@ -40,6 +55,10 @@ public class ProductInfo implements Parcelable {
     }
 
     public ProductInfo() {
+    }
+
+    public String getNumberOfSales() {
+        return numberOfSales;
     }
 
     public void setTotalRating(String totalRating) {

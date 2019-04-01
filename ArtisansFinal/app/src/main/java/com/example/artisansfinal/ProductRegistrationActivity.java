@@ -47,6 +47,9 @@ import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.UUID;
 
 import smartdevelop.ir.eram.showcaseviewlib.GuideView;
@@ -68,6 +71,8 @@ public class ProductRegistrationActivity extends AppCompatActivity {
     private static boolean runInOnePage = false;
     private static String artisanName = null;
     private static String artisanContactNumber = null;
+    private static final DateFormat DATE_FORMAT = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+
     //private double resizeFactorForHighRes[] = {1,0.8,0.7,0.6,0.5};
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,7 +91,7 @@ public class ProductRegistrationActivity extends AppCompatActivity {
         Intent intent = getIntent();
         artisanName = intent.getStringExtra("name");
         artisanContactNumber = intent.getStringExtra("phoneNumber");
-        Log.d(TAG, "onClick: "+artisanName+" "+artisanContactNumber);
+        /*Log.d(TAG, "onClick: "+artisanName+" "+artisanContactNumber);*/
 
         if(!runInOnePage){
             if(browse.getVisibility() == View.VISIBLE){
@@ -103,7 +108,7 @@ public class ProductRegistrationActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                     if (ContextCompat.checkSelfPermission(ProductRegistrationActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                        Toast.makeText(ProductRegistrationActivity.this, "Permission Denied", Toast.LENGTH_LONG).show();
+//                        Toast.makeText(ProductRegistrationActivity.this, "Permission Denied", Toast.LENGTH_LONG).show();
                         ActivityCompat.requestPermissions(ProductRegistrationActivity.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
                     } else {
                         BringImagePicker();
@@ -130,7 +135,13 @@ public class ProductRegistrationActivity extends AppCompatActivity {
                 String productPrice = price_of_product.getText().toString();
                 String productID = databaseReference.push().getKey();
 
-                boolean productNameflag = true, productPriceflag = true;
+                boolean productNameflag = true, productPriceflag = true, properCategory = true;
+
+                if(productCategory.equals("None")){
+                    Toast.makeText(getBaseContext(), "Choose a category", Toast.LENGTH_LONG).show();
+                    category.requestFocus();
+                    properCategory = false;
+                }
 
                 if (productName.length() == 0) {
                     name_of_product.setError("Enter Product Name");
@@ -144,15 +155,17 @@ public class ProductRegistrationActivity extends AppCompatActivity {
                     productPriceflag = false;
                 }
 
-                if (productPriceflag && productNameflag) {
+                if (productPriceflag && productNameflag && properCategory) {
 
                     product = new ProductInfo(productID, productName, productDescription, productCategory, productPrice, artisanName, artisanContactNumber);
                     product.setTotalRating("0");
                     product.setNumberOfPeopleWhoHaveRated("0");
+                    product.setNumberOfSales("0");
+                    product.setDateOfRegistration(DATE_FORMAT.format(new Date()));
                     databaseReference.child("Categories").child(productCategory).child(productID).setValue(product);
                     databaseReference.child("ArtisanProducts").child(artisanContactNumber).child(productID).setValue(product);
+                    databaseReference.child("Products").child(productID).setValue(product);
 
-//                    databaseReference.child("Products").child(productName).setValue(product);
                     if (mainImageURI != null) {
                         Log.d("IMAGEURI", mainImageURI.toString());
                         uploadImage(mainImageURI);

@@ -1,6 +1,7 @@
 package com.example.artisansfinal;
 
 import android.Manifest;
+import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.TabActivity;
 import android.content.Context;
@@ -35,10 +36,12 @@ import android.view.ViewGroup;
 import android.view.animation.TranslateAnimation;
 import android.widget.CalendarView;
 import android.widget.CheckBox;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.NumberPicker;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -54,7 +57,10 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import android.widget.Button;
@@ -80,6 +86,8 @@ public class UserProductDetails1Fragment extends Fragment {
 
     private DatabaseReference databaseReference;
     private DatabaseReference users;
+    private String temp_productprice;
+    private String temp_user_wallet;
     private DatabaseReference ordHis;
     private StorageReference storageReference;
     private String artisanContactNumber;
@@ -94,18 +102,22 @@ public class UserProductDetails1Fragment extends Fragment {
     private ArtisanInfo artisanInfo;
     private String pincode;
     private boolean confirmationFlag = false;
+    private int quantity;
+    private static boolean runInOnePage=false;
 
-    //Lcation based
-    AddressResultReceiver mResultReceiver;
+    //Lcation based done by shrinidhi anil varna
+    AddressResultReceiver mResultReceiver, mResultReceiver2;
     double latid = 0,longit = 0;
     EditText latitudeEdit, longitudeEdit, addressEdit;
     ProgressBar progressBar;
     TextView infoText;
     TextView locText;
     ProgressBar locProg;
+    //ProgressBar calProg;
     TextView current_location;
     CheckBox checkBox;
-    int ch;
+    TextView pprice, dprice, tprice;
+    int ch,pp;
     public String name;
     //private static final String TAG = "MainActivity";
     private int STORAGE_PERMISSION_CODE = 1;
@@ -147,24 +159,46 @@ public class UserProductDetails1Fragment extends Fragment {
         final TextView price = view.findViewById(R.id.user_product_details1_tv_product_price);
         final TextView desc = view.findViewById(R.id.user_product_details1_tv_product_description);
         final ZoomageView image = view.findViewById((R.id.user_product_details1_iv_product_image));
+        GlideApp.with(getContext()).asGif().load(R.mipmap.loading1).into(image);
         final FloatingActionButton fab = view.findViewById(R.id.user_product_details1_fab);
         final AppCompatRatingBar ratingBar = view.findViewById(R.id.user_product_details1_rb_rating);
         final TextView numberRated = view.findViewById(R.id.user_product_details1_tv_number_of_ratings);
 
+        // added by Shrinidhi Anil Varna
         final ImageButton toggleDescription = view.findViewById(R.id.user_product_details1_bt_toggle_description);
         final ImageButton toggleReviewTab = view.findViewById(R.id.user_product_details1_bt_tab_reviews);
         final LinearLayout expandDescription = view.findViewById(R.id.user_product_details1_ll_expand_description);
 
-        final ImageButton toggleLocation = view.findViewById(R.id.user_product_details1_bt_toggle_description_location);
+        final ImageButton toggleLocation = view.findViewById(R.id.buttonaddress);
         final LinearLayout expandLocation = view.findViewById(R.id.user_product_details1_ll_expand_description_location);
-        final TextView locText = view.findViewById(R.id.user_product_details1_tv_product_description_location);
-        final ProgressBar locProg = view.findViewById(R.id.locProg);
+        locText = (TextView) view.findViewById(R.id.LocText);
+        locProg = (ProgressBar) view.findViewById(R.id.locProg);
+        //calProg = (ProgressBar) CalendarView.findViewById(R.id.CalProg);
 
-        addressEdit = (EditText) view.findViewById(R.id.addressEdit);
-        progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
-        infoText = (TextView) view.findViewById(R.id.infoText);
+        HashMap<View,String> title= new HashMap<>();
+        title.put(fab,"Click here to buy product");
+        title.put(toggleDescription,"Click here to view description of product");
+        title.put(toggleReviewTab,"Click here to view reviews of the product");
+
+        ArrayList<View> views = new ArrayList<>();
+        views.add(fab);
+        views.add(toggleDescription);
+        views.add(toggleReviewTab);
+
+        if(!runInOnePage){
+            Tutorial tutorial = new Tutorial(getActivity(),views);
+            tutorial.checkIfFirstRun();
+            tutorial.requestFocusForViews(title);
+            tutorial.finishedTutorial();
+            runInOnePage=true;
+        }
+
+
+        //addressEdit = (EditText) view.findViewById(R.id.addressEdit);
+        //progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
+        //infoText = (TextView) view.findViewById(R.id.infoText2);
         checkBox = (CheckBox) view.findViewById(R.id.checkbox);
-        final Button buttonaddress = view.findViewById(R.id.buttonaddress);
+        //final Button buttonaddress2 = view.findViewById(R.id.buttonaddress2);
         locationManager = (LocationManager) getContext().getSystemService(Context.LOCATION_SERVICE);
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(getActivity());
 
@@ -172,13 +206,13 @@ public class UserProductDetails1Fragment extends Fragment {
         if (isServicesOK()) {
             fetchLocation();
         }
-        buttonaddress.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                artisanfetch(v);
-
-            }
-        });
+//        buttonaddress2.setOnClickListener(new OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                artisanfetch(v);
+//
+//            }
+//        });
         toggleDescription.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -199,12 +233,15 @@ public class UserProductDetails1Fragment extends Fragment {
             }
         });
 
+        // added by Shrinidhi Anil Varna
         toggleLocation.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 toggleArrow(toggleLocation);
                 if(expandLocation.getVisibility()==View.GONE){
                     expandLocation.setVisibility(View.VISIBLE);
+                    artisanfetch(v);
+                    //locText.setText("Rs."+ch);
                 }
                 else{
                     expandLocation.setVisibility(View.GONE);
@@ -228,12 +265,15 @@ public class UserProductDetails1Fragment extends Fragment {
                 HashMap<String, String> map = (HashMap<String, String>) dataSnapshot.getValue();
                 pname.setText(map.get("productName"));
                 aname.setText(map.get("artisanName"));
+                temp_productprice=map.get("productPrice");
                 price.setText(map.get("productPrice"));
+                pp = Integer.parseInt(map.get("productPrice"));
                 desc.setText(map.get("productDescription"));
-                locText.setText("Rs."+(int)(0.1*Float.parseFloat(map.get("productPrice"))));
+                //locText.setText("Rs."+(int)(0.1*Float.parseFloat(map.get("productPrice"))));
                 ratingBar.setRating(Float.parseFloat(map.get("totalRating")));
-               
-               numberRated.setText(map.get("numberOfPeopleWhoHaveRated")); 
+
+                numberRated.setText(map.get("numberOfPeopleWhoHaveRated"));
+
                 artisanContactNumber = map.get("artisanContactNumber");
                 artisanPin = map.get("pincode");
                 try {
@@ -301,6 +341,7 @@ public class UserProductDetails1Fragment extends Fragment {
                     UserInfo userInfo = userSnapshot.getValue(UserInfo.class);
                     if (userInfo.userEmail.equals(userX.getEmail())) {
                         userPhoneNumber = userInfo.userPnumber;
+                        temp_user_wallet=userInfo.userWallet;
 
                         break;
                     }
@@ -321,80 +362,161 @@ public class UserProductDetails1Fragment extends Fragment {
                 final AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
                 builder.setTitle("Choose a delivery date");
 
+                if(ch == 0)
+                {
+                    int i;
+                    for(i=0;i<99;i++);
+                    ch = (int)(0.1*pp);
+                }
                 //Added by dhanasekhar
                 LayoutInflater layoutInflater = inflater.from(v.getContext());
                 final View userConfirmationView = layoutInflater.inflate(R.layout.user_confirmation, null);
                 builder.setView(userConfirmationView);
-                final CalendarView calendarView = userConfirmationView.findViewById(R.id.calendarView);
-                calendarView.setMinDate(Calendar.getInstance().getTimeInMillis());
+                pprice = (TextView) userConfirmationView.findViewById(R.id.user_confirmation_product_price);
+                dprice = (TextView) userConfirmationView.findViewById(R.id.user_confirmation_delivery_charge);
+                tprice = (TextView) userConfirmationView.findViewById(R.id.user_confirmation_total_charge);
+                //calProg = (ProgressBar) userConfirmationView.findViewById(R.id.CalProg);
+//                final CalendarView calendarView = userConfirmationView.findViewById(R.id.calendarView);
+//                calendarView.setMinDate(Calendar.getInstance().getTimeInMillis());
+//
+//                final String months[] = { "Jan", "Feb", "Mar", "Apr",
+//                        "May", "Jun", "Jul", "Aug",
+//                        "Sep", "Oct", "Nov", "Dec" };
 
-                final String months[] = { "Jan", "Feb", "Mar", "Apr",
-                        "May", "Jun", "Jul", "Aug",
-                        "Sep", "Oct", "Nov", "Dec" };
+                pprice.setText("Product price: Rs."+pp);
+                dprice.setText("Shipping price: Rs."+ch);
 
-                calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
+                final EditText selectDeliveryDate = userConfirmationView.findViewById(R.id.delivery_date_et);
+                final Calendar currentDate = Calendar.getInstance();
+                final int day = currentDate.get(Calendar.DAY_OF_MONTH);
+                final int month = currentDate.get(Calendar.MONTH);
+                final int year = currentDate.get(Calendar.YEAR);
+                final SimpleDateFormat sf = new SimpleDateFormat("dd/MM/yyyy");
+
+                final DatePickerDialog.OnDateSetListener datePicker = new DatePickerDialog.OnDateSetListener() {
                     @Override
-                    public void onSelectedDayChange(CalendarView view, int year, int month, int dayOfMonth)
-                    {
-                        calendar = new GregorianCalendar(year, month, dayOfMonth);
-                        formattedDate = calendar.get(Calendar.DATE) + "-" +months[calendar.get(Calendar.MONTH)] + "-" + calendar.get(Calendar.YEAR);
+                    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+
+                        currentDate.set(Calendar.YEAR, year);
+                        currentDate.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                        currentDate.set(Calendar.MONTH, month);
+
+                        view.setMinDate(Calendar.getInstance().getTimeInMillis());
+
+                        Date selectedDate = currentDate.getTime();
+                        selectDeliveryDate.setText(sf.format(selectedDate));
+                        formattedDate = sf.format(selectedDate);
+                    }
+                };
+
+                selectDeliveryDate.setOnClickListener(new OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        DatePickerDialog datePickerDialog = new DatePickerDialog(getActivity(), datePicker, year, month, day );
+                        datePickerDialog.getDatePicker().setMinDate(Calendar.getInstance().getTimeInMillis());
+                        datePickerDialog.show();
+
                     }
                 });
+
+                final NumberPicker quantityPicker= userConfirmationView.findViewById(R.id.user_confirmation_quantity);
+                quantityPicker.setMinValue(1);
+                quantityPicker.setMaxValue(10);
+
+
+                quantity = 1;
+                tprice.setText("Total amount: Rs."+(pp*quantity + ch));
+                quantityPicker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
+                    @Override
+                    public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
+                        quantity = newVal;
+                        tprice.setText("Total amount: Rs."+(pp*quantity + ch));
+                    }
+                });
+
+
+
+
+//                calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
+//                    @Override
+//                    public void onSelectedDayChange(CalendarView view, int year, int month, int dayOfMonth)
+//                    {
+//                        calendar = new GregorianCalendar(year, month, dayOfMonth);
+//                        formattedDate = calendar.get(Calendar.DATE) + "-" +months[calendar.get(Calendar.MONTH)] + "-" + calendar.get(Calendar.YEAR);
+//                    }
+//                });
 
                 builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-
-                        final String opname = pname.getText().toString();
-                        confirmationFlag = true;
-                        //Log.d("HERE",opname);
-                        Log.d("token", artisanToken);
-                        final String oprice = price.getText().toString();
-                        final DatabaseReference database= FirebaseDatabase.getInstance().getReference("User/");
-                        database.addListenerForSingleValueEvent(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                for(DataSnapshot data: dataSnapshot.getChildren()){
-                                    if(data.child("userEmail").getValue().toString().equals(userX.getEmail())){
-                                        token=data.child("FCMToken").getValue().toString();
-
-                                        orderInfo order = new orderInfo(opname, oprice, formattedDate, userX.getUid(), productCategory, productID,userX.getEmail(),token);
-                                        String orderID = ordHis.push().getKey();
-                                        //ordHis.child(userX.getEmail().substring(0,userX.getEmail().indexOf('@'))).child(orderID).setValue(order);
-                                        ordHis.child("Users").child(userX.getUid()).child("Orders Requested").child(orderID).setValue(order);
-                                        orderID = ordHis.push().getKey();
-                                        ordHis.child("Artisans").child(artisanContactNumber).child("Order Requests").child(orderID).setValue(order);
-
-                                        Retrofit retrofit = new Retrofit.Builder()
-                                                .baseUrl("https://artisansfinal.firebaseapp.com/api/")
-                                                .addConverterFactory(GsonConverterFactory.create())
-                                                .build();
-
-                                        final Api api = retrofit.create(Api.class);
-                                        Call<ResponseBody> call=api.sendNotification(artisanToken,"Order Request!","You have request for "+opname);
-                                        call.enqueue(new Callback<ResponseBody>() {
-                                            @Override
-                                            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                                            }
-
-                                            @Override
-                                            public void onFailure(Call<ResponseBody> call, Throwable t) {
-
-                                            }
-                                        });
+                        //added by Sayan Biswas
+                        float w = Float.parseFloat(temp_user_wallet);
+                        float pp = Float.parseFloat(temp_productprice);
+                        //
+                        if (w >= pp && selectDeliveryDate.getText().toString().length() > 0) {
 
 
+                            final String opname = pname.getText().toString();
+                            confirmationFlag = true;
+                            //Log.d("HERE",opname);
+                            Log.d("token", artisanToken);
+                            final String oprice = (tprice.getText().toString()).substring(17);
+                            final DatabaseReference database = FirebaseDatabase.getInstance().getReference("User/");
+                            database.addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                    for (DataSnapshot data : dataSnapshot.getChildren()) {
+                                        if (data.child("userEmail").getValue().toString().equals(userX.getEmail())) {
+                                            token = data.child("FCMToken").getValue().toString();
+
+                                            orderInfo order = new orderInfo(opname, oprice, formattedDate, userX.getUid(), productCategory, productID, userX.getEmail(), token);
+                                            order.setQuantity(String.valueOf(quantity));
+                                            String orderID = ordHis.push().getKey();
+                                            //ordHis.child(userX.getEmail().substring(0,userX.getEmail().indexOf('@'))).child(orderID).setValue(order);
+                                            ordHis.child("Users").child(userX.getUid()).child("Orders Requested").child(orderID).setValue(order);
+                                            orderID = ordHis.push().getKey();
+                                            ordHis.child("Artisans").child(artisanContactNumber).child("Order Requests").child(orderID).setValue(order);
+
+                                            Retrofit retrofit = new Retrofit.Builder()
+                                                    .baseUrl("https://artisansfinal.firebaseapp.com/api/")
+                                                    .addConverterFactory(GsonConverterFactory.create())
+                                                    .build();
+
+                                            final Api api = retrofit.create(Api.class);
+                                            Call<ResponseBody> call = api.sendNotification(artisanToken, "Order Request!", "You have request for " + opname);
+                                            call.enqueue(new Callback<ResponseBody>() {
+                                                @Override
+                                                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                                                }
+
+                                                @Override
+                                                public void onFailure(Call<ResponseBody> call, Throwable t) {
+
+                                                }
+                                            });
+
+
+                                        }
                                     }
                                 }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                }
+                            });
+
+
+                        }
+                        else
+                        {
+                            if(selectDeliveryDate.getText().length() == 0) {
+                                selectDeliveryDate.setError("Select a delivery date");
+                                Toast.makeText(getContext(), "Enter delivery date", Toast.LENGTH_LONG).show();
                             }
-
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                            }
-                        });
-
-
+                            else
+                                Toast.makeText(getContext(),"Not sufficient balance to purchase.Please add money to your wallet to continue",Toast.LENGTH_SHORT).show();
+                        }
                     }
                 });
 
@@ -406,7 +528,7 @@ public class UserProductDetails1Fragment extends Fragment {
                 });
 
                 Dialog dialog = builder.create();
-                builder.show();
+                dialog.show();
             }
         });
 
@@ -570,14 +692,86 @@ public class UserProductDetails1Fragment extends Fragment {
             intent.putExtra(Constants.LOCATION_LONGITUDE_DATA_EXTRA,
                     longit);
         }
-        infoText.setVisibility(View.INVISIBLE);
+        //infoText.setVisibility(View.INVISIBLE);
 //        locText.setVisibility(View.INVISIBLE);
-      progressBar.setVisibility(View.VISIBLE);
+        //progressBar.setVisibility(View.VISIBLE);
 //        locProg.setVisibility(View.VISIBLE);
         Log.e(TAG, "Starting Service");
         getContext().startService(intent);
     }
-    class AddressResultReceiver extends ResultReceiver {
+    public void artisanfetch2(View view) {
+        fetchAddress = false;
+        fetchType = Constants.USE_ADDRESS_NAME;
+        //longitude.setEnabled(false);
+        //latitude.setEnabled(false);
+//        fetch.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                fetchLocation();
+//            }
+//        });
+
+//        addressEdit.setEnabled(true);
+//        addressEdit.requestFocus();
+        FirebaseDatabase.getInstance().getReference("Artisans").child(artisanContactNumber).child("postal_address").
+                addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                        pincode = dataSnapshot.getValue(String.class);
+                        name = dataSnapshot.getValue(String.class);
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+
+        final Intent intent = new Intent(getActivity(), GeocodeAddressIntentService.class);
+        intent.putExtra(Constants.RECEIVER, mResultReceiver);
+        intent.putExtra(Constants.FETCH_TYPE_EXTRA, fetchType);
+        if (fetchType == Constants.USE_ADDRESS_NAME) {
+//          if (addressEdit.getText().length() == 0) {
+//              Toast.makeText(this, "Please enter an address name", Toast.LENGTH_LONG).show();
+//              return;
+//            }
+            //FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+            //name = "Bangalore";
+            //intent.putExtra(Constants.LOCATION_NAME_DATA_EXTRA2, name);
+            intent.putExtra(Constants.LOCATION_NAME_DATA_EXTRA, name);
+
+        } else {
+            fetchAddress = true;
+            fetchType = Constants.USE_ADDRESS_LOCATION;
+            //latitudeEdit = latid;
+            //longitudeEdit = longit;
+            latitudeEdit.setEnabled(true);
+            latitudeEdit.requestFocus();
+            longitudeEdit.setEnabled(true);
+            addressEdit.setEnabled(false);
+
+            if (latitudeEdit.getText().length() == 0 || longitudeEdit.getText().length() == 0) {
+                Toast.makeText(getContext(),
+                        "Please enter both latitude and longitude",
+                        Toast.LENGTH_LONG).show();
+                return;
+            }
+            intent.putExtra(Constants.LOCATION_LATITUDE_DATA_EXTRA,
+                    (latid));
+            intent.putExtra(Constants.LOCATION_LONGITUDE_DATA_EXTRA,
+                    longit);
+        }
+        //infoText.setVisibility(View.INVISIBLE);
+//        locText.setVisibility(View.INVISIBLE);
+        //progressBar.setVisibility(View.VISIBLE);
+//        locProg.setVisibility(View.VISIBLE);
+        Log.e(TAG, "Starting Service");
+        getContext().startService(intent);
+    }
+    class AddressResultReceiver extends ResultReceiver
+    {
         public AddressResultReceiver(Handler handler) {
             super(handler);
         }
@@ -594,10 +788,10 @@ public class UserProductDetails1Fragment extends Fragment {
                         double charges = Math.sqrt((latid-address.getLatitude())*(latid-address.getLatitude()) + (longit-address.getLongitude())*(longit-address.getLongitude()));
                         charges = charges*R*0.01;
                         if(charges > 100)
-                            charges = 0.1*charges;
+                            charges = 0.1*pp;
                         else
                             charges = 10;
-                         ch = (int)charges;
+                        ch = (int)charges;
                         FirebaseDatabase.getInstance().getReference("Artisans").child(artisanContactNumber).child("postal_address").
                                 addValueEventListener(new ValueEventListener() {
                                     @Override
@@ -612,9 +806,17 @@ public class UserProductDetails1Fragment extends Fragment {
 
                                     }
                                 });
-                        progressBar.setVisibility(View.GONE);
-                        infoText.setVisibility(View.VISIBLE);
-                        infoText.setText("Rs. " + ch);
+                        //progressBar.setVisibility(View.GONE);
+                        //calProg.setVisibility(View.GONE);
+                        locProg.setVisibility(View.GONE);
+
+                        //infoText.setVisibility(View.VISIBLE);
+                        locText.setVisibility(View.VISIBLE);
+                        //dprice.setVisibility(View.VISIBLE);
+                        //infoText.setText("Rs. " + ch);
+                        locText.setText("Rs. "+ch);
+                        //dprice.setText("Shipping price: Rs."+ch);
+                        //tprice.setText("Total amount: Rs."+(pp+ch));
 //                        databaseReference.addValueEventListener(new ValueEventListener() {
 //                            @Override
 //                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -672,9 +874,15 @@ public class UserProductDetails1Fragment extends Fragment {
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        progressBar.setVisibility(View.GONE);
-                        infoText.setVisibility(View.VISIBLE);
-                        infoText.setText(resultData.getString(Constants.RESULT_DATA_KEY));
+                        //progressBar.setVisibility(View.GONE);
+                        locProg.setVisibility(View.GONE);
+                        //dprice.setVisibility(CalendarView.GONE);
+                        //infoText.setVisibility(View.VISIBLE);
+                        locText.setVisibility(View.VISIBLE);
+                        //dprice.setVisibility(View.VISIBLE);
+                        //infoText.setText(resultData.getString(Constants.RESULT_DATA_KEY));
+                        locText.setText(resultData.getString(Constants.RESULT_DATA_KEY));
+                        //dprice.setText(resultData.getString(Constants.RESULT_DATA_KEY));
                     }
                 });
             }

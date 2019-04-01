@@ -33,7 +33,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
 
-
+//added by Sayan Biswas
 public class UserLoginFragment extends Fragment {
     private EditText Name;
     private EditText Password;
@@ -73,7 +73,7 @@ public class UserLoginFragment extends Fragment {
             String check = user.getEmail();
             if(check != null && !check.isEmpty()) {
                 Log.d("HERE1",user.getEmail());
-                Intent intent1 = new Intent(new Intent(getContext(), UserHomePageActivity.class));
+                Intent intent1 = new Intent(new Intent(getContext(), UserHomePage2Activity.class));
                 //Log.d("HERE1",Name.getText().toString().trim());
                 startActivity(intent1);
                 getActivity().finish();
@@ -199,9 +199,9 @@ public class UserLoginFragment extends Fragment {
                     });
 
 
+            startActivity(new Intent(new Intent(getContext(), UserHomePage2Activity.class)));
 
             getActivity().finish();
-            startActivity(new Intent(getContext(), UserHomePageActivity.class));
         }else{
             Toast.makeText(getContext(), "Verify your email", Toast.LENGTH_SHORT).show();
             firebaseAuth.signOut();

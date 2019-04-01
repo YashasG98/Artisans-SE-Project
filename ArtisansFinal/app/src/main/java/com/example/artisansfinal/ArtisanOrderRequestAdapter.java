@@ -3,6 +3,7 @@ package com.example.artisansfinal;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Handler;
 import android.os.Looper;
@@ -42,6 +43,12 @@ public class ArtisanOrderRequestAdapter extends RecyclerView.Adapter<ArtisanOrde
 
     private ArrayList<orderInfo> order;
     private Context context;
+    private String temp_id;
+    private String temp_ballance;
+    private String temp_productprice;
+    private String temp_ballance_artisan;
+    DatabaseReference databaseUsers;
+    DatabaseReference databaseArtisans;
     FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
     FirebaseUser userX = firebaseAuth.getCurrentUser();
     final DatabaseReference dba = FirebaseDatabase.getInstance().getReference("Orders/Artisans/" + userX.getPhoneNumber() + "/Order Requests");
@@ -55,6 +62,7 @@ public class ArtisanOrderRequestAdapter extends RecyclerView.Adapter<ArtisanOrde
         TextView dueDate;
         TextView userUID;
         RelativeLayout layout;
+        TextView quantity;
         CardView card;
 
 
@@ -65,6 +73,7 @@ public class ArtisanOrderRequestAdapter extends RecyclerView.Adapter<ArtisanOrde
             productPrice = itemView.findViewById(R.id.artisan_order_request_tv_product_price);
             dueDate = itemView.findViewById(R.id.artisan_order_request_tv_date);
             userUID = itemView.findViewById(R.id.artisan_order_request_tv_user_uid);
+            quantity=itemView.findViewById(R.id.artisan_order_request_tv_quantity);
             layout = itemView.findViewById(R.id.artisan_order_request_rl);
             card = itemView.findViewById(R.id.artisan_order_request_cv);
         }
@@ -89,12 +98,14 @@ public class ArtisanOrderRequestAdapter extends RecyclerView.Adapter<ArtisanOrde
     public void onBindViewHolder(@NonNull final ArtisanOrderRequestViewHolder viewHolder, final int i) {
         final orderInfo orderX = order.get(i);
 
+        temp_productprice=orderX.getPrice();
         viewHolder.productName.setText(orderX.getName());
         viewHolder.dueDate.setText(orderX.getDate());
         viewHolder.productPrice.setText(orderX.getPrice());
         viewHolder.userUID.setText(orderX.getUserUID());
         viewHolder.userUID.setVisibility(View.GONE);
-        Log.d("HEY", orderX.toString() + "!" + i);
+        viewHolder.quantity.setText(orderX.getQuantity());
+        //Log.d("HEY", orderX.toString() + "!" + i);
 //        viewHolder.card.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View v) {
@@ -110,7 +121,7 @@ public class ArtisanOrderRequestAdapter extends RecyclerView.Adapter<ArtisanOrde
 
         final Api api = retrofit.create(Api.class);
 
-        Log.d("HEY",orderX.toString());
+        //Log.d("HEY",orderX.toString());
 
         if (orderX.getC().equals("g")) {
             viewHolder.card.setCardBackgroundColor(Color.parseColor("#76FF03"));
@@ -121,6 +132,54 @@ public class ArtisanOrderRequestAdapter extends RecyclerView.Adapter<ArtisanOrde
         }
 
 
+
+        databaseUsers= FirebaseDatabase.getInstance().getReference("User");
+        databaseArtisans= FirebaseDatabase.getInstance().getReference("Artisans");
+
+
+
+
+        databaseUsers.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                for(DataSnapshot user: dataSnapshot.getChildren()){
+                    if(user.child("userEmail").getValue().toString().equals(orderX.getUserEmail()))
+
+                    {
+
+                        temp_id=user.child("userPnumber").getValue().toString();
+                        temp_ballance=user.child("userWallet").getValue().toString();
+
+                        break;
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+        FirebaseDatabase.getInstance().getReference("Artisans").child(userX.getPhoneNumber()).child("wallet").
+                addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+
+                        temp_ballance_artisan=dataSnapshot.getValue(String.class);
+
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+
+
         viewHolder.card.setOnClickListener(new View.OnClickListener() {
 
             private String artisanKey, userKey;
@@ -129,7 +188,7 @@ public class ArtisanOrderRequestAdapter extends RecyclerView.Adapter<ArtisanOrde
             @Override
             public void onClick(View v) {
                 if(orderX.getC().equals("d")) {
-                    final DatabaseReference dbu = FirebaseDatabase.getInstance().getReference("Orders/Users/" + viewHolder.userUID.getText().toString() + "/Orders Requested");
+                    final DatabaseReference dbu = FirebaseDatabase.getInstance().getReference("Orders/Users/" + orderX.userUID + "/Orders Requested");
                     Log.d("onClick", orderX.toString());
 
                     dba.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -139,7 +198,7 @@ public class ArtisanOrderRequestAdapter extends RecyclerView.Adapter<ArtisanOrde
                             for (DataSnapshot child : dataSnapshot.getChildren()) {
                                 //Log.d("HEY",child.child("userUID").getValue().toString());
                                 //Log.d("HERE",viewHolder.userUID.getText().toString()+" "+child.getKey());
-                                if (child.child("userUID").getValue().toString().equals(viewHolder.userUID.getText().toString()) && child.child("date").getValue().toString().equals(viewHolder.dueDate.getText().toString()) && child.child("name").getValue().toString().equals(viewHolder.productName.getText().toString())) {
+                                if (child.child("userUID").getValue().toString().equals(orderX.userUID) && child.child("date").getValue().toString().equals(orderX.date) && child.child("name").getValue().toString().equals(orderX.name)) {
                                     //Log.d("HERE",child.getKey());
                                     artisanKey = child.getKey();
                                 }
@@ -159,7 +218,12 @@ public class ArtisanOrderRequestAdapter extends RecyclerView.Adapter<ArtisanOrde
                             for (DataSnapshot child : dataSnapshot.getChildren()) {
                                 //Log.d("HEY",child.child("userUID").getValue().toString());
                                 //Log.d("HERE",viewHolder.userUID.getText().toString()+" "+child.getKey());
-                                if (child.child("userUID").getValue().toString().equals(viewHolder.userUID.getText().toString()) && child.child("date").getValue().toString().equals(viewHolder.dueDate.getText().toString()) && child.child("name").getValue().toString().equals(viewHolder.productName.getText().toString())) {
+                                //Log.d("HEY",child.getKey());
+                                //Log.d("HEY2",child.getValue().toString());
+                                //Log.d("HEY2",child.child("userUID").getValue().toString());
+                                //Log.d("HEY2",child.child("date").getValue().toString());
+                                //Log.d("HEY2",child.child("name").getValue().toString());
+                                if (child.child("userUID").getValue().toString().equals(orderX.userUID) && child.child("date").getValue().toString().equals(orderX.date) && child.child("name").getValue().toString().equals(orderX.name)) {
                                     userKey = child.getKey();
                                 }
                             }
@@ -176,8 +240,25 @@ public class ArtisanOrderRequestAdapter extends RecyclerView.Adapter<ArtisanOrde
                     builder.setMessage("Accept order request?");
 
                     builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
+
+                            float f=Float.parseFloat(temp_ballance);
+                            float t=Float.parseFloat(temp_productprice);
+                            float a=Float.parseFloat(temp_ballance_artisan);
+
+                                a=a+t;
+                                f=f-t;
+
+
+                                FirebaseDatabase firebaseDatabase=FirebaseDatabase.getInstance();
+                                DatabaseReference myRef=firebaseDatabase.getReference();
+                                myRef.child("User").child(temp_id).child("userWallet").setValue(Float.toString(f));
+                                myRef.child("Artisans").child(userX.getPhoneNumber()).child("wallet").setValue(Float.toString(a));
+
+
+
 
                             Handler handler = new Handler(Looper.getMainLooper());
                             handler.post(new Runnable() {
@@ -185,17 +266,13 @@ public class ArtisanOrderRequestAdapter extends RecyclerView.Adapter<ArtisanOrde
                                 public void run() {
                                     sendMailUsingSendGrid(fromMail,orderX.getUserEmail(),
                                             "Email from the artisan developers team",
-                                            "Your Order has been accepted by the artisan and will be delivered shortly.Have a Good Day Sir/Maam :)");
+                                            "Your Order has been accepted by the artisan and an amount of  Rs."+temp_productprice+" is deducted from your wallet.Your product will be delivered shortly.Have a Good Day Sir/Maam :)");
 
                                     Toast.makeText(context,"Sending mail...", Toast.LENGTH_SHORT).show();
                                 }
 
 
                             });
-
-
-
-
 
                             orderX.setC("g");
                             Log.d("HERE", "Val" + i);
@@ -224,6 +301,58 @@ public class ArtisanOrderRequestAdapter extends RecyclerView.Adapter<ArtisanOrde
 
                                 }
                             });
+
+                            FirebaseDatabase.getInstance().getReference("ArtisanProducts/"+userX.getPhoneNumber()).addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                    for(DataSnapshot data: dataSnapshot.getChildren()){
+                                        if(data.child("productID").getValue().toString().equals(orderX.productID)){
+                                            FirebaseDatabase.getInstance().getReference("ArtisanProducts/"+userX.getPhoneNumber()+"/"+data.getKey()).child("numberOfSales").setValue(Integer.toString(Integer.parseInt(data.child("numberOfSales").getValue().toString())+1));
+                                        }
+                                    }
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                }
+                            });
+
+                            FirebaseDatabase.getInstance().getReference("Categories").addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                    for(DataSnapshot data: dataSnapshot.getChildren()){
+                                        for(DataSnapshot data2:data.getChildren()){
+                                            if(data2.getKey().equals(orderX.productID)){
+                                                Log.d("HEY",data.getKey()+"!"+data2.getKey());
+                                                FirebaseDatabase.getInstance().getReference("Categories/"+data.getKey()+"/"+data2.getKey()).child("numberOfSales").setValue(Integer.toString(Integer.parseInt(data2.child("numberOfSales").getValue().toString())+1));
+                                            }
+                                        }
+                                    }
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                }
+                            });
+
+                            FirebaseDatabase.getInstance().getReference("Products").addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                    for(DataSnapshot data: dataSnapshot.getChildren()){
+                                        if(data.getKey().equals(orderX.productID)){
+                                            FirebaseDatabase.getInstance().getReference("Products/"+data.getKey()).child("numberOfSales").setValue(Integer.toString(Integer.parseInt(data.child("numberOfSales").getValue().toString())+1));
+                                        }
+                                    }
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                }
+                            });
+
                         }
 
                         private void sendMailUsingSendGrid(String from, String to, String subject, String mailBody){
@@ -241,6 +370,8 @@ public class ArtisanOrderRequestAdapter extends RecyclerView.Adapter<ArtisanOrde
                             }
                         }
 
+
+
                     });
 
                     builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
@@ -253,7 +384,7 @@ public class ArtisanOrderRequestAdapter extends RecyclerView.Adapter<ArtisanOrde
 
 
                                 public void run() {
-                                    sendMailUsingSendGrid(fromMail, "sayan.biswas089@gmail.com",
+                                    sendMailUsingSendGrid(fromMail, orderX.getUserEmail(),
                                             "Email from the artisan developers team",
                                             "Sorry to say but your order is rejected as the artisan is already busy.Please place order to some other artisan.Have a Good Day Sir/Maam :)");
 
