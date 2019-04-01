@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -32,8 +33,8 @@ public class UserWalletActivity extends AppCompatActivity {
     private DrawerLayout user_wallet_page_dl;
     private ActionBarDrawerToggle abdt;
     private EditText amt_entered;
-    private ImageButton add;
-    private ImageButton sub;
+    private Button add;
+    private Button sub;
     private String temp_id;
     private String temp_ballance;
     private float temp;
@@ -52,8 +53,8 @@ public class UserWalletActivity extends AppCompatActivity {
         setContentView(R.layout.activity_user_wallet);
          avballance=(TextView)findViewById(R.id.user_wallet_page_tv_display_balance);
          amt_entered=(EditText)findViewById(R.id.user_wallet_page_et_amount_enter);
-         add=(ImageButton)findViewById(R.id.user_wallet_page_iv_credit);
-         sub=(ImageButton)findViewById(R.id.user_wallet_page_iv_debit);
+         add=(Button)findViewById(R.id.user_wallet_page_iv_credit);
+         sub=(Button)findViewById(R.id.user_wallet_page_iv_debit);
          phno = (TextView)findViewById(R.id.user_wallet_page_tv_linked_phno);
         databaseUsers= FirebaseDatabase.getInstance().getReference("User");
 
@@ -70,7 +71,7 @@ public class UserWalletActivity extends AppCompatActivity {
 
                         temp_id=user.userPnumber;
                         temp_ballance=user.userWallet;
-                        avballance.setText(user.userWallet);
+                        avballance.setText("₹"+user.userWallet);
                         phno.setText("*linked to phone number: +91"+temp_id);
 
 
@@ -94,7 +95,7 @@ public class UserWalletActivity extends AppCompatActivity {
                 String handle = amt_entered.getText().toString();
                 if(handle.equals("")) {
                     temp = 0;
-                    Toast.makeText(UserWalletActivity.this,"Enter some amount!",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(UserWalletActivity.this,"Enter some amount! (₹)",Toast.LENGTH_SHORT).show();
                 }
                 else
                     temp = Float.parseFloat(handle);
@@ -115,7 +116,7 @@ public class UserWalletActivity extends AppCompatActivity {
                 String handle = amt_entered.getText().toString();
                 if(handle.equals("")) {
                     temp = 0;
-                    Toast.makeText(UserWalletActivity.this,"Enter some amount!",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(UserWalletActivity.this,"Enter some amount! (₹)",Toast.LENGTH_SHORT).show();
                 }
                 else
                     temp = Float.parseFloat(amt_entered.getText().toString());
