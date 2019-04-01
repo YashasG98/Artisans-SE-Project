@@ -109,223 +109,230 @@
                             android:layout_height="wrap_content"
                             android:scrollbars="none">
 
-                            <LinearLayout
-                                android:id="@+id/user_home_page2_ll_categories"
+                            <android.support.v7.widget.CardView
                                 android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:weightSum="1"
-                                android:orientation="horizontal"
-                                android:padding="5dp">
+                                android:layout_height="wrap_content">
 
                                 <LinearLayout
-                                    android:id="@+id/user_home_page2_ll_saree_category"
+                                    android:id="@+id/user_home_page2_ll_categories"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:orientation="vertical"
-                                    android:layout_margin="8dp"
-                                    android:layout_gravity="center">
+                                    android:weightSum="1"
+                                    android:orientation="horizontal"
+                                    android:padding="5dp">
 
-                                    <de.hdodenhof.circleimageview.CircleImageView
-                                        android:id="@+id/user_home_page2_iv_saree_image"
-                                        android:layout_width="35dp"
-                                        android:layout_height="35dp"
-                                        android:layout_gravity="center"
-                                        android:src="@mipmap/sareeimage"/>
-
-                                    <TextView
-                                        android:id="@+id/user_home_page2_tv_saree_text"
+                                    <LinearLayout
+                                        android:id="@+id/user_home_page2_ll_saree_category"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:text="Saree"
-                                        android:textSize="15sp"
-                                        android:textColor="#000"
-                                        android:gravity="center"/>
+                                        android:orientation="vertical"
+                                        android:layout_margin="8dp"
+                                        android:layout_gravity="center">
 
-                                </LinearLayout>
+                                        <de.hdodenhof.circleimageview.CircleImageView
+                                            android:id="@+id/user_home_page2_iv_saree_image"
+                                            android:layout_width="35dp"
+                                            android:layout_height="35dp"
+                                            android:layout_gravity="center"
+                                            android:src="@mipmap/sareeimage"/>
 
-                                <LinearLayout
-                                    android:id="@+id/user_home_page2_ll_bracelet_category"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:orientation="vertical"
-                                    android:layout_margin="8dp"
-                                    android:layout_gravity="center">
+                                        <TextView
+                                            android:id="@+id/user_home_page2_tv_saree_text"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:text="Saree"
+                                            android:textSize="15sp"
+                                            android:textColor="#000"
+                                            android:gravity="center"/>
 
-                                    <de.hdodenhof.circleimageview.CircleImageView
-                                        android:id="@+id/user_home_page2_iv_bracelet_image"
-                                        android:layout_width="35dp"
-                                        android:layout_height="35dp"
-                                        android:layout_gravity="center"
-                                        android:src="@mipmap/bracelets"/>
+                                    </LinearLayout>
 
-                                    <TextView
-                                        android:id="@+id/user_home_page2_tv_bracelet_text"
+                                    <LinearLayout
+                                        android:id="@+id/user_home_page2_ll_bracelet_category"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:text="Bracelet"
-                                        android:textSize="15sp"
-                                        android:textColor="#000"
-                                        android:gravity="center"/>
+                                        android:orientation="vertical"
+                                        android:layout_margin="8dp"
+                                        android:layout_gravity="center">
 
-                                </LinearLayout>
+                                        <de.hdodenhof.circleimageview.CircleImageView
+                                            android:id="@+id/user_home_page2_iv_bracelet_image"
+                                            android:layout_width="35dp"
+                                            android:layout_height="35dp"
+                                            android:layout_gravity="center"
+                                            android:src="@mipmap/bracelets"/>
 
-                                <LinearLayout
-                                    android:id="@+id/user_home_page2_ll_shawl_category"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:orientation="vertical"
-                                    android:layout_margin="8dp"
-                                    android:layout_gravity="center">
+                                        <TextView
+                                            android:id="@+id/user_home_page2_tv_bracelet_text"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:text="Bracelet"
+                                            android:textSize="15sp"
+                                            android:textColor="#000"
+                                            android:gravity="center"/>
 
-                                    <de.hdodenhof.circleimageview.CircleImageView
-                                        android:id="@+id/user_home_page2_iv_shawl_image"
-                                        android:layout_width="35dp"
-                                        android:layout_height="35dp"
-                                        android:layout_gravity="center"
-                                        android:src="@mipmap/shawls2"/>
+                                    </LinearLayout>
 
-                                    <TextView
-                                        android:id="@+id/user_home_page2_tv_shawl_text"
+                                    <LinearLayout
+                                        android:id="@+id/user_home_page2_ll_shawl_category"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:text="Shawl"
-                                        android:textSize="15sp"
-                                        android:textColor="#000"
-                                        android:gravity="center"/>
+                                        android:orientation="vertical"
+                                        android:layout_margin="8dp"
+                                        android:layout_gravity="center">
 
-                                </LinearLayout>
+                                        <de.hdodenhof.circleimageview.CircleImageView
+                                            android:id="@+id/user_home_page2_iv_shawl_image"
+                                            android:layout_width="35dp"
+                                            android:layout_height="35dp"
+                                            android:layout_gravity="center"
+                                            android:src="@mipmap/shawl_image"/>
 
-                                <LinearLayout
-                                    android:id="@+id/user_home_page2_ll_garland_category"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:orientation="vertical"
-                                    android:layout_margin="8dp"
-                                    android:layout_gravity="center">
 
-                                    <de.hdodenhof.circleimageview.CircleImageView
-                                        android:id="@+id/user_home_page2_iv_garland_image"
-                                        android:layout_width="35dp"
-                                        android:layout_height="35dp"
-                                        android:layout_gravity="center"
-                                        android:src="@mipmap/ic_launcher_garlands"/>
+                                        <TextView
+                                            android:id="@+id/user_home_page2_tv_shawl_text"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:text="Shawl"
+                                            android:textSize="15sp"
+                                            android:textColor="#000"
+                                            android:gravity="center"/>
 
-                                    <TextView
-                                        android:id="@+id/user_home_page2_tv_garland_text"
+                                    </LinearLayout>
+
+                                    <LinearLayout
+                                        android:id="@+id/user_home_page2_ll_garland_category"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:text="Garland"
-                                        android:textSize="15sp"
-                                        android:textColor="#000"
-                                        android:gravity="center"/>
+                                        android:orientation="vertical"
+                                        android:layout_margin="8dp"
+                                        android:layout_gravity="center">
 
-                                </LinearLayout>
+                                        <de.hdodenhof.circleimageview.CircleImageView
+                                            android:id="@+id/user_home_page2_iv_garland_image"
+                                            android:layout_width="35dp"
+                                            android:layout_height="35dp"
+                                            android:layout_gravity="center"
+                                            android:src="@mipmap/ic_launcher_garlands"/>
 
-                                <LinearLayout
-                                    android:id="@+id/user_home_page2_ll_pottery_category"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:orientation="vertical"
-                                    android:layout_margin="8dp"
-                                    android:layout_gravity="center">
+                                        <TextView
+                                            android:id="@+id/user_home_page2_tv_garland_text"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:text="Garland"
+                                            android:textSize="15sp"
+                                            android:textColor="#000"
+                                            android:gravity="center"/>
 
-                                    <de.hdodenhof.circleimageview.CircleImageView
-                                        android:id="@+id/user_home_page2_iv_pottery_image"
-                                        android:layout_width="35dp"
-                                        android:layout_height="35dp"
-                                        android:layout_gravity="center"
-                                        android:src="@mipmap/ic_launcher_pottery"/>
+                                    </LinearLayout>
 
-                                    <TextView
-                                        android:id="@+id/user_home_page2_tv_pottery_text"
+                                    <LinearLayout
+                                        android:id="@+id/user_home_page2_ll_pottery_category"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:text="Pottery"
-                                        android:textSize="15sp"
-                                        android:textColor="#000"
-                                        android:gravity="center"/>
+                                        android:orientation="vertical"
+                                        android:layout_margin="8dp"
+                                        android:layout_gravity="center">
 
-                                </LinearLayout>
+                                        <de.hdodenhof.circleimageview.CircleImageView
+                                            android:id="@+id/user_home_page2_iv_pottery_image"
+                                            android:layout_width="35dp"
+                                            android:layout_height="35dp"
+                                            android:layout_gravity="center"
+                                            android:src="@mipmap/ic_launcher_pottery"/>
 
-                                <LinearLayout
-                                    android:id="@+id/user_home_page2_ll_glass_painting_category"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:orientation="vertical"
-                                    android:layout_margin="8dp"
-                                    android:layout_gravity="center">
+                                        <TextView
+                                            android:id="@+id/user_home_page2_tv_pottery_text"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:text="Pottery"
+                                            android:textSize="15sp"
+                                            android:textColor="#000"
+                                            android:gravity="center"/>
 
-                                    <de.hdodenhof.circleimageview.CircleImageView
-                                        android:id="@+id/user_home_page2_iv_glass_painting_image"
-                                        android:layout_width="35dp"
-                                        android:layout_height="35dp"
-                                        android:layout_gravity="center"
-                                        android:src="@mipmap/ic_launcher_glass_painting"/>
+                                    </LinearLayout>
 
-                                    <TextView
-                                        android:id="@+id/user_home_page2_tv_glass_painting_text"
+                                    <LinearLayout
+                                        android:id="@+id/user_home_page2_ll_glass_painting_category"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:text="Painting"
-                                        android:textSize="15sp"
-                                        android:textColor="#000"
-                                        android:gravity="center"/>
+                                        android:orientation="vertical"
+                                        android:layout_margin="8dp"
+                                        android:layout_gravity="center">
 
-                                </LinearLayout>
+                                        <de.hdodenhof.circleimageview.CircleImageView
+                                            android:id="@+id/user_home_page2_iv_glass_painting_image"
+                                            android:layout_width="35dp"
+                                            android:layout_height="35dp"
+                                            android:layout_gravity="center"
+                                            android:src="@mipmap/ic_launcher_glass_painting"/>
 
-                                <LinearLayout
-                                    android:id="@+id/user_home_page2_ll_shirt_category"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:orientation="vertical"
-                                    android:layout_margin="8dp"
-                                    android:layout_gravity="center">
+                                        <TextView
+                                            android:id="@+id/user_home_page2_tv_glass_painting_text"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:text="Painting"
+                                            android:textSize="15sp"
+                                            android:textColor="#000"
+                                            android:gravity="center"/>
 
-                                    <de.hdodenhof.circleimageview.CircleImageView
-                                        android:id="@+id/user_home_page2_iv_shirt_image"
-                                        android:layout_width="35dp"
-                                        android:layout_height="35dp"
-                                        android:layout_gravity="center"
-                                        android:src="@mipmap/ic_launcher_shirts"/>
+                                    </LinearLayout>
 
-                                    <TextView
-                                        android:id="@+id/user_home_page2_tv_shirt_text"
+                                    <LinearLayout
+                                        android:id="@+id/user_home_page2_ll_shirt_category"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:text="Shirt"
-                                        android:textSize="15sp"
-                                        android:textColor="#000"
-                                        android:gravity="center"/>
+                                        android:orientation="vertical"
+                                        android:layout_margin="8dp"
+                                        android:layout_gravity="center">
 
-                                </LinearLayout>
+                                        <de.hdodenhof.circleimageview.CircleImageView
+                                            android:id="@+id/user_home_page2_iv_shirt_image"
+                                            android:layout_width="35dp"
+                                            android:layout_height="35dp"
+                                            android:layout_gravity="center"
+                                            android:src="@mipmap/ic_launcher_shirts"/>
 
-                                <LinearLayout
-                                    android:id="@+id/user_home_page2_ll_toys_category"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:orientation="vertical"
-                                    android:layout_margin="8dp"
-                                    android:layout_gravity="center">
+                                        <TextView
+                                            android:id="@+id/user_home_page2_tv_shirt_text"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:text="Shirt"
+                                            android:textSize="15sp"
+                                            android:textColor="#000"
+                                            android:gravity="center"/>
 
-                                    <de.hdodenhof.circleimageview.CircleImageView
-                                        android:id="@+id/user_home_page2_iv_toys_image"
-                                        android:layout_width="35dp"
-                                        android:layout_height="35dp"
-                                        android:layout_gravity="center"
-                                        android:src="@mipmap/ic_launcher_toy"/>
+                                    </LinearLayout>
 
-                                    <TextView
-                                        android:id="@+id/user_home_page2_tv_toys_text"
+                                    <LinearLayout
+                                        android:id="@+id/user_home_page2_ll_toys_category"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:text="Toys"
-                                        android:textSize="15sp"
-                                        android:textColor="#000"
-                                        android:gravity="center"/>
+                                        android:orientation="vertical"
+                                        android:layout_margin="8dp"
+                                        android:layout_gravity="center">
+
+                                        <de.hdodenhof.circleimageview.CircleImageView
+                                            android:id="@+id/user_home_page2_iv_toys_image"
+                                            android:layout_width="35dp"
+                                            android:layout_height="35dp"
+                                            android:layout_gravity="center"
+                                            android:src="@mipmap/ic_launcher_toy"/>
+
+                                        <TextView
+                                            android:id="@+id/user_home_page2_tv_toys_text"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:text="Toys"
+                                            android:textSize="15sp"
+                                            android:textColor="#000"
+                                            android:gravity="center"/>
+
+                                    </LinearLayout>
 
                                 </LinearLayout>
+                            </android.support.v7.widget.CardView>
 
-                            </LinearLayout>
 
                         </HorizontalScrollView>
 

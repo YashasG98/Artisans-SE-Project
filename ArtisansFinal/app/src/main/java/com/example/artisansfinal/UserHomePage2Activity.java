@@ -161,7 +161,7 @@ public class UserHomePage2Activity extends AppCompatActivity
         recentlyAddedRecyclerViewAdapter = new UserHomePage2RecyclerViewAdapter(this, recentlyAddedProducts);
         recentlyAddedRecyclerView.setAdapter(recentlyAddedRecyclerViewAdapter);
 
-        databaseReference = FirebaseDatabase.getInstance().getReference("Categories/Saree/"); //needs to be changed
+        databaseReference = FirebaseDatabase.getInstance().getReference("Products");
         databaseReference.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
@@ -224,12 +224,6 @@ public class UserHomePage2Activity extends AppCompatActivity
             }
         });
 
-
-
-
-
-
-
         final SearchView searchView = findViewById(R.id.user_home_page2_sv_search);
         searchRecyclerView = findViewById(R.id.user_home_page2_srv_search);
         searchRecyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -283,9 +277,6 @@ public class UserHomePage2Activity extends AppCompatActivity
                 return false;
             }
         });
-
-
-
 
         final TextView more1 = findViewById(R.id.user_home_page2_tv_most_sold_more);
         final TextView more2 = findViewById(R.id.user_home_page2_tv_best_rated_more);
@@ -522,4 +513,5 @@ public class UserHomePage2Activity extends AppCompatActivity
                 return 0;
         }
     }
+
 }
