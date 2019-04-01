@@ -56,6 +56,7 @@ public class ArtisanPendingOrderActivity extends AppCompatActivity {
 
                 //Log.d("HERE",map.toString());
                 order = new orderInfo(map.get("name"), map.get("price"), map.get("date"), map.get("userUID"),map.get("productCategory"),map.get("productID"),map.get("userEmail"),map.get("fcmToken"));
+                order.setQuantity(map.get("quantity"));
                 APOAdapter.added(order);
                 if(findViewById(R.id.noMatchArtisanOrderPending1).getVisibility()== View.VISIBLE){
                     findViewById(R.id.noMatchArtisanOrderPending1).setVisibility(View.GONE);
