@@ -50,8 +50,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/artisan_products_loading_rl"
-        android:background="@color/backgroundDefault">
+        android:id="@+id/artisan_products_loading_rl">
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
