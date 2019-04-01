@@ -535,6 +535,9 @@ public class UserHomePage2Activity extends AppCompatActivity
 
             Dialog dialog = builder.create();
             builder.show();
+        } else if (id == R.id.nav_old) {
+            Intent i = new Intent( UserHomePage2Activity.this, UserHomePageActivity.class);
+            startActivity(i);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

@@ -36,4 +36,13 @@
         </menu>
     </item>
 
+    <item android:title="Previously..">
+        <menu>
+            <item
+                android:id="@+id/nav_old"
+                android:icon="@drawable/ic_menu_send"
+                android:title="Old Homepage"/>
+        </menu>
+    </item>
+
 </menu>
