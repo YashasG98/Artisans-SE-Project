@@ -139,8 +139,15 @@ public class UserHomePage2Activity extends AppCompatActivity
                         TextView displayName = findViewById(R.id.nav_header_user_home_page2_user_name);
                         TextView displayEmail = findViewById(R.id.nav_header_user_home_page2_user_email);
 
-                        displayEmail.setText(email);
-                        displayName.setText(username);
+                        try {
+
+                            displayEmail.setText(email);
+                            displayName.setText(username);
+                        }
+                        catch (Exception e)
+                        {
+
+                        }
                     }
                 }
 

@@ -2,6 +2,7 @@ package com.example.artisansfinal;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -163,16 +164,16 @@ public class SelectedCategoryActivity extends AppCompatActivity {
 
         final ArrayList<RFACLabelItem> sortOptions = new ArrayList<>();
         sortOptions.add(new RFACLabelItem<Integer>().
-                setLabel("Price: Low to High"));
+                setLabel("Price: Low to High").setLabelColor(Color.BLACK));
 
         sortOptions.add(new RFACLabelItem<Integer>().
-                setLabel("Price: High to Low"));
+                setLabel("Price: High to Low").setLabelColor(Color.BLACK));
 
         sortOptions.add(new RFACLabelItem<Integer>().
-                setLabel("Rating: Low to High"));
+                setLabel("Rating: Low to High").setLabelColor(Color.BLACK));
 
         sortOptions.add(new RFACLabelItem<Integer>().
-                setLabel("Rating: High to Low"));
+                setLabel("Rating: High to Low").setLabelColor(Color.BLACK));
 
 
         sortFAB.setItems(sortOptions);
@@ -204,12 +205,12 @@ public class SelectedCategoryActivity extends AppCompatActivity {
         ArrayList<View> views = new ArrayList<>();
 //        views.add(searchOption);
         views.add(searchView);
-//        views.add(sortChoice);
+        views.add(sortFAButton);
 
         final HashMap<View, String> title = new HashMap<>();
 //        title.put(searchOption,"Search for products\n with these options");
         title.put(searchView,"Search for your product here");
-//        title.put(sortChoice,"Filtering choices");
+        title.put(sortFAButton,"Filtering choices");
 
         final Tutorial tutorial = new Tutorial(this,views);
         tutorial.checkIfFirstRun();
@@ -366,13 +367,13 @@ public class SelectedCategoryActivity extends AppCompatActivity {
                                 recyclerViewLayout.setVisibility(View.VISIBLE);
                                 noMatchLayout.setVisibility(View.GONE);
 
-//                                if(contentLayout.getVisibility() == View.VISIBLE && !runInOnePage){
-//
-//                                    tutorial.requestFocusForViews(title);
-//                                    tutorial.finishedTutorial();
-//                                    runInOnePage = true;
-//
-//                                }
+                                if(contentLayout.getVisibility() == View.VISIBLE && !runInOnePage){
+
+                                    tutorial.requestFocusForViews(title);
+                                    tutorial.finishedTutorial();
+                                    runInOnePage = true;
+
+                                }
 
                             }
                             ProductInfo productInfo;
