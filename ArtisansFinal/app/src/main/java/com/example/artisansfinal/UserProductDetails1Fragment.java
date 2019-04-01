@@ -58,6 +58,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -102,6 +103,7 @@ public class UserProductDetails1Fragment extends Fragment {
     private String pincode;
     private boolean confirmationFlag = false;
     private int quantity;
+    private static boolean runInOnePage=false;
 
     //Lcation based done by shrinidhi anil varna
     AddressResultReceiver mResultReceiver, mResultReceiver2;
@@ -173,6 +175,23 @@ public class UserProductDetails1Fragment extends Fragment {
         locProg = (ProgressBar) view.findViewById(R.id.locProg);
         //calProg = (ProgressBar) CalendarView.findViewById(R.id.CalProg);
 
+        HashMap<View,String> title= new HashMap<>();
+        title.put(fab,"Click here to buy product");
+        title.put(toggleDescription,"Click here to view description of product");
+        title.put(toggleReviewTab,"Click here to view reviews of the product");
+
+        ArrayList<View> views = new ArrayList<>();
+        views.add(fab);
+        views.add(toggleDescription);
+        views.add(toggleReviewTab);
+
+        if(!runInOnePage){
+            Tutorial tutorial = new Tutorial(getActivity(),views);
+            tutorial.checkIfFirstRun();
+            tutorial.requestFocusForViews(title);
+            tutorial.finishedTutorial();
+            runInOnePage=true;
+        }
 
 
         //addressEdit = (EditText) view.findViewById(R.id.addressEdit);
