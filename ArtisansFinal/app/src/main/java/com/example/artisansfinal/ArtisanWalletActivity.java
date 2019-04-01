@@ -43,8 +43,8 @@ public class ArtisanWalletActivity extends AppCompatActivity {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                        avballance.setText( dataSnapshot.getValue(String.class));
-                        phno.setText("*linked to phone number: "+userX.getPhoneNumber());
+                        avballance.setText("₹ "+ dataSnapshot.getValue(String.class));
+                        phno.setText("*amount will be transferred to the bank account linked to phone number: "+userX.getPhoneNumber());
 
 
 
