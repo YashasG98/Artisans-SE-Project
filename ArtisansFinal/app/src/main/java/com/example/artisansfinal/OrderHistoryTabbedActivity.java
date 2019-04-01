@@ -34,6 +34,9 @@ public class OrderHistoryTabbedActivity extends AppCompatActivity {
         viewPager = findViewById(R.id.container);
         TabLayout tabLayout = findViewById(R.id.tabs);
 
+        Toolbar toolbar = findViewById(R.id.user_order_history_toolbar);
+        toolbar.setVisibility(View.GONE);
+
         SectionsPagerAdapter1 sectionsPagerAdapter1 = new SectionsPagerAdapter1(getSupportFragmentManager());
         sectionsPagerAdapter1.addFragments(new UserRequestedOrderHistoryFragment(), "Requested Orders");
         sectionsPagerAdapter1.addFragments(new UserPendingOrderHistoryFragment(), "Pending Orders");
