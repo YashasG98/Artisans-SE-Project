@@ -159,8 +159,14 @@ public class ArtisanProductsActivity extends AppCompatActivity {
                 searchResults.clear();
                 queryText = query;
                 for(ProductInfo product : productInfos){
-                    if(product.getProductName().toLowerCase().contains(query)){
-                        searchResults.add(product);
+                    try {
+                        if (product.getProductName().toLowerCase().contains(query)) {
+                            searchResults.add(product);
+                        }
+                    }
+                    catch (Exception e)
+                    {
+
                     }
                 }
                 artisanProductsRecyclerViewAdapter = new ArtisanProductsRecyclerViewAdapter(getBaseContext(),searchResults);
@@ -172,8 +178,14 @@ public class ArtisanProductsActivity extends AppCompatActivity {
             public boolean onQueryTextChange(String newText) {
                 searchResults.clear();
                 for(ProductInfo products: productInfos){
-                    if(products.getProductName().toLowerCase().startsWith(newText)){
-                        searchResults.add(products);
+                    try {
+                        if (products.getProductName().toLowerCase().startsWith(newText)) {
+                            searchResults.add(products);
+                        }
+                    }
+                    catch (Exception e)
+                    {
+
                     }
                 }
                 artisanProductsRecyclerViewAdapter = new ArtisanProductsRecyclerViewAdapter(getBaseContext(),searchResults);
