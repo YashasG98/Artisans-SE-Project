@@ -23,7 +23,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
-
+//added by Sayan Biswas
 public class RegistrationActivity extends AppCompatActivity {
     private EditText userName,userPassword,userEmail,userPnumber,userPcode,userCpassword,userWallet;
     private Button regButton;

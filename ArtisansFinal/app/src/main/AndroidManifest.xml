@@ -17,10 +17,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".DisplayProductsActivity"
+        <activity
+            android:name=".UserHomePage2Activity"
+            android:label="@string/title_activity_user_home_page2"
             android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
-            android:name=".UserHomePage1Activity"
+            android:name=".DisplayProductsActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".ArtisanWalletActivity" />
         <activity android:name=".UserWalletActivity" />

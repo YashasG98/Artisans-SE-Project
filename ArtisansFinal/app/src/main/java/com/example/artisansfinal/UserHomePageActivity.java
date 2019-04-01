@@ -160,7 +160,7 @@ public class UserHomePageActivity extends AppCompatActivity {
     }
 
     public void tutorial_button(MenuItem item) {
-        Intent i = new Intent(this, UserHomePage1Activity.class);
+        Intent i = new Intent(this, UserHomePage2Activity.class);
         startActivity(i);
         Toast.makeText(this, "Tutorial", Toast.LENGTH_SHORT).show();
     }

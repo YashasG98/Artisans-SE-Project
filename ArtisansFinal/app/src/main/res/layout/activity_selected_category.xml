@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    android:layout_width="match_parent"
+<RelativeLayout android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -25,13 +24,6 @@
                 android:layout_height="wrap_content"
                 android:weightSum="1"
                 android:orientation="horizontal">
-
-                <Spinner
-                    android:id="@+id/selected_category_spinner_search_choice"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:entries="@array/choice"
-                    android:layout_gravity="center" />
 
                 <SearchView
                     android:id="@+id/selected_category_sv_search"
@@ -59,7 +51,7 @@
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/backgroundDefault"
+            android:background="#66ceff"
             android:id="@+id/selected_category_loading_iv"
             android:src="@mipmap/loading2" />
 
@@ -96,31 +88,6 @@
             android:background="@color/backgroundDefault"
             android:id="@+id/selected_category_ll">
 
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_weight="0.01"
-                android:gravity="center_horizontal"
-                android:paddingBottom="5dp"
-                android:paddingTop="3dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/sortBy"
-                    android:textSize="18sp"
-                    android:textColor="#000"/>
-
-                <Spinner
-                    android:id="@+id/selected_category_spinner_sort_choice"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:entries="@array/sortChoice" />
-
-            </LinearLayout>
-
             <!--Products Display-->
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -135,7 +102,32 @@
 
                 </android.support.v7.widget.RecyclerView>
 
+                <com.wangjie.rapidfloatingactionbutton.RapidFloatingActionLayout
+                    android:id="@+id/FAB_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginRight="0dp"
+                    android:layout_marginBottom="0dp">
+
+                    <com.wangjie.rapidfloatingactionbutton.RapidFloatingActionButton xmlns:rfab="http://schemas.android.com/apk/res-auto"
+                        android:id="@+id/activity_main_rfab"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentBottom="true"
+                        android:layout_marginRight="20dp"
+                        android:layout_marginBottom="9dp"
+                        android:clipToPadding="false"
+                        rfab:rfab_color_normal="@color/common"
+                        rfab:rfab_color_pressed="#263238"
+                        rfab:rfab_drawable="@drawable/filter48"
+                        rfab:rfab_size="normal" />
+
+                </com.wangjie.rapidfloatingactionbutton.RapidFloatingActionLayout>
+
+
             </RelativeLayout>
+
 
             <!--No products found-->
             <RelativeLayout

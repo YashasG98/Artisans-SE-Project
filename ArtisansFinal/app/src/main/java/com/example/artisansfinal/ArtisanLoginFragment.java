@@ -159,6 +159,7 @@ public class ArtisanLoginFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(getContext(), ArtisanRegistrationActivity.class));
+                getActivity().finish();
             }
         });
 
