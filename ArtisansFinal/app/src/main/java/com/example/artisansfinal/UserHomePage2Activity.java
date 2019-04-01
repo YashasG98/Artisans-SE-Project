@@ -86,6 +86,14 @@ public class UserHomePage2Activity extends AppCompatActivity
     String uid;
 
     @Override
+    protected void onResume(){
+        super.onResume();
+
+        navigationView.getMenu().getItem(0).setChecked(true);
+        navigationView.setNavigationItemSelectedListener(this);
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_home_page2);
