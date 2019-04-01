@@ -50,6 +50,7 @@ public class ArtisanOrderHistoryPageActivity extends AppCompatActivity {
 
                 //Log.d("HERE",map.toString());
                 order = new orderInfo(map.get("name"), map.get("price"), map.get("date"), map.get("userUID"));
+                order.setQuantity(map.get("quantity"));
                 AOHAdapter.added(order);
                 if(findViewById(R.id.noMatchArtisanOrderHistory1).getVisibility()==View.VISIBLE) {
                     findViewById(R.id.noMatchArtisanOrderHistory1).setVisibility(View.GONE);

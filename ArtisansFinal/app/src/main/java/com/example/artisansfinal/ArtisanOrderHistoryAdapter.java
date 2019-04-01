@@ -31,6 +31,7 @@ public class ArtisanOrderHistoryAdapter extends RecyclerView.Adapter<ArtisanOrde
         TextView productPrice;
         TextView dueDate;
         TextView userUID;
+        TextView quantity;
         RelativeLayout layout;
         CardView card;
 
@@ -42,6 +43,7 @@ public class ArtisanOrderHistoryAdapter extends RecyclerView.Adapter<ArtisanOrde
             productPrice = itemView.findViewById(R.id.artisan_order_request_tv_product_price);
             dueDate = itemView.findViewById(R.id.artisan_order_request_tv_date);
             userUID = itemView.findViewById(R.id.artisan_order_request_tv_user_uid);
+            quantity=itemView.findViewById(R.id.artisan_order_request_tv_quantity);
             layout = itemView.findViewById(R.id.artisan_order_request_rl);
             card = itemView.findViewById(R.id.artisan_order_request_cv);
         }
@@ -70,6 +72,7 @@ public class ArtisanOrderHistoryAdapter extends RecyclerView.Adapter<ArtisanOrde
         viewHolder.productPrice.setText(orderX.getPrice());
         viewHolder.userUID.setText(orderX.getUserUID());
         viewHolder.userUID.setVisibility(View.GONE);
+        viewHolder.quantity.setText(orderX.getQuantity());
     }
 
     @Override
