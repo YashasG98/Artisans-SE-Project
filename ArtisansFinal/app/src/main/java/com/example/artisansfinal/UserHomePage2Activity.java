@@ -10,7 +10,9 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.PagerSnapHelper;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SnapHelper;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -43,9 +45,11 @@ import java.util.HashMap;
 public class UserHomePage2Activity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    private ArrayList<Integer> imageIDs = new ArrayList<>();
     private RecyclerView bestRatedRecyclerView;
     private RecyclerView mostSoldRecyclerView;
     private RecyclerView recentlyAddedRecyclerView;
+    private RecyclerView slideshowRecyclerView;
     private ArrayList<ProductInfo> bestRatedProducts = new ArrayList<>();
     private ArrayList<ProductInfo> mostSoldProducts = new ArrayList<>();
     private ArrayList<ProductInfo> recentlyAddedProducts = new ArrayList<>();
@@ -57,6 +61,8 @@ public class UserHomePage2Activity extends AppCompatActivity
     private UserHomePage2RecyclerViewAdapter bestRatedRecyclerViewAdapter;
     private UserHomePage2RecyclerViewAdapter mostSoldRecyclerViewAdapter;
     private UserHomePage2RecyclerViewAdapter recentlyAddedRecyclerViewAdapter;
+    private UserHomePageSlideshowRecyclerViewAdapter slideshowRecyclerViewAdapter;
+    private String selectedCategory;
 
     private String queryText = null;
     private RecyclerView searchRecyclerView;
@@ -80,6 +86,10 @@ public class UserHomePage2Activity extends AppCompatActivity
         setSupportActionBar(toolbar);
         toolbar.setTitle("");
 
+        imageIDs.add(R.mipmap.bracelet_advertisement);
+        imageIDs.add(R.mipmap.t_shirt_advertisement);
+        imageIDs.add(R.mipmap.shawl_advertisement);
+        imageIDs.add(R.mipmap.saree_advertisement);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -138,177 +148,16 @@ public class UserHomePage2Activity extends AppCompatActivity
             });
         }
 
-        final LinearLayout contentLayout = findViewById(R.id.user_home_page2_ll_content);
-        final LinearLayout searchLayout = findViewById(R.id.user_home_page2_ll_search);
-        searchLayout.setVisibility(View.GONE);
+        slideshowRecyclerView = findViewById(R.id.user_home_page2_rv_slideshow);
+        slideshowRecyclerView.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false));
+        slideshowRecyclerViewAdapter = new UserHomePageSlideshowRecyclerViewAdapter(this, imageIDs);
+        SnapHelper snapHelper1 = new PagerSnapHelper();
+        snapHelper1.attachToRecyclerView(slideshowRecyclerView);
+        slideshowRecyclerView.setAdapter(slideshowRecyclerViewAdapter);
 
-        bestRatedRecyclerView = findViewById(R.id.user_home_page2_srv_best_rated);
-        bestRatedRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
-        bestRatedRecyclerViewAdapter = new UserHomePage2RecyclerViewAdapter(this, bestRatedProducts);
-//        SnapHelper snapHelper1 = new PagerSnapHelper();
-//        snapHelper1.attachToRecyclerView(bestRatedRecyclerView);
-        bestRatedRecyclerView.setAdapter(bestRatedRecyclerViewAdapter);
-
-        mostSoldRecyclerView = findViewById(R.id.user_home_page2_srv_most_sold);
-        mostSoldRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
-        mostSoldRecyclerViewAdapter = new UserHomePage2RecyclerViewAdapter(this, mostSoldProducts);
-//        SnapHelper snapHelper2 = new PagerSnapHelper();
-//        snapHelper2.attachToRecyclerView(mostSoldRecyclerView);
-        mostSoldRecyclerView.setAdapter(mostSoldRecyclerViewAdapter);
-
-        recentlyAddedRecyclerView = findViewById(R.id.user_home_page2_srv_recently_added);
-        recentlyAddedRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
-        recentlyAddedRecyclerViewAdapter = new UserHomePage2RecyclerViewAdapter(this, recentlyAddedProducts);
-        recentlyAddedRecyclerView.setAdapter(recentlyAddedRecyclerViewAdapter);
-
-        databaseReference = FirebaseDatabase.getInstance().getReference("Products");
-        databaseReference.addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-                ProductInfo productInfo;
-                HashMap<String, String> map = (HashMap<String, String>) dataSnapshot.getValue();
-                productInfo = new ProductInfo(map.get("productID"), map.get("productName"), map.get("productDescription"), map.get("productCategory"), map.get("productPrice"), map.get("artisanName"), map.get("artisanContactNumber"));
-                productInfo.setTotalRating(map.get("totalRating"));
-                productInfo.setNumberOfPeopleWhoHaveRated(map.get("numberOfPeopleWhoHaveRated"));
-                productInfo.setNumberOfSales(map.get("numberOfSales"));
-                productInfo.setDateOfRegistration(map.get("dateOfRegistration"));
-                bestRatedRecyclerViewAdapter.added(productInfo);
-                mostSoldRecyclerViewAdapter.added(productInfo);
-                searchRecyclerViewAdapter.added(productInfo);
-                recentlyAddedRecyclerViewAdapter.added(productInfo);
-
-                Collections.sort(bestRatedProducts, new UserHomePage2Activity.SortingByRating());
-//                ArrayList<ProductInfo> temp1 = new ArrayList<>();
-//                for(int i=0; i<bestRatedProducts.size() && i<8; i++){
-//                    temp1.add(bestRatedProducts.get(i));
-//                }
-                bestRatedRecyclerViewAdapter = new UserHomePage2RecyclerViewAdapter(UserHomePage2Activity.this, bestRatedProducts);
-                bestRatedRecyclerView.setAdapter(bestRatedRecyclerViewAdapter);
-
-                Collections.sort(mostSoldProducts, new UserHomePage2Activity.SortingBySold());
-//                ArrayList<ProductInfo> temp2 = new ArrayList<>();
-//                for(int i=0; i<bestRatedProducts.size() && i<8; i++){
-//                    temp2.add(bestRatedProducts.get(i));
-//                }
-                mostSoldRecyclerViewAdapter = new UserHomePage2RecyclerViewAdapter(UserHomePage2Activity.this, mostSoldProducts);
-                mostSoldRecyclerView.setAdapter(mostSoldRecyclerViewAdapter);
-
-                Collections.sort(recentlyAddedProducts, new UserHomePage2Activity.SortingByDate());
-//                ArrayList<ProductInfo> temp3 = new ArrayList<>();
-//                for(int i=0; i<bestRatedProducts.size() && i<8; i++){
-//                    temp3.add(bestRatedProducts.get(i));
-//                }
-                recentlyAddedRecyclerViewAdapter = new UserHomePage2RecyclerViewAdapter(UserHomePage2Activity.this, recentlyAddedProducts);
-                recentlyAddedRecyclerView.setAdapter(recentlyAddedRecyclerViewAdapter);
-            }
-
-            @Override
-            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-            }
-
-            @Override
-            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-
-        final SearchView searchView = findViewById(R.id.user_home_page2_sv_search);
-        searchRecyclerView = findViewById(R.id.user_home_page2_srv_search);
-        searchRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        searchRecyclerViewAdapter = new CategoryRecyclerViewAdapter(this, productInfos);
-
-
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-
-                contentLayout.setVisibility(View.GONE);
-                searchLayout.setVisibility(View.VISIBLE);
-
-                searchResults.clear();
-                queryText = query;
-
-                for(ProductInfo product: productInfos){
-                    if(product.getProductName().toLowerCase().contains(query.trim().toLowerCase())
-                            || product.getArtisanName().toLowerCase().contains(query.trim().toLowerCase()))
-                        searchResults.add(product);
-                }
-                searchRecyclerViewAdapter = new CategoryRecyclerViewAdapter(getBaseContext(), searchResults);
-                searchRecyclerView.setAdapter(searchRecyclerViewAdapter);
-
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                if(newText.equals("")){
-                    searchRecyclerViewAdapter = new CategoryRecyclerViewAdapter(getBaseContext(),productInfos);
-                    searchRecyclerView.setAdapter(searchRecyclerViewAdapter);
-
-                    contentLayout.setVisibility(View.VISIBLE);
-                    searchLayout.setVisibility(View.GONE);
-                }
-                else{
-                    contentLayout.setVisibility(View.GONE);
-                    searchLayout.setVisibility(View.VISIBLE);
-                }
-                searchResults.clear();
-
-                for(ProductInfo product: productInfos){
-                    if(product.getProductName().toLowerCase().contains(newText.trim().toLowerCase())
-                            || product.getArtisanName().toLowerCase().contains(newText.trim().toLowerCase()))
-                        searchResults.add(product);
-                }
-                searchRecyclerViewAdapter = new CategoryRecyclerViewAdapter(getBaseContext(), searchResults);
-                searchRecyclerView.setAdapter(searchRecyclerViewAdapter);
-
-                return false;
-            }
-        });
-
-        final TextView more1 = findViewById(R.id.user_home_page2_tv_most_sold_more);
-        final TextView more2 = findViewById(R.id.user_home_page2_tv_best_rated_more);
-        final TextView more3 = findViewById(R.id.user_home_page2_tv_recently_added_more);
-
-        more1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent newIntent = new Intent(UserHomePage2Activity.this, DisplayProductsActivity.class);
-                newIntent.putExtra("choice","sold");
-                startActivity(newIntent);
-            }
-        });
-
-        more2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent newIntent = new Intent(UserHomePage2Activity.this, DisplayProductsActivity.class);
-                newIntent.putExtra("choice","rated");
-                startActivity(newIntent);
-            }
-        });
-
-        more3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent newIntent = new Intent(UserHomePage2Activity.this, DisplayProductsActivity.class);
-                newIntent.putExtra("choice","added");
-                startActivity(newIntent);
-            }
-        });
-
+        //selectedCategory = "Saree";
+        databaseReference = FirebaseDatabase.getInstance().getReference("Products/");
+        displayHomePage();
 
         final LinearLayout saree = findViewById(R.id.user_home_page2_ll_saree_category);
         final LinearLayout shawl = findViewById(R.id.user_home_page2_ll_shawl_category);
@@ -318,13 +167,30 @@ public class UserHomePage2Activity extends AppCompatActivity
         final LinearLayout pottery = findViewById(R.id.user_home_page2_ll_pottery_category);
         final LinearLayout glassPainting = findViewById(R.id.user_home_page2_ll_glass_painting_category);
         final LinearLayout toys = findViewById(R.id.user_home_page2_ll_toys_category);
+        final LinearLayout allCategory = findViewById(R.id.user_home_page2_ll_all_categories);
+
+
+        allCategory.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                databaseReference = FirebaseDatabase.getInstance().getReference("Products/");
+                displayHomePage();
+
+            }
+        });
+
 
         saree.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(UserHomePage2Activity.this, SelectedCategoryActivity.class);
                 i.putExtra("category", "Saree");
-                startActivity(i);
+                selectedCategory = "Saree";
+                databaseReference = setDatabaseReference(selectedCategory);
+                displayHomePage();
+
+                //startActivity(i);
             }
         });
         shawl.setOnClickListener(new View.OnClickListener() {
@@ -332,7 +198,10 @@ public class UserHomePage2Activity extends AppCompatActivity
             public void onClick(View v) {
                 Intent i = new Intent(UserHomePage2Activity.this, SelectedCategoryActivity.class);
                 i.putExtra("category", "Shawl");
-                startActivity(i);
+                selectedCategory = "Shawl";
+                databaseReference = setDatabaseReference(selectedCategory);
+                displayHomePage();
+//                startActivity(i);
             }
         });
         shirt.setOnClickListener(new View.OnClickListener() {
@@ -340,7 +209,10 @@ public class UserHomePage2Activity extends AppCompatActivity
             public void onClick(View v) {
                 Intent i = new Intent(UserHomePage2Activity.this, SelectedCategoryActivity.class);
                 i.putExtra("category", "Shirt");
-                startActivity(i);
+                selectedCategory = "Shirt";
+                databaseReference = setDatabaseReference(selectedCategory);
+                displayHomePage();
+//                startActivity(i);
             }
         });
         bracelet.setOnClickListener(new View.OnClickListener() {
@@ -348,7 +220,10 @@ public class UserHomePage2Activity extends AppCompatActivity
             public void onClick(View v) {
                 Intent i = new Intent(UserHomePage2Activity.this, SelectedCategoryActivity.class);
                 i.putExtra("category", "Bracelet");
-                startActivity(i);
+                selectedCategory = "Bracelet";
+                databaseReference = setDatabaseReference(selectedCategory);
+                displayHomePage();
+//                startActivity(i);
             }
         });
         garland.setOnClickListener(new View.OnClickListener() {
@@ -356,7 +231,10 @@ public class UserHomePage2Activity extends AppCompatActivity
             public void onClick(View v) {
                 Intent i = new Intent(UserHomePage2Activity.this, SelectedCategoryActivity.class);
                 i.putExtra("category", "Garland");
-                startActivity(i);
+                selectedCategory = "Garland";
+                databaseReference = setDatabaseReference(selectedCategory);
+                displayHomePage();
+//                startActivity(i);
             }
         });
         pottery.setOnClickListener(new View.OnClickListener() {
@@ -364,7 +242,10 @@ public class UserHomePage2Activity extends AppCompatActivity
             public void onClick(View v) {
                 Intent i = new Intent(UserHomePage2Activity.this, SelectedCategoryActivity.class);
                 i.putExtra("category", "Pottery");
-                startActivity(i);
+                selectedCategory = "Pottery";
+                databaseReference = setDatabaseReference(selectedCategory);
+                displayHomePage();
+//                startActivity(i);
             }
         });
         glassPainting.setOnClickListener(new View.OnClickListener() {
@@ -372,7 +253,10 @@ public class UserHomePage2Activity extends AppCompatActivity
             public void onClick(View v) {
                 Intent i = new Intent(UserHomePage2Activity.this, SelectedCategoryActivity.class);
                 i.putExtra("category", "Glass Painting");
-                startActivity(i);
+                selectedCategory = "Glass Painting";
+                databaseReference = setDatabaseReference(selectedCategory);
+                displayHomePage();
+//                startActivity(i);
             }
         });
         toys.setOnClickListener(new View.OnClickListener() {
@@ -380,9 +264,20 @@ public class UserHomePage2Activity extends AppCompatActivity
             public void onClick(View v) {
                 Intent i = new Intent(UserHomePage2Activity.this, SelectedCategoryActivity.class);
                 i.putExtra("category", "Toys");
-                startActivity(i);
+                selectedCategory = "Toys";
+                databaseReference = setDatabaseReference(selectedCategory);
+                displayHomePage();
+//                startActivity(i);
             }
         });
+
+
+
+
+    }
+
+    private DatabaseReference setDatabaseReference(String selectedCategory) {
+        return FirebaseDatabase.getInstance().getReference("Categories/"+selectedCategory+"/");
     }
 
     @Override
@@ -416,6 +311,154 @@ public class UserHomePage2Activity extends AppCompatActivity
 
         return super.onOptionsItemSelected(item);
     }*/
+
+
+   private void displayHomePage()
+   {
+       final LinearLayout contentLayout = findViewById(R.id.user_home_page2_ll_content);
+       final LinearLayout searchLayout = findViewById(R.id.user_home_page2_ll_search);
+       searchLayout.setVisibility(View.GONE);
+
+
+       bestRatedRecyclerView = findViewById(R.id.user_home_page2_srv_best_rated);
+       bestRatedRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+       bestRatedRecyclerViewAdapter = new UserHomePage2RecyclerViewAdapter(this, bestRatedProducts);
+       bestRatedProducts.clear();
+//        SnapHelper snapHelper1 = new PagerSnapHelper();
+//        snapHelper1.attachToRecyclerView(bestRatedRecyclerView);
+       bestRatedRecyclerView.setAdapter(bestRatedRecyclerViewAdapter);
+
+       mostSoldRecyclerView = findViewById(R.id.user_home_page2_srv_most_sold);
+       mostSoldRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+       mostSoldRecyclerViewAdapter = new UserHomePage2RecyclerViewAdapter(this, mostSoldProducts);
+       mostSoldProducts.clear();
+//        SnapHelper snapHelper2 = new PagerSnapHelper();
+//        snapHelper2.attachToRecyclerView(mostSoldRecyclerView);
+       mostSoldRecyclerView.setAdapter(mostSoldRecyclerViewAdapter);
+
+       recentlyAddedRecyclerView = findViewById(R.id.user_home_page2_srv_recently_added);
+       recentlyAddedRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+       recentlyAddedRecyclerViewAdapter = new UserHomePage2RecyclerViewAdapter(this, recentlyAddedProducts);
+       recentlyAddedProducts.clear();
+       recentlyAddedRecyclerView.setAdapter(recentlyAddedRecyclerViewAdapter);
+
+//       databaseReference = FirebaseDatabase.getInstance().getReference("Products");
+       databaseReference.addChildEventListener(new ChildEventListener() {
+           @Override
+           public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+               ProductInfo productInfo;
+               HashMap<String, String> map = (HashMap<String, String>) dataSnapshot.getValue();
+               productInfo = new ProductInfo(map.get("productID"), map.get("productName"), map.get("productDescription"), map.get("productCategory"), map.get("productPrice"), map.get("artisanName"), map.get("artisanContactNumber"));
+               productInfo.setTotalRating(map.get("totalRating"));
+               productInfo.setNumberOfPeopleWhoHaveRated(map.get("numberOfPeopleWhoHaveRated"));
+               productInfo.setNumberOfSales(map.get("numberOfSales"));
+               productInfo.setDateOfRegistration(map.get("dateOfRegistration"));
+               bestRatedRecyclerViewAdapter.added(productInfo);
+               mostSoldRecyclerViewAdapter.added(productInfo);
+               searchRecyclerViewAdapter.added(productInfo);
+               recentlyAddedRecyclerViewAdapter.added(productInfo);
+
+               Collections.sort(bestRatedProducts, new UserHomePage2Activity.SortingByRating());
+//                ArrayList<ProductInfo> temp1 = new ArrayList<>();
+//                for(int i=0; i<bestRatedProducts.size() && i<8; i++){
+//                    temp1.add(bestRatedProducts.get(i));
+//                }
+               bestRatedRecyclerViewAdapter = new UserHomePage2RecyclerViewAdapter(UserHomePage2Activity.this, bestRatedProducts);
+               bestRatedRecyclerView.setAdapter(bestRatedRecyclerViewAdapter);
+
+               Collections.sort(mostSoldProducts, new UserHomePage2Activity.SortingBySold());
+//                ArrayList<ProductInfo> temp2 = new ArrayList<>();
+//                for(int i=0; i<bestRatedProducts.size() && i<8; i++){
+//                    temp2.add(bestRatedProducts.get(i));
+//                }
+               mostSoldRecyclerViewAdapter = new UserHomePage2RecyclerViewAdapter(UserHomePage2Activity.this, mostSoldProducts);
+               mostSoldRecyclerView.setAdapter(mostSoldRecyclerViewAdapter);
+
+               Collections.sort(recentlyAddedProducts, new UserHomePage2Activity.SortingByDate());
+//                ArrayList<ProductInfo> temp3 = new ArrayList<>();
+//                for(int i=0; i<bestRatedProducts.size() && i<8; i++){
+//                    temp3.add(bestRatedProducts.get(i));
+//                }
+               recentlyAddedRecyclerViewAdapter = new UserHomePage2RecyclerViewAdapter(UserHomePage2Activity.this, recentlyAddedProducts);
+               recentlyAddedRecyclerView.setAdapter(recentlyAddedRecyclerViewAdapter);
+           }
+
+           @Override
+           public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+           }
+
+           @Override
+           public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+           }
+
+           @Override
+           public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+           }
+
+           @Override
+           public void onCancelled(@NonNull DatabaseError databaseError) {
+
+           }
+       });
+
+       final SearchView searchView = findViewById(R.id.user_home_page2_sv_search);
+       searchRecyclerView = findViewById(R.id.user_home_page2_srv_search);
+       searchRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+       searchRecyclerViewAdapter = new CategoryRecyclerViewAdapter(this, productInfos);
+
+
+       searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+           @Override
+           public boolean onQueryTextSubmit(String query) {
+
+               contentLayout.setVisibility(View.GONE);
+               searchLayout.setVisibility(View.VISIBLE);
+
+               searchResults.clear();
+               queryText = query;
+
+               for(ProductInfo product: productInfos){
+                   if(product.getProductName().toLowerCase().contains(query.trim().toLowerCase())
+                           || product.getArtisanName().toLowerCase().contains(query.trim().toLowerCase()))
+                       searchResults.add(product);
+               }
+               searchRecyclerViewAdapter = new CategoryRecyclerViewAdapter(getBaseContext(), searchResults);
+               searchRecyclerView.setAdapter(searchRecyclerViewAdapter);
+
+               return false;
+           }
+
+           @Override
+           public boolean onQueryTextChange(String newText) {
+               if(newText.equals("")){
+                   searchRecyclerViewAdapter = new CategoryRecyclerViewAdapter(getBaseContext(),productInfos);
+                   searchRecyclerView.setAdapter(searchRecyclerViewAdapter);
+
+                   contentLayout.setVisibility(View.VISIBLE);
+                   searchLayout.setVisibility(View.GONE);
+               }
+               else{
+                   contentLayout.setVisibility(View.GONE);
+                   searchLayout.setVisibility(View.VISIBLE);
+               }
+               searchResults.clear();
+
+               for(ProductInfo product: productInfos){
+                   if(product.getProductName().toLowerCase().contains(newText.trim().toLowerCase())
+                           || product.getArtisanName().toLowerCase().contains(newText.trim().toLowerCase()))
+                       searchResults.add(product);
+               }
+               searchRecyclerViewAdapter = new CategoryRecyclerViewAdapter(getBaseContext(), searchResults);
+               searchRecyclerView.setAdapter(searchRecyclerViewAdapter);
+
+               return false;
+           }
+       });
+   }
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override

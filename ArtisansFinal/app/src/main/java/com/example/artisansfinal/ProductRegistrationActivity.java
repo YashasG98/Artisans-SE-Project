@@ -71,7 +71,7 @@ public class ProductRegistrationActivity extends AppCompatActivity {
     private static boolean runInOnePage = false;
     private static String artisanName = null;
     private static String artisanContactNumber = null;
-    private static final DateFormat DATE_FORMAT = new SimpleDateFormat("yyyy/MM/dd hh:mm:ss");
+    private static final DateFormat DATE_FORMAT = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 
     //private double resizeFactorForHighRes[] = {1,0.8,0.7,0.6,0.5};
     @Override
