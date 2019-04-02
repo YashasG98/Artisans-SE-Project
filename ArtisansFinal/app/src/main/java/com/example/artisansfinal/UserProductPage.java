@@ -8,7 +8,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.example.artisansfinal.R;
-
+//completely done by Shrinidhi Anil Varna
 public class UserProductPage extends AppCompatActivity {
 
     @Override

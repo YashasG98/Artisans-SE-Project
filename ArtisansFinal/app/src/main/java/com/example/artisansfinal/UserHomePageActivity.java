@@ -1,5 +1,5 @@
 package com.example.artisansfinal;
-
+//completely done by Shrinidhi Anil Varna
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;

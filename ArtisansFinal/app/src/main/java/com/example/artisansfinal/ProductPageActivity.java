@@ -78,7 +78,7 @@ import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
-
+//done by Shrinidhi Anil Varna from line 95-116 and 291-736
 public class ProductPageActivity extends AppCompatActivity {
 
     private DatabaseReference databaseReference;

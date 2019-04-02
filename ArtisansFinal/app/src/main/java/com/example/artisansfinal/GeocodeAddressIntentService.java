@@ -1,5 +1,5 @@
 package com.example.artisansfinal;
-
+//completely done by Shrinidhi Anil Varna
 import android.app.IntentService;
 import android.content.Intent;
 import android.location.Address;

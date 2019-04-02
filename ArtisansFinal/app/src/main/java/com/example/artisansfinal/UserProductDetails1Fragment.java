@@ -1,5 +1,5 @@
 package com.example.artisansfinal;
-
+//done by Shrinidhi Anil Varna from line 108 - 137 && 167 - 176 && 197 - 215 && 236 - 249 && 270,277,278 && 293 - 312 && 375 - 387 && 541 - 893
 import android.Manifest;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
@@ -105,7 +105,7 @@ public class UserProductDetails1Fragment extends Fragment {
     private int quantity;
     private static boolean runInOnePage=false;
 
-    //Lcation based done by shrinidhi anil varna
+    //Location based done by shrinidhi anil varna
     AddressResultReceiver mResultReceiver, mResultReceiver2;
     double latid = 0,longit = 0;
     EditText latitudeEdit, longitudeEdit, addressEdit;

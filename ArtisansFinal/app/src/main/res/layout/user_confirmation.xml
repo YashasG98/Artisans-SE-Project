@@ -8,7 +8,7 @@
     android:id="@+id/ad"
     android:orientation="vertical">
 
-
+    <!--done by Shrinidhi Anil Varna from line no. 12 to 34-->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
