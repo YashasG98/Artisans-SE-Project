@@ -18,3 +18,12 @@ git pull upstream master
 git branch -D branch_name
 ```
 While creating a pull request, request a review from either @rohit-mp or @YashasG98
+
+### Contributors
+
+- [Rohit M P](https://github.com/rohit-mp)
+- [Yashas G](https://github.com/YashasG98)
+- [Shashwatha Mitra G B](https://github.com/Shashwatha-Mitra)
+- [Dhanasekhar M](https://github.com/DhanaSekharM)
+- [Shrinidhi Anil Verna](https://github.com/shrinidhi99)
+- [Sayan Biswas](https://github.com/Sabios-97)
