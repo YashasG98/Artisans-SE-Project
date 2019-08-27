@@ -25,5 +25,5 @@ While creating a pull request, request a review from either @rohit-mp or @Yashas
 - [Yashas G](https://github.com/YashasG98)
 - [Shashwatha Mitra G B](https://github.com/Shashwatha-Mitra)
 - [Dhanasekhar M](https://github.com/DhanaSekharM)
-- [Shrinidhi Anil Verna](https://github.com/shrinidhi99)
+- [Shrinidhi Anil Varna](https://github.com/shrinidhi99)
 - [Sayan Biswas](https://github.com/Sabios-97)
